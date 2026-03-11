@@ -340,9 +340,38 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 
 <div id="install-banner">
   <span style="font-size:2rem;flex-shrink:0">🎯</span>
-  <div class="install-text"><strong>Installera appen</strong><span>Lägg till på hemskärmen</span></div>
-  <button class="install-btn" onclick="installApp()">Installera</button>
+  <div class="install-text"><strong>Installera appen</strong><span id="install-sub">Lägg till på hemskärmen</span></div>
+  <button class="install-btn" id="install-action-btn" onclick="installApp()">Installera</button>
   <button class="install-dismiss" onclick="dismissBanner()">✕</button>
+</div>
+
+<!-- iOS install instructions -->
+<div class="overlay" id="ios-modal">
+  <div class="sheet">
+    <h2>📲 Installera på iPhone</h2>
+    <p>Följ dessa steg för att lägga till appen på din hemskärm:</p>
+    <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:8px;">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <span style="font-size:1.5rem;flex-shrink:0">1️⃣</span>
+        <span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;">Öppna den här sidan i <strong style="color:white">Safari</strong> – det fungerar inte i Chrome på iPhone.</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <span style="font-size:1.5rem;flex-shrink:0">2️⃣</span>
+        <span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;">Tryck på <strong style="color:white">dela-ikonen</strong> &#x2197; längst ner i Safari (rutan med pil uppåt).</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <span style="font-size:1.5rem;flex-shrink:0">3️⃣</span>
+        <span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;">Scrolla ner och tryck <strong style="color:white">"Lägg till på hemskärmen"</strong>.</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <span style="font-size:1.5rem;flex-shrink:0">4️⃣</span>
+        <span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;">Tryck <strong style="color:white">"Lägg till"</strong> – klart! 🎉</span>
+      </div>
+    </div>
+    <div class="sheet-actions">
+      <button class="mbtn mbtn-ghost" onclick="closeModal('ios-modal');dismissBanner();">Stäng</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -505,9 +534,38 @@ if ('serviceWorker' in navigator) {
   const swBlob = new Blob([SW_CODE],{type:'application/javascript'});
   navigator.serviceWorker.register(URL.createObjectURL(swBlob),{scope:'./'}).catch(()=>{});
 }
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
 let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt=e; if(!localStorage.getItem('install_dismissed')) document.getElementById('install-banner').classList.add('show'); });
-window.addEventListener('appinstalled', () => { document.getElementById('install-banner').classList.remove('show'); deferredPrompt=null; });
+
+function showInstallBanner() {
+  if (isInStandaloneMode) return; // Already installed
+  if (localStorage.getItem('install_dismissed')) return;
+  const banner = document.getElementById('install-banner');
+  if (isIOS) {
+    document.getElementById('install-sub').textContent = 'Tryck här för instruktioner';
+    document.getElementById('install-action-btn').textContent = 'Visa hur';
+    document.getElementById('install-action-btn').onclick = () => openModal('ios-modal');
+    banner.classList.add('show');
+  }
+}
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (!localStorage.getItem('install_dismissed') && !isInStandaloneMode) {
+    document.getElementById('install-sub').textContent = 'Lägg till på hemskärmen';
+    document.getElementById('install-action-btn').textContent = 'Installera';
+    document.getElementById('install-action-btn').onclick = installApp;
+    document.getElementById('install-banner').classList.add('show');
+  }
+});
+
+window.addEventListener('appinstalled', () => {
+  document.getElementById('install-banner').classList.remove('show');
+  deferredPrompt = null;
+});
 function installApp() { if(!deferredPrompt)return; deferredPrompt.prompt(); deferredPrompt.userChoice.then(()=>{ deferredPrompt=null; document.getElementById('install-banner').classList.remove('show'); }); }
 function dismissBanner() { document.getElementById('install-banner').classList.remove('show'); localStorage.setItem('install_dismissed','1'); }
 function updateOnline() { document.getElementById('offline-badge').classList.toggle('show', !navigator.onLine); }
@@ -673,6 +731,7 @@ function exportHistory() {
 
 /* ══ INIT ══ */
 updateOnline();
+showInstallBanner();
 if (!checkRecoveryToken()) checkExistingSession();
 </script>
 </body>
