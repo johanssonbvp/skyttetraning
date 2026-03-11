@@ -31,7 +31,7 @@ document.currentScript.insertAdjacentElement('afterend',al);
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overscroll-behavior-y:contain;touch-action:manipulation;}
 
-/* ── AUTH SCREEN ── */
+/* ── AUTH ── */
 #auth-screen{display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:100vh;padding:24px;}
 .auth-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:32px 24px;width:100%;max-width:400px;}
 .auth-logo{text-align:center;margin-bottom:28px;}
@@ -51,22 +51,20 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .auth-msg{font-size:0.82rem;text-align:center;margin-top:12px;min-height:20px;}
 .auth-msg.error{color:var(--miss);}
 .auth-msg.success{color:var(--stann);}
+.text-link{background:none;border:none;color:var(--muted);font-family:inherit;font-size:0.82rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer;width:100%;margin-top:10px;display:block;text-align:center;}
 
 /* ── APP ── */
 #app-screen{display:none;}
 #offline-badge{display:none;position:fixed;top:56px;left:50%;transform:translateX(-50%);background:#374151;color:#d1d5db;font-size:0.75rem;font-weight:600;padding:5px 14px;border-radius:999px;z-index:25;}
 #offline-badge.show{display:block;}
-
+.user-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);}
+.user-email{font-size:0.78rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px;}
+.signout-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:inherit;font-size:0.75rem;padding:5px 12px;border-radius:8px;cursor:pointer;white-space:nowrap;}
 .tab-bar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20;padding:0 4px;}
 .tab-btn{flex:1;padding:15px 8px;background:none;border:none;color:var(--muted);font-family:inherit;font-size:0.85rem;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;transition:color 0.2s,border-color 0.2s;-webkit-tap-highlight-color:transparent;}
 .tab-btn.active{color:var(--accent2);border-bottom-color:var(--accent2);}
 .tab-content{display:none;}
 .tab-content.active{display:block;}
-
-/* User bar */
-.user-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);}
-.user-email{font-size:0.78rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px;}
-.signout-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:inherit;font-size:0.75rem;padding:5px 12px;border-radius:8px;cursor:pointer;white-space:nowrap;}
 
 /* ── TRAINING ── */
 .train-wrap{max-width:480px;margin:0 auto;padding:24px 16px 120px;}
@@ -165,12 +163,17 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       <button class="auth-tab active" onclick="showAuthTab('login')">Logga in</button>
       <button class="auth-tab" onclick="showAuthTab('register')">Registrera</button>
     </div>
+
+    <!-- Login -->
     <div id="auth-login">
       <div class="field"><label>E-postadress</label><input type="email" id="login-email" placeholder="din@email.se" autocomplete="email"></div>
       <div class="field"><label>Lösenord</label><input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password"></div>
       <button class="auth-btn" id="login-btn" onclick="doLogin()">Logga in</button>
       <div class="auth-msg" id="login-msg"></div>
+      <button class="text-link" onclick="showAuthTab('reset')">Glömt lösenordet?</button>
     </div>
+
+    <!-- Register -->
     <div id="auth-register" style="display:none">
       <div class="field"><label>E-postadress</label><input type="email" id="reg-email" placeholder="din@email.se" autocomplete="email"></div>
       <div class="field"><label>Lösenord</label><input type="password" id="reg-pass" placeholder="Minst 6 tecken" autocomplete="new-password"></div>
@@ -178,18 +181,34 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       <button class="auth-btn" id="reg-btn" onclick="doRegister()">Skapa konto</button>
       <div class="auth-msg" id="reg-msg"></div>
     </div>
+
+    <!-- Reset password request -->
+    <div id="auth-reset" style="display:none">
+      <p style="color:var(--muted);font-size:0.85rem;line-height:1.5;margin-bottom:16px;">Ange din e-postadress så skickar vi en länk för att återställa ditt lösenord.</p>
+      <div class="field"><label>E-postadress</label><input type="email" id="reset-email" placeholder="din@email.se" autocomplete="email"></div>
+      <button class="auth-btn" id="reset-btn" onclick="doResetPassword()">Skicka återställningslänk</button>
+      <div class="auth-msg" id="reset-msg"></div>
+      <button class="text-link" onclick="showAuthTab('login')">← Tillbaka till inloggning</button>
+    </div>
+
+    <!-- Set new password -->
+    <div id="auth-new-password" style="display:none">
+      <p style="color:var(--muted);font-size:0.85rem;line-height:1.5;margin-bottom:16px;">Ange ditt nya lösenord nedan.</p>
+      <div class="field"><label>Nytt lösenord</label><input type="password" id="new-pass" placeholder="Minst 6 tecken" autocomplete="new-password"></div>
+      <div class="field"><label>Bekräfta lösenord</label><input type="password" id="new-pass2" placeholder="Upprepa lösenord" autocomplete="new-password"></div>
+      <button class="auth-btn" id="new-pass-btn" onclick="doSetNewPassword()">Spara nytt lösenord</button>
+      <div class="auth-msg" id="new-pass-msg"></div>
+    </div>
   </div>
 </div>
 
 <!-- ══ APP SCREEN ══ -->
 <div id="app-screen">
   <div id="offline-badge">⚡ Offline-läge</div>
-
   <div class="user-bar">
     <span class="user-email" id="user-email-display"></span>
     <button class="signout-btn" onclick="doSignOut()">Logga ut</button>
   </div>
-
   <div class="tab-bar">
     <button class="tab-btn active" onclick="switchTab('training',this)">🎯&nbsp; Träning</button>
     <button class="tab-btn" onclick="switchTab('stats',this)">📊&nbsp; Statistik</button>
@@ -327,14 +346,14 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 </div>
 
 <script>
-/* ══ SUPABASE CONFIG ══ */
+/* ══ CONFIG ══ */
 const SUPA_URL = 'https://ddbepuoajxosazocucyx.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkYmVwdW9hanhvc2F6b2N1Y3l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMDkyOTMsImV4cCI6MjA4ODc4NTI5M30.nibFnPj1SHm0RPQKkgdOkNrpnkxAabZUbwkSoe03I-s';
+const APP_URL = 'https://petanquetraning.se';
 
 const supa = {
   headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json' },
-  authHeaders: () => ({ ...supa.headers, 'Authorization': 'Bearer ' + (currentSession?.access_token || SUPA_KEY) }),
-
+  authHeaders: () => ({ 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + (currentSession?.access_token || SUPA_KEY), 'Content-Type': 'application/json' }),
   async post(path, body, useAuth=false) {
     const r = await fetch(SUPA_URL + path, { method:'POST', headers: useAuth ? supa.authHeaders() : supa.headers, body: JSON.stringify(body) });
     return r.json();
@@ -342,8 +361,7 @@ const supa = {
   async get(path) {
     const r = await fetch(SUPA_URL + path, { headers: supa.authHeaders() });
     return r.json();
-  },
-  async postAuth(path, body) { return supa.post(path, body, true); }
+  }
 };
 
 let currentSession = null;
@@ -351,9 +369,11 @@ let currentUser = null;
 
 /* ══ AUTH ══ */
 function showAuthTab(tab) {
-  document.getElementById('auth-login').style.display = tab==='login' ? 'block' : 'none';
-  document.getElementById('auth-register').style.display = tab==='register' ? 'block' : 'none';
-  document.querySelectorAll('.auth-tab').forEach((b,i) => b.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='register')));
+  ['login','register','reset','new-password'].forEach(t => {
+    document.getElementById('auth-' + t).style.display = t === tab ? 'block' : 'none';
+  });
+  document.querySelectorAll('.auth-tab').forEach((b,i) =>
+    b.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='register')));
 }
 
 function setAuthMsg(id, msg, type='error') {
@@ -362,23 +382,22 @@ function setAuthMsg(id, msg, type='error') {
   el.className = 'auth-msg ' + type;
 }
 
-function setBtnLoading(id, loading) {
+function setBtnLoading(id, loading, label) {
   const btn = document.getElementById(id);
   btn.disabled = loading;
-  btn.innerHTML = loading ? '<span class="spinner"></span>' : (id==='login-btn' ? 'Logga in' : 'Skapa konto');
+  btn.innerHTML = loading ? '<span class="spinner"></span>' : label;
 }
 
 async function doLogin() {
   const email = document.getElementById('login-email').value.trim();
   const pass = document.getElementById('login-pass').value;
   if (!email || !pass) { setAuthMsg('login-msg','Fyll i e-post och lösenord.'); return; }
-  setBtnLoading('login-btn', true);
-  setAuthMsg('login-msg','');
+  setBtnLoading('login-btn', true, 'Logga in');
+  setAuthMsg('login-msg', '');
   const res = await supa.post('/auth/v1/token?grant_type=password', { email, password: pass });
-  setBtnLoading('login-btn', false);
+  setBtnLoading('login-btn', false, 'Logga in');
   if (res.error) { setAuthMsg('login-msg', res.error.message || 'Fel e-post eller lösenord.'); return; }
-  currentSession = res;
-  currentUser = res.user;
+  currentSession = res; currentUser = res.user;
   onLoggedIn();
 }
 
@@ -389,34 +408,82 @@ async function doRegister() {
   if (!email || !pass) { setAuthMsg('reg-msg','Fyll i alla fält.'); return; }
   if (pass.length < 6) { setAuthMsg('reg-msg','Lösenordet måste vara minst 6 tecken.'); return; }
   if (pass !== pass2) { setAuthMsg('reg-msg','Lösenorden matchar inte.'); return; }
-  setBtnLoading('reg-btn', true);
-  setAuthMsg('reg-msg','');
+  setBtnLoading('reg-btn', true, 'Skapa konto');
+  setAuthMsg('reg-msg', '');
   const res = await supa.post('/auth/v1/signup', { email, password: pass });
-  setBtnLoading('reg-btn', false);
+  setBtnLoading('reg-btn', false, 'Skapa konto');
   if (res.error) { setAuthMsg('reg-msg', res.error.message || 'Något gick fel.'); return; }
-  if (res.user && !res.session) {
-    setAuthMsg('reg-msg','✅ Konto skapat! Kontrollera din e-post för att bekräfta.','success'); return;
-  }
   if (res.session) { currentSession=res.session; currentUser=res.user; onLoggedIn(); return; }
-  setAuthMsg('reg-msg','✅ Konto skapat! Logga in nedan.','success');
-  showAuthTab('login');
+  setAuthMsg('reg-msg', '✅ Konto skapat! Kontrollera din e-post för att bekräfta.', 'success');
+}
+
+async function doResetPassword() {
+  const email = document.getElementById('reset-email').value.trim();
+  if (!email) { setAuthMsg('reset-msg', 'Ange din e-postadress.'); return; }
+  setBtnLoading('reset-btn', true, 'Skicka återställningslänk');
+  setAuthMsg('reset-msg', '');
+  const res = await supa.post('/auth/v1/recover', {
+    email,
+    gotrue_meta_security: {},
+    redirect_to: APP_URL
+  });
+  setBtnLoading('reset-btn', false, 'Skicka återställningslänk');
+  if (res.error) { setAuthMsg('reset-msg', res.error.message || 'Något gick fel.'); return; }
+  setAuthMsg('reset-msg', '✅ Kolla din e-post! Länken är giltig i 24 timmar.', 'success');
+}
+
+async function doSetNewPassword() {
+  const pass = document.getElementById('new-pass').value;
+  const pass2 = document.getElementById('new-pass2').value;
+  if (pass.length < 6) { setAuthMsg('new-pass-msg', 'Lösenordet måste vara minst 6 tecken.'); return; }
+  if (pass !== pass2) { setAuthMsg('new-pass-msg', 'Lösenorden matchar inte.'); return; }
+  setBtnLoading('new-pass-btn', true, 'Spara nytt lösenord');
+  setAuthMsg('new-pass-msg', '');
+  const res = await fetch(SUPA_URL + '/auth/v1/user', {
+    method: 'PUT',
+    headers: supa.authHeaders(),
+    body: JSON.stringify({ password: pass })
+  });
+  const data = await res.json();
+  setBtnLoading('new-pass-btn', false, 'Spara nytt lösenord');
+  if (data.error) { setAuthMsg('new-pass-msg', data.error.message || 'Något gick fel.'); return; }
+  setAuthMsg('new-pass-msg', '✅ Lösenordet är uppdaterat!', 'success');
+  setTimeout(() => { currentSession = null; showAuthTab('login'); }, 2000);
 }
 
 async function doSignOut() {
-  await supa.post('/auth/v1/logout', {}, true).catch(()=>{});
+  await fetch(SUPA_URL + '/auth/v1/logout', { method:'POST', headers: supa.authHeaders() }).catch(()=>{});
   currentSession = null; currentUser = null;
+  localStorage.removeItem('pt_auth');
   localStorage.removeItem('pt_session');
   document.getElementById('app-screen').style.display = 'none';
   document.getElementById('auth-screen').style.display = 'flex';
+  showAuthTab('login');
+}
+
+function checkRecoveryToken() {
+  const hash = window.location.hash;
+  if (hash && hash.includes('type=recovery')) {
+    const params = new URLSearchParams(hash.substring(1));
+    const accessToken = params.get('access_token');
+    const refreshToken = params.get('refresh_token');
+    if (accessToken) {
+      currentSession = { access_token: accessToken, refresh_token: refreshToken };
+      document.getElementById('auth-screen').style.display = 'flex';
+      showAuthTab('new-password');
+      history.replaceState(null, '', window.location.pathname);
+      return true;
+    }
+  }
+  return false;
 }
 
 async function checkExistingSession() {
-  // Try to restore from localStorage token
   try {
     const stored = JSON.parse(localStorage.getItem('pt_auth') || 'null');
     if (stored?.access_token) {
       currentSession = stored;
-      const res = await fetch(SUPA_URL+'/auth/v1/user', { headers: supa.authHeaders() });
+      const res = await fetch(SUPA_URL + '/auth/v1/user', { headers: supa.authHeaders() });
       const user = await res.json();
       if (user?.id) { currentUser = user; onLoggedIn(); return; }
     }
@@ -438,162 +505,175 @@ if ('serviceWorker' in navigator) {
   const swBlob = new Blob([SW_CODE],{type:'application/javascript'});
   navigator.serviceWorker.register(URL.createObjectURL(swBlob),{scope:'./'}).catch(()=>{});
 }
-let deferredPrompt=null;
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;if(!localStorage.getItem('install_dismissed'))document.getElementById('install-banner').classList.add('show');});
-window.addEventListener('appinstalled',()=>{document.getElementById('install-banner').classList.remove('show');deferredPrompt=null;});
-function installApp(){if(!deferredPrompt)return;deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;document.getElementById('install-banner').classList.remove('show');});}
-function dismissBanner(){document.getElementById('install-banner').classList.remove('show');localStorage.setItem('install_dismissed','1');}
-function updateOnline(){document.getElementById('offline-badge').classList.toggle('show',!navigator.onLine);}
-window.addEventListener('online',updateOnline);window.addEventListener('offline',updateOnline);
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt=e; if(!localStorage.getItem('install_dismissed')) document.getElementById('install-banner').classList.add('show'); });
+window.addEventListener('appinstalled', () => { document.getElementById('install-banner').classList.remove('show'); deferredPrompt=null; });
+function installApp() { if(!deferredPrompt)return; deferredPrompt.prompt(); deferredPrompt.userChoice.then(()=>{ deferredPrompt=null; document.getElementById('install-banner').classList.remove('show'); }); }
+function dismissBanner() { document.getElementById('install-banner').classList.remove('show'); localStorage.setItem('install_dismissed','1'); }
+function updateOnline() { document.getElementById('offline-badge').classList.toggle('show', !navigator.onLine); }
+window.addEventListener('online', updateOnline); window.addEventListener('offline', updateOnline);
 
 /* ══ APP STATE ══ */
-const DISTS=[6,7,8,9];
-let distIdx=0,shotCount=0,total=50,stats={miss:0,traff:0,stann:0};
-let pendingFn=null,activeFilter='all';
+const DISTS = [6,7,8,9];
+let distIdx=0, shotCount=0, total=50, stats={miss:0,traff:0,stann:0};
+let pendingFn=null, activeFilter='all';
 
-const ls={get:k=>{try{return JSON.parse(localStorage.getItem(k));}catch{return null;}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}}};
-function loadSession(){const s=ls.get('pt_s');if(s){distIdx=s.d??0;shotCount=s.n??0;total=s.t??50;stats=s.stats??{miss:0,traff:0,stann:0};}}
-function saveSession(){ls.set('pt_s',{d:distIdx,n:shotCount,t:total,stats});}
+const ls = {
+  get: k => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+  set: (k,v) => { try { localStorage.setItem(k,JSON.stringify(v)); } catch {} }
+};
 
-/* History – saves to Supabase + localStorage fallback */
-function getHistory(){return ls.get('pt_h')||[];}
-function saveHistory(h){ls.set('pt_h',h);}
-async function pushHistory(){
-  const entry={dist:DISTS[distIdx],shots:total,miss:stats.miss,traff:stats.traff,stann:stats.stann,pct:+((( stats.traff+stats.stann)/total)*100).toFixed(1),date:new Date().toISOString()};
-  const h=getHistory(); h.unshift(entry); saveHistory(h);
-  // Save to Supabase if logged in
+function loadSession() { const s=ls.get('pt_s'); if(s){distIdx=s.d??0;shotCount=s.n??0;total=s.t??50;stats=s.stats??{miss:0,traff:0,stann:0};} }
+function saveSession() { ls.set('pt_s',{d:distIdx,n:shotCount,t:total,stats}); }
+function getHistory() { return ls.get('pt_h') || []; }
+function saveHistory(h) { ls.set('pt_h', h); }
+
+async function pushHistory() {
+  const entry = { dist:DISTS[distIdx], shots:total, miss:stats.miss, traff:stats.traff, stann:stats.stann, pct:+((( stats.traff+stats.stann)/total)*100).toFixed(1), date:new Date().toISOString() };
+  const h = getHistory(); h.unshift(entry); saveHistory(h);
   if (currentUser) {
-    await supa.postAuth('/rest/v1/sessions', {
-      user_id: currentUser.id, dist: entry.dist, shots: entry.shots,
-      miss: entry.miss, traff: entry.traff, stann: entry.stann,
-      pct: entry.pct, played_at: entry.date
+    await fetch(SUPA_URL + '/rest/v1/sessions', {
+      method: 'POST',
+      headers: { ...supa.authHeaders(), 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ user_id:currentUser.id, dist:entry.dist, shots:entry.shots, miss:entry.miss, traff:entry.traff, stann:entry.stann, pct:entry.pct, played_at:entry.date })
     }).catch(()=>{});
   }
 }
 
 /* ══ TABS ══ */
-function switchTab(name,btn){
+function switchTab(name, btn) {
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   btn.classList.add('active');
-  if(name==='stats')renderStats();
+  if (name==='stats') renderStats();
 }
 
 /* ══ TRAINING ══ */
-function setDistance(idx){if(shotCount>0){pendingFn=()=>_setDist(idx);openModal('change-modal');return;}_setDist(idx);}
-function _setDist(idx){distIdx=idx;refreshDistPills();refreshUI();}
-function setTotal(n){if(shotCount>0){pendingFn=()=>_setTotal(n);openModal('change-modal');return;}_setTotal(n);}
-function _setTotal(n){total=n;refreshCountPills();refreshUI();}
+function setDistance(idx) { if(shotCount>0){pendingFn=()=>_setDist(idx);openModal('change-modal');return;} _setDist(idx); }
+function _setDist(idx) { distIdx=idx; refreshDistPills(); refreshUI(); }
+function setTotal(n) { if(shotCount>0){pendingFn=()=>_setTotal(n);openModal('change-modal');return;} _setTotal(n); }
+function _setTotal(n) { total=n; refreshCountPills(); refreshUI(); }
 
-function shoot(type){
-  if(shotCount>=total)return;
-  stats[type]++;shotCount++;saveSession();refreshUI();
-  if(window.navigator.vibrate)navigator.vibrate(30);
-  if(shotCount===total){pushHistory();showSummary();}
+function shoot(type) {
+  if (shotCount>=total) return;
+  stats[type]++; shotCount++; saveSession(); refreshUI();
+  if (window.navigator.vibrate) navigator.vibrate(30);
+  if (shotCount===total) { pushHistory(); showSummary(); }
 }
 
-function refreshDistPills(){document.querySelectorAll('.dist-pill').forEach((b,i)=>b.classList.toggle('active',i===distIdx));document.getElementById('hero-dist').innerText=DISTS[distIdx]+'m';}
-function refreshCountPills(){document.querySelectorAll('.count-pill').forEach(b=>b.classList.toggle('active',parseInt(b.innerText)===total));}
-function refreshUI(){
-  document.getElementById('hero-dist').innerText=DISTS[distIdx]+'m';
-  document.getElementById('cur-shot').innerText=shotCount<total?shotCount+1:total;
-  document.getElementById('tot-shot').innerText=total;
-  const pct=Math.round(shotCount/total*100);
-  document.getElementById('prog-fill').style.width=pct+'%';
-  document.getElementById('prog-pct').innerText=pct+'%';
-  document.getElementById('live-miss').innerText=stats.miss;
-  document.getElementById('live-traff').innerText=stats.traff;
-  document.getElementById('live-stann').innerText=stats.stann;
-  const hits=stats.traff+stats.stann;
-  document.getElementById('hero-sub').innerText=shotCount===0?'Redo att skjuta':shotCount<total?`${hits} träffar av ${shotCount} skott`:'Serien klar!';
+function refreshDistPills() { document.querySelectorAll('.dist-pill').forEach((b,i)=>b.classList.toggle('active',i===distIdx)); document.getElementById('hero-dist').innerText=DISTS[distIdx]+'m'; }
+function refreshCountPills() { document.querySelectorAll('.count-pill').forEach(b=>b.classList.toggle('active',parseInt(b.innerText)===total)); }
+
+function refreshUI() {
+  document.getElementById('hero-dist').innerText = DISTS[distIdx]+'m';
+  document.getElementById('cur-shot').innerText = shotCount<total ? shotCount+1 : total;
+  document.getElementById('tot-shot').innerText = total;
+  const pct = Math.round(shotCount/total*100);
+  document.getElementById('prog-fill').style.width = pct+'%';
+  document.getElementById('prog-pct').innerText = pct+'%';
+  document.getElementById('live-miss').innerText = stats.miss;
+  document.getElementById('live-traff').innerText = stats.traff;
+  document.getElementById('live-stann').innerText = stats.stann;
+  const hits = stats.traff+stats.stann;
+  document.getElementById('hero-sub').innerText = shotCount===0 ? 'Redo att skjuta' : shotCount<total ? `${hits} träffar av ${shotCount} skott` : 'Serien klar!';
 }
 
-function doReset(){closeModal('reset-modal');_reset();}
-function _reset(){shotCount=0;stats={miss:0,traff:0,stann:0};saveSession();refreshUI();}
-function doChange(){closeModal('change-modal');if(pendingFn){pendingFn();pendingFn=null;}}
+function doReset() { closeModal('reset-modal'); _reset(); }
+function _reset() { shotCount=0; stats={miss:0,traff:0,stann:0}; saveSession(); refreshUI(); }
+function doChange() { closeModal('change-modal'); if(pendingFn){pendingFn(); pendingFn=null;} }
 
-function showSummary(){
-  document.getElementById('sum-title').innerText=`${DISTS[distIdx]}m – ${total} skott`;
-  document.getElementById('sum-subtitle').innerText=new Date().toLocaleDateString('sv-SE',{weekday:'long',day:'numeric',month:'long'});
-  document.getElementById('sum-miss').innerText=stats.miss;
-  document.getElementById('sum-traff').innerText=stats.traff;
-  document.getElementById('sum-stann').innerText=stats.stann;
-  document.getElementById('sum-pct').innerText=((stats.traff+stats.stann)/total*100).toFixed(1)+'%';
-  document.getElementById('next-btn').innerText=distIdx<DISTS.length-1?`Nästa avstånd (${DISTS[distIdx+1]}m)`:'Börja om från 6m';
+function showSummary() {
+  document.getElementById('sum-title').innerText = `${DISTS[distIdx]}m – ${total} skott`;
+  document.getElementById('sum-subtitle').innerText = new Date().toLocaleDateString('sv-SE',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('sum-miss').innerText = stats.miss;
+  document.getElementById('sum-traff').innerText = stats.traff;
+  document.getElementById('sum-stann').innerText = stats.stann;
+  document.getElementById('sum-pct').innerText = ((stats.traff+stats.stann)/total*100).toFixed(1)+'%';
+  document.getElementById('next-btn').innerText = distIdx<DISTS.length-1 ? `Nästa avstånd (${DISTS[distIdx+1]}m)` : 'Börja om från 6m';
   openModal('sum-modal');
 }
-function nextDist(){distIdx=distIdx<DISTS.length-1?distIdx+1:0;refreshDistPills();_reset();closeModal('sum-modal');}
+function nextDist() { distIdx=distIdx<DISTS.length-1?distIdx+1:0; refreshDistPills(); _reset(); closeModal('sum-modal'); }
 
 /* ══ MODALS ══ */
-function openModal(id){document.getElementById(id).classList.add('show');}
-function closeModal(id){document.getElementById(id).classList.remove('show');}
-function doClear(){saveHistory([]);closeModal('clear-modal');renderStats();}
-document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('show');}));
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+function doClear() { saveHistory([]); closeModal('clear-modal'); renderStats(); }
+document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', e => { if(e.target===o) o.classList.remove('show'); }));
 
 /* ══ STATS ══ */
-function setFilter(val,btn){activeFilter=val;document.querySelectorAll('#dist-filter .pill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderStats();}
+function setFilter(val, btn) {
+  activeFilter = val;
+  document.querySelectorAll('#dist-filter .pill').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderStats();
+}
 
-function renderStats(){
-  const all=getHistory();
-  const data=activeFilter==='all'?all:all.filter(e=>e.dist===activeFilter);
-  const has=data.length>0;
-  document.getElementById('sum-cards').style.display=has?'grid':'none';
-  document.getElementById('chart-card').style.display=has?'block':'none';
-  if(has){
-    document.getElementById('sc-sessions').innerText=data.length;
-    document.getElementById('sc-shots').innerText=data.reduce((a,e)=>a+e.shots,0);
-    document.getElementById('sc-avg').innerText=(data.reduce((a,e)=>a+e.pct,0)/data.length).toFixed(1)+'%';
+function renderStats() {
+  const all = getHistory();
+  const data = activeFilter==='all' ? all : all.filter(e=>e.dist===activeFilter);
+  const has = data.length > 0;
+  document.getElementById('sum-cards').style.display = has ? 'grid' : 'none';
+  document.getElementById('chart-card').style.display = has ? 'block' : 'none';
+  if (has) {
+    document.getElementById('sc-sessions').innerText = data.length;
+    document.getElementById('sc-shots').innerText = data.reduce((a,e)=>a+e.shots,0);
+    document.getElementById('sc-avg').innerText = (data.reduce((a,e)=>a+e.pct,0)/data.length).toFixed(1)+'%';
     drawChart(data);
   }
   renderList(data);
 }
 
-function drawChart(data){
-  const canvas=document.getElementById('chart'),ctx=canvas.getContext('2d');
-  const pts=[...data].reverse();
-  const W=canvas.offsetWidth||400,H=160,dpr=window.devicePixelRatio||1;
-  canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.scale(dpr,dpr);
-  const pad={top:16,right:12,bottom:28,left:38},cw=W-pad.left-pad.right,ch=H-pad.top-pad.bottom;
+function drawChart(data) {
+  const canvas = document.getElementById('chart'), ctx = canvas.getContext('2d');
+  const pts = [...data].reverse();
+  const W = canvas.offsetWidth||400, H = 160, dpr = window.devicePixelRatio||1;
+  canvas.width=W*dpr; canvas.height=H*dpr; canvas.style.width=W+'px'; canvas.style.height=H+'px'; ctx.scale(dpr,dpr);
+  const pad={top:16,right:12,bottom:28,left:38}, cw=W-pad.left-pad.right, ch=H-pad.top-pad.bottom;
   ctx.clearRect(0,0,W,H);
-  [0,25,50,75,100].forEach(v=>{const y=pad.top+ch-(v/100)*ch;ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(pad.left+cw,y);ctx.stroke();ctx.fillStyle='#6b6b80';ctx.font='10px Inter,sans-serif';ctx.textAlign='right';ctx.fillText(v+'%',pad.left-6,y+4);});
-  if(!pts.length)return;
-  const xs=i=>pts.length===1?pad.left+cw/2:pad.left+(i/(pts.length-1))*cw;
-  const ys=v=>pad.top+ch-(v/100)*ch;
-  const grad=ctx.createLinearGradient(0,pad.top,0,pad.top+ch);
-  grad.addColorStop(0,'rgba(124,111,247,0.3)');grad.addColorStop(1,'rgba(124,111,247,0)');
-  ctx.beginPath();pts.forEach((p,i)=>i===0?ctx.moveTo(xs(i),ys(p.pct)):ctx.lineTo(xs(i),ys(p.pct)));
-  ctx.lineTo(xs(pts.length-1),pad.top+ch);ctx.lineTo(xs(0),pad.top+ch);ctx.closePath();ctx.fillStyle=grad;ctx.fill();
-  if(pts.length>1){ctx.beginPath();ctx.strokeStyle='#7c6ff7';ctx.lineWidth=2.5;ctx.lineJoin='round';pts.forEach((p,i)=>i===0?ctx.moveTo(xs(i),ys(p.pct)):ctx.lineTo(xs(i),ys(p.pct)));ctx.stroke();}
-  pts.forEach((p,i)=>{ctx.beginPath();ctx.arc(xs(i),ys(p.pct),4.5,0,Math.PI*2);ctx.fillStyle='#7c6ff7';ctx.fill();ctx.strokeStyle='#1a1a24';ctx.lineWidth=2;ctx.stroke();});
-  ctx.fillStyle='#6b6b80';ctx.font='10px Inter,sans-serif';ctx.textAlign='center';
-  const skip=Math.ceil(pts.length/5);
-  pts.forEach((p,i)=>{if(i%skip===0||i===pts.length-1)ctx.fillText(`${p.dist}m`,xs(i),H-6);});
+  [0,25,50,75,100].forEach(v=>{
+    const y=pad.top+ch-(v/100)*ch;
+    ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cw,y); ctx.stroke();
+    ctx.fillStyle='#6b6b80'; ctx.font='10px Inter,sans-serif'; ctx.textAlign='right';
+    ctx.fillText(v+'%',pad.left-6,y+4);
+  });
+  if (!pts.length) return;
+  const xs = i => pts.length===1 ? pad.left+cw/2 : pad.left+(i/(pts.length-1))*cw;
+  const ys = v => pad.top+ch-(v/100)*ch;
+  const grad = ctx.createLinearGradient(0,pad.top,0,pad.top+ch);
+  grad.addColorStop(0,'rgba(124,111,247,0.3)'); grad.addColorStop(1,'rgba(124,111,247,0)');
+  ctx.beginPath(); pts.forEach((p,i)=>i===0?ctx.moveTo(xs(i),ys(p.pct)):ctx.lineTo(xs(i),ys(p.pct)));
+  ctx.lineTo(xs(pts.length-1),pad.top+ch); ctx.lineTo(xs(0),pad.top+ch); ctx.closePath(); ctx.fillStyle=grad; ctx.fill();
+  if (pts.length>1) { ctx.beginPath(); ctx.strokeStyle='#7c6ff7'; ctx.lineWidth=2.5; ctx.lineJoin='round'; pts.forEach((p,i)=>i===0?ctx.moveTo(xs(i),ys(p.pct)):ctx.lineTo(xs(i),ys(p.pct))); ctx.stroke(); }
+  pts.forEach((p,i)=>{ ctx.beginPath(); ctx.arc(xs(i),ys(p.pct),4.5,0,Math.PI*2); ctx.fillStyle='#7c6ff7'; ctx.fill(); ctx.strokeStyle='#1a1a24'; ctx.lineWidth=2; ctx.stroke(); });
+  ctx.fillStyle='#6b6b80'; ctx.font='10px Inter,sans-serif'; ctx.textAlign='center';
+  const skip = Math.ceil(pts.length/5);
+  pts.forEach((p,i)=>{ if(i%skip===0||i===pts.length-1) ctx.fillText(`${p.dist}m`,xs(i),H-6); });
 }
 
-function renderList(data){
-  const el=document.getElementById('hist-list');
-  if(!data.length){el.innerHTML=`<div class="empty"><div class="empty-icon">🎯</div><p>Inga sessioner sparade ännu.<br>Slutför en träning för att se din statistik här.</p></div>`;return;}
-  el.innerHTML=data.map(e=>{
-    const d=new Date(e.date),ds=d.toLocaleDateString('sv-SE',{day:'numeric',month:'short'}),ts=d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'});
-    const col=e.pct>=70?'var(--stann)':e.pct>=40?'var(--traff)':'var(--miss)';
+function renderList(data) {
+  const el = document.getElementById('hist-list');
+  if (!data.length) { el.innerHTML=`<div class="empty"><div class="empty-icon">🎯</div><p>Inga sessioner sparade ännu.<br>Slutför en träning för att se din statistik här.</p></div>`; return; }
+  el.innerHTML = data.map(e => {
+    const d=new Date(e.date), ds=d.toLocaleDateString('sv-SE',{day:'numeric',month:'short'}), ts=d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'});
+    const col = e.pct>=70?'var(--stann)':e.pct>=40?'var(--traff)':'var(--miss)';
     return `<div class="hist-item"><div class="hist-left"><span class="hist-dist">${e.dist}m &nbsp;·&nbsp; ${e.shots} skott</span><span class="hist-date">${ds} kl. ${ts}</span><span class="hist-dots"><span style="color:var(--miss)">● ${e.miss}</span>&ensp;<span style="color:var(--traff)">● ${e.traff}</span>&ensp;<span style="color:var(--stann)">● ${e.stann}</span></span></div><div class="hist-pct" style="color:${col}">${e.pct}%</div></div>`;
   }).join('');
 }
 
-function exportHistory(){
-  const data=getHistory();
-  if(!data.length){alert('Ingen historik att exportera ännu.');return;}
-  const rows=[['Datum','Tid','Avstånd (m)','Antal skott','Miss','Träff','Stann','Träff%']];
-  data.forEach(e=>{const d=new Date(e.date);rows.push([d.toLocaleDateString('sv-SE'),d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'}),e.dist,e.shots,e.miss,e.traff,e.stann,e.pct]);});
-  const csv=rows.map(r=>r.join(';')).join('\n');
-  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`petanque-historik-${new Date().toISOString().slice(0,10)}.csv`;a.click();
+function exportHistory() {
+  const data = getHistory();
+  if (!data.length) { alert('Ingen historik att exportera ännu.'); return; }
+  const rows = [['Datum','Tid','Avstånd (m)','Antal skott','Miss','Träff','Stann','Träff%']];
+  data.forEach(e => { const d=new Date(e.date); rows.push([d.toLocaleDateString('sv-SE'),d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'}),e.dist,e.shots,e.miss,e.traff,e.stann,e.pct]); });
+  const blob = new Blob(['\uFEFF'+rows.map(r=>r.join(';')).join('\n')],{type:'text/csv;charset=utf-8;'});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`petanque-historik-${new Date().toISOString().slice(0,10)}.csv`; a.click();
 }
 
 /* ══ INIT ══ */
 updateOnline();
-checkExistingSession();
+if (!checkRecoveryToken()) checkExistingSession();
 </script>
 </body>
 </html>
