@@ -46,11 +46,9 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .field input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:13px 16px;color:var(--text);font-family:inherit;font-size:0.95rem;outline:none;transition:border-color 0.2s;}
 .field input:focus{border-color:var(--accent);}
 .auth-btn{width:100%;background:var(--accent);color:white;border:none;border-radius:14px;padding:15px;font-family:inherit;font-size:1rem;font-weight:700;cursor:pointer;margin-top:4px;transition:opacity 0.2s;}
-.auth-btn:active{opacity:0.85;}
-.auth-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.auth-btn:active{opacity:0.85;} .auth-btn:disabled{opacity:0.5;cursor:not-allowed;}
 .auth-msg{font-size:0.82rem;text-align:center;margin-top:12px;min-height:20px;}
-.auth-msg.error{color:var(--miss);}
-.auth-msg.success{color:var(--stann);}
+.auth-msg.error{color:var(--miss);} .auth-msg.success{color:var(--stann);}
 .text-link{background:none;border:none;color:var(--muted);font-family:inherit;font-size:0.82rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer;width:100%;margin-top:10px;display:block;text-align:center;}
 
 /* ── APP ── */
@@ -63,8 +61,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .tab-bar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20;padding:0 4px;}
 .tab-btn{flex:1;padding:15px 8px;background:none;border:none;color:var(--muted);font-family:inherit;font-size:0.85rem;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;transition:color 0.2s,border-color 0.2s;-webkit-tap-highlight-color:transparent;}
 .tab-btn.active{color:var(--accent2);border-bottom-color:var(--accent2);}
-.tab-content{display:none;}
-.tab-content.active{display:block;}
+.tab-content{display:none;} .tab-content.active{display:block;}
 
 /* ── TRAINING ── */
 .train-wrap{max-width:480px;margin:0 auto;padding:24px 16px 120px;}
@@ -102,12 +99,59 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .stats-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
 .stats-top h2{font-size:1.1rem;font-weight:700;}
 .clear-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:inherit;font-size:0.75rem;padding:6px 12px;border-radius:8px;cursor:pointer;}
-.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;}
-.summary-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
-.sum-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 8px;text-align:center;}
-.sum-card .sv{font-size:1.6rem;font-weight:800;} .sum-card .sk{font-size:0.65rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:2px;}
-.chart-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 14px 10px;margin-bottom:20px;}
-.chart-head{font-size:0.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+
+/* Stats tabs */
+.stats-nav{display:flex;background:var(--card);border-radius:14px;padding:4px;margin-bottom:20px;gap:4px;}
+.stats-nav-btn{flex:1;padding:9px 4px;border:none;border-radius:10px;background:none;color:var(--muted);font-family:inherit;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.stats-nav-btn.active{background:var(--accent);color:white;}
+
+.stats-section{display:none;} .stats-section.active{display:block;}
+
+/* Overview */
+.overview-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px;}
+.ov-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 8px;text-align:center;}
+.ov-card .sv{font-size:1.6rem;font-weight:800;} .ov-card .sk{font-size:0.65rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+
+/* Records */
+.records-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:20px;}
+.record-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;position:relative;overflow:hidden;}
+.record-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.rec-6m::before{background:linear-gradient(90deg,#7c6ff7,#a78bfa);}
+.rec-7m::before{background:linear-gradient(90deg,#059669,#34d399);}
+.rec-8m::before{background:linear-gradient(90deg,#d97706,#fbbf24);}
+.rec-9m::before{background:linear-gradient(90deg,#dc2626,#f87171);}
+.record-dist{font-size:0.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.record-pct{font-size:2rem;font-weight:900;}
+.record-detail{font-size:0.72rem;color:var(--muted);margin-top:4px;}
+
+/* Per-distance charts */
+.dist-chart-section{margin-bottom:20px;}
+.dist-chart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.dist-chart-title{font-size:0.85rem;font-weight:700;}
+.dist-chart-badge{font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:999px;}
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 14px 10px;margin-bottom:12px;}
+.chart-head{font-size:0.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+
+/* Calendar */
+.calendar-wrap{margin-bottom:20px;}
+.cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.cal-nav{background:none;border:1px solid var(--border);color:var(--text);font-size:1.1rem;width:36px;height:36px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.cal-month{font-size:1rem;font-weight:700;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cal-day-label{text-align:center;font-size:0.68rem;font-weight:700;color:var(--muted);padding:4px 0;text-transform:uppercase;}
+.cal-day{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:600;cursor:default;position:relative;}
+.cal-day.empty{background:none;}
+.cal-day.no-session{background:var(--card);color:var(--muted);}
+.cal-day.has-session{color:white;font-weight:800;}
+.cal-day.great{background:linear-gradient(135deg,#059669,#34d399);}
+.cal-day.good{background:linear-gradient(135deg,#d97706,#fbbf24);color:#1a1000;}
+.cal-day.poor{background:linear-gradient(135deg,#dc2626,#f87171);}
+.cal-day.today{box-shadow:0 0 0 2px var(--accent);}
+.cal-legend{display:flex;gap:12px;margin-top:12px;justify-content:center;flex-wrap:wrap;}
+.cal-legend-item{display:flex;align-items:center;gap:5px;font-size:0.72rem;color:var(--muted);}
+.cal-legend-dot{width:10px;height:10px;border-radius:3px;}
+
+/* History */
 .history-list{display:flex;flex-direction:column;gap:8px;}
 .hist-item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;}
 .hist-left{display:flex;flex-direction:column;gap:4px;}
@@ -143,15 +187,13 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .install-text{flex:1;} .install-text strong{font-size:0.9rem;display:block;} .install-text span{font-size:0.78rem;color:var(--muted);}
 .install-btn{background:var(--accent);color:white;border:none;padding:8px 16px;border-radius:10px;font-family:inherit;font-size:0.85rem;font-weight:700;cursor:pointer;flex-shrink:0;}
 .install-dismiss{background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:4px;flex-shrink:0;}
-
-/* Spinner */
 .spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;}
 @keyframes spin{to{transform:rotate(360deg);}}
 </style>
 </head>
 <body>
 
-<!-- ══ AUTH SCREEN ══ -->
+<!-- ══ AUTH ══ -->
 <div id="auth-screen">
   <div class="auth-card">
     <div class="auth-logo">
@@ -163,8 +205,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       <button class="auth-tab active" onclick="showAuthTab('login')">Logga in</button>
       <button class="auth-tab" onclick="showAuthTab('register')">Registrera</button>
     </div>
-
-    <!-- Login -->
     <div id="auth-login">
       <div class="field"><label>E-postadress</label><input type="email" id="login-email" placeholder="din@email.se" autocomplete="email"></div>
       <div class="field"><label>Lösenord</label><input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password"></div>
@@ -172,8 +212,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       <div class="auth-msg" id="login-msg"></div>
       <button class="text-link" onclick="showAuthTab('reset')">Glömt lösenordet?</button>
     </div>
-
-    <!-- Register -->
     <div id="auth-register" style="display:none">
       <div class="field"><label>E-postadress</label><input type="email" id="reg-email" placeholder="din@email.se" autocomplete="email"></div>
       <div class="field"><label>Lösenord</label><input type="password" id="reg-pass" placeholder="Minst 6 tecken" autocomplete="new-password"></div>
@@ -181,8 +219,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       <button class="auth-btn" id="reg-btn" onclick="doRegister()">Skapa konto</button>
       <div class="auth-msg" id="reg-msg"></div>
     </div>
-
-    <!-- Reset password request -->
     <div id="auth-reset" style="display:none">
       <p style="color:var(--muted);font-size:0.85rem;line-height:1.5;margin-bottom:16px;">Ange din e-postadress så skickar vi en länk för att återställa ditt lösenord.</p>
       <div class="field"><label>E-postadress</label><input type="email" id="reset-email" placeholder="din@email.se" autocomplete="email"></div>
@@ -190,8 +226,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       <div class="auth-msg" id="reset-msg"></div>
       <button class="text-link" onclick="showAuthTab('login')">← Tillbaka till inloggning</button>
     </div>
-
-    <!-- Set new password -->
     <div id="auth-new-password" style="display:none">
       <p style="color:var(--muted);font-size:0.85rem;line-height:1.5;margin-bottom:16px;">Ange ditt nya lösenord nedan.</p>
       <div class="field"><label>Nytt lösenord</label><input type="password" id="new-pass" placeholder="Minst 6 tecken" autocomplete="new-password"></div>
@@ -202,7 +236,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   </div>
 </div>
 
-<!-- ══ APP SCREEN ══ -->
+<!-- ══ APP ══ -->
 <div id="app-screen">
   <div id="offline-badge">⚡ Offline-läge</div>
   <div class="user-bar">
@@ -265,29 +299,86 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <div id="tab-stats" class="tab-content">
     <div class="stats-wrap">
       <div class="stats-top">
-        <h2>Historik</h2>
+        <h2>Statistik</h2>
         <div style="display:flex;gap:8px">
           <button class="clear-btn" onclick="exportHistory()">↓ Exportera</button>
           <button class="clear-btn" onclick="openModal('clear-modal')">Rensa allt</button>
         </div>
       </div>
-      <div class="filter-row" id="dist-filter">
-        <button class="pill active" onclick="setFilter('all',this)">Alla</button>
-        <button class="pill" onclick="setFilter(6,this)">6m</button>
-        <button class="pill" onclick="setFilter(7,this)">7m</button>
-        <button class="pill" onclick="setFilter(8,this)">8m</button>
-        <button class="pill" onclick="setFilter(9,this)">9m</button>
+
+      <!-- Stats navigation -->
+      <div class="stats-nav">
+        <button class="stats-nav-btn active" onclick="switchStatsTab('overview', this)">Översikt</button>
+        <button class="stats-nav-btn" onclick="switchStatsTab('records', this)">Rekord</button>
+        <button class="stats-nav-btn" onclick="switchStatsTab('charts', this)">Grafer</button>
+        <button class="stats-nav-btn" onclick="switchStatsTab('calendar', this)">Kalender</button>
+        <button class="stats-nav-btn" onclick="switchStatsTab('history', this)">Historik</button>
       </div>
-      <div class="summary-cards" id="sum-cards" style="display:none">
-        <div class="sum-card"><div class="sv" id="sc-sessions" style="color:var(--accent2)">0</div><div class="sk">Sessioner</div></div>
-        <div class="sum-card"><div class="sv" id="sc-shots">0</div><div class="sk">Skott</div></div>
-        <div class="sum-card"><div class="sv" id="sc-avg" style="color:var(--stann)">0%</div><div class="sk">Snitt%</div></div>
+
+      <!-- Overview -->
+      <div id="stats-overview" class="stats-section active">
+        <div class="overview-cards">
+          <div class="ov-card"><div class="sv" id="ov-sessions" style="color:var(--accent2)">0</div><div class="sk">Sessioner</div></div>
+          <div class="ov-card"><div class="sv" id="ov-shots">0</div><div class="sk">Skott</div></div>
+          <div class="ov-card"><div class="sv" id="ov-avg" style="color:var(--stann)">0%</div><div class="sk">Snitt%</div></div>
+        </div>
+        <div class="overview-cards">
+          <div class="ov-card"><div class="sv" id="ov-best" style="color:var(--stann)">–</div><div class="sk">Bästa%</div></div>
+          <div class="ov-card"><div class="sv" id="ov-worst" style="color:var(--miss)">–</div><div class="sk">Sämsta%</div></div>
+          <div class="ov-card"><div class="sv" id="ov-days" style="color:var(--accent2)">0</div><div class="sk">Träningsdagar</div></div>
+        </div>
+        <div id="ov-empty" class="empty" style="display:none">
+          <div class="empty-icon">🎯</div>
+          <p>Inga sessioner sparade ännu.<br>Slutför en träning för att se din statistik här.</p>
+        </div>
       </div>
-      <div class="chart-card" id="chart-card" style="display:none">
-        <div class="chart-head">Träff% per session</div>
-        <canvas id="chart" height="160"></canvas>
+
+      <!-- Records -->
+      <div id="stats-records" class="stats-section">
+        <div class="records-grid" id="records-grid"></div>
+        <div id="rec-empty" class="empty" style="display:none">
+          <div class="empty-icon">🏆</div>
+          <p>Inga rekord ännu.<br>Slutför träningar för att sätta rekord!</p>
+        </div>
       </div>
-      <div id="hist-list" class="history-list"></div>
+
+      <!-- Charts per distance -->
+      <div id="stats-charts" class="stats-section">
+        <div id="dist-charts"></div>
+        <div id="charts-empty" class="empty" style="display:none">
+          <div class="empty-icon">📈</div>
+          <p>Inga data ännu.<br>Slutför träningar för att se grafer!</p>
+        </div>
+      </div>
+
+      <!-- Calendar -->
+      <div id="stats-calendar" class="stats-section">
+        <div class="calendar-wrap">
+          <div class="cal-header">
+            <button class="cal-nav" onclick="calPrev()">‹</button>
+            <span class="cal-month" id="cal-month"></span>
+            <button class="cal-nav" onclick="calNext()">›</button>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+          <div class="cal-legend">
+            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--stann)"></div>≥70%</div>
+            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--traff)"></div>40–69%</div>
+            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--miss)"></div>&lt;40%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- History -->
+      <div id="stats-history" class="stats-section">
+        <div class="filter-row" id="dist-filter">
+          <button class="pill active" onclick="setFilter('all',this)">Alla</button>
+          <button class="pill" onclick="setFilter(6,this)">6m</button>
+          <button class="pill" onclick="setFilter(7,this)">7m</button>
+          <button class="pill" onclick="setFilter(8,this)">8m</button>
+          <button class="pill" onclick="setFilter(9,this)">9m</button>
+        </div>
+        <div id="hist-list" class="history-list"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -345,32 +436,17 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <button class="install-dismiss" onclick="dismissBanner()">✕</button>
 </div>
 
-<!-- iOS install instructions -->
 <div class="overlay" id="ios-modal">
   <div class="sheet">
     <h2>📲 Installera på iPhone</h2>
     <p>Följ dessa steg för att lägga till appen på din hemskärm:</p>
     <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:8px;">
-      <div style="display:flex;align-items:flex-start;gap:12px;">
-        <span style="font-size:1.5rem;flex-shrink:0">1️⃣</span>
-        <span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;">Öppna den här sidan i <strong style="color:white">Safari</strong> – det fungerar inte i Chrome på iPhone.</span>
-      </div>
-      <div style="display:flex;align-items:flex-start;gap:12px;">
-        <span style="font-size:1.5rem;flex-shrink:0">2️⃣</span>
-        <span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;">Tryck på <strong style="color:white">dela-ikonen</strong> &#x2197; längst ner i Safari (rutan med pil uppåt).</span>
-      </div>
-      <div style="display:flex;align-items:flex-start;gap:12px;">
-        <span style="font-size:1.5rem;flex-shrink:0">3️⃣</span>
-        <span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;">Scrolla ner och tryck <strong style="color:white">"Lägg till på hemskärmen"</strong>.</span>
-      </div>
-      <div style="display:flex;align-items:flex-start;gap:12px;">
-        <span style="font-size:1.5rem;flex-shrink:0">4️⃣</span>
-        <span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;">Tryck <strong style="color:white">"Lägg till"</strong> – klart! 🎉</span>
-      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.5rem;flex-shrink:0">1️⃣</span><span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;">Öppna den här sidan i <strong style="color:white">Safari</strong>.</span></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.5rem;flex-shrink:0">2️⃣</span><span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;">Tryck på <strong style="color:white">dela-ikonen</strong> &#x2197; längst ner.</span></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.5rem;flex-shrink:0">3️⃣</span><span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;">Tryck <strong style="color:white">"Lägg till på hemskärmen"</strong>.</span></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.5rem;flex-shrink:0">4️⃣</span><span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;">Tryck <strong style="color:white">"Lägg till"</strong> – klart! 🎉</span></div>
     </div>
-    <div class="sheet-actions">
-      <button class="mbtn mbtn-ghost" onclick="closeModal('ios-modal');dismissBanner();">Stäng</button>
-    </div>
+    <div class="sheet-actions"><button class="mbtn mbtn-ghost" onclick="closeModal('ios-modal');dismissBanner();">Stäng</button></div>
   </div>
 </div>
 
@@ -379,128 +455,92 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 const SUPA_URL = 'https://ddbepuoajxosazocucyx.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkYmVwdW9hanhvc2F6b2N1Y3l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMDkyOTMsImV4cCI6MjA4ODc4NTI5M30.nibFnPj1SHm0RPQKkgdOkNrpnkxAabZUbwkSoe03I-s';
 const APP_URL = 'https://petanquetraning.se';
+const DISTS = [6,7,8,9];
 
 const supa = {
   headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json' },
   authHeaders: () => ({ 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + (currentSession?.access_token || SUPA_KEY), 'Content-Type': 'application/json' }),
   async post(path, body, useAuth=false) {
-    const r = await fetch(SUPA_URL + path, { method:'POST', headers: useAuth ? supa.authHeaders() : supa.headers, body: JSON.stringify(body) });
-    return r.json();
-  },
-  async get(path) {
-    const r = await fetch(SUPA_URL + path, { headers: supa.authHeaders() });
+    const r = await fetch(SUPA_URL+path, {method:'POST', headers:useAuth?supa.authHeaders():supa.headers, body:JSON.stringify(body)});
     return r.json();
   }
 };
 
-let currentSession = null;
-let currentUser = null;
+let currentSession=null, currentUser=null;
 
 /* ══ AUTH ══ */
 function showAuthTab(tab) {
-  ['login','register','reset','new-password'].forEach(t => {
-    document.getElementById('auth-' + t).style.display = t === tab ? 'block' : 'none';
-  });
-  document.querySelectorAll('.auth-tab').forEach((b,i) =>
-    b.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='register')));
+  ['login','register','reset','new-password'].forEach(t => document.getElementById('auth-'+t).style.display = t===tab?'block':'none');
+  document.querySelectorAll('.auth-tab').forEach((b,i) => b.classList.toggle('active',(i===0&&tab==='login')||(i===1&&tab==='register')));
 }
-
-function setAuthMsg(id, msg, type='error') {
-  const el = document.getElementById(id);
-  el.textContent = msg;
-  el.className = 'auth-msg ' + type;
-}
-
-function setBtnLoading(id, loading, label) {
-  const btn = document.getElementById(id);
-  btn.disabled = loading;
-  btn.innerHTML = loading ? '<span class="spinner"></span>' : label;
-}
+function setAuthMsg(id, msg, type='error') { const el=document.getElementById(id); el.textContent=msg; el.className='auth-msg '+type; }
+function setBtnLoading(id, loading, label) { const btn=document.getElementById(id); btn.disabled=loading; btn.innerHTML=loading?'<span class="spinner"></span>':label; }
 
 async function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const pass = document.getElementById('login-pass').value;
-  if (!email || !pass) { setAuthMsg('login-msg','Fyll i e-post och lösenord.'); return; }
-  setBtnLoading('login-btn', true, 'Logga in');
-  setAuthMsg('login-msg', '');
-  const res = await supa.post('/auth/v1/token?grant_type=password', { email, password: pass });
-  setBtnLoading('login-btn', false, 'Logga in');
-  if (res.error) { setAuthMsg('login-msg', res.error.message || 'Fel e-post eller lösenord.'); return; }
-  currentSession = res; currentUser = res.user;
-  onLoggedIn();
+  const email=document.getElementById('login-email').value.trim(), pass=document.getElementById('login-pass').value;
+  if (!email||!pass) { setAuthMsg('login-msg','Fyll i e-post och lösenord.'); return; }
+  setBtnLoading('login-btn',true,'Logga in'); setAuthMsg('login-msg','');
+  const res = await supa.post('/auth/v1/token?grant_type=password',{email,password:pass});
+  setBtnLoading('login-btn',false,'Logga in');
+  if (res.error) { setAuthMsg('login-msg',res.error.message||'Fel e-post eller lösenord.'); return; }
+  currentSession=res; currentUser=res.user; onLoggedIn();
 }
 
 async function doRegister() {
-  const email = document.getElementById('reg-email').value.trim();
-  const pass = document.getElementById('reg-pass').value;
-  const pass2 = document.getElementById('reg-pass2').value;
-  if (!email || !pass) { setAuthMsg('reg-msg','Fyll i alla fält.'); return; }
-  if (pass.length < 6) { setAuthMsg('reg-msg','Lösenordet måste vara minst 6 tecken.'); return; }
-  if (pass !== pass2) { setAuthMsg('reg-msg','Lösenorden matchar inte.'); return; }
-  setBtnLoading('reg-btn', true, 'Skapa konto');
-  setAuthMsg('reg-msg', '');
-  const res = await supa.post('/auth/v1/signup', { email, password: pass });
-  setBtnLoading('reg-btn', false, 'Skapa konto');
-  if (res.error) { setAuthMsg('reg-msg', res.error.message || 'Något gick fel.'); return; }
+  const email=document.getElementById('reg-email').value.trim(), pass=document.getElementById('reg-pass').value, pass2=document.getElementById('reg-pass2').value;
+  if (!email||!pass) { setAuthMsg('reg-msg','Fyll i alla fält.'); return; }
+  if (pass.length<6) { setAuthMsg('reg-msg','Lösenordet måste vara minst 6 tecken.'); return; }
+  if (pass!==pass2) { setAuthMsg('reg-msg','Lösenorden matchar inte.'); return; }
+  setBtnLoading('reg-btn',true,'Skapa konto'); setAuthMsg('reg-msg','');
+  const res = await supa.post('/auth/v1/signup',{email,password:pass});
+  setBtnLoading('reg-btn',false,'Skapa konto');
+  if (res.error) { setAuthMsg('reg-msg',res.error.message||'Något gick fel.'); return; }
   if (res.session) { currentSession=res.session; currentUser=res.user; onLoggedIn(); return; }
-  setAuthMsg('reg-msg', '✅ Konto skapat! Kontrollera din e-post för att bekräfta.', 'success');
+  setAuthMsg('reg-msg','✅ Konto skapat! Kontrollera din e-post för att bekräfta.','success');
 }
 
 async function doResetPassword() {
-  const email = document.getElementById('reset-email').value.trim();
-  if (!email) { setAuthMsg('reset-msg', 'Ange din e-postadress.'); return; }
-  setBtnLoading('reset-btn', true, 'Skicka återställningslänk');
-  setAuthMsg('reset-msg', '');
-  const res = await supa.post('/auth/v1/recover', {
-    email,
-    gotrue_meta_security: {},
-    redirect_to: APP_URL
-  });
-  setBtnLoading('reset-btn', false, 'Skicka återställningslänk');
-  if (res.error) { setAuthMsg('reset-msg', res.error.message || 'Något gick fel.'); return; }
-  setAuthMsg('reset-msg', '✅ Kolla din e-post! Länken är giltig i 24 timmar.', 'success');
+  const email=document.getElementById('reset-email').value.trim();
+  if (!email) { setAuthMsg('reset-msg','Ange din e-postadress.'); return; }
+  setBtnLoading('reset-btn',true,'Skicka återställningslänk'); setAuthMsg('reset-msg','');
+  const res = await supa.post('/auth/v1/recover',{email,gotrue_meta_security:{},redirect_to:APP_URL});
+  setBtnLoading('reset-btn',false,'Skicka återställningslänk');
+  if (res.error) { setAuthMsg('reset-msg',res.error.message||'Något gick fel.'); return; }
+  setAuthMsg('reset-msg','✅ Kolla din e-post! Länken är giltig i 24 timmar.','success');
 }
 
 async function doSetNewPassword() {
-  const pass = document.getElementById('new-pass').value;
-  const pass2 = document.getElementById('new-pass2').value;
-  if (pass.length < 6) { setAuthMsg('new-pass-msg', 'Lösenordet måste vara minst 6 tecken.'); return; }
-  if (pass !== pass2) { setAuthMsg('new-pass-msg', 'Lösenorden matchar inte.'); return; }
-  setBtnLoading('new-pass-btn', true, 'Spara nytt lösenord');
-  setAuthMsg('new-pass-msg', '');
-  const res = await fetch(SUPA_URL + '/auth/v1/user', {
-    method: 'PUT',
-    headers: supa.authHeaders(),
-    body: JSON.stringify({ password: pass })
-  });
+  const pass=document.getElementById('new-pass').value, pass2=document.getElementById('new-pass2').value;
+  if (pass.length<6) { setAuthMsg('new-pass-msg','Lösenordet måste vara minst 6 tecken.'); return; }
+  if (pass!==pass2) { setAuthMsg('new-pass-msg','Lösenorden matchar inte.'); return; }
+  setBtnLoading('new-pass-btn',true,'Spara nytt lösenord'); setAuthMsg('new-pass-msg','');
+  const res = await fetch(SUPA_URL+'/auth/v1/user',{method:'PUT',headers:supa.authHeaders(),body:JSON.stringify({password:pass})});
   const data = await res.json();
-  setBtnLoading('new-pass-btn', false, 'Spara nytt lösenord');
-  if (data.error) { setAuthMsg('new-pass-msg', data.error.message || 'Något gick fel.'); return; }
-  setAuthMsg('new-pass-msg', '✅ Lösenordet är uppdaterat!', 'success');
-  setTimeout(() => { currentSession = null; showAuthTab('login'); }, 2000);
+  setBtnLoading('new-pass-btn',false,'Spara nytt lösenord');
+  if (data.error) { setAuthMsg('new-pass-msg',data.error.message||'Något gick fel.'); return; }
+  setAuthMsg('new-pass-msg','✅ Lösenordet är uppdaterat!','success');
+  setTimeout(()=>{ currentSession=null; showAuthTab('login'); },2000);
 }
 
 async function doSignOut() {
-  await fetch(SUPA_URL + '/auth/v1/logout', { method:'POST', headers: supa.authHeaders() }).catch(()=>{});
-  currentSession = null; currentUser = null;
-  localStorage.removeItem('pt_auth');
-  localStorage.removeItem('pt_session');
-  document.getElementById('app-screen').style.display = 'none';
-  document.getElementById('auth-screen').style.display = 'flex';
+  await fetch(SUPA_URL+'/auth/v1/logout',{method:'POST',headers:supa.authHeaders()}).catch(()=>{});
+  currentSession=null; currentUser=null;
+  localStorage.removeItem('pt_auth'); localStorage.removeItem('pt_session');
+  document.getElementById('app-screen').style.display='none';
+  document.getElementById('auth-screen').style.display='flex';
   showAuthTab('login');
 }
 
 function checkRecoveryToken() {
-  const hash = window.location.hash;
-  if (hash && hash.includes('type=recovery')) {
-    const params = new URLSearchParams(hash.substring(1));
-    const accessToken = params.get('access_token');
-    const refreshToken = params.get('refresh_token');
+  const hash=window.location.hash;
+  if (hash&&hash.includes('type=recovery')) {
+    const params=new URLSearchParams(hash.substring(1));
+    const accessToken=params.get('access_token'), refreshToken=params.get('refresh_token');
     if (accessToken) {
-      currentSession = { access_token: accessToken, refresh_token: refreshToken };
-      document.getElementById('auth-screen').style.display = 'flex';
+      currentSession={access_token:accessToken,refresh_token:refreshToken};
+      document.getElementById('auth-screen').style.display='flex';
       showAuthTab('new-password');
-      history.replaceState(null, '', window.location.pathname);
+      history.replaceState(null,'',window.location.pathname);
       return true;
     }
   }
@@ -509,224 +549,308 @@ function checkRecoveryToken() {
 
 async function checkExistingSession() {
   try {
-    const stored = JSON.parse(localStorage.getItem('pt_auth') || 'null');
+    const stored=JSON.parse(localStorage.getItem('pt_auth')||'null');
     if (stored?.access_token) {
-      currentSession = stored;
-      const res = await fetch(SUPA_URL + '/auth/v1/user', { headers: supa.authHeaders() });
-      const user = await res.json();
-      if (user?.id) { currentUser = user; onLoggedIn(); return; }
+      currentSession=stored;
+      const res=await fetch(SUPA_URL+'/auth/v1/user',{headers:supa.authHeaders()});
+      const user=await res.json();
+      if (user?.id) { currentUser=user; onLoggedIn(); return; }
     }
   } catch {}
-  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('auth-screen').style.display='flex';
 }
 
 function onLoggedIn() {
-  if (currentSession) localStorage.setItem('pt_auth', JSON.stringify(currentSession));
-  document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('app-screen').style.display = 'block';
-  document.getElementById('user-email-display').textContent = currentUser?.email || '';
+  if (currentSession) localStorage.setItem('pt_auth',JSON.stringify(currentSession));
+  document.getElementById('auth-screen').style.display='none';
+  document.getElementById('app-screen').style.display='block';
+  document.getElementById('user-email-display').textContent=currentUser?.email||'';
   loadSession(); refreshDistPills(); refreshCountPills(); refreshUI();
 }
 
 /* ══ PWA ══ */
-const SW_CODE = `const C='petanque-v1';self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll([self.location.href])));self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))));self.clients.claim();});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(cached=>{if(cached)return cached;return fetch(e.request).then(res=>{if(res&&res.status===200&&e.request.method==='GET'){const cl=res.clone();caches.open(C).then(c=>c.put(e.request,cl));}return res;}).catch(()=>cached);}));});`;
-if ('serviceWorker' in navigator) {
-  const swBlob = new Blob([SW_CODE],{type:'application/javascript'});
-  navigator.serviceWorker.register(URL.createObjectURL(swBlob),{scope:'./'}).catch(()=>{});
-}
-const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+const SW_CODE=`const C='petanque-v1';self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll([self.location.href])));self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))));self.clients.claim();});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(cached=>{if(cached)return cached;return fetch(e.request).then(res=>{if(res&&res.status===200&&e.request.method==='GET'){const cl=res.clone();caches.open(C).then(c=>c.put(e.request,cl));}return res;}).catch(()=>cached);}));});`;
+if ('serviceWorker' in navigator) { const b=new Blob([SW_CODE],{type:'application/javascript'}); navigator.serviceWorker.register(URL.createObjectURL(b),{scope:'./'}).catch(()=>{}); }
 
-let deferredPrompt = null;
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+const isStandalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone;
+let deferredPrompt=null;
 
 function showInstallBanner() {
-  if (isInStandaloneMode) return; // Already installed
-  if (localStorage.getItem('install_dismissed')) return;
-  const banner = document.getElementById('install-banner');
+  if (isStandalone||localStorage.getItem('install_dismissed')) return;
+  const banner=document.getElementById('install-banner');
   if (isIOS) {
-    document.getElementById('install-sub').textContent = 'Tryck här för instruktioner';
-    document.getElementById('install-action-btn').textContent = 'Visa hur';
-    document.getElementById('install-action-btn').onclick = () => openModal('ios-modal');
+    document.getElementById('install-sub').textContent='Tryck här för instruktioner';
+    document.getElementById('install-action-btn').textContent='Visa hur';
+    document.getElementById('install-action-btn').onclick=()=>openModal('ios-modal');
     banner.classList.add('show');
   }
 }
-
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  if (!localStorage.getItem('install_dismissed') && !isInStandaloneMode) {
-    document.getElementById('install-sub').textContent = 'Lägg till på hemskärmen';
-    document.getElementById('install-action-btn').textContent = 'Installera';
-    document.getElementById('install-action-btn').onclick = installApp;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault(); deferredPrompt=e;
+  if (!localStorage.getItem('install_dismissed')&&!isStandalone) {
+    document.getElementById('install-sub').textContent='Lägg till på hemskärmen';
+    document.getElementById('install-action-btn').textContent='Installera';
+    document.getElementById('install-action-btn').onclick=installApp;
     document.getElementById('install-banner').classList.add('show');
   }
 });
-
-window.addEventListener('appinstalled', () => {
-  document.getElementById('install-banner').classList.remove('show');
-  deferredPrompt = null;
-});
-function installApp() { if(!deferredPrompt)return; deferredPrompt.prompt(); deferredPrompt.userChoice.then(()=>{ deferredPrompt=null; document.getElementById('install-banner').classList.remove('show'); }); }
-function dismissBanner() { document.getElementById('install-banner').classList.remove('show'); localStorage.setItem('install_dismissed','1'); }
-function updateOnline() { document.getElementById('offline-badge').classList.toggle('show', !navigator.onLine); }
-window.addEventListener('online', updateOnline); window.addEventListener('offline', updateOnline);
+window.addEventListener('appinstalled',()=>{document.getElementById('install-banner').classList.remove('show');deferredPrompt=null;});
+function installApp(){if(!deferredPrompt)return;deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;document.getElementById('install-banner').classList.remove('show');});}
+function dismissBanner(){document.getElementById('install-banner').classList.remove('show');localStorage.setItem('install_dismissed','1');}
+function updateOnline(){document.getElementById('offline-badge').classList.toggle('show',!navigator.onLine);}
+window.addEventListener('online',updateOnline);window.addEventListener('offline',updateOnline);
 
 /* ══ APP STATE ══ */
-const DISTS = [6,7,8,9];
-let distIdx=0, shotCount=0, total=50, stats={miss:0,traff:0,stann:0};
-let pendingFn=null, activeFilter='all';
+let distIdx=0,shotCount=0,total=50,stats={miss:0,traff:0,stann:0},pendingFn=null,activeFilter='all';
+let calYear=new Date().getFullYear(), calMonth=new Date().getMonth();
 
-const ls = {
-  get: k => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
-  set: (k,v) => { try { localStorage.setItem(k,JSON.stringify(v)); } catch {} }
-};
+const ls={get:k=>{try{return JSON.parse(localStorage.getItem(k));}catch{return null;}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}}};
+function loadSession(){const s=ls.get('pt_s');if(s){distIdx=s.d??0;shotCount=s.n??0;total=s.t??50;stats=s.stats??{miss:0,traff:0,stann:0};}}
+function saveSession(){ls.set('pt_s',{d:distIdx,n:shotCount,t:total,stats});}
+function getHistory(){return ls.get('pt_h')||[];}
+function saveHistory(h){ls.set('pt_h',h);}
 
-function loadSession() { const s=ls.get('pt_s'); if(s){distIdx=s.d??0;shotCount=s.n??0;total=s.t??50;stats=s.stats??{miss:0,traff:0,stann:0};} }
-function saveSession() { ls.set('pt_s',{d:distIdx,n:shotCount,t:total,stats}); }
-function getHistory() { return ls.get('pt_h') || []; }
-function saveHistory(h) { ls.set('pt_h', h); }
-
-async function pushHistory() {
-  const entry = { dist:DISTS[distIdx], shots:total, miss:stats.miss, traff:stats.traff, stann:stats.stann, pct:+((( stats.traff+stats.stann)/total)*100).toFixed(1), date:new Date().toISOString() };
-  const h = getHistory(); h.unshift(entry); saveHistory(h);
+async function pushHistory(){
+  const entry={dist:DISTS[distIdx],shots:total,miss:stats.miss,traff:stats.traff,stann:stats.stann,pct:+((( stats.traff+stats.stann)/total)*100).toFixed(1),date:new Date().toISOString()};
+  const h=getHistory(); h.unshift(entry); saveHistory(h);
   if (currentUser) {
-    await fetch(SUPA_URL + '/rest/v1/sessions', {
-      method: 'POST',
-      headers: { ...supa.authHeaders(), 'Prefer': 'return=minimal' },
-      body: JSON.stringify({ user_id:currentUser.id, dist:entry.dist, shots:entry.shots, miss:entry.miss, traff:entry.traff, stann:entry.stann, pct:entry.pct, played_at:entry.date })
-    }).catch(()=>{});
+    await fetch(SUPA_URL+'/rest/v1/sessions',{method:'POST',headers:{...supa.authHeaders(),'Prefer':'return=minimal'},body:JSON.stringify({user_id:currentUser.id,dist:entry.dist,shots:entry.shots,miss:entry.miss,traff:entry.traff,stann:entry.stann,pct:entry.pct,played_at:entry.date})}).catch(()=>{});
   }
 }
 
 /* ══ TABS ══ */
-function switchTab(name, btn) {
+function switchTab(name,btn){
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-  btn.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active'); btn.classList.add('active');
   if (name==='stats') renderStats();
 }
 
+function switchStatsTab(name, btn) {
+  document.querySelectorAll('.stats-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.stats-nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('stats-'+name).classList.add('active'); btn.classList.add('active');
+}
+
 /* ══ TRAINING ══ */
-function setDistance(idx) { if(shotCount>0){pendingFn=()=>_setDist(idx);openModal('change-modal');return;} _setDist(idx); }
-function _setDist(idx) { distIdx=idx; refreshDistPills(); refreshUI(); }
-function setTotal(n) { if(shotCount>0){pendingFn=()=>_setTotal(n);openModal('change-modal');return;} _setTotal(n); }
-function _setTotal(n) { total=n; refreshCountPills(); refreshUI(); }
+function setDistance(idx){if(shotCount>0){pendingFn=()=>_setDist(idx);openModal('change-modal');return;}_setDist(idx);}
+function _setDist(idx){distIdx=idx;refreshDistPills();refreshUI();}
+function setTotal(n){if(shotCount>0){pendingFn=()=>_setTotal(n);openModal('change-modal');return;}_setTotal(n);}
+function _setTotal(n){total=n;refreshCountPills();refreshUI();}
 
-function shoot(type) {
-  if (shotCount>=total) return;
-  stats[type]++; shotCount++; saveSession(); refreshUI();
-  if (window.navigator.vibrate) navigator.vibrate(30);
-  if (shotCount===total) { pushHistory(); showSummary(); }
+function shoot(type){
+  if(shotCount>=total)return;
+  stats[type]++;shotCount++;saveSession();refreshUI();
+  if(window.navigator.vibrate)navigator.vibrate(30);
+  if(shotCount===total){pushHistory();showSummary();}
 }
 
-function refreshDistPills() { document.querySelectorAll('.dist-pill').forEach((b,i)=>b.classList.toggle('active',i===distIdx)); document.getElementById('hero-dist').innerText=DISTS[distIdx]+'m'; }
-function refreshCountPills() { document.querySelectorAll('.count-pill').forEach(b=>b.classList.toggle('active',parseInt(b.innerText)===total)); }
-
-function refreshUI() {
-  document.getElementById('hero-dist').innerText = DISTS[distIdx]+'m';
-  document.getElementById('cur-shot').innerText = shotCount<total ? shotCount+1 : total;
-  document.getElementById('tot-shot').innerText = total;
-  const pct = Math.round(shotCount/total*100);
-  document.getElementById('prog-fill').style.width = pct+'%';
-  document.getElementById('prog-pct').innerText = pct+'%';
-  document.getElementById('live-miss').innerText = stats.miss;
-  document.getElementById('live-traff').innerText = stats.traff;
-  document.getElementById('live-stann').innerText = stats.stann;
-  const hits = stats.traff+stats.stann;
-  document.getElementById('hero-sub').innerText = shotCount===0 ? 'Redo att skjuta' : shotCount<total ? `${hits} träffar av ${shotCount} skott` : 'Serien klar!';
+function refreshDistPills(){document.querySelectorAll('.dist-pill').forEach((b,i)=>b.classList.toggle('active',i===distIdx));document.getElementById('hero-dist').innerText=DISTS[distIdx]+'m';}
+function refreshCountPills(){document.querySelectorAll('.count-pill').forEach(b=>b.classList.toggle('active',parseInt(b.innerText)===total));}
+function refreshUI(){
+  document.getElementById('hero-dist').innerText=DISTS[distIdx]+'m';
+  document.getElementById('cur-shot').innerText=shotCount<total?shotCount+1:total;
+  document.getElementById('tot-shot').innerText=total;
+  const pct=Math.round(shotCount/total*100);
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-pct').innerText=pct+'%';
+  document.getElementById('live-miss').innerText=stats.miss;
+  document.getElementById('live-traff').innerText=stats.traff;
+  document.getElementById('live-stann').innerText=stats.stann;
+  const hits=stats.traff+stats.stann;
+  document.getElementById('hero-sub').innerText=shotCount===0?'Redo att skjuta':shotCount<total?`${hits} träffar av ${shotCount} skott`:'Serien klar!';
 }
 
-function doReset() { closeModal('reset-modal'); _reset(); }
-function _reset() { shotCount=0; stats={miss:0,traff:0,stann:0}; saveSession(); refreshUI(); }
-function doChange() { closeModal('change-modal'); if(pendingFn){pendingFn(); pendingFn=null;} }
+function doReset(){closeModal('reset-modal');_reset();}
+function _reset(){shotCount=0;stats={miss:0,traff:0,stann:0};saveSession();refreshUI();}
+function doChange(){closeModal('change-modal');if(pendingFn){pendingFn();pendingFn=null;}}
 
-function showSummary() {
-  document.getElementById('sum-title').innerText = `${DISTS[distIdx]}m – ${total} skott`;
-  document.getElementById('sum-subtitle').innerText = new Date().toLocaleDateString('sv-SE',{weekday:'long',day:'numeric',month:'long'});
-  document.getElementById('sum-miss').innerText = stats.miss;
-  document.getElementById('sum-traff').innerText = stats.traff;
-  document.getElementById('sum-stann').innerText = stats.stann;
-  document.getElementById('sum-pct').innerText = ((stats.traff+stats.stann)/total*100).toFixed(1)+'%';
-  document.getElementById('next-btn').innerText = distIdx<DISTS.length-1 ? `Nästa avstånd (${DISTS[distIdx+1]}m)` : 'Börja om från 6m';
+function showSummary(){
+  document.getElementById('sum-title').innerText=`${DISTS[distIdx]}m – ${total} skott`;
+  document.getElementById('sum-subtitle').innerText=new Date().toLocaleDateString('sv-SE',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('sum-miss').innerText=stats.miss;
+  document.getElementById('sum-traff').innerText=stats.traff;
+  document.getElementById('sum-stann').innerText=stats.stann;
+  document.getElementById('sum-pct').innerText=((stats.traff+stats.stann)/total*100).toFixed(1)+'%';
+  document.getElementById('next-btn').innerText=distIdx<DISTS.length-1?`Nästa avstånd (${DISTS[distIdx+1]}m)`:'Börja om från 6m';
   openModal('sum-modal');
 }
-function nextDist() { distIdx=distIdx<DISTS.length-1?distIdx+1:0; refreshDistPills(); _reset(); closeModal('sum-modal'); }
+function nextDist(){distIdx=distIdx<DISTS.length-1?distIdx+1:0;refreshDistPills();_reset();closeModal('sum-modal');}
 
 /* ══ MODALS ══ */
-function openModal(id) { document.getElementById(id).classList.add('show'); }
-function closeModal(id) { document.getElementById(id).classList.remove('show'); }
-function doClear() { saveHistory([]); closeModal('clear-modal'); renderStats(); }
-document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', e => { if(e.target===o) o.classList.remove('show'); }));
+function openModal(id){document.getElementById(id).classList.add('show');}
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+function doClear(){saveHistory([]);closeModal('clear-modal');renderStats();}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('show');}));
 
 /* ══ STATS ══ */
-function setFilter(val, btn) {
-  activeFilter = val;
+function renderStats(){
+  const all=getHistory();
+  renderOverview(all);
+  renderRecords(all);
+  renderDistCharts(all);
+  renderCalendar(all);
+  renderList(all);
+}
+
+function renderOverview(data){
+  const has=data.length>0;
+  document.getElementById('ov-empty').style.display=has?'none':'block';
+  if(!has){['ov-sessions','ov-shots','ov-avg','ov-best','ov-worst','ov-days'].forEach(id=>document.getElementById(id).innerText='–');return;}
+  document.getElementById('ov-sessions').innerText=data.length;
+  document.getElementById('ov-shots').innerText=data.reduce((a,e)=>a+e.shots,0);
+  document.getElementById('ov-avg').innerText=(data.reduce((a,e)=>a+e.pct,0)/data.length).toFixed(1)+'%';
+  document.getElementById('ov-best').innerText=Math.max(...data.map(e=>e.pct))+'%';
+  document.getElementById('ov-worst').innerText=Math.min(...data.map(e=>e.pct))+'%';
+  const days=new Set(data.map(e=>e.date.slice(0,10))).size;
+  document.getElementById('ov-days').innerText=days;
+}
+
+function renderRecords(data){
+  const grid=document.getElementById('records-grid');
+  const recEmpty=document.getElementById('rec-empty');
+  const distColors=['rec-6m','rec-7m','rec-8m','rec-9m'];
+  let html='';
+  let hasAny=false;
+  DISTS.forEach((d,i)=>{
+    const sessions=data.filter(e=>e.dist===d);
+    if(!sessions.length)return;
+    hasAny=true;
+    const best=Math.max(...sessions.map(e=>e.pct));
+    const bestSession=sessions.find(e=>e.pct===best);
+    const avg=(sessions.reduce((a,e)=>a+e.pct,0)/sessions.length).toFixed(1);
+    const col=best>=70?'var(--stann)':best>=40?'var(--traff)':'var(--miss)';
+    html+=`<div class="record-card ${distColors[i]}">
+      <div class="record-dist">${d}m</div>
+      <div class="record-pct" style="color:${col}">${best}%</div>
+      <div class="record-detail">Bästa session</div>
+      <div class="record-detail" style="margin-top:6px;color:var(--muted)">Snitt: ${avg}% · ${sessions.length} sessioner</div>
+    </div>`;
+  });
+  grid.innerHTML=html;
+  recEmpty.style.display=hasAny?'none':'block';
+}
+
+function renderDistCharts(data){
+  const wrap=document.getElementById('dist-charts');
+  const empty=document.getElementById('charts-empty');
+  if(!data.length){wrap.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  const distColors=['#7c6ff7','#34d399','#fbbf24','#f87171'];
+  wrap.innerHTML=DISTS.map((d,i)=>{
+    const sessions=data.filter(e=>e.dist===d);
+    if(!sessions.length)return'';
+    return`<div class="chart-card">
+      <div class="chart-head">${d}m – ${sessions.length} sessioner</div>
+      <canvas id="chart-${d}" height="120"></canvas>
+    </div>`;
+  }).join('');
+
+  DISTS.forEach((d,i)=>{
+    const sessions=data.filter(e=>e.dist===d);
+    if(!sessions.length)return;
+    const canvas=document.getElementById('chart-'+d);
+    if(!canvas)return;
+    drawDistChart(canvas,sessions,distColors[i]);
+  });
+}
+
+function drawDistChart(canvas,data,color){
+  const ctx=canvas.getContext('2d');
+  const pts=[...data].reverse();
+  const W=canvas.offsetWidth||400,H=120,dpr=window.devicePixelRatio||1;
+  canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.scale(dpr,dpr);
+  const pad={top:12,right:12,bottom:24,left:36},cw=W-pad.left-pad.right,ch=H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  [0,50,100].forEach(v=>{
+    const y=pad.top+ch-(v/100)*ch;
+    ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(pad.left+cw,y);ctx.stroke();
+    ctx.fillStyle='#6b6b80';ctx.font='10px Inter,sans-serif';ctx.textAlign='right';
+    ctx.fillText(v+'%',pad.left-4,y+4);
+  });
+  if(!pts.length)return;
+  const xs=i=>pts.length===1?pad.left+cw/2:pad.left+(i/(pts.length-1))*cw;
+  const ys=v=>pad.top+ch-(v/100)*ch;
+  const grad=ctx.createLinearGradient(0,pad.top,0,pad.top+ch);
+  grad.addColorStop(0,color+'55');grad.addColorStop(1,color+'00');
+  ctx.beginPath();pts.forEach((p,i)=>i===0?ctx.moveTo(xs(i),ys(p.pct)):ctx.lineTo(xs(i),ys(p.pct)));
+  ctx.lineTo(xs(pts.length-1),pad.top+ch);ctx.lineTo(xs(0),pad.top+ch);ctx.closePath();ctx.fillStyle=grad;ctx.fill();
+  if(pts.length>1){ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.lineJoin='round';pts.forEach((p,i)=>i===0?ctx.moveTo(xs(i),ys(p.pct)):ctx.lineTo(xs(i),ys(p.pct)));ctx.stroke();}
+  pts.forEach((p,i)=>{ctx.beginPath();ctx.arc(xs(i),ys(p.pct),4,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();ctx.strokeStyle='#1a1a24';ctx.lineWidth=2;ctx.stroke();});
+  ctx.fillStyle='#6b6b80';ctx.font='10px Inter,sans-serif';ctx.textAlign='center';
+  const skip=Math.ceil(pts.length/5);
+  pts.forEach((p,i)=>{if(i%skip===0||i===pts.length-1)ctx.fillText(new Date(p.date).toLocaleDateString('sv-SE',{day:'numeric',month:'short'}),xs(i),H-4);});
+}
+
+/* ══ CALENDAR ══ */
+function calPrev(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalendar(getHistory());}
+function calNext(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendar(getHistory());}
+
+function renderCalendar(data){
+  const months=['Januari','Februari','Mars','April','Maj','Juni','Juli','Augusti','September','Oktober','November','December'];
+  const days=['Mån','Tis','Ons','Tor','Fre','Lör','Sön'];
+  document.getElementById('cal-month').innerText=`${months[calMonth]} ${calYear}`;
+
+  // Build date map
+  const dateMap={};
+  data.forEach(e=>{
+    const d=e.date.slice(0,10);
+    if(!dateMap[d])dateMap[d]=[];
+    dateMap[d].push(e.pct);
+  });
+
+  const firstDay=new Date(calYear,calMonth,1);
+  let startDow=firstDay.getDay()-1; if(startDow<0)startDow=6;
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const today=new Date().toISOString().slice(0,10);
+
+  let html=days.map(d=>`<div class="cal-day-label">${d}</div>`).join('');
+
+  for(let i=0;i<startDow;i++) html+=`<div class="cal-day empty"></div>`;
+
+  for(let d=1;d<=daysInMonth;d++){
+    const dateStr=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday=dateStr===today;
+    const sessions=dateMap[dateStr];
+    if(sessions){
+      const avg=sessions.reduce((a,b)=>a+b,0)/sessions.length;
+      const cls=avg>=70?'great':avg>=40?'good':'poor';
+      html+=`<div class="cal-day has-session ${cls}${isToday?' today':''}" title="${avg.toFixed(1)}%">${d}</div>`;
+    } else {
+      html+=`<div class="cal-day no-session${isToday?' today':''}">${d}</div>`;
+    }
+  }
+  document.getElementById('cal-grid').innerHTML=html;
+}
+
+/* ══ HISTORY ══ */
+function setFilter(val,btn){
+  activeFilter=val;
   document.querySelectorAll('#dist-filter .pill').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  renderStats();
+  renderList(getHistory());
 }
 
-function renderStats() {
-  const all = getHistory();
-  const data = activeFilter==='all' ? all : all.filter(e=>e.dist===activeFilter);
-  const has = data.length > 0;
-  document.getElementById('sum-cards').style.display = has ? 'grid' : 'none';
-  document.getElementById('chart-card').style.display = has ? 'block' : 'none';
-  if (has) {
-    document.getElementById('sc-sessions').innerText = data.length;
-    document.getElementById('sc-shots').innerText = data.reduce((a,e)=>a+e.shots,0);
-    document.getElementById('sc-avg').innerText = (data.reduce((a,e)=>a+e.pct,0)/data.length).toFixed(1)+'%';
-    drawChart(data);
-  }
-  renderList(data);
-}
-
-function drawChart(data) {
-  const canvas = document.getElementById('chart'), ctx = canvas.getContext('2d');
-  const pts = [...data].reverse();
-  const W = canvas.offsetWidth||400, H = 160, dpr = window.devicePixelRatio||1;
-  canvas.width=W*dpr; canvas.height=H*dpr; canvas.style.width=W+'px'; canvas.style.height=H+'px'; ctx.scale(dpr,dpr);
-  const pad={top:16,right:12,bottom:28,left:38}, cw=W-pad.left-pad.right, ch=H-pad.top-pad.bottom;
-  ctx.clearRect(0,0,W,H);
-  [0,25,50,75,100].forEach(v=>{
-    const y=pad.top+ch-(v/100)*ch;
-    ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cw,y); ctx.stroke();
-    ctx.fillStyle='#6b6b80'; ctx.font='10px Inter,sans-serif'; ctx.textAlign='right';
-    ctx.fillText(v+'%',pad.left-6,y+4);
-  });
-  if (!pts.length) return;
-  const xs = i => pts.length===1 ? pad.left+cw/2 : pad.left+(i/(pts.length-1))*cw;
-  const ys = v => pad.top+ch-(v/100)*ch;
-  const grad = ctx.createLinearGradient(0,pad.top,0,pad.top+ch);
-  grad.addColorStop(0,'rgba(124,111,247,0.3)'); grad.addColorStop(1,'rgba(124,111,247,0)');
-  ctx.beginPath(); pts.forEach((p,i)=>i===0?ctx.moveTo(xs(i),ys(p.pct)):ctx.lineTo(xs(i),ys(p.pct)));
-  ctx.lineTo(xs(pts.length-1),pad.top+ch); ctx.lineTo(xs(0),pad.top+ch); ctx.closePath(); ctx.fillStyle=grad; ctx.fill();
-  if (pts.length>1) { ctx.beginPath(); ctx.strokeStyle='#7c6ff7'; ctx.lineWidth=2.5; ctx.lineJoin='round'; pts.forEach((p,i)=>i===0?ctx.moveTo(xs(i),ys(p.pct)):ctx.lineTo(xs(i),ys(p.pct))); ctx.stroke(); }
-  pts.forEach((p,i)=>{ ctx.beginPath(); ctx.arc(xs(i),ys(p.pct),4.5,0,Math.PI*2); ctx.fillStyle='#7c6ff7'; ctx.fill(); ctx.strokeStyle='#1a1a24'; ctx.lineWidth=2; ctx.stroke(); });
-  ctx.fillStyle='#6b6b80'; ctx.font='10px Inter,sans-serif'; ctx.textAlign='center';
-  const skip = Math.ceil(pts.length/5);
-  pts.forEach((p,i)=>{ if(i%skip===0||i===pts.length-1) ctx.fillText(`${p.dist}m`,xs(i),H-6); });
-}
-
-function renderList(data) {
-  const el = document.getElementById('hist-list');
-  if (!data.length) { el.innerHTML=`<div class="empty"><div class="empty-icon">🎯</div><p>Inga sessioner sparade ännu.<br>Slutför en träning för att se din statistik här.</p></div>`; return; }
-  el.innerHTML = data.map(e => {
-    const d=new Date(e.date), ds=d.toLocaleDateString('sv-SE',{day:'numeric',month:'short'}), ts=d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'});
-    const col = e.pct>=70?'var(--stann)':e.pct>=40?'var(--traff)':'var(--miss)';
-    return `<div class="hist-item"><div class="hist-left"><span class="hist-dist">${e.dist}m &nbsp;·&nbsp; ${e.shots} skott</span><span class="hist-date">${ds} kl. ${ts}</span><span class="hist-dots"><span style="color:var(--miss)">● ${e.miss}</span>&ensp;<span style="color:var(--traff)">● ${e.traff}</span>&ensp;<span style="color:var(--stann)">● ${e.stann}</span></span></div><div class="hist-pct" style="color:${col}">${e.pct}%</div></div>`;
+function renderList(allData){
+  const data=activeFilter==='all'?allData:allData.filter(e=>e.dist===activeFilter);
+  const el=document.getElementById('hist-list');
+  if(!data.length){el.innerHTML=`<div class="empty"><div class="empty-icon">🎯</div><p>Inga sessioner sparade ännu.</p></div>`;return;}
+  el.innerHTML=data.map(e=>{
+    const d=new Date(e.date),ds=d.toLocaleDateString('sv-SE',{day:'numeric',month:'short'}),ts=d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'});
+    const col=e.pct>=70?'var(--stann)':e.pct>=40?'var(--traff)':'var(--miss)';
+    return`<div class="hist-item"><div class="hist-left"><span class="hist-dist">${e.dist}m &nbsp;·&nbsp; ${e.shots} skott</span><span class="hist-date">${ds} kl. ${ts}</span><span class="hist-dots"><span style="color:var(--miss)">● ${e.miss}</span>&ensp;<span style="color:var(--traff)">● ${e.traff}</span>&ensp;<span style="color:var(--stann)">● ${e.stann}</span></span></div><div class="hist-pct" style="color:${col}">${e.pct}%</div></div>`;
   }).join('');
 }
 
-function exportHistory() {
-  const data = getHistory();
-  if (!data.length) { alert('Ingen historik att exportera ännu.'); return; }
-  const rows = [['Datum','Tid','Avstånd (m)','Antal skott','Miss','Träff','Stann','Träff%']];
-  data.forEach(e => { const d=new Date(e.date); rows.push([d.toLocaleDateString('sv-SE'),d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'}),e.dist,e.shots,e.miss,e.traff,e.stann,e.pct]); });
-  const blob = new Blob(['\uFEFF'+rows.map(r=>r.join(';')).join('\n')],{type:'text/csv;charset=utf-8;'});
-  const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`petanque-historik-${new Date().toISOString().slice(0,10)}.csv`; a.click();
+function exportHistory(){
+  const data=getHistory();
+  if(!data.length){alert('Ingen historik att exportera ännu.');return;}
+  const rows=[['Datum','Tid','Avstånd (m)','Antal skott','Miss','Träff','Stann','Träff%']];
+  data.forEach(e=>{const d=new Date(e.date);rows.push([d.toLocaleDateString('sv-SE'),d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'}),e.dist,e.shots,e.miss,e.traff,e.stann,e.pct]);});
+  const blob=new Blob(['\uFEFF'+rows.map(r=>r.join(';')).join('\n')],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`petanque-historik-${new Date().toISOString().slice(0,10)}.csv`;a.click();
 }
 
 /* ══ INIT ══ */
