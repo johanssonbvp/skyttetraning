@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script>
-const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="#080810"/><circle cx="256" cy="256" r="160" fill="none" stroke="#e8ff47" stroke-width="28"/><circle cx="256" cy="256" r="100" fill="none" stroke="#e8ff47" stroke-width="20" opacity="0.4"/><circle cx="256" cy="256" r="40" fill="#e8ff47"/><circle cx="256" cy="256" r="16" fill="#080810"/></svg>`;
+const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="#080810"/><defs><radialGradient id="boule" cx="38%" cy="32%" r="65%"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/><stop offset="40%" stop-color="#e8ff47" stop-opacity="0.15"/><stop offset="100%" stop-color="#b8cc00" stop-opacity="0"/></radialGradient><radialGradient id="base" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4e800"/><stop offset="60%" stop-color="#a8b800"/><stop offset="100%" stop-color="#6a7500"/></radialGradient></defs><circle cx="256" cy="256" r="170" fill="url(#base)" stroke="#e8ff47" stroke-width="6" opacity="0.95"/><circle cx="256" cy="256" r="170" fill="url(#boule)"/><circle cx="204" cy="190" r="28" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="10"/><path d="M 256 86 A 170 170 0 0 1 400 190" fill="none" stroke="rgba(255,255,255,0.13)" stroke-width="10" stroke-linecap="round"/><path d="M 120 310 A 170 170 0 0 0 310 418" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="8" stroke-linecap="round"/><circle cx="220" cy="175" r="10" fill="rgba(255,255,255,0.35)"/></svg>`;
 const iconUrl = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(iconSvg)));
 const manifest = {name:"Petanque Training",short_name:"Petanque",start_url:"./",display:"standalone",background_color:"#080810",theme_color:"#080810",orientation:"portrait",icons:[{src:iconUrl,sizes:"512x512",type:"image/svg+xml",purpose:"any maskable"}]};
 const mblob = new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'});
@@ -987,7 +987,7 @@ body::before {
   </div>
   <div class="auth-card">
     <div class="auth-logo">
-      <div class="auth-logo-icon">🎯</div>
+      <div class="auth-logo-icon">🟡</div>
       <h1 data-i18n="appName">Petanque Träning</h1>
       <p data-i18n="authSubtitle">Logga in för att spara din statistik</p>
     </div>
@@ -1040,7 +1040,7 @@ body::before {
     </div>
   </div>
   <div class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('training',this)">🎯&nbsp; <span data-i18n="tabTraining">Träning</span></button>
+    <button class="tab-btn active" onclick="switchTab('training',this)">🟡&nbsp; <span data-i18n="tabTraining">Träning</span></button>
     <button class="tab-btn" onclick="switchTab('stats',this)">📊&nbsp; <span data-i18n="tabStats">Statistik</span></button>
   </div>
 
@@ -1120,7 +1120,7 @@ body::before {
           <div class="ov-card"><div class="sv" id="ov-worst" style="color:var(--miss)">–</div><div class="sk" data-i18n="worst">Sämsta%</div></div>
           <div class="ov-card"><div class="sv" id="ov-days" style="color:var(--accent)">0</div><div class="sk" data-i18n="trainingDays">Träningsdagar</div></div>
         </div>
-        <div id="ov-empty" class="empty" style="display:none"><div class="empty-icon">🎯</div><p data-i18n="noSessionsYet">Inga sessioner sparade ännu.</p></div>
+        <div id="ov-empty" class="empty" style="display:none"><div class="empty-icon">🟡</div><p data-i18n="noSessionsYet">Inga sessioner sparade ännu.</p></div>
       </div>
 
       <div id="stats-records" class="stats-section">
@@ -1210,7 +1210,7 @@ body::before {
 </div>
 
 <div id="install-banner">
-  <span style="font-size:2rem;flex-shrink:0">🎯</span>
+  <span style="font-size:2rem;flex-shrink:0">🟡</span>
   <div class="install-text"><strong data-i18n="installApp">Installera appen</strong><span id="install-sub" data-i18n="installSub">Lägg till på hemskärmen</span></div>
   <button class="install-btn" id="install-action-btn">Installera</button>
   <button class="install-dismiss" onclick="dismissBanner()">✕</button>
@@ -1728,7 +1728,7 @@ function setFilter(val,btn){activeFilter=val;document.querySelectorAll('#dist-fi
 function renderList(allData){
   const data=activeFilter==='all'?allData:allData.filter(e=>e.dist===activeFilter);
   const el=document.getElementById('hist-list');
-  if(!data.length){el.innerHTML=`<div class="empty"><div class="empty-icon">🎯</div><p>${t('noSessionsYet').replace('\n','<br>')}</p></div>`;return;}
+  if(!data.length){el.innerHTML=`<div class="empty"><div class="empty-icon">🟡</div><p>${t('noSessionsYet').replace('\n','<br>')}</p></div>`;return;}
   const locale=lang==='sv'?'sv-SE':'en-GB';
   el.innerHTML=data.map(e=>{
     const d=new Date(e.date),ds=d.toLocaleDateString(locale,{day:'numeric',month:'short'}),ts=d.toLocaleTimeString(locale,{hour:'2-digit',minute:'2-digit'});
