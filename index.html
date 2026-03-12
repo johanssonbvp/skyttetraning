@@ -3,17 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Petanque Skytteträning</title>
+<title>Petanque Shooting Practice</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Petanque">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0a0a0f">
-<meta name="description" content="Träningsapp för petanque-skytte.">
 <script>
 const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="#13131a"/><circle cx="256" cy="256" r="160" fill="none" stroke="#7c6ff7" stroke-width="28"/><circle cx="256" cy="256" r="100" fill="none" stroke="#7c6ff7" stroke-width="20" opacity="0.5"/><circle cx="256" cy="256" r="40" fill="#7c6ff7"/><circle cx="256" cy="256" r="16" fill="white"/></svg>`;
 const iconUrl = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(iconSvg)));
-const manifest = {name:"Petanque Skytteträning",short_name:"Petanque",start_url:"./",display:"standalone",background_color:"#0a0a0f",theme_color:"#0a0a0f",orientation:"portrait",icons:[{src:iconUrl,sizes:"512x512",type:"image/svg+xml",purpose:"any maskable"}]};
+const manifest = {name:"Petanque Training",short_name:"Petanque",start_url:"./",display:"standalone",background_color:"#0a0a0f",theme_color:"#0a0a0f",orientation:"portrait",icons:[{src:iconUrl,sizes:"512x512",type:"image/svg+xml",purpose:"any maskable"}]};
 const mblob = new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'});
 const ml = document.createElement('link'); ml.rel='manifest'; ml.href=URL.createObjectURL(mblob);
 document.currentScript.insertAdjacentElement('afterend',ml);
@@ -23,13 +22,18 @@ document.currentScript.insertAdjacentElement('afterend',al);
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 :root {
-  --miss:#f87171; --traff:#fbbf24; --stann:#34d399;
+  --miss:#f87171; --traff:#fbbf24; --carreau:#34d399;
   --bg:#0a0a0f; --surface:#13131a; --card:#1a1a24;
   --border:rgba(255,255,255,0.07); --text:#f1f1f3; --muted:#6b6b80;
   --accent:#7c6ff7; --accent2:#a78bfa; --glow:rgba(124,111,247,0.25);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overscroll-behavior-y:contain;touch-action:manipulation;}
+
+/* ── LANG SWITCHER ── */
+.lang-bar{display:flex;justify-content:flex-end;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);}
+.lang-btn{background:none;border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-family:inherit;font-size:0.8rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px;}
+.lang-btn:hover{border-color:var(--accent);color:var(--text);}
 
 /* ── AUTH ── */
 #auth-screen{display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:100vh;padding:24px;}
@@ -48,7 +52,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .auth-btn{width:100%;background:var(--accent);color:white;border:none;border-radius:14px;padding:15px;font-family:inherit;font-size:1rem;font-weight:700;cursor:pointer;margin-top:4px;transition:opacity 0.2s;}
 .auth-btn:active{opacity:0.85;} .auth-btn:disabled{opacity:0.5;cursor:not-allowed;}
 .auth-msg{font-size:0.82rem;text-align:center;margin-top:12px;min-height:20px;}
-.auth-msg.error{color:var(--miss);} .auth-msg.success{color:var(--stann);}
+.auth-msg.error{color:var(--miss);} .auth-msg.success{color:var(--carreau);}
 .text-link{background:none;border:none;color:var(--muted);font-family:inherit;font-size:0.82rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer;width:100%;margin-top:10px;display:block;text-align:center;}
 
 /* ── APP ── */
@@ -56,7 +60,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 #offline-badge{display:none;position:fixed;top:56px;left:50%;transform:translateX(-50%);background:#374151;color:#d1d5db;font-size:0.75rem;font-weight:600;padding:5px 14px;border-radius:999px;z-index:25;}
 #offline-badge.show{display:block;}
 .user-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);}
-.user-email{font-size:0.78rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px;}
+.user-email{font-size:0.78rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px;}
+.user-bar-right{display:flex;gap:8px;align-items:center;}
 .signout-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:inherit;font-size:0.75rem;padding:5px 12px;border-radius:8px;cursor:pointer;white-space:nowrap;}
 .tab-bar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20;padding:0 4px;}
 .tab-btn{flex:1;padding:15px 8px;background:none;border:none;color:var(--muted);font-family:inherit;font-size:0.85rem;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;transition:color 0.2s,border-color 0.2s;-webkit-tap-highlight-color:transparent;}
@@ -83,14 +88,14 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .live-chip{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 6px;text-align:center;}
 .live-chip .val{font-size:1.4rem;font-weight:800;display:block;}
 .live-chip .lbl{font-size:0.65rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
-.chip-miss .val{color:var(--miss);} .chip-traff .val{color:var(--traff);} .chip-stann .val{color:var(--stann);}
+.chip-miss .val{color:var(--miss);} .chip-traff .val{color:var(--traff);} .chip-carreau .val{color:var(--carreau);}
 .shot-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:20px;}
 .shot-btn{border:none;border-radius:18px;padding:22px 16px;font-family:inherit;font-size:1.15rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:transform 0.1s;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden;}
 .shot-btn::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,0.08);opacity:0;transition:opacity 0.15s;}
 .shot-btn:active{transform:scale(0.97);} .shot-btn:active::before{opacity:1;}
 .btn-miss{background:linear-gradient(135deg,#dc2626,#f87171);color:white;box-shadow:0 4px 20px rgba(220,38,38,0.3);}
 .btn-traff{background:linear-gradient(135deg,#d97706,#fbbf24);color:#1a1000;box-shadow:0 4px 20px rgba(217,119,6,0.3);}
-.btn-stann{background:linear-gradient(135deg,#059669,#34d399);color:white;box-shadow:0 4px 20px rgba(5,150,105,0.3);}
+.btn-carreau{background:linear-gradient(135deg,#059669,#34d399);color:white;box-shadow:0 4px 20px rgba(5,150,105,0.3);}
 .btn-icon{font-size:1.3rem;}
 .reset-btn{display:block;width:100%;background:none;border:none;color:var(--muted);font-family:inherit;font-size:0.85rem;padding:12px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
 
@@ -99,20 +104,13 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .stats-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
 .stats-top h2{font-size:1.1rem;font-weight:700;}
 .clear-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:inherit;font-size:0.75rem;padding:6px 12px;border-radius:8px;cursor:pointer;}
-
-/* Stats tabs */
 .stats-nav{display:flex;background:var(--card);border-radius:14px;padding:4px;margin-bottom:20px;gap:4px;}
 .stats-nav-btn{flex:1;padding:9px 4px;border:none;border-radius:10px;background:none;color:var(--muted);font-family:inherit;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
 .stats-nav-btn.active{background:var(--accent);color:white;}
-
 .stats-section{display:none;} .stats-section.active{display:block;}
-
-/* Overview */
 .overview-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px;}
 .ov-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 8px;text-align:center;}
 .ov-card .sv{font-size:1.6rem;font-weight:800;} .ov-card .sk{font-size:0.65rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:2px;}
-
-/* Records */
 .records-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:20px;}
 .record-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;position:relative;overflow:hidden;}
 .record-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
@@ -123,25 +121,16 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .record-dist{font-size:0.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
 .record-pct{font-size:2rem;font-weight:900;}
 .record-detail{font-size:0.72rem;color:var(--muted);margin-top:4px;}
-
-/* Per-distance charts */
-.dist-chart-section{margin-bottom:20px;}
-.dist-chart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.dist-chart-title{font-size:0.85rem;font-weight:700;}
-.dist-chart-badge{font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:999px;}
 .chart-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 14px 10px;margin-bottom:12px;}
 .chart-head{font-size:0.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
-
-/* Calendar */
 .calendar-wrap{margin-bottom:20px;}
 .cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
 .cal-nav{background:none;border:1px solid var(--border);color:var(--text);font-size:1.1rem;width:36px;height:36px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .cal-month{font-size:1rem;font-weight:700;}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
 .cal-day-label{text-align:center;font-size:0.68rem;font-weight:700;color:var(--muted);padding:4px 0;text-transform:uppercase;}
-.cal-day{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:600;cursor:default;position:relative;}
-.cal-day.empty{background:none;}
-.cal-day.no-session{background:var(--card);color:var(--muted);}
+.cal-day{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:600;}
+.cal-day.empty{background:none;} .cal-day.no-session{background:var(--card);color:var(--muted);}
 .cal-day.has-session{color:white;font-weight:800;}
 .cal-day.great{background:linear-gradient(135deg,#059669,#34d399);}
 .cal-day.good{background:linear-gradient(135deg,#d97706,#fbbf24);color:#1a1000;}
@@ -150,8 +139,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .cal-legend{display:flex;gap:12px;margin-top:12px;justify-content:center;flex-wrap:wrap;}
 .cal-legend-item{display:flex;align-items:center;gap:5px;font-size:0.72rem;color:var(--muted);}
 .cal-legend-dot{width:10px;height:10px;border-radius:3px;}
-
-/* History */
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;}
 .history-list{display:flex;flex-direction:column;gap:8px;}
 .hist-item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;}
 .hist-left{display:flex;flex-direction:column;gap:4px;}
@@ -180,8 +168,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .empty{text-align:center;color:var(--muted);padding:60px 20px;}
 .empty-icon{font-size:3rem;margin-bottom:12px;}
 .empty p{font-size:0.9rem;line-height:1.6;}
-
-/* Install banner */
 #install-banner{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);padding:14px 16px calc(14px + env(safe-area-inset-bottom));z-index:30;flex-direction:row;align-items:center;gap:12px;}
 #install-banner.show{display:flex;}
 .install-text{flex:1;} .install-text strong{font-size:0.9rem;display:block;} .install-text span{font-size:0.78rem;color:var(--muted);}
@@ -195,42 +181,50 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 
 <!-- ══ AUTH ══ -->
 <div id="auth-screen">
+  <div style="width:100%;max-width:400px;margin-bottom:8px;">
+    <div class="lang-bar" style="border:none;padding:0;justify-content:flex-end;background:none;">
+      <button class="lang-btn" onclick="toggleLang()">
+        <span id="auth-lang-flag">🇬🇧</span>
+        <span id="auth-lang-label">English</span>
+      </button>
+    </div>
+  </div>
   <div class="auth-card">
     <div class="auth-logo">
       <span class="auth-logo-icon">🎯</span>
-      <h1>Petanque Träning</h1>
-      <p>Logga in för att spara din statistik</p>
+      <h1 data-i18n="appName">Petanque Träning</h1>
+      <p data-i18n="authSubtitle">Logga in för att spara din statistik</p>
     </div>
     <div class="auth-tabs">
-      <button class="auth-tab active" onclick="showAuthTab('login')">Logga in</button>
-      <button class="auth-tab" onclick="showAuthTab('register')">Registrera</button>
+      <button class="auth-tab active" onclick="showAuthTab('login')" data-i18n="login">Logga in</button>
+      <button class="auth-tab" onclick="showAuthTab('register')" data-i18n="register">Registrera</button>
     </div>
     <div id="auth-login">
-      <div class="field"><label>E-postadress</label><input type="email" id="login-email" placeholder="din@email.se" autocomplete="email"></div>
-      <div class="field"><label>Lösenord</label><input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password"></div>
-      <button class="auth-btn" id="login-btn" onclick="doLogin()">Logga in</button>
+      <div class="field"><label data-i18n="email">E-postadress</label><input type="email" id="login-email" data-i18n-ph="emailPh" placeholder="din@email.se" autocomplete="email"></div>
+      <div class="field"><label data-i18n="password">Lösenord</label><input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password"></div>
+      <button class="auth-btn" id="login-btn" onclick="doLogin()" data-i18n="login">Logga in</button>
       <div class="auth-msg" id="login-msg"></div>
-      <button class="text-link" onclick="showAuthTab('reset')">Glömt lösenordet?</button>
+      <button class="text-link" onclick="showAuthTab('reset')" data-i18n="forgotPassword">Glömt lösenordet?</button>
     </div>
     <div id="auth-register" style="display:none">
-      <div class="field"><label>E-postadress</label><input type="email" id="reg-email" placeholder="din@email.se" autocomplete="email"></div>
-      <div class="field"><label>Lösenord</label><input type="password" id="reg-pass" placeholder="Minst 6 tecken" autocomplete="new-password"></div>
-      <div class="field"><label>Bekräfta lösenord</label><input type="password" id="reg-pass2" placeholder="Upprepa lösenord" autocomplete="new-password"></div>
-      <button class="auth-btn" id="reg-btn" onclick="doRegister()">Skapa konto</button>
+      <div class="field"><label data-i18n="email">E-postadress</label><input type="email" id="reg-email" data-i18n-ph="emailPh" placeholder="din@email.se" autocomplete="email"></div>
+      <div class="field"><label data-i18n="password">Lösenord</label><input type="password" id="reg-pass" data-i18n-ph="passwordPh" placeholder="Minst 6 tecken" autocomplete="new-password"></div>
+      <div class="field"><label data-i18n="confirmPassword">Bekräfta lösenord</label><input type="password" id="reg-pass2" data-i18n-ph="confirmPasswordPh" placeholder="Upprepa lösenord" autocomplete="new-password"></div>
+      <button class="auth-btn" id="reg-btn" onclick="doRegister()" data-i18n="register">Skapa konto</button>
       <div class="auth-msg" id="reg-msg"></div>
     </div>
     <div id="auth-reset" style="display:none">
-      <p style="color:var(--muted);font-size:0.85rem;line-height:1.5;margin-bottom:16px;">Ange din e-postadress så skickar vi en länk för att återställa ditt lösenord.</p>
-      <div class="field"><label>E-postadress</label><input type="email" id="reset-email" placeholder="din@email.se" autocomplete="email"></div>
-      <button class="auth-btn" id="reset-btn" onclick="doResetPassword()">Skicka återställningslänk</button>
+      <p data-i18n="resetDesc" style="color:var(--muted);font-size:0.85rem;line-height:1.5;margin-bottom:16px;">Ange din e-postadress så skickar vi en länk för att återställa ditt lösenord.</p>
+      <div class="field"><label data-i18n="email">E-postadress</label><input type="email" id="reset-email" data-i18n-ph="emailPh" placeholder="din@email.se" autocomplete="email"></div>
+      <button class="auth-btn" id="reset-btn" onclick="doResetPassword()" data-i18n="sendReset">Skicka återställningslänk</button>
       <div class="auth-msg" id="reset-msg"></div>
-      <button class="text-link" onclick="showAuthTab('login')">← Tillbaka till inloggning</button>
+      <button class="text-link" onclick="showAuthTab('login')" data-i18n="backToLogin">← Tillbaka till inloggning</button>
     </div>
     <div id="auth-new-password" style="display:none">
-      <p style="color:var(--muted);font-size:0.85rem;line-height:1.5;margin-bottom:16px;">Ange ditt nya lösenord nedan.</p>
-      <div class="field"><label>Nytt lösenord</label><input type="password" id="new-pass" placeholder="Minst 6 tecken" autocomplete="new-password"></div>
-      <div class="field"><label>Bekräfta lösenord</label><input type="password" id="new-pass2" placeholder="Upprepa lösenord" autocomplete="new-password"></div>
-      <button class="auth-btn" id="new-pass-btn" onclick="doSetNewPassword()">Spara nytt lösenord</button>
+      <p data-i18n="newPassDesc" style="color:var(--muted);font-size:0.85rem;line-height:1.5;margin-bottom:16px;">Ange ditt nya lösenord nedan.</p>
+      <div class="field"><label data-i18n="newPassword">Nytt lösenord</label><input type="password" id="new-pass" data-i18n-ph="passwordPh" placeholder="Minst 6 tecken" autocomplete="new-password"></div>
+      <div class="field"><label data-i18n="confirmPassword">Bekräfta lösenord</label><input type="password" id="new-pass2" data-i18n-ph="confirmPasswordPh" placeholder="Upprepa lösenord" autocomplete="new-password"></div>
+      <button class="auth-btn" id="new-pass-btn" onclick="doSetNewPassword()" data-i18n="savePassword">Spara nytt lösenord</button>
       <div class="auth-msg" id="new-pass-msg"></div>
     </div>
   </div>
@@ -238,26 +232,32 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 
 <!-- ══ APP ══ -->
 <div id="app-screen">
-  <div id="offline-badge">⚡ Offline-läge</div>
+  <div id="offline-badge" data-i18n="offline">⚡ Offline-läge</div>
   <div class="user-bar">
     <span class="user-email" id="user-email-display"></span>
-    <button class="signout-btn" onclick="doSignOut()">Logga ut</button>
+    <div class="user-bar-right">
+      <button class="lang-btn" onclick="toggleLang()">
+        <span id="app-lang-flag">🇬🇧</span>
+        <span id="app-lang-label">English</span>
+      </button>
+      <button class="signout-btn" onclick="doSignOut()" data-i18n="signOut">Logga ut</button>
+    </div>
   </div>
   <div class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('training',this)">🎯&nbsp; Träning</button>
-    <button class="tab-btn" onclick="switchTab('stats',this)">📊&nbsp; Statistik</button>
+    <button class="tab-btn active" onclick="switchTab('training',this)">🎯&nbsp; <span data-i18n="tabTraining">Träning</span></button>
+    <button class="tab-btn" onclick="switchTab('stats',this)">📊&nbsp; <span data-i18n="tabStats">Statistik</span></button>
   </div>
 
   <!-- TRAINING -->
   <div id="tab-training" class="tab-content active">
     <div class="train-wrap">
       <div class="hero">
-        <div class="hero-label">Aktuellt avstånd</div>
+        <div class="hero-label" data-i18n="currentDistance">Aktuellt avstånd</div>
         <div class="hero-dist" id="hero-dist">6m</div>
-        <div class="hero-sub" id="hero-sub">Redo att skjuta</div>
+        <div class="hero-sub" id="hero-sub" data-i18n="readyToShoot">Redo att skjuta</div>
       </div>
       <div class="pill-section">
-        <div class="pill-label">Avstånd</div>
+        <div class="pill-label" data-i18n="distance">Avstånd</div>
         <div class="pill-group">
           <button class="pill dist-pill active" onclick="setDistance(0)">6m</button>
           <button class="pill dist-pill" onclick="setDistance(1)">7m</button>
@@ -266,7 +266,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
         </div>
       </div>
       <div class="pill-section">
-        <div class="pill-label">Antal skott</div>
+        <div class="pill-label" data-i18n="numberOfShots">Antal skott</div>
         <div class="pill-group">
           <button class="pill count-pill" onclick="setTotal(20)">20</button>
           <button class="pill count-pill" onclick="setTotal(30)">30</button>
@@ -277,21 +277,21 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       <div class="progress-section">
         <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
         <div class="progress-meta">
-          <span>Skott <span id="cur-shot">1</span> / <span id="tot-shot">50</span></span>
+          <span><span data-i18n="shot">Skott</span> <span id="cur-shot">1</span> / <span id="tot-shot">50</span></span>
           <span id="prog-pct">0%</span>
         </div>
       </div>
       <div class="live-stats">
-        <div class="live-chip chip-miss"><span class="val" id="live-miss">0</span><span class="lbl">Miss</span></div>
-        <div class="live-chip chip-traff"><span class="val" id="live-traff">0</span><span class="lbl">Träff</span></div>
-        <div class="live-chip chip-stann"><span class="val" id="live-stann">0</span><span class="lbl">Stann</span></div>
+        <div class="live-chip chip-miss"><span class="val" id="live-miss">0</span><span class="lbl" data-i18n="miss">Miss</span></div>
+        <div class="live-chip chip-traff"><span class="val" id="live-traff">0</span><span class="lbl" data-i18n="hit">Träff</span></div>
+        <div class="live-chip chip-carreau"><span class="val" id="live-carreau">0</span><span class="lbl">Carreau</span></div>
       </div>
       <div class="shot-grid">
-        <button class="shot-btn btn-miss" onclick="shoot('miss')"><span class="btn-icon">✕</span> Miss</button>
-        <button class="shot-btn btn-traff" onclick="shoot('traff')"><span class="btn-icon">◎</span> Träff</button>
-        <button class="shot-btn btn-stann" onclick="shoot('stann')"><span class="btn-icon">★</span> Stann</button>
+        <button class="shot-btn btn-miss" onclick="shoot('miss')"><span class="btn-icon">✕</span> <span data-i18n="miss">Miss</span></button>
+        <button class="shot-btn btn-traff" onclick="shoot('traff')"><span class="btn-icon">◎</span> <span data-i18n="hit">Träff</span></button>
+        <button class="shot-btn btn-carreau" onclick="shoot('carreau')"><span class="btn-icon">★</span> Carreau</button>
       </div>
-      <button class="reset-btn" onclick="openModal('reset-modal')">Nollställ aktuellt resultat</button>
+      <button class="reset-btn" onclick="openModal('reset-modal')" data-i18n="resetCurrent">Nollställ aktuellt resultat</button>
     </div>
   </div>
 
@@ -299,59 +299,44 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <div id="tab-stats" class="tab-content">
     <div class="stats-wrap">
       <div class="stats-top">
-        <h2>Statistik</h2>
+        <h2 data-i18n="statistics">Statistik</h2>
         <div style="display:flex;gap:8px">
-          <button class="clear-btn" onclick="exportHistory()">↓ Exportera</button>
-          <button class="clear-btn" onclick="openModal('clear-modal')">Rensa allt</button>
+          <button class="clear-btn" onclick="exportHistory()" data-i18n="export">↓ Exportera</button>
+          <button class="clear-btn" onclick="openModal('clear-modal')" data-i18n="clearAll">Rensa allt</button>
         </div>
       </div>
-
-      <!-- Stats navigation -->
       <div class="stats-nav">
-        <button class="stats-nav-btn active" onclick="switchStatsTab('overview', this)">Översikt</button>
-        <button class="stats-nav-btn" onclick="switchStatsTab('records', this)">Rekord</button>
-        <button class="stats-nav-btn" onclick="switchStatsTab('charts', this)">Grafer</button>
-        <button class="stats-nav-btn" onclick="switchStatsTab('calendar', this)">Kalender</button>
-        <button class="stats-nav-btn" onclick="switchStatsTab('history', this)">Historik</button>
+        <button class="stats-nav-btn active" onclick="switchStatsTab('overview',this)" data-i18n="overview">Översikt</button>
+        <button class="stats-nav-btn" onclick="switchStatsTab('records',this)" data-i18n="records">Rekord</button>
+        <button class="stats-nav-btn" onclick="switchStatsTab('charts',this)" data-i18n="charts">Grafer</button>
+        <button class="stats-nav-btn" onclick="switchStatsTab('calendar',this)" data-i18n="calendar">Kalender</button>
+        <button class="stats-nav-btn" onclick="switchStatsTab('history',this)" data-i18n="history">Historik</button>
       </div>
 
-      <!-- Overview -->
       <div id="stats-overview" class="stats-section active">
         <div class="overview-cards">
-          <div class="ov-card"><div class="sv" id="ov-sessions" style="color:var(--accent2)">0</div><div class="sk">Sessioner</div></div>
-          <div class="ov-card"><div class="sv" id="ov-shots">0</div><div class="sk">Skott</div></div>
-          <div class="ov-card"><div class="sv" id="ov-avg" style="color:var(--stann)">0%</div><div class="sk">Snitt%</div></div>
+          <div class="ov-card"><div class="sv" id="ov-sessions" style="color:var(--accent2)">0</div><div class="sk" data-i18n="sessions">Sessioner</div></div>
+          <div class="ov-card"><div class="sv" id="ov-shots">0</div><div class="sk" data-i18n="shots">Skott</div></div>
+          <div class="ov-card"><div class="sv" id="ov-avg" style="color:var(--carreau)">0%</div><div class="sk" data-i18n="average">Snitt%</div></div>
         </div>
         <div class="overview-cards">
-          <div class="ov-card"><div class="sv" id="ov-best" style="color:var(--stann)">–</div><div class="sk">Bästa%</div></div>
-          <div class="ov-card"><div class="sv" id="ov-worst" style="color:var(--miss)">–</div><div class="sk">Sämsta%</div></div>
-          <div class="ov-card"><div class="sv" id="ov-days" style="color:var(--accent2)">0</div><div class="sk">Träningsdagar</div></div>
+          <div class="ov-card"><div class="sv" id="ov-best" style="color:var(--carreau)">–</div><div class="sk" data-i18n="best">Bästa%</div></div>
+          <div class="ov-card"><div class="sv" id="ov-worst" style="color:var(--miss)">–</div><div class="sk" data-i18n="worst">Sämsta%</div></div>
+          <div class="ov-card"><div class="sv" id="ov-days" style="color:var(--accent2)">0</div><div class="sk" data-i18n="trainingDays">Träningsdagar</div></div>
         </div>
-        <div id="ov-empty" class="empty" style="display:none">
-          <div class="empty-icon">🎯</div>
-          <p>Inga sessioner sparade ännu.<br>Slutför en träning för att se din statistik här.</p>
-        </div>
+        <div id="ov-empty" class="empty" style="display:none"><div class="empty-icon">🎯</div><p data-i18n="noSessionsYet">Inga sessioner sparade ännu.</p></div>
       </div>
 
-      <!-- Records -->
       <div id="stats-records" class="stats-section">
         <div class="records-grid" id="records-grid"></div>
-        <div id="rec-empty" class="empty" style="display:none">
-          <div class="empty-icon">🏆</div>
-          <p>Inga rekord ännu.<br>Slutför träningar för att sätta rekord!</p>
-        </div>
+        <div id="rec-empty" class="empty" style="display:none"><div class="empty-icon">🏆</div><p data-i18n="noRecords">Inga rekord ännu.</p></div>
       </div>
 
-      <!-- Charts per distance -->
       <div id="stats-charts" class="stats-section">
         <div id="dist-charts"></div>
-        <div id="charts-empty" class="empty" style="display:none">
-          <div class="empty-icon">📈</div>
-          <p>Inga data ännu.<br>Slutför träningar för att se grafer!</p>
-        </div>
+        <div id="charts-empty" class="empty" style="display:none"><div class="empty-icon">📈</div><p data-i18n="noCharts">Inga data ännu.</p></div>
       </div>
 
-      <!-- Calendar -->
       <div id="stats-calendar" class="stats-section">
         <div class="calendar-wrap">
           <div class="cal-header">
@@ -361,17 +346,16 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
           </div>
           <div class="cal-grid" id="cal-grid"></div>
           <div class="cal-legend">
-            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--stann)"></div>≥70%</div>
+            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--carreau)"></div>≥70%</div>
             <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--traff)"></div>40–69%</div>
             <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--miss)"></div>&lt;40%</div>
           </div>
         </div>
       </div>
 
-      <!-- History -->
       <div id="stats-history" class="stats-section">
         <div class="filter-row" id="dist-filter">
-          <button class="pill active" onclick="setFilter('all',this)">Alla</button>
+          <button class="pill active" onclick="setFilter('all',this)" data-i18n="all">Alla</button>
           <button class="pill" onclick="setFilter(6,this)">6m</button>
           <button class="pill" onclick="setFilter(7,this)">7m</button>
           <button class="pill" onclick="setFilter(8,this)">8m</button>
@@ -388,69 +372,184 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <div class="sheet">
     <h2 id="sum-title">Resultat</h2>
     <p id="sum-subtitle" style="margin-bottom:0"></p>
-    <div class="pct-display"><div class="pct-big" id="sum-pct">0%</div><div class="pct-label">Total träff%</div></div>
-    <div class="sheet-stat"><span>Missar</span><span class="sv" style="color:var(--miss)" id="sum-miss">0</span></div>
-    <div class="sheet-stat"><span>Träffar</span><span class="sv" style="color:var(--traff)" id="sum-traff">0</span></div>
-    <div class="sheet-stat"><span>Stann</span><span class="sv" style="color:var(--stann)" id="sum-stann">0</span></div>
+    <div class="pct-display"><div class="pct-big" id="sum-pct">0%</div><div class="pct-label" data-i18n="totalHitPct">Total träff%</div></div>
+    <div class="sheet-stat"><span data-i18n="misses">Missar</span><span class="sv" style="color:var(--miss)" id="sum-miss">0</span></div>
+    <div class="sheet-stat"><span data-i18n="hits">Träffar</span><span class="sv" style="color:var(--traff)" id="sum-traff">0</span></div>
+    <div class="sheet-stat"><span>Carreau</span><span class="sv" style="color:var(--carreau)" id="sum-carreau">0</span></div>
     <div class="sheet-actions">
       <button class="mbtn mbtn-accent" id="next-btn" onclick="nextDist()">Nästa avstånd</button>
-      <button class="mbtn mbtn-ghost" onclick="closeModal('sum-modal')">Stäng</button>
+      <button class="mbtn mbtn-ghost" onclick="closeModal('sum-modal')" data-i18n="close">Stäng</button>
     </div>
   </div>
 </div>
 <div class="overlay" id="reset-modal">
   <div class="sheet">
-    <h2>Nollställ?</h2>
-    <p>Vill du nollställa det aktuella avståndet? Resultaten sparas inte.</p>
+    <h2 data-i18n="resetTitle">Nollställ?</h2>
+    <p data-i18n="resetDesc2">Vill du nollställa det aktuella avståndet? Resultaten sparas inte.</p>
     <div class="sheet-actions">
-      <button class="mbtn mbtn-danger" onclick="doReset()">Ja, nollställ</button>
-      <button class="mbtn mbtn-ghost" onclick="closeModal('reset-modal')">Avbryt</button>
+      <button class="mbtn mbtn-danger" onclick="doReset()" data-i18n="yesReset">Ja, nollställ</button>
+      <button class="mbtn mbtn-ghost" onclick="closeModal('reset-modal')" data-i18n="cancel">Avbryt</button>
     </div>
   </div>
 </div>
 <div class="overlay" id="change-modal">
   <div class="sheet">
-    <h2>Byta inställning?</h2>
-    <p>Du har påbörjat en serie. Vill du byta och nollställa framstegen?</p>
+    <h2 data-i18n="changeTitle">Byta inställning?</h2>
+    <p data-i18n="changeDesc">Du har påbörjat en serie. Vill du byta och nollställa framstegen?</p>
     <div class="sheet-actions">
-      <button class="mbtn mbtn-danger" onclick="doChange()">Ja, byt</button>
-      <button class="mbtn mbtn-ghost" onclick="closeModal('change-modal')">Avbryt</button>
+      <button class="mbtn mbtn-danger" onclick="doChange()" data-i18n="yesChange">Ja, byt</button>
+      <button class="mbtn mbtn-ghost" onclick="closeModal('change-modal')" data-i18n="cancel">Avbryt</button>
     </div>
   </div>
 </div>
 <div class="overlay" id="clear-modal">
   <div class="sheet">
-    <h2>Rensa historik?</h2>
-    <p>All sparad historik tas bort permanent.</p>
+    <h2 data-i18n="clearTitle">Rensa historik?</h2>
+    <p data-i18n="clearDesc">All sparad historik tas bort permanent.</p>
     <div class="sheet-actions">
-      <button class="mbtn mbtn-danger" onclick="doClear()">Ja, rensa allt</button>
-      <button class="mbtn mbtn-ghost" onclick="closeModal('clear-modal')">Avbryt</button>
+      <button class="mbtn mbtn-danger" onclick="doClear()" data-i18n="yesClear">Ja, rensa allt</button>
+      <button class="mbtn mbtn-ghost" onclick="closeModal('clear-modal')" data-i18n="cancel">Avbryt</button>
     </div>
   </div>
 </div>
 
 <div id="install-banner">
   <span style="font-size:2rem;flex-shrink:0">🎯</span>
-  <div class="install-text"><strong>Installera appen</strong><span id="install-sub">Lägg till på hemskärmen</span></div>
-  <button class="install-btn" id="install-action-btn" onclick="installApp()">Installera</button>
+  <div class="install-text"><strong data-i18n="installApp">Installera appen</strong><span id="install-sub" data-i18n="installSub">Lägg till på hemskärmen</span></div>
+  <button class="install-btn" id="install-action-btn">Installera</button>
   <button class="install-dismiss" onclick="dismissBanner()">✕</button>
 </div>
 
 <div class="overlay" id="ios-modal">
   <div class="sheet">
-    <h2>📲 Installera på iPhone</h2>
-    <p>Följ dessa steg för att lägga till appen på din hemskärm:</p>
+    <h2>📲 <span data-i18n="iosInstallTitle">Installera på iPhone</span></h2>
+    <p data-i18n="iosInstallDesc">Följ dessa steg för att lägga till appen på din hemskärm:</p>
     <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:8px;">
-      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.5rem;flex-shrink:0">1️⃣</span><span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;">Öppna den här sidan i <strong style="color:white">Safari</strong>.</span></div>
-      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.5rem;flex-shrink:0">2️⃣</span><span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;">Tryck på <strong style="color:white">dela-ikonen</strong> &#x2197; längst ner.</span></div>
-      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.5rem;flex-shrink:0">3️⃣</span><span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;">Tryck <strong style="color:white">"Lägg till på hemskärmen"</strong>.</span></div>
-      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.5rem;flex-shrink:0">4️⃣</span><span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;">Tryck <strong style="color:white">"Lägg till"</strong> – klart! 🎉</span></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.5rem;flex-shrink:0">1️⃣</span><span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;" data-i18n="iosStep1">Öppna i <strong style="color:white">Safari</strong>.</span></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.5rem;flex-shrink:0">2️⃣</span><span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;" data-i18n="iosStep2">Tryck på <strong style="color:white">dela-ikonen</strong> &#x2197; längst ner.</span></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.5rem;flex-shrink:0">3️⃣</span><span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;" data-i18n="iosStep3">Tryck <strong style="color:white">"Lägg till på hemskärmen"</strong>.</span></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.5rem;flex-shrink:0">4️⃣</span><span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;" data-i18n="iosStep4">Tryck <strong style="color:white">"Lägg till"</strong> – klart! 🎉</span></div>
     </div>
-    <div class="sheet-actions"><button class="mbtn mbtn-ghost" onclick="closeModal('ios-modal');dismissBanner();">Stäng</button></div>
+    <div class="sheet-actions"><button class="mbtn mbtn-ghost" onclick="closeModal('ios-modal');dismissBanner();" data-i18n="close">Stäng</button></div>
   </div>
 </div>
 
 <script>
+/* ══ TRANSLATIONS ══ */
+const i18n = {
+  sv: {
+    appName:'Petanque Träning', authSubtitle:'Logga in för att spara din statistik',
+    login:'Logga in', register:'Skapa konto', email:'E-postadress', emailPh:'din@email.se',
+    password:'Lösenord', passwordPh:'Minst 6 tecken', confirmPassword:'Bekräfta lösenord',
+    confirmPasswordPh:'Upprepa lösenord', forgotPassword:'Glömt lösenordet?',
+    resetDesc:'Ange din e-postadress så skickar vi en länk för att återställa ditt lösenord.',
+    sendReset:'Skicka återställningslänk', backToLogin:'← Tillbaka till inloggning',
+    newPassDesc:'Ange ditt nya lösenord nedan.', newPassword:'Nytt lösenord',
+    savePassword:'Spara nytt lösenord', signOut:'Logga ut',
+    tabTraining:'Träning', tabStats:'Statistik',
+    currentDistance:'Aktuellt avstånd', readyToShoot:'Redo att skjuta',
+    distance:'Avstånd', numberOfShots:'Antal skott', shot:'Skott',
+    miss:'Miss', hit:'Träff', resetCurrent:'Nollställ aktuellt resultat',
+    statistics:'Statistik', export:'↓ Exportera', clearAll:'Rensa allt',
+    overview:'Översikt', records:'Rekord', charts:'Grafer', calendar:'Kalender', history:'Historik',
+    sessions:'Sessioner', shots:'Skott', average:'Snitt%', best:'Bästa%', worst:'Sämsta%', trainingDays:'Träningsdagar',
+    noSessionsYet:'Inga sessioner sparade ännu.\nSlutför en träning för att se din statistik här.',
+    noRecords:'Inga rekord ännu.\nSlutför träningar för att sätta rekord!',
+    noCharts:'Inga data ännu.\nSlutför träningar för att se grafer!',
+    all:'Alla', totalHitPct:'Total träff%', misses:'Missar', hits:'Träffar',
+    close:'Stäng', resetTitle:'Nollställ?', resetDesc2:'Vill du nollställa det aktuella avståndet? Resultaten sparas inte.',
+    yesReset:'Ja, nollställ', cancel:'Avbryt', changeTitle:'Byta inställning?',
+    changeDesc:'Du har påbörjat en serie. Vill du byta och nollställa framstegen?',
+    yesChange:'Ja, byt', clearTitle:'Rensa historik?', clearDesc:'All sparad historik tas bort permanent.',
+    yesClear:'Ja, rensa allt', installApp:'Installera appen', installSub:'Lägg till på hemskärmen',
+    offline:'⚡ Offline-läge', nextDistance:'Nästa avstånd', restartFrom:'Börja om från 6m',
+    hitsOf:'träffar av', seriesDone:'Serien klar!',
+    bestSession:'Bästa session', avgLabel:'Snitt', sessionsLabel:'sessioner',
+    iosInstallTitle:'Installera på iPhone', iosInstallDesc:'Följ dessa steg:',
+    iosStep1:'Öppna i <strong style="color:white">Safari</strong>.',
+    iosStep2:'Tryck på <strong style="color:white">dela-ikonen</strong> &#x2197; längst ner.',
+    iosStep3:'Tryck <strong style="color:white">"Lägg till på hemskärmen"</strong>.',
+    iosStep4:'Tryck <strong style="color:white">"Lägg till"</strong> – klart! 🎉',
+    langFlag:'🇬🇧', langLabel:'English',
+    months:['Januari','Februari','Mars','April','Maj','Juni','Juli','Augusti','September','Oktober','November','December'],
+    days:['Mån','Tis','Ons','Tor','Fre','Lör','Sön'],
+    exportCols:['Datum','Tid','Avstånd (m)','Antal skott','Miss','Träff','Carreau','Träff%'],
+  },
+  en: {
+    appName:'Petanque Training', authSubtitle:'Sign in to save your statistics',
+    login:'Sign in', register:'Create account', email:'Email address', emailPh:'your@email.com',
+    password:'Password', passwordPh:'At least 6 characters', confirmPassword:'Confirm password',
+    confirmPasswordPh:'Repeat password', forgotPassword:'Forgot password?',
+    resetDesc:'Enter your email and we will send you a link to reset your password.',
+    sendReset:'Send reset link', backToLogin:'← Back to sign in',
+    newPassDesc:'Enter your new password below.', newPassword:'New password',
+    savePassword:'Save new password', signOut:'Sign out',
+    tabTraining:'Training', tabStats:'Statistics',
+    currentDistance:'Current distance', readyToShoot:'Ready to shoot',
+    distance:'Distance', numberOfShots:'Number of shots', shot:'Shot',
+    miss:'Miss', hit:'Hit', resetCurrent:'Reset current result',
+    statistics:'Statistics', export:'↓ Export', clearAll:'Clear all',
+    overview:'Overview', records:'Records', charts:'Charts', calendar:'Calendar', history:'History',
+    sessions:'Sessions', shots:'Shots', average:'Avg%', best:'Best%', worst:'Worst%', trainingDays:'Training days',
+    noSessionsYet:'No sessions saved yet.\nComplete a training to see your statistics here.',
+    noRecords:'No records yet.\nComplete trainings to set records!',
+    noCharts:'No data yet.\nComplete trainings to see charts!',
+    all:'All', totalHitPct:'Total hit%', misses:'Misses', hits:'Hits',
+    close:'Close', resetTitle:'Reset?', resetDesc2:'Reset the current distance? Results will not be saved.',
+    yesReset:'Yes, reset', cancel:'Cancel', changeTitle:'Change setting?',
+    changeDesc:'You have started a series. Do you want to change and reset progress?',
+    yesChange:'Yes, change', clearTitle:'Clear history?', clearDesc:'All saved history will be permanently deleted.',
+    yesClear:'Yes, clear all', installApp:'Install app', installSub:'Add to home screen',
+    offline:'⚡ Offline mode', nextDistance:'Next distance', restartFrom:'Restart from 6m',
+    hitsOf:'hits out of', seriesDone:'Series complete!',
+    bestSession:'Best session', avgLabel:'Avg', sessionsLabel:'sessions',
+    iosInstallTitle:'Install on iPhone', iosInstallDesc:'Follow these steps:',
+    iosStep1:'Open in <strong style="color:white">Safari</strong>.',
+    iosStep2:'Tap the <strong style="color:white">share icon</strong> &#x2197; at the bottom.',
+    iosStep3:'Tap <strong style="color:white">"Add to Home Screen"</strong>.',
+    iosStep4:'Tap <strong style="color:white">"Add"</strong> – done! 🎉',
+    langFlag:'🇸🇪', langLabel:'Svenska',
+    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
+    days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+    exportCols:['Date','Time','Distance (m)','Shots','Miss','Hit','Carreau','Hit%'],
+  }
+};
+
+let lang = localStorage.getItem('pt_lang') || 'sv';
+
+function t(key) { return i18n[lang][key] || i18n['sv'][key] || key; }
+
+function applyTranslations() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const val = t(key);
+    if (val.includes('\n')) el.innerHTML = val.replace(/\n/g,'<br>');
+    else el.textContent = val;
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    el.placeholder = t(el.getAttribute('data-i18n-ph'));
+  });
+  // Lang toggle buttons
+  ['auth','app'].forEach(prefix => {
+    const flagEl = document.getElementById(prefix+'-lang-flag');
+    const labelEl = document.getElementById(prefix+'-lang-label');
+    if (flagEl) flagEl.textContent = t('langFlag');
+    if (labelEl) labelEl.textContent = t('langLabel');
+  });
+  // iOS modal steps (have HTML)
+  ['iosStep1','iosStep2','iosStep3','iosStep4'].forEach(key => {
+    document.querySelectorAll(`[data-i18n="${key}"]`).forEach(el => el.innerHTML = t(key));
+  });
+  refreshUI();
+}
+
+function toggleLang() {
+  lang = lang === 'sv' ? 'en' : 'sv';
+  localStorage.setItem('pt_lang', lang);
+  applyTranslations();
+  if (document.getElementById('tab-stats').classList.contains('active')) renderStats();
+}
+
 /* ══ CONFIG ══ */
 const SUPA_URL = 'https://ddbepuoajxosazocucyx.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkYmVwdW9hanhvc2F6b2N1Y3l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMDkyOTMsImV4cCI6MjA4ODc4NTI5M30.nibFnPj1SHm0RPQKkgdOkNrpnkxAabZUbwkSoe03I-s';
@@ -458,140 +557,128 @@ const APP_URL = 'https://petanquetraning.se';
 const DISTS = [6,7,8,9];
 
 const supa = {
-  headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json' },
-  authHeaders: () => ({ 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + (currentSession?.access_token || SUPA_KEY), 'Content-Type': 'application/json' }),
-  async post(path, body, useAuth=false) {
-    const r = await fetch(SUPA_URL+path, {method:'POST', headers:useAuth?supa.authHeaders():supa.headers, body:JSON.stringify(body)});
-    return r.json();
-  }
+  headers: {'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':'application/json'},
+  authHeaders: ()=>({'apikey':SUPA_KEY,'Authorization':'Bearer '+(currentSession?.access_token||SUPA_KEY),'Content-Type':'application/json'}),
+  async post(path,body,useAuth=false){const r=await fetch(SUPA_URL+path,{method:'POST',headers:useAuth?supa.authHeaders():supa.headers,body:JSON.stringify(body)});return r.json();}
 };
 
-let currentSession=null, currentUser=null;
+let currentSession=null,currentUser=null;
 
 /* ══ AUTH ══ */
-function showAuthTab(tab) {
-  ['login','register','reset','new-password'].forEach(t => document.getElementById('auth-'+t).style.display = t===tab?'block':'none');
-  document.querySelectorAll('.auth-tab').forEach((b,i) => b.classList.toggle('active',(i===0&&tab==='login')||(i===1&&tab==='register')));
+function showAuthTab(tab){
+  ['login','register','reset','new-password'].forEach(t=>document.getElementById('auth-'+t).style.display=t===tab?'block':'none');
+  document.querySelectorAll('.auth-tab').forEach((b,i)=>b.classList.toggle('active',(i===0&&tab==='login')||(i===1&&tab==='register')));
 }
-function setAuthMsg(id, msg, type='error') { const el=document.getElementById(id); el.textContent=msg; el.className='auth-msg '+type; }
-function setBtnLoading(id, loading, label) { const btn=document.getElementById(id); btn.disabled=loading; btn.innerHTML=loading?'<span class="spinner"></span>':label; }
+function setAuthMsg(id,msg,type='error'){const el=document.getElementById(id);el.textContent=msg;el.className='auth-msg '+type;}
+function setBtnLoading(id,loading,label){const btn=document.getElementById(id);btn.disabled=loading;btn.innerHTML=loading?'<span class="spinner"></span>':label;}
 
-async function doLogin() {
-  const email=document.getElementById('login-email').value.trim(), pass=document.getElementById('login-pass').value;
-  if (!email||!pass) { setAuthMsg('login-msg','Fyll i e-post och lösenord.'); return; }
-  setBtnLoading('login-btn',true,'Logga in'); setAuthMsg('login-msg','');
-  const res = await supa.post('/auth/v1/token?grant_type=password',{email,password:pass});
-  setBtnLoading('login-btn',false,'Logga in');
-  if (res.error) { setAuthMsg('login-msg',res.error.message||'Fel e-post eller lösenord.'); return; }
-  currentSession=res; currentUser=res.user; onLoggedIn();
-}
-
-async function doRegister() {
-  const email=document.getElementById('reg-email').value.trim(), pass=document.getElementById('reg-pass').value, pass2=document.getElementById('reg-pass2').value;
-  if (!email||!pass) { setAuthMsg('reg-msg','Fyll i alla fält.'); return; }
-  if (pass.length<6) { setAuthMsg('reg-msg','Lösenordet måste vara minst 6 tecken.'); return; }
-  if (pass!==pass2) { setAuthMsg('reg-msg','Lösenorden matchar inte.'); return; }
-  setBtnLoading('reg-btn',true,'Skapa konto'); setAuthMsg('reg-msg','');
-  const res = await supa.post('/auth/v1/signup',{email,password:pass});
-  setBtnLoading('reg-btn',false,'Skapa konto');
-  if (res.error) { setAuthMsg('reg-msg',res.error.message||'Något gick fel.'); return; }
-  if (res.session) { currentSession=res.session; currentUser=res.user; onLoggedIn(); return; }
-  setAuthMsg('reg-msg','✅ Konto skapat! Kontrollera din e-post för att bekräfta.','success');
+async function doLogin(){
+  const email=document.getElementById('login-email').value.trim(),pass=document.getElementById('login-pass').value;
+  if(!email||!pass){setAuthMsg('login-msg',lang==='sv'?'Fyll i e-post och lösenord.':'Please enter your email and password.');return;}
+  setBtnLoading('login-btn',true,t('login'));setAuthMsg('login-msg','');
+  const res=await supa.post('/auth/v1/token?grant_type=password',{email,password:pass});
+  setBtnLoading('login-btn',false,t('login'));
+  if(res.error){setAuthMsg('login-msg',lang==='sv'?'Fel e-post eller lösenord.':'Incorrect email or password.');return;}
+  currentSession=res;currentUser=res.user;onLoggedIn();
 }
 
-async function doResetPassword() {
+async function doRegister(){
+  const email=document.getElementById('reg-email').value.trim(),pass=document.getElementById('reg-pass').value,pass2=document.getElementById('reg-pass2').value;
+  if(!email||!pass){setAuthMsg('reg-msg',lang==='sv'?'Fyll i alla fält.':'Please fill in all fields.');return;}
+  if(pass.length<6){setAuthMsg('reg-msg',lang==='sv'?'Lösenordet måste vara minst 6 tecken.':'Password must be at least 6 characters.');return;}
+  if(pass!==pass2){setAuthMsg('reg-msg',lang==='sv'?'Lösenorden matchar inte.':'Passwords do not match.');return;}
+  setBtnLoading('reg-btn',true,t('register'));setAuthMsg('reg-msg','');
+  const res=await supa.post('/auth/v1/signup',{email,password:pass});
+  setBtnLoading('reg-btn',false,t('register'));
+  if(res.error){setAuthMsg('reg-msg',res.error.message||'Error');return;}
+  if(res.session){currentSession=res.session;currentUser=res.user;onLoggedIn();return;}
+  setAuthMsg('reg-msg',lang==='sv'?'✅ Konto skapat! Kontrollera din e-post.':'✅ Account created! Check your email.','success');
+}
+
+async function doResetPassword(){
   const email=document.getElementById('reset-email').value.trim();
-  if (!email) { setAuthMsg('reset-msg','Ange din e-postadress.'); return; }
-  setBtnLoading('reset-btn',true,'Skicka återställningslänk'); setAuthMsg('reset-msg','');
-  const res = await supa.post('/auth/v1/recover',{email,gotrue_meta_security:{},redirect_to:APP_URL});
-  setBtnLoading('reset-btn',false,'Skicka återställningslänk');
-  if (res.error) { setAuthMsg('reset-msg',res.error.message||'Något gick fel.'); return; }
-  setAuthMsg('reset-msg','✅ Kolla din e-post! Länken är giltig i 24 timmar.','success');
+  if(!email){setAuthMsg('reset-msg',lang==='sv'?'Ange din e-postadress.':'Please enter your email.');return;}
+  setBtnLoading('reset-btn',true,t('sendReset'));setAuthMsg('reset-msg','');
+  const res=await supa.post('/auth/v1/recover',{email,gotrue_meta_security:{},redirect_to:APP_URL});
+  setBtnLoading('reset-btn',false,t('sendReset'));
+  if(res.error){setAuthMsg('reset-msg',res.error.message||'Error');return;}
+  setAuthMsg('reset-msg',lang==='sv'?'✅ Kolla din e-post! Länken är giltig i 24 timmar.':'✅ Check your email! The link is valid for 24 hours.','success');
 }
 
-async function doSetNewPassword() {
-  const pass=document.getElementById('new-pass').value, pass2=document.getElementById('new-pass2').value;
-  if (pass.length<6) { setAuthMsg('new-pass-msg','Lösenordet måste vara minst 6 tecken.'); return; }
-  if (pass!==pass2) { setAuthMsg('new-pass-msg','Lösenorden matchar inte.'); return; }
-  setBtnLoading('new-pass-btn',true,'Spara nytt lösenord'); setAuthMsg('new-pass-msg','');
-  const res = await fetch(SUPA_URL+'/auth/v1/user',{method:'PUT',headers:supa.authHeaders(),body:JSON.stringify({password:pass})});
-  const data = await res.json();
-  setBtnLoading('new-pass-btn',false,'Spara nytt lösenord');
-  if (data.error) { setAuthMsg('new-pass-msg',data.error.message||'Något gick fel.'); return; }
-  setAuthMsg('new-pass-msg','✅ Lösenordet är uppdaterat!','success');
-  setTimeout(()=>{ currentSession=null; showAuthTab('login'); },2000);
+async function doSetNewPassword(){
+  const pass=document.getElementById('new-pass').value,pass2=document.getElementById('new-pass2').value;
+  if(pass.length<6){setAuthMsg('new-pass-msg',lang==='sv'?'Lösenordet måste vara minst 6 tecken.':'Password must be at least 6 characters.');return;}
+  if(pass!==pass2){setAuthMsg('new-pass-msg',lang==='sv'?'Lösenorden matchar inte.':'Passwords do not match.');return;}
+  setBtnLoading('new-pass-btn',true,t('savePassword'));setAuthMsg('new-pass-msg','');
+  const res=await fetch(SUPA_URL+'/auth/v1/user',{method:'PUT',headers:supa.authHeaders(),body:JSON.stringify({password:pass})});
+  const data=await res.json();
+  setBtnLoading('new-pass-btn',false,t('savePassword'));
+  if(data.error){setAuthMsg('new-pass-msg',data.error.message||'Error');return;}
+  setAuthMsg('new-pass-msg',lang==='sv'?'✅ Lösenordet är uppdaterat!':'✅ Password updated!','success');
+  setTimeout(()=>{currentSession=null;showAuthTab('login');},2000);
 }
 
-async function doSignOut() {
+async function doSignOut(){
   await fetch(SUPA_URL+'/auth/v1/logout',{method:'POST',headers:supa.authHeaders()}).catch(()=>{});
-  currentSession=null; currentUser=null;
-  localStorage.removeItem('pt_auth'); localStorage.removeItem('pt_session');
+  currentSession=null;currentUser=null;
+  localStorage.removeItem('pt_auth');localStorage.removeItem('pt_session');
   document.getElementById('app-screen').style.display='none';
   document.getElementById('auth-screen').style.display='flex';
   showAuthTab('login');
 }
 
-function checkRecoveryToken() {
+function checkRecoveryToken(){
   const hash=window.location.hash;
-  if (hash&&hash.includes('type=recovery')) {
+  if(hash&&hash.includes('type=recovery')){
     const params=new URLSearchParams(hash.substring(1));
-    const accessToken=params.get('access_token'), refreshToken=params.get('refresh_token');
-    if (accessToken) {
-      currentSession={access_token:accessToken,refresh_token:refreshToken};
-      document.getElementById('auth-screen').style.display='flex';
-      showAuthTab('new-password');
-      history.replaceState(null,'',window.location.pathname);
-      return true;
-    }
+    const at=params.get('access_token'),rt=params.get('refresh_token');
+    if(at){currentSession={access_token:at,refresh_token:rt};document.getElementById('auth-screen').style.display='flex';showAuthTab('new-password');history.replaceState(null,'',window.location.pathname);return true;}
   }
   return false;
 }
 
-async function checkExistingSession() {
-  try {
+async function checkExistingSession(){
+  try{
     const stored=JSON.parse(localStorage.getItem('pt_auth')||'null');
-    if (stored?.access_token) {
-      currentSession=stored;
-      const res=await fetch(SUPA_URL+'/auth/v1/user',{headers:supa.authHeaders()});
-      const user=await res.json();
-      if (user?.id) { currentUser=user; onLoggedIn(); return; }
-    }
-  } catch {}
+    if(stored?.access_token){currentSession=stored;const res=await fetch(SUPA_URL+'/auth/v1/user',{headers:supa.authHeaders()});const user=await res.json();if(user?.id){currentUser=user;onLoggedIn();return;}}
+  }catch{}
   document.getElementById('auth-screen').style.display='flex';
 }
 
-function onLoggedIn() {
-  if (currentSession) localStorage.setItem('pt_auth',JSON.stringify(currentSession));
+function onLoggedIn(){
+  if(currentSession)localStorage.setItem('pt_auth',JSON.stringify(currentSession));
   document.getElementById('auth-screen').style.display='none';
   document.getElementById('app-screen').style.display='block';
   document.getElementById('user-email-display').textContent=currentUser?.email||'';
-  loadSession(); refreshDistPills(); refreshCountPills(); refreshUI();
+  loadSession();refreshDistPills();refreshCountPills();refreshUI();
 }
 
 /* ══ PWA ══ */
-const SW_CODE=`const C='petanque-v1';self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll([self.location.href])));self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))));self.clients.claim();});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(cached=>{if(cached)return cached;return fetch(e.request).then(res=>{if(res&&res.status===200&&e.request.method==='GET'){const cl=res.clone();caches.open(C).then(c=>c.put(e.request,cl));}return res;}).catch(()=>cached);}));});`;
-if ('serviceWorker' in navigator) { const b=new Blob([SW_CODE],{type:'application/javascript'}); navigator.serviceWorker.register(URL.createObjectURL(b),{scope:'./'}).catch(()=>{}); }
+const SW_CODE=`const C='petanque-v2';self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll([self.location.href])));self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))));self.clients.claim();});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(cached=>{if(cached)return cached;return fetch(e.request).then(res=>{if(res&&res.status===200&&e.request.method==='GET'){const cl=res.clone();caches.open(C).then(c=>c.put(e.request,cl));}return res;}).catch(()=>cached);}));});`;
+if('serviceWorker'in navigator){const b=new Blob([SW_CODE],{type:'application/javascript'});navigator.serviceWorker.register(URL.createObjectURL(b),{scope:'./'}).catch(()=>{});}
 
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
 const isStandalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone;
 let deferredPrompt=null;
 
-function showInstallBanner() {
-  if (isStandalone||localStorage.getItem('install_dismissed')) return;
+function showInstallBanner(){
+  if(isStandalone||localStorage.getItem('install_dismissed'))return;
   const banner=document.getElementById('install-banner');
-  if (isIOS) {
-    document.getElementById('install-sub').textContent='Tryck här för instruktioner';
-    document.getElementById('install-action-btn').textContent='Visa hur';
-    document.getElementById('install-action-btn').onclick=()=>openModal('ios-modal');
+  if(isIOS){
+    document.getElementById('install-sub').textContent=lang==='sv'?'Tryck här för instruktioner':'Tap here for instructions';
+    const btn=document.getElementById('install-action-btn');
+    btn.textContent=lang==='sv'?'Visa hur':'Show how';
+    btn.onclick=()=>openModal('ios-modal');
     banner.classList.add('show');
   }
 }
 window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault(); deferredPrompt=e;
-  if (!localStorage.getItem('install_dismissed')&&!isStandalone) {
-    document.getElementById('install-sub').textContent='Lägg till på hemskärmen';
-    document.getElementById('install-action-btn').textContent='Installera';
-    document.getElementById('install-action-btn').onclick=installApp;
+  e.preventDefault();deferredPrompt=e;
+  if(!localStorage.getItem('install_dismissed')&&!isStandalone){
+    document.getElementById('install-sub').textContent=t('installSub');
+    const btn=document.getElementById('install-action-btn');
+    btn.textContent=lang==='sv'?'Installera':'Install';
+    btn.onclick=installApp;
     document.getElementById('install-banner').classList.add('show');
   }
 });
@@ -602,35 +689,35 @@ function updateOnline(){document.getElementById('offline-badge').classList.toggl
 window.addEventListener('online',updateOnline);window.addEventListener('offline',updateOnline);
 
 /* ══ APP STATE ══ */
-let distIdx=0,shotCount=0,total=50,stats={miss:0,traff:0,stann:0},pendingFn=null,activeFilter='all';
-let calYear=new Date().getFullYear(), calMonth=new Date().getMonth();
+let distIdx=0,shotCount=0,total=50,stats={miss:0,traff:0,carreau:0},pendingFn=null,activeFilter='all';
+let calYear=new Date().getFullYear(),calMonth=new Date().getMonth();
 
 const ls={get:k=>{try{return JSON.parse(localStorage.getItem(k));}catch{return null;}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}}};
-function loadSession(){const s=ls.get('pt_s');if(s){distIdx=s.d??0;shotCount=s.n??0;total=s.t??50;stats=s.stats??{miss:0,traff:0,stann:0};}}
+function loadSession(){const s=ls.get('pt_s');if(s){distIdx=s.d??0;shotCount=s.n??0;total=s.t??50;stats=s.stats??{miss:0,traff:0,carreau:0};if(stats.stann!==undefined){stats.carreau=stats.stann;delete stats.stann;}}}
 function saveSession(){ls.set('pt_s',{d:distIdx,n:shotCount,t:total,stats});}
-function getHistory(){return ls.get('pt_h')||[];}
+function getHistory(){
+  const h=ls.get('pt_h')||[];
+  return h.map(e=>{if(e.stann!==undefined){e.carreau=e.stann;delete e.stann;}return e;});
+}
 function saveHistory(h){ls.set('pt_h',h);}
 
 async function pushHistory(){
-  const entry={dist:DISTS[distIdx],shots:total,miss:stats.miss,traff:stats.traff,stann:stats.stann,pct:+((( stats.traff+stats.stann)/total)*100).toFixed(1),date:new Date().toISOString()};
-  const h=getHistory(); h.unshift(entry); saveHistory(h);
-  if (currentUser) {
-    await fetch(SUPA_URL+'/rest/v1/sessions',{method:'POST',headers:{...supa.authHeaders(),'Prefer':'return=minimal'},body:JSON.stringify({user_id:currentUser.id,dist:entry.dist,shots:entry.shots,miss:entry.miss,traff:entry.traff,stann:entry.stann,pct:entry.pct,played_at:entry.date})}).catch(()=>{});
-  }
+  const entry={dist:DISTS[distIdx],shots:total,miss:stats.miss,traff:stats.traff,carreau:stats.carreau,pct:+((( stats.traff+stats.carreau)/total)*100).toFixed(1),date:new Date().toISOString()};
+  const h=getHistory();h.unshift(entry);saveHistory(h);
+  if(currentUser){await fetch(SUPA_URL+'/rest/v1/sessions',{method:'POST',headers:{...supa.authHeaders(),'Prefer':'return=minimal'},body:JSON.stringify({user_id:currentUser.id,dist:entry.dist,shots:entry.shots,miss:entry.miss,traff:entry.traff,stann:entry.carreau,pct:entry.pct,played_at:entry.date})}).catch(()=>{});}
 }
 
 /* ══ TABS ══ */
 function switchTab(name,btn){
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active'); btn.classList.add('active');
-  if (name==='stats') renderStats();
+  document.getElementById('tab-'+name).classList.add('active');btn.classList.add('active');
+  if(name==='stats')renderStats();
 }
-
-function switchStatsTab(name, btn) {
+function switchStatsTab(name,btn){
   document.querySelectorAll('.stats-section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.stats-nav-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('stats-'+name).classList.add('active'); btn.classList.add('active');
+  document.getElementById('stats-'+name).classList.add('active');btn.classList.add('active');
 }
 
 /* ══ TRAINING ══ */
@@ -648,6 +735,7 @@ function shoot(type){
 
 function refreshDistPills(){document.querySelectorAll('.dist-pill').forEach((b,i)=>b.classList.toggle('active',i===distIdx));document.getElementById('hero-dist').innerText=DISTS[distIdx]+'m';}
 function refreshCountPills(){document.querySelectorAll('.count-pill').forEach(b=>b.classList.toggle('active',parseInt(b.innerText)===total));}
+
 function refreshUI(){
   document.getElementById('hero-dist').innerText=DISTS[distIdx]+'m';
   document.getElementById('cur-shot').innerText=shotCount<total?shotCount+1:total;
@@ -657,23 +745,25 @@ function refreshUI(){
   document.getElementById('prog-pct').innerText=pct+'%';
   document.getElementById('live-miss').innerText=stats.miss;
   document.getElementById('live-traff').innerText=stats.traff;
-  document.getElementById('live-stann').innerText=stats.stann;
-  const hits=stats.traff+stats.stann;
-  document.getElementById('hero-sub').innerText=shotCount===0?'Redo att skjuta':shotCount<total?`${hits} träffar av ${shotCount} skott`:'Serien klar!';
+  document.getElementById('live-carreau').innerText=stats.carreau;
+  const hits=stats.traff+stats.carreau;
+  if(shotCount===0) document.getElementById('hero-sub').textContent=t('readyToShoot');
+  else if(shotCount<total) document.getElementById('hero-sub').textContent=`${hits} ${t('hitsOf')} ${shotCount} ${t('shot').toLowerCase()}`;
+  else document.getElementById('hero-sub').textContent=t('seriesDone');
 }
 
 function doReset(){closeModal('reset-modal');_reset();}
-function _reset(){shotCount=0;stats={miss:0,traff:0,stann:0};saveSession();refreshUI();}
+function _reset(){shotCount=0;stats={miss:0,traff:0,carreau:0};saveSession();refreshUI();}
 function doChange(){closeModal('change-modal');if(pendingFn){pendingFn();pendingFn=null;}}
 
 function showSummary(){
-  document.getElementById('sum-title').innerText=`${DISTS[distIdx]}m – ${total} skott`;
-  document.getElementById('sum-subtitle').innerText=new Date().toLocaleDateString('sv-SE',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('sum-title').innerText=`${DISTS[distIdx]}m – ${total} ${t('shot').toLowerCase()}`;
+  document.getElementById('sum-subtitle').innerText=new Date().toLocaleDateString(lang==='sv'?'sv-SE':'en-GB',{weekday:'long',day:'numeric',month:'long'});
   document.getElementById('sum-miss').innerText=stats.miss;
   document.getElementById('sum-traff').innerText=stats.traff;
-  document.getElementById('sum-stann').innerText=stats.stann;
-  document.getElementById('sum-pct').innerText=((stats.traff+stats.stann)/total*100).toFixed(1)+'%';
-  document.getElementById('next-btn').innerText=distIdx<DISTS.length-1?`Nästa avstånd (${DISTS[distIdx+1]}m)`:'Börja om från 6m';
+  document.getElementById('sum-carreau').innerText=stats.carreau;
+  document.getElementById('sum-pct').innerText=((stats.traff+stats.carreau)/total*100).toFixed(1)+'%';
+  document.getElementById('next-btn').innerText=distIdx<DISTS.length-1?`${t('nextDistance')} (${DISTS[distIdx+1]}m)`:t('restartFrom');
   openModal('sum-modal');
 }
 function nextDist(){distIdx=distIdx<DISTS.length-1?distIdx+1:0;refreshDistPills();_reset();closeModal('sum-modal');}
@@ -687,11 +777,7 @@ document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{
 /* ══ STATS ══ */
 function renderStats(){
   const all=getHistory();
-  renderOverview(all);
-  renderRecords(all);
-  renderDistCharts(all);
-  renderCalendar(all);
-  renderList(all);
+  renderOverview(all);renderRecords(all);renderDistCharts(all);renderCalendar(all);renderList(all);
 }
 
 function renderOverview(data){
@@ -703,85 +789,58 @@ function renderOverview(data){
   document.getElementById('ov-avg').innerText=(data.reduce((a,e)=>a+e.pct,0)/data.length).toFixed(1)+'%';
   document.getElementById('ov-best').innerText=Math.max(...data.map(e=>e.pct))+'%';
   document.getElementById('ov-worst').innerText=Math.min(...data.map(e=>e.pct))+'%';
-  const days=new Set(data.map(e=>e.date.slice(0,10))).size;
-  document.getElementById('ov-days').innerText=days;
+  document.getElementById('ov-days').innerText=new Set(data.map(e=>e.date.slice(0,10))).size;
 }
 
 function renderRecords(data){
   const grid=document.getElementById('records-grid');
   const recEmpty=document.getElementById('rec-empty');
   const distColors=['rec-6m','rec-7m','rec-8m','rec-9m'];
-  let html='';
-  let hasAny=false;
+  let html='',hasAny=false;
   DISTS.forEach((d,i)=>{
     const sessions=data.filter(e=>e.dist===d);
     if(!sessions.length)return;
     hasAny=true;
     const best=Math.max(...sessions.map(e=>e.pct));
-    const bestSession=sessions.find(e=>e.pct===best);
     const avg=(sessions.reduce((a,e)=>a+e.pct,0)/sessions.length).toFixed(1);
-    const col=best>=70?'var(--stann)':best>=40?'var(--traff)':'var(--miss)';
-    html+=`<div class="record-card ${distColors[i]}">
-      <div class="record-dist">${d}m</div>
-      <div class="record-pct" style="color:${col}">${best}%</div>
-      <div class="record-detail">Bästa session</div>
-      <div class="record-detail" style="margin-top:6px;color:var(--muted)">Snitt: ${avg}% · ${sessions.length} sessioner</div>
-    </div>`;
+    const col=best>=70?'var(--carreau)':best>=40?'var(--traff)':'var(--miss)';
+    html+=`<div class="record-card ${distColors[i]}"><div class="record-dist">${d}m</div><div class="record-pct" style="color:${col}">${best}%</div><div class="record-detail">${t('bestSession')}</div><div class="record-detail" style="margin-top:6px;color:var(--muted)">${t('avgLabel')}: ${avg}% · ${sessions.length} ${t('sessionsLabel')}</div></div>`;
   });
   grid.innerHTML=html;
   recEmpty.style.display=hasAny?'none':'block';
 }
 
 function renderDistCharts(data){
-  const wrap=document.getElementById('dist-charts');
-  const empty=document.getElementById('charts-empty');
+  const wrap=document.getElementById('dist-charts'),empty=document.getElementById('charts-empty');
   if(!data.length){wrap.innerHTML='';empty.style.display='block';return;}
   empty.style.display='none';
   const distColors=['#7c6ff7','#34d399','#fbbf24','#f87171'];
   wrap.innerHTML=DISTS.map((d,i)=>{
     const sessions=data.filter(e=>e.dist===d);
     if(!sessions.length)return'';
-    return`<div class="chart-card">
-      <div class="chart-head">${d}m – ${sessions.length} sessioner</div>
-      <canvas id="chart-${d}" height="120"></canvas>
-    </div>`;
+    return`<div class="chart-card"><div class="chart-head">${d}m – ${sessions.length} ${t('sessionsLabel')}</div><canvas id="chart-${d}" height="120"></canvas></div>`;
   }).join('');
-
-  DISTS.forEach((d,i)=>{
-    const sessions=data.filter(e=>e.dist===d);
-    if(!sessions.length)return;
-    const canvas=document.getElementById('chart-'+d);
-    if(!canvas)return;
-    drawDistChart(canvas,sessions,distColors[i]);
-  });
+  DISTS.forEach((d,i)=>{const sessions=data.filter(e=>e.dist===d);if(!sessions.length)return;const canvas=document.getElementById('chart-'+d);if(canvas)drawDistChart(canvas,sessions,distColors[i]);});
 }
 
 function drawDistChart(canvas,data,color){
-  const ctx=canvas.getContext('2d');
-  const pts=[...data].reverse();
+  const ctx=canvas.getContext('2d'),pts=[...data].reverse();
   const W=canvas.offsetWidth||400,H=120,dpr=window.devicePixelRatio||1;
   canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.scale(dpr,dpr);
   const pad={top:12,right:12,bottom:24,left:36},cw=W-pad.left-pad.right,ch=H-pad.top-pad.bottom;
   ctx.clearRect(0,0,W,H);
-  [0,50,100].forEach(v=>{
-    const y=pad.top+ch-(v/100)*ch;
-    ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(pad.left+cw,y);ctx.stroke();
-    ctx.fillStyle='#6b6b80';ctx.font='10px Inter,sans-serif';ctx.textAlign='right';
-    ctx.fillText(v+'%',pad.left-4,y+4);
-  });
+  [0,50,100].forEach(v=>{const y=pad.top+ch-(v/100)*ch;ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(pad.left+cw,y);ctx.stroke();ctx.fillStyle='#6b6b80';ctx.font='10px Inter,sans-serif';ctx.textAlign='right';ctx.fillText(v+'%',pad.left-4,y+4);});
   if(!pts.length)return;
-  const xs=i=>pts.length===1?pad.left+cw/2:pad.left+(i/(pts.length-1))*cw;
-  const ys=v=>pad.top+ch-(v/100)*ch;
-  const grad=ctx.createLinearGradient(0,pad.top,0,pad.top+ch);
-  grad.addColorStop(0,color+'55');grad.addColorStop(1,color+'00');
+  const xs=i=>pts.length===1?pad.left+cw/2:pad.left+(i/(pts.length-1))*cw,ys=v=>pad.top+ch-(v/100)*ch;
+  const grad=ctx.createLinearGradient(0,pad.top,0,pad.top+ch);grad.addColorStop(0,color+'55');grad.addColorStop(1,color+'00');
   ctx.beginPath();pts.forEach((p,i)=>i===0?ctx.moveTo(xs(i),ys(p.pct)):ctx.lineTo(xs(i),ys(p.pct)));
   ctx.lineTo(xs(pts.length-1),pad.top+ch);ctx.lineTo(xs(0),pad.top+ch);ctx.closePath();ctx.fillStyle=grad;ctx.fill();
   if(pts.length>1){ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.lineJoin='round';pts.forEach((p,i)=>i===0?ctx.moveTo(xs(i),ys(p.pct)):ctx.lineTo(xs(i),ys(p.pct)));ctx.stroke();}
   pts.forEach((p,i)=>{ctx.beginPath();ctx.arc(xs(i),ys(p.pct),4,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();ctx.strokeStyle='#1a1a24';ctx.lineWidth=2;ctx.stroke();});
   ctx.fillStyle='#6b6b80';ctx.font='10px Inter,sans-serif';ctx.textAlign='center';
   const skip=Math.ceil(pts.length/5);
-  pts.forEach((p,i)=>{if(i%skip===0||i===pts.length-1)ctx.fillText(new Date(p.date).toLocaleDateString('sv-SE',{day:'numeric',month:'short'}),xs(i),H-4);});
+  const locale=lang==='sv'?'sv-SE':'en-GB';
+  pts.forEach((p,i)=>{if(i%skip===0||i===pts.length-1)ctx.fillText(new Date(p.date).toLocaleDateString(locale,{day:'numeric',month:'short'}),xs(i),H-4);});
 }
 
 /* ══ CALENDAR ══ */
@@ -789,74 +848,56 @@ function calPrev(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalend
 function calNext(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendar(getHistory());}
 
 function renderCalendar(data){
-  const months=['Januari','Februari','Mars','April','Maj','Juni','Juli','Augusti','September','Oktober','November','December'];
-  const days=['Mån','Tis','Ons','Tor','Fre','Lör','Sön'];
+  const months=t('months'),days=t('days');
   document.getElementById('cal-month').innerText=`${months[calMonth]} ${calYear}`;
-
-  // Build date map
   const dateMap={};
-  data.forEach(e=>{
-    const d=e.date.slice(0,10);
-    if(!dateMap[d])dateMap[d]=[];
-    dateMap[d].push(e.pct);
-  });
-
+  data.forEach(e=>{const d=e.date.slice(0,10);if(!dateMap[d])dateMap[d]=[];dateMap[d].push(e.pct);});
   const firstDay=new Date(calYear,calMonth,1);
-  let startDow=firstDay.getDay()-1; if(startDow<0)startDow=6;
+  let startDow=firstDay.getDay()-1;if(startDow<0)startDow=6;
   const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
   const today=new Date().toISOString().slice(0,10);
-
   let html=days.map(d=>`<div class="cal-day-label">${d}</div>`).join('');
-
-  for(let i=0;i<startDow;i++) html+=`<div class="cal-day empty"></div>`;
-
+  for(let i=0;i<startDow;i++)html+=`<div class="cal-day empty"></div>`;
   for(let d=1;d<=daysInMonth;d++){
-    const dateStr=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const isToday=dateStr===today;
-    const sessions=dateMap[dateStr];
-    if(sessions){
-      const avg=sessions.reduce((a,b)=>a+b,0)/sessions.length;
-      const cls=avg>=70?'great':avg>=40?'good':'poor';
-      html+=`<div class="cal-day has-session ${cls}${isToday?' today':''}" title="${avg.toFixed(1)}%">${d}</div>`;
-    } else {
-      html+=`<div class="cal-day no-session${isToday?' today':''}">${d}</div>`;
-    }
+    const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday=ds===today,sessions=dateMap[ds];
+    if(sessions){const avg=sessions.reduce((a,b)=>a+b,0)/sessions.length;const cls=avg>=70?'great':avg>=40?'good':'poor';html+=`<div class="cal-day has-session ${cls}${isToday?' today':''}">${d}</div>`;}
+    else html+=`<div class="cal-day no-session${isToday?' today':''}">${d}</div>`;
   }
   document.getElementById('cal-grid').innerHTML=html;
 }
 
 /* ══ HISTORY ══ */
-function setFilter(val,btn){
-  activeFilter=val;
-  document.querySelectorAll('#dist-filter .pill').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderList(getHistory());
-}
+function setFilter(val,btn){activeFilter=val;document.querySelectorAll('#dist-filter .pill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderList(getHistory());}
 
 function renderList(allData){
   const data=activeFilter==='all'?allData:allData.filter(e=>e.dist===activeFilter);
   const el=document.getElementById('hist-list');
-  if(!data.length){el.innerHTML=`<div class="empty"><div class="empty-icon">🎯</div><p>Inga sessioner sparade ännu.</p></div>`;return;}
+  if(!data.length){el.innerHTML=`<div class="empty"><div class="empty-icon">🎯</div><p>${t('noSessionsYet').replace('\n','<br>')}</p></div>`;return;}
+  const locale=lang==='sv'?'sv-SE':'en-GB';
   el.innerHTML=data.map(e=>{
-    const d=new Date(e.date),ds=d.toLocaleDateString('sv-SE',{day:'numeric',month:'short'}),ts=d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'});
-    const col=e.pct>=70?'var(--stann)':e.pct>=40?'var(--traff)':'var(--miss)';
-    return`<div class="hist-item"><div class="hist-left"><span class="hist-dist">${e.dist}m &nbsp;·&nbsp; ${e.shots} skott</span><span class="hist-date">${ds} kl. ${ts}</span><span class="hist-dots"><span style="color:var(--miss)">● ${e.miss}</span>&ensp;<span style="color:var(--traff)">● ${e.traff}</span>&ensp;<span style="color:var(--stann)">● ${e.stann}</span></span></div><div class="hist-pct" style="color:${col}">${e.pct}%</div></div>`;
+    const d=new Date(e.date),ds=d.toLocaleDateString(locale,{day:'numeric',month:'short'}),ts=d.toLocaleTimeString(locale,{hour:'2-digit',minute:'2-digit'});
+    const col=e.pct>=70?'var(--carreau)':e.pct>=40?'var(--traff)':'var(--miss)';
+    return`<div class="hist-item"><div class="hist-left"><span class="hist-dist">${e.dist}m &nbsp;·&nbsp; ${e.shots} ${t('shot').toLowerCase()}</span><span class="hist-date">${ds} ${ts}</span><span class="hist-dots"><span style="color:var(--miss)">● ${e.miss}</span>&ensp;<span style="color:var(--traff)">● ${e.traff}</span>&ensp;<span style="color:var(--carreau)">● ${e.carreau||0}</span></span></div><div class="hist-pct" style="color:${col}">${e.pct}%</div></div>`;
   }).join('');
 }
 
 function exportHistory(){
   const data=getHistory();
-  if(!data.length){alert('Ingen historik att exportera ännu.');return;}
-  const rows=[['Datum','Tid','Avstånd (m)','Antal skott','Miss','Träff','Stann','Träff%']];
-  data.forEach(e=>{const d=new Date(e.date);rows.push([d.toLocaleDateString('sv-SE'),d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'}),e.dist,e.shots,e.miss,e.traff,e.stann,e.pct]);});
+  if(!data.length){alert(t('noSessionsYet'));return;}
+  const cols=t('exportCols');
+  const rows=[cols];
+  const locale=lang==='sv'?'sv-SE':'en-GB';
+  data.forEach(e=>{const d=new Date(e.date);rows.push([d.toLocaleDateString(locale),d.toLocaleTimeString(locale,{hour:'2-digit',minute:'2-digit'}),e.dist,e.shots,e.miss,e.traff,e.carreau||0,e.pct]);});
   const blob=new Blob(['\uFEFF'+rows.map(r=>r.join(';')).join('\n')],{type:'text/csv;charset=utf-8;'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`petanque-historik-${new Date().toISOString().slice(0,10)}.csv`;a.click();
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`petanque-${new Date().toISOString().slice(0,10)}.csv`;a.click();
 }
 
 /* ══ INIT ══ */
 updateOnline();
+applyTranslations();
 showInstallBanner();
-if (!checkRecoveryToken()) checkExistingSession();
+if(!checkRecoveryToken())checkExistingSession();
 </script>
 </body>
 </html>
