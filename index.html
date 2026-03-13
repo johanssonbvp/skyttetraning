@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="sv">
 <head>
@@ -1468,8 +1469,16 @@ function checkRecoveryToken(){
 async function checkExistingSession(){
   try{
     const stored=JSON.parse(localStorage.getItem('pt_auth')||'null');
-    if(stored?.access_token){currentSession=stored;const res=await fetch(SUPA_URL+'/auth/v1/user',{headers:supa.authHeaders()});const user=await res.json();if(user?.id){currentUser=user;onLoggedIn();return;}}
-  }catch{}
+    console.log('[Auth] pt_auth finns:', !!stored, stored?.access_token?.slice(0,20));
+    if(stored?.access_token){
+      currentSession=stored;
+      const res=await fetch(SUPA_URL+'/auth/v1/user',{headers:supa.authHeaders()});
+      console.log('[Auth] /user status:', res.status);
+      const user=await res.json();
+      console.log('[Auth] user.id:', user?.id, 'user.email:', user?.email, 'error:', user?.error);
+      if(user?.id){currentUser=user;onLoggedIn();return;}
+    }
+  }catch(e){console.error('[Auth] checkExistingSession fel:', e);}
   document.getElementById('auth-screen').style.display='flex';
 }
 async function onLoggedIn(){
