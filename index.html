@@ -973,6 +973,28 @@ body::before {
   animation: ripple 0.5s ease-out forwards;
   pointer-events: none;
 }
+
+/* Ko-fi link */
+.kofi-link {
+  display: block;
+  text-align: center;
+  margin-top: 16px;
+  color: var(--muted2);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 10px;
+  transition: color 0.2s, background 0.2s;
+  letter-spacing: 0.3px;
+}
+.kofi-link:hover { color: var(--accent); background: var(--accent-dim); }
+.kofi-link-lg {
+  font-size: 0.9rem;
+  padding: 14px 24px;
+  border: 1px solid var(--border2);
+  display: inline-block;
+}
 </style>
 </head>
 <body>
@@ -1160,6 +1182,9 @@ body::before {
         <div id="hist-list" class="history-list"></div>
       </div>
     </div>
+    <div style="text-align:center;padding:32px 0 8px;">
+      <a href="https://ko-fi.com/petanqueapp" target="_blank" rel="noopener" class="kofi-link kofi-link-lg">☕ <span data-i18n="kofiText">Gillar du appen? Bjud på en kaffe</span></a>
+    </div>
   </div>
 </div>
 
@@ -1176,6 +1201,7 @@ body::before {
       <button class="mbtn mbtn-accent" id="next-btn" onclick="nextDist()">Nästa avstånd</button>
       <button class="mbtn mbtn-ghost" onclick="closeModal('sum-modal')" data-i18n="close">Stäng</button>
     </div>
+    <a href="https://ko-fi.com/petanqueapp" target="_blank" rel="noopener" class="kofi-link">☕ <span data-i18n="kofiText">Gillar du appen? Bjud på en kaffe</span></a>
   </div>
 </div>
 <div class="overlay" id="reset-modal">
@@ -1266,6 +1292,7 @@ const i18n = {
     iosStep2:'Tryck på <strong style="color:white">dela-ikonen</strong> &#x2197; längst ner.',
     iosStep3:'Tryck <strong style="color:white">"Lägg till på hemskärmen"</strong>.',
     iosStep4:'Tryck <strong style="color:white">"Lägg till"</strong> – klart! 🎉',
+    kofiText:'Gillar du appen? Bjud på en kaffe',
     langFlag:'🇬🇧', langLabel:'English',
     months:['Januari','Februari','Mars','April','Maj','Juni','Juli','Augusti','September','Oktober','November','December'],
     days:['Mån','Tis','Ons','Tor','Fre','Lör','Sön'],
@@ -1304,6 +1331,7 @@ const i18n = {
     iosStep2:'Tap the <strong style="color:white">share icon</strong> &#x2197; at the bottom.',
     iosStep3:'Tap <strong style="color:white">"Add to Home Screen"</strong>.',
     iosStep4:'Tap <strong style="color:white">"Add"</strong> – done! 🎉',
+    kofiText:'Enjoying the app? Buy me a coffee',
     langFlag:'🇸🇪', langLabel:'Svenska',
     months:['January','February','March','April','May','June','July','August','September','October','November','December'],
     days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
