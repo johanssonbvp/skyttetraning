@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="sv">
 <head>
@@ -1386,8 +1387,8 @@ function toggleLang() {
 }
 
 /* ══ CONFIG ══ */
-const SUPA_URL = 'https://ddbepuoajxosazocucyx.supabase.co';
-const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkYmVwdW9hanhvc2F6b2N1Y3l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMDkyOTMsImV4cCI6MjA4ODc4NTI5M30.nibFnPj1SHm0RPQKkgdOkNrpnkxAabZUbwkSoe03I-s';
+const SUPA_URL = 'https://tuoqfsitlbhingvhunnm.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b3Fmc2l0bGJoaW5ndmh1bm5tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MDQ0NjYsImV4cCI6MjA4ODk4MDQ2Nn0.FskbSQ745H0dJ6N08A8BvpKyGRAhjD3K-J1WjlJtdA8';
 const APP_URL = 'https://petanquetraning.se';
 const DISTS = [6,7,8,9];
 
@@ -1534,7 +1535,7 @@ async function onLoggedIn(){
 }
 
 /* ══ PWA ══ */
-const SW_CODE=`const C='petanque-v4';self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll([self.location.href])));self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))));self.clients.claim();});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(cached=>{if(cached)return cached;return fetch(e.request).then(res=>{if(res&&res.status===200&&e.request.method==='GET'){const cl=res.clone();caches.open(C).then(c=>c.put(e.request,cl));}return res;}).catch(()=>cached);}));});`;
+const SW_CODE=`const C='petanque-v5';self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll([self.location.href])));self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))));self.clients.claim();});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(cached=>{if(cached)return cached;return fetch(e.request).then(res=>{if(res&&res.status===200&&e.request.method==='GET'){const cl=res.clone();caches.open(C).then(c=>c.put(e.request,cl));}return res;}).catch(()=>cached);}));});`;
 if('serviceWorker'in navigator){const b=new Blob([SW_CODE],{type:'application/javascript'});navigator.serviceWorker.register(URL.createObjectURL(b),{scope:'./'}).catch(()=>{});}
 
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
