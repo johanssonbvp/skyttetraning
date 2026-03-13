@@ -1550,6 +1550,10 @@ async function runDebugSync(){
   debugLogs.length=0;
   const el=document.getElementById('debug-log');
   if(el)el.textContent='';
+  dlog('currentUser: '+(currentUser?currentUser.email:'NULL'));
+  dlog('currentSession: '+(currentSession?'finns ('+currentSession.access_token.slice(0,20)+'...)':'NULL'));
+  const stored=localStorage.getItem('pt_auth');
+  dlog('pt_auth i localStorage: '+(stored?'finns':'saknas'));
   await syncFromSupabase();
 }
 
