@@ -1119,6 +1119,7 @@ body::before {
       <div class="stats-top">
         <h2 data-i18n="statistics">Statistik</h2>
         <div class="stats-top-btns">
+          <button class="clear-btn" onclick="openModal('debug-modal');runDebugSync()">🔧 Sync</button>
           <button class="clear-btn" onclick="exportHistory()" data-i18n="export">↓ Exportera</button>
           <button class="clear-btn" onclick="openModal('clear-modal')" data-i18n="clearAll">Rensa allt</button>
         </div>
@@ -1253,6 +1254,18 @@ body::before {
       <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.5rem;flex-shrink:0">4️⃣</span><span style="font-size:0.9rem;color:#d1d5db;line-height:1.5;" data-i18n="iosStep4">Tryck <strong style="color:white">"Lägg till"</strong> – klart! 🎉</span></div>
     </div>
     <div class="sheet-actions"><button class="mbtn mbtn-ghost" onclick="closeModal('ios-modal');dismissBanner();" data-i18n="close">Stäng</button></div>
+  </div>
+</div>
+
+<!-- Debug modal -->
+<div class="overlay" id="debug-modal">
+  <div class="sheet" style="max-height:80vh;display:flex;flex-direction:column;">
+    <h2>🔧 Sync-logg</h2>
+    <div id="debug-log" style="flex:1;overflow-y:auto;font-family:monospace;font-size:0.75rem;background:var(--bg);border-radius:10px;padding:12px;margin-bottom:16px;line-height:1.8;white-space:pre-wrap;color:var(--muted2);max-height:50vh;"></div>
+    <div class="sheet-actions">
+      <button class="mbtn mbtn-accent" onclick="runDebugSync()">Kör sync nu</button>
+      <button class="mbtn mbtn-ghost" onclick="closeModal('debug-modal')">Stäng</button>
+    </div>
   </div>
 </div>
 
@@ -1526,17 +1539,31 @@ async function pushHistory(){
   }
 }
 
+const debugLogs=[];
+function dlog(msg){
+  debugLogs.push(msg);
+  console.log('[Sync]',msg);
+  const el=document.getElementById('debug-log');
+  if(el){el.textContent=debugLogs.join('\n');el.scrollTop=el.scrollHeight;}
+}
+async function runDebugSync(){
+  debugLogs.length=0;
+  const el=document.getElementById('debug-log');
+  if(el)el.textContent='';
+  await syncFromSupabase();
+}
+
 async function syncFromSupabase(){
-  if(!currentUser){console.log('[Sync] Ingen användare, avbryter');return;}
-  console.log('[Sync] Startar sync för',currentUser.email);
+  if(!currentUser){dlog('Ingen användare, avbryter');return;}
+  dlog('Startar sync för '+currentUser.email);
   try{
     // 1. Fetch all remote sessions
     const res=await fetch(SUPA_URL+'/rest/v1/sessions?user_id=eq.'+currentUser.id+'&order=played_at.desc&limit=500',{headers:supa.authHeaders()});
-    console.log('[Sync] Supabase GET status:',res.status);
-    if(!res.ok){const txt=await res.text();console.error('[Sync] GET fel:',txt);return;}
+    dlog('Supabase GET status: '+res.status);
+    if(!res.ok){const txt=await res.text();dlog('GET FEL: '+txt);return;}
     const remote=await res.json();
     const remoteArr=Array.isArray(remote)?remote:[];
-    console.log('[Sync] Antal rader i Supabase:',remoteArr.length);
+    dlog('Antal rader i Supabase: '+remoteArr.length);
 
     const key=e=>e.date.slice(0,19)+'_'+e.dist+'_'+e.shots;
 
@@ -1549,9 +1576,9 @@ async function syncFromSupabase(){
 
     // 3. Find local entries missing from Supabase and upload them
     const local=getHistory();
-    console.log('[Sync] Antal lokala sessioner:',local.length);
+    dlog('Antal lokala sessioner: '+local.length);
     const toUpload=local.filter(e=>!remoteKeys.has(key(e)));
-    console.log('[Sync] Ska ladda upp:',toUpload.length,'sessioner');
+    dlog('Ska ladda upp: '+toUpload.length+' sessioner');
     if(toUpload.length>0){
       for(let i=0;i<toUpload.length;i+=20){
         const batch=toUpload.slice(i,i+20).map(e=>({
@@ -1559,14 +1586,14 @@ async function syncFromSupabase(){
           miss:e.miss, traff:e.traff, stann:e.carreau??0,
           pct:e.pct, played_at:e.date
         }));
-        console.log('[Sync] Laddar upp batch',Math.floor(i/20)+1,'med',batch.length,'rader');
+        dlog('Laddar upp batch '+(Math.floor(i/20)+1)+' med '+batch.length+' rader');
         const uploadRes=await fetch(SUPA_URL+'/rest/v1/sessions',{
           method:'POST',
           headers:{...supa.authHeaders(),'Prefer':'return=minimal'},
           body:JSON.stringify(batch)
         });
-        console.log('[Sync] Upload status:',uploadRes.status);
-        if(!uploadRes.ok){const txt=await uploadRes.text();console.error('[Sync] Upload fel:',txt);}
+        dlog('Upload status: '+uploadRes.status);
+        if(!uploadRes.ok){const txt=await uploadRes.text();dlog('Upload FEL: '+txt);}
       }
     }
 
@@ -1576,10 +1603,10 @@ async function syncFromSupabase(){
     if(toAdd.length>0){
       const merged=[...local,...toAdd].sort((a,b)=>new Date(b.date)-new Date(a.date));
       saveHistory(merged);
-      console.log('[Sync] Lade till',toAdd.length,'remote-sessioner lokalt');
+      dlog('Lade till '+toAdd.length+' remote-sessioner lokalt');
     }
-    console.log('[Sync] Klar!');
-  }catch(e){console.error('[Sync] Fel:',e);}
+    dlog('Klar!');
+  }catch(e){dlog('UNDANTAG: '+e.message);}
 }
 
 /* ══ TABS ══ */
