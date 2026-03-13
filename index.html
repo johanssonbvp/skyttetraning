@@ -1529,20 +1529,41 @@ async function pushHistory(){
 async function syncFromSupabase(){
   if(!currentUser)return;
   try{
+    // 1. Fetch all remote sessions
     const res=await fetch(SUPA_URL+'/rest/v1/sessions?user_id=eq.'+currentUser.id+'&order=played_at.desc&limit=500',{headers:supa.authHeaders()});
     if(!res.ok)return;
     const remote=await res.json();
-    if(!Array.isArray(remote)||remote.length===0)return;
+    const remoteArr=Array.isArray(remote)?remote:[];
 
-    // Convert remote rows to local format
-    const remoteEntries=remote.map(r=>({
+    const key=e=>e.date.slice(0,19)+'_'+e.dist+'_'+e.shots;
+
+    // 2. Convert remote to local format
+    const remoteEntries=remoteArr.map(r=>({
       dist:r.dist, shots:r.shots, miss:r.miss, traff:r.traff,
       carreau:r.stann??r.carreau??0, pct:r.pct, date:r.played_at
     }));
+    const remoteKeys=new Set(remoteEntries.map(key));
 
-    // Merge with local – deduplicate by date+dist+shots
+    // 3. Find local entries missing from Supabase and upload them
     const local=getHistory();
-    const key=e=>e.date.slice(0,19)+'_'+e.dist+'_'+e.shots;
+    const toUpload=local.filter(e=>!remoteKeys.has(key(e)));
+    if(toUpload.length>0){
+      // Upload in batches of 20 to avoid request size limits
+      for(let i=0;i<toUpload.length;i+=20){
+        const batch=toUpload.slice(i,i+20).map(e=>({
+          user_id:currentUser.id, dist:e.dist, shots:e.shots,
+          miss:e.miss, traff:e.traff, stann:e.carreau??0,
+          pct:e.pct, played_at:e.date
+        }));
+        await fetch(SUPA_URL+'/rest/v1/sessions',{
+          method:'POST',
+          headers:{...supa.authHeaders(),'Prefer':'return=minimal'},
+          body:JSON.stringify(batch)
+        }).catch(()=>{});
+      }
+    }
+
+    // 4. Merge remote entries that are missing locally
     const localKeys=new Set(local.map(key));
     const toAdd=remoteEntries.filter(e=>!localKeys.has(key(e)));
     if(toAdd.length>0){
