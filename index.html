@@ -1527,13 +1527,16 @@ async function pushHistory(){
 }
 
 async function syncFromSupabase(){
-  if(!currentUser)return;
+  if(!currentUser){console.log('[Sync] Ingen användare, avbryter');return;}
+  console.log('[Sync] Startar sync för',currentUser.email);
   try{
     // 1. Fetch all remote sessions
     const res=await fetch(SUPA_URL+'/rest/v1/sessions?user_id=eq.'+currentUser.id+'&order=played_at.desc&limit=500',{headers:supa.authHeaders()});
-    if(!res.ok)return;
+    console.log('[Sync] Supabase GET status:',res.status);
+    if(!res.ok){const txt=await res.text();console.error('[Sync] GET fel:',txt);return;}
     const remote=await res.json();
     const remoteArr=Array.isArray(remote)?remote:[];
+    console.log('[Sync] Antal rader i Supabase:',remoteArr.length);
 
     const key=e=>e.date.slice(0,19)+'_'+e.dist+'_'+e.shots;
 
@@ -1546,20 +1549,24 @@ async function syncFromSupabase(){
 
     // 3. Find local entries missing from Supabase and upload them
     const local=getHistory();
+    console.log('[Sync] Antal lokala sessioner:',local.length);
     const toUpload=local.filter(e=>!remoteKeys.has(key(e)));
+    console.log('[Sync] Ska ladda upp:',toUpload.length,'sessioner');
     if(toUpload.length>0){
-      // Upload in batches of 20 to avoid request size limits
       for(let i=0;i<toUpload.length;i+=20){
         const batch=toUpload.slice(i,i+20).map(e=>({
           user_id:currentUser.id, dist:e.dist, shots:e.shots,
           miss:e.miss, traff:e.traff, stann:e.carreau??0,
           pct:e.pct, played_at:e.date
         }));
-        await fetch(SUPA_URL+'/rest/v1/sessions',{
+        console.log('[Sync] Laddar upp batch',Math.floor(i/20)+1,'med',batch.length,'rader');
+        const uploadRes=await fetch(SUPA_URL+'/rest/v1/sessions',{
           method:'POST',
           headers:{...supa.authHeaders(),'Prefer':'return=minimal'},
           body:JSON.stringify(batch)
-        }).catch(()=>{});
+        });
+        console.log('[Sync] Upload status:',uploadRes.status);
+        if(!uploadRes.ok){const txt=await uploadRes.text();console.error('[Sync] Upload fel:',txt);}
       }
     }
 
@@ -1569,8 +1576,10 @@ async function syncFromSupabase(){
     if(toAdd.length>0){
       const merged=[...local,...toAdd].sort((a,b)=>new Date(b.date)-new Date(a.date));
       saveHistory(merged);
+      console.log('[Sync] Lade till',toAdd.length,'remote-sessioner lokalt');
     }
-  }catch(e){console.warn('Sync failed',e);}
+    console.log('[Sync] Klar!');
+  }catch(e){console.error('[Sync] Fel:',e);}
 }
 
 /* ══ TABS ══ */
