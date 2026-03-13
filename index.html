@@ -1413,7 +1413,9 @@ async function doLogin(){
   const res=await supa.post('/auth/v1/token?grant_type=password',{email,password:pass});
   setBtnLoading('login-btn',false,t('login'));
   if(res.error){setAuthMsg('login-msg',lang==='sv'?'Fel e-post eller lösenord.':'Incorrect email or password.');return;}
-  currentSession=res;currentUser=res.user;onLoggedIn();
+  currentSession=res;currentUser=res.user;
+  dlog('Loggade in som: '+(currentUser?.email||'okänd'));
+  onLoggedIn();
 }
 async function doRegister(){
   const email=document.getElementById('reg-email').value.trim(),pass=document.getElementById('reg-pass').value,pass2=document.getElementById('reg-pass2').value;
@@ -1468,16 +1470,19 @@ function checkRecoveryToken(){
 async function checkExistingSession(){
   try{
     const stored=JSON.parse(localStorage.getItem('pt_auth')||'null');
-    console.log('[Auth] pt_auth finns:', !!stored, stored?.access_token?.slice(0,20));
+    dlog('pt_auth: '+(stored?'finns':'saknas'));
     if(stored?.access_token){
       currentSession=stored;
       const res=await fetch(SUPA_URL+'/auth/v1/user',{headers:supa.authHeaders()});
-      console.log('[Auth] /user status:', res.status);
+      dlog('/auth/v1/user status: '+res.status);
       const user=await res.json();
-      console.log('[Auth] user.id:', user?.id, 'user.email:', user?.email, 'error:', user?.error);
-      if(user?.id){currentUser=user;onLoggedIn();return;}
+      dlog('user.id: '+(user?.id||'saknas')+' error: '+(user?.error||'ingen'));
+      if(user?.id){currentUser=user;dlog('Inloggad som: '+user.email);onLoggedIn();return;}
+      else{dlog('Session ogiltig, visar login');}
+    } else {
+      dlog('Ingen sparad session, visar login');
     }
-  }catch(e){console.error('[Auth] checkExistingSession fel:', e);}
+  }catch(e){dlog('checkExistingSession fel: '+e.message);}
   document.getElementById('auth-screen').style.display='flex';
 }
 async function onLoggedIn(){
@@ -1880,6 +1885,8 @@ function exportHistory(){
 updateOnline();
 applyTranslations();
 showInstallBanner();
+// Auto-show debug log on load so we can see auth flow
+debugLogs.length=0;
 if(!checkRecoveryToken())checkExistingSession();
 </script>
 </body>
