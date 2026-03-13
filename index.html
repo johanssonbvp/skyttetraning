@@ -1412,12 +1412,18 @@ async function doLogin(){
   setBtnLoading('login-btn',true,t('login'));setAuthMsg('login-msg','');
   const res=await supa.post('/auth/v1/token?grant_type=password',{email,password:pass});
   setBtnLoading('login-btn',false,t('login'));
-  dlog('Login svar: '+(res.error?'FEL: '+res.error.message:'OK'));
+  dlog('Login svar error: '+(res.error?.message||'ingen'));
   dlog('res.user: '+(res.user?.email||'NULL'));
+  dlog('res.session?.user: '+(res.session?.user?.email||'NULL'));
   dlog('res.access_token: '+(res.access_token?'finns':'saknas'));
+  dlog('res.session?.access_token: '+(res.session?.access_token?'finns':'saknas'));
   if(res.error){setAuthMsg('login-msg',lang==='sv'?'Fel e-post eller lösenord.':'Incorrect email or password.');return;}
-  currentSession=res;currentUser=res.user;
-  dlog('Loggade in som: '+(currentUser?.email||'okänd'));
+  // Handle both old and new Supabase response formats
+  const session = res.session || res;
+  const user = res.user || res.session?.user;
+  currentSession = session;
+  currentUser = user;
+  dlog('currentUser satt till: '+(currentUser?.email||'NULL'));
   onLoggedIn();
 }
 async function doRegister(){
@@ -1480,8 +1486,35 @@ async function checkExistingSession(){
       dlog('/auth/v1/user status: '+res.status);
       const user=await res.json();
       dlog('user.id: '+(user?.id||'saknas')+' error: '+(user?.error||'ingen'));
-      if(user?.id){currentUser=user;dlog('Inloggad som: '+user.email);onLoggedIn();return;}
-      else{dlog('Session ogiltig, visar login');}
+      if(user?.id){
+        currentUser=user;
+        dlog('Inloggad som: '+user.email);
+        onLoggedIn();
+        return;
+      } else {
+        dlog('Session ogiltig, försöker refresh...');
+        // Try to refresh the session
+        const stored=JSON.parse(localStorage.getItem('pt_auth')||'null');
+        const refreshToken=stored?.refresh_token||stored?.session?.refresh_token;
+        if(refreshToken){
+          const rres=await fetch(SUPA_URL+'/auth/v1/token?grant_type=refresh_token',{
+            method:'POST',
+            headers:supa.headers,
+            body:JSON.stringify({refresh_token:refreshToken})
+          });
+          const rdata=await rres.json();
+          dlog('Refresh status: '+rres.status+' error: '+(rdata.error?.message||'ingen'));
+          if(rdata.access_token||rdata.session?.access_token){
+            currentSession=rdata.session||rdata;
+            currentUser=rdata.user||rdata.session?.user;
+            localStorage.setItem('pt_auth',JSON.stringify(currentSession));
+            dlog('Refresh lyckades: '+currentUser?.email);
+            onLoggedIn();
+            return;
+          }
+        }
+        dlog('Session ogiltig, visar login');
+      }
     } else {
       dlog('Ingen sparad session, visar login');
     }
