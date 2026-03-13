@@ -1412,6 +1412,9 @@ async function doLogin(){
   setBtnLoading('login-btn',true,t('login'));setAuthMsg('login-msg','');
   const res=await supa.post('/auth/v1/token?grant_type=password',{email,password:pass});
   setBtnLoading('login-btn',false,t('login'));
+  dlog('Login svar: '+(res.error?'FEL: '+res.error.message:'OK'));
+  dlog('res.user: '+(res.user?.email||'NULL'));
+  dlog('res.access_token: '+(res.access_token?'finns':'saknas'));
   if(res.error){setAuthMsg('login-msg',lang==='sv'?'Fel e-post eller lösenord.':'Incorrect email or password.');return;}
   currentSession=res;currentUser=res.user;
   dlog('Loggade in som: '+(currentUser?.email||'okänd'));
