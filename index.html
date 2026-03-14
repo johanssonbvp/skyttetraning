@@ -305,6 +305,49 @@ body::before {
 .hist-dots { font-size: 0.75rem; margin-top: 2px; }
 .hist-pct { font-family: var(--font-display); font-size: 1.8rem; font-weight: 900; letter-spacing: -1px; }
 
+
+/* ── SYNC INFO BANNER ── */
+.sync-info {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--accent);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.sync-info-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+.sync-info-text { flex: 1; }
+.sync-info-text strong {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 5px;
+}
+.sync-info-text p {
+  font-size: 0.8rem;
+  color: var(--muted2);
+  line-height: 1.6;
+  margin: 0;
+}
+.sync-info-close {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.sync-info-close:hover { color: var(--text); }
 /* ── MODALS ── */
 .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); backdrop-filter: blur(12px); z-index: 50; justify-content: center; align-items: flex-end; padding: 16px; }
 .overlay.show { display: flex; }
@@ -434,6 +477,14 @@ body::before {
       <button class="stats-nav-btn" onclick="switchStatsTab('history',this)" data-i18n="history">Historik</button>
     </div>
 
+    <div class="sync-info" id="sync-info">
+      <span class="sync-info-icon">💡</span>
+      <div class="sync-info-text">
+        <strong data-i18n="syncInfoTitle">Flytta data mellan enheter</strong>
+        <p data-i18n="syncInfoDesc">Exportera din data som en JSON-fil på den här enheten. Öppna sedan appen på en annan enhet och importera filen via ↑ Importera-knappen ovan.</p>
+      </div>
+      <button class="sync-info-close" onclick="dismissSyncInfo()">✕</button>
+    </div>
     <div id="stats-overview" class="stats-section active">
       <div class="overview-cards">
         <div class="ov-card"><div class="sv" id="ov-sessions" style="color:var(--accent)">0</div><div class="sk" data-i18n="sessions">Sessioner</div></div>
@@ -600,6 +651,7 @@ const i18n = {
     hitsOf:'träffar av', seriesDone:'Serien klar!',
     bestSession:'Bästa session', avgLabel:'Snitt', sessionsLabel:'sessioner',
     kofiText:'Gillar du appen? Bjud på en kaffe',
+    syncInfoTitle:'Flytta data mellan enheter', syncInfoDesc:'Exportera din data som en JSON-fil på den här enheten. Öppna sedan appen på en annan enhet och importera filen via ↑ Importera-knappen ovan.',
     importTitle:'Importera data', importDesc:'Välj en tidigare exporterad JSON-fil för att importera din träningshistorik.',
     chooseFile:'Välj fil', importSuccess:'✅ Importerade', importSessions:'sessioner!',
     importError:'❌ Ogiltig fil. Välj en JSON-fil exporterad från appen.',
@@ -635,6 +687,7 @@ const i18n = {
     hitsOf:'hits out of', seriesDone:'Series complete!',
     bestSession:'Best session', avgLabel:'Avg', sessionsLabel:'sessions',
     kofiText:'Enjoying the app? Buy me a coffee',
+    syncInfoTitle:'Move data between devices', syncInfoDesc:'Export your data as a JSON file on this device. Then open the app on another device and import the file using the ↑ Import button above.',
     importTitle:'Import data', importDesc:'Choose a previously exported JSON file to import your training history.',
     chooseFile:'Choose file', importSuccess:'✅ Imported', importSessions:'sessions!',
     importError:'❌ Invalid file. Please choose a JSON file exported from the app.',
@@ -1009,6 +1062,11 @@ function renderList(allData){
   }).join('');
 }
 
+function dismissSyncInfo(){
+  document.getElementById('sync-info').style.display='none';
+  localStorage.setItem('pt_sync_info_dismissed','1');
+}
+
 /* ══ INIT ══ */
 updateOnline();
 loadSession();
@@ -1016,6 +1074,10 @@ refreshDistPills();
 refreshCountPills();
 applyTranslations();
 showInstallBanner();
+if(localStorage.getItem('pt_sync_info_dismissed')){
+  const el=document.getElementById('sync-info');
+  if(el)el.style.display='none';
+}
 </script>
 </body>
 </html>
