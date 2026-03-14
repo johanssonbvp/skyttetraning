@@ -11,16 +11,9 @@
 <meta name="theme-color" content="#080810">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon-512.png">
 <script>
-const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="#080810"/><defs><radialGradient id="boule" cx="38%" cy="32%" r="65%"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/><stop offset="40%" stop-color="#e8ff47" stop-opacity="0.15"/><stop offset="100%" stop-color="#b8cc00" stop-opacity="0"/></radialGradient><radialGradient id="base" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4e800"/><stop offset="60%" stop-color="#a8b800"/><stop offset="100%" stop-color="#6a7500"/></radialGradient></defs><circle cx="256" cy="256" r="170" fill="url(#base)" stroke="#e8ff47" stroke-width="6" opacity="0.95"/><circle cx="256" cy="256" r="170" fill="url(#boule)"/><circle cx="204" cy="190" r="28" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="10"/><path d="M 256 86 A 170 170 0 0 1 400 190" fill="none" stroke="rgba(255,255,255,0.13)" stroke-width="10" stroke-linecap="round"/><path d="M 120 310 A 170 170 0 0 0 310 418" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="8" stroke-linecap="round"/><circle cx="220" cy="175" r="10" fill="rgba(255,255,255,0.35)"/></svg>`;
-const iconUrl = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(iconSvg)));
-const manifest = {name:"Petanque Träning",short_name:"Petanque",start_url:"./index.html",display:"standalone",background_color:"#080810",theme_color:"#080810",orientation:"portrait",icons:[{src:iconUrl,sizes:"512x512",type:"image/svg+xml",purpose:"any maskable"}]};
-const mblob = new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'});
-const ml = document.createElement('link'); ml.rel='manifest'; ml.href=URL.createObjectURL(mblob);
-document.currentScript.insertAdjacentElement('afterend',ml);
-const al = document.createElement('link'); al.rel='apple-touch-icon'; al.href=iconUrl;
-document.currentScript.insertAdjacentElement('afterend',al);
-// ── SERVICE WORKER ──
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(() => {});
 }
