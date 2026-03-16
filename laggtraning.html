@@ -248,7 +248,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <div class="ex-picker" id="exPicker">
       <!-- Precisionsmål -->
       <div class="ex-card" data-ex="precision" onclick="selectEx(this)">
-        <div class="ex-icon">🎯</div>
+        <div class="ex-icon">🥏</div>
         <div class="ex-info">
           <div class="ex-name" data-sv="Precisionsmål" data-en="Precision Goal">Precisionsmål</div>
           <div class="ex-desc" data-sv="Lägg så nära cochonneten som möjligt. Godkänd = inom 30 cm." data-en="Point as close to the jack as possible. Pass = within 30 cm.">Lägg så nära cochonneten som möjligt. Godkänd = inom 30 cm.</div>
@@ -257,7 +257,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       </div>
       <!-- Avståndszoner -->
       <div class="ex-card" data-ex="zones" onclick="selectEx(this)">
-        <div class="ex-icon">🗺️</div>
+        <div class="ex-icon">📏</div>
         <div class="ex-info">
           <div class="ex-name" data-sv="Avståndszoner" data-en="Distance Zones">Avståndszoner</div>
           <div class="ex-desc" data-sv="Du får en slumpmässig zon (nära/mitt/långt). Träffa rätt zon." data-en="You get a random zone (near/mid/far). Hit the correct zone.">Du får en slumpmässig zon (nära/mitt/långt). Träffa rätt zon.</div>
@@ -266,7 +266,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       </div>
       <!-- 3-boulerserie -->
       <div class="ex-card" data-ex="serie" onclick="selectEx(this)">
-        <div class="ex-icon">🎳</div>
+        <div class="ex-icon">⚫</div>
         <div class="ex-info">
           <div class="ex-name" data-sv="3-boulerserie" data-en="3-Boule Series">3-boulerserie</div>
           <div class="ex-desc" data-sv="Lägg tre boules i rad. Räkna hur många av tre som godkänns." data-en="Point three boules in a row. Count how many of three pass.">Lägg tre boules i rad. Räkna hur många av tre som godkänns.</div>
@@ -500,9 +500,9 @@ function switchStatsTab(tab) {
 // STATE
 // ════════════════════════════════════
 const ZONES = [
-  { id:'near', sv:'Nära', en:'Near', desc_sv:'0–50 cm från cochonneten', desc_en:'0–50 cm from the jack', color:'zone-near' },
-  { id:'mid',  sv:'Mitt', en:'Mid',  desc_sv:'50–100 cm från cochonneten', desc_en:'50–100 cm from the jack', color:'zone-mid' },
-  { id:'far',  sv:'Långt', en:'Far', desc_sv:'100–150 cm från cochonneten', desc_en:'100–150 cm from the jack', color:'zone-far' }
+  { id:'near', sv:'Nära', en:'Near', desc_sv:'0–20 cm från målkulan', desc_en:'0–20 cm from the jack', color:'zone-near' },
+  { id:'mid',  sv:'Mitt', en:'Mid',  desc_sv:'20–40 cm från målkulan', desc_en:'20–40 cm from the jack', color:'zone-mid' },
+  { id:'far',  sv:'Långt', en:'Far', desc_sv:'40–60 cm från målkulan', desc_en:'40–60 cm from the jack', color:'zone-far' }
 ];
 const EX_NAMES = { precision:{sv:'Precisionsmål',en:'Precision Goal'}, zones:{sv:'Avståndszoner',en:'Distance Zones'}, serie:{sv:'3-boulerserie',en:'3-Boule Series'} };
 
