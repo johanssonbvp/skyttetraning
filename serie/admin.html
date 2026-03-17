@@ -22,7 +22,6 @@
   .login-error.show{display:block;}
   .btn-login{background:var(--accent);color:#fff;border:none;border-radius:0.5rem;padding:0.75rem;font-size:0.95rem;font-weight:700;cursor:pointer;}
   .btn-login:hover{background:var(--accent2);}
-  .btn-login:disabled{opacity:0.6;cursor:not-allowed;}
   .app{display:flex;min-height:100vh;}
   .sidebar{width:220px;min-width:220px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:1.5rem 1rem;gap:0.5rem;position:sticky;top:0;height:100vh;overflow-y:auto;}
   .main{flex:1;padding:2rem;overflow-x:hidden;}
@@ -36,7 +35,7 @@
   .nav-item.active .nav-dot{background:var(--accent);}
   .nav-section{font-size:0.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin:1rem 0 0.3rem 0.75rem;}
   .sidebar-footer{margin-top:auto;}
-  .session-info{font-size:0.72rem;color:var(--muted);text-align:center;margin-bottom:0.5rem;word-break:break-all;}
+  .session-info{font-size:0.72rem;color:var(--muted);text-align:center;margin-bottom:0.5rem;}
   .btn-logout{width:100%;background:none;border:1px solid var(--border);color:var(--muted);border-radius:0.5rem;padding:0.45rem;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.15s;}
   .btn-logout:hover{border-color:var(--red);color:var(--red);}
   .page-header{margin-bottom:2rem;}
@@ -47,9 +46,9 @@
   .setup-grid{display:grid;grid-template-columns:280px 1fr;gap:1.5rem;}
   @media(max-width:900px){.setup-grid{grid-template-columns:1fr;}}
   .input-row{display:flex;gap:0.5rem;margin-bottom:0.75rem;}
-  input[type="text"],input[type="number"],input[type="email"],input[type="password"],select{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:0.5rem;padding:0.55rem 0.75rem;font-size:0.9rem;outline:none;transition:border 0.15s;}
-  input[type="text"]:focus,input[type="number"]:focus,select:focus,input[type="password"]:focus,input[type="email"]:focus{border-color:var(--accent);}
-  input[type="text"],input[type="password"],input[type="email"]{flex:1;}select{flex:1;}
+  input[type="text"],input[type="number"],input[type="password"],select{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:0.5rem;padding:0.55rem 0.75rem;font-size:0.9rem;outline:none;transition:border 0.15s;}
+  input[type="text"]:focus,input[type="number"]:focus,select:focus,input[type="password"]:focus{border-color:var(--accent);}
+  input[type="text"],input[type="password"]{flex:1;}select{flex:1;}
   input[type="number"]{width:52px;text-align:center;}
   .btn{padding:0.55rem 1.1rem;border-radius:0.5rem;font-weight:700;font-size:0.85rem;border:none;cursor:pointer;transition:all 0.15s;}
   .btn-primary{background:var(--accent);color:#fff;}.btn-primary:hover{background:var(--accent2);}
@@ -68,6 +67,8 @@
   .meetings-row{display:flex;align-items:center;gap:0.5rem;margin-top:0.75rem;font-size:0.75rem;color:var(--muted);padding-top:0.5rem;border-top:1px solid var(--border);}
   .badge{font-size:0.65rem;font-weight:700;padding:0.15rem 0.5rem;border-radius:9999px;}
   .badge-blue{background:rgba(99,102,241,0.15);color:var(--accent2);border:1px solid rgba(99,102,241,0.2);}
+
+  /* FORMAT PICKER */
   .format-picker{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
   .format-card{background:var(--bg3);border:2px solid var(--border);border-radius:0.75rem;padding:1.25rem;cursor:pointer;transition:all 0.2s;position:relative;}
   .format-card:hover{border-color:var(--muted);}
@@ -78,6 +79,7 @@
   .format-desc{font-size:0.75rem;color:var(--muted);line-height:1.4;}
   .format-check{position:absolute;top:0.75rem;right:0.75rem;width:18px;height:18px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.65rem;transition:all 0.2s;}
   .format-card.selected .format-check{background:var(--accent);border-color:var(--accent);color:#fff;}
+
   .division-block{margin-bottom:3rem;scroll-margin-top:2rem;}
   .division-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;}
   .division-header h2{font-size:1.5rem;font-weight:900;text-transform:uppercase;letter-spacing:0.05em;}
@@ -104,6 +106,7 @@
   .progress-bar{height:3px;background:var(--border);}
   .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 0.3s;}
   .round-body{padding:0.75rem;display:flex;flex-direction:column;gap:0.75rem;}
+  /* MATCH DISPLAY */
   .match-card{background:var(--bg3);border:1px solid var(--border);border-radius:0.6rem;overflow:hidden;}
   .match-teams{display:flex;align-items:center;padding:0.5rem 0.75rem;gap:0.5rem;}
   .match-team{flex:1;font-size:0.82rem;font-weight:700;}
@@ -119,17 +122,21 @@
   .set-winner.home{background:rgba(34,197,94,0.15);color:var(--green);}
   .set-winner.away{background:rgba(239,68,68,0.15);color:var(--red);}
   .set3-locked{opacity:0.35;pointer-events:none;}
-  .simple-match-row{display:flex;align-items:center;gap:0.5rem;width:100%;}
+  /* SIMPLE FORMAT */
+  .simple-match-row{display:flex;align-items:center;gap:0.5rem;}
   .simple-team{flex:1;font-size:0.85rem;font-weight:700;}
   .simple-team.right{text-align:right;}
   .simple-score-area{display:flex;align-items:center;gap:0.3rem;min-width:100px;justify-content:center;}
   .simple-input{width:44px;height:34px;text-align:center;padding:0;font-weight:700;font-size:0.95rem;border-radius:0.4rem;}
   .simple-sep{color:var(--border);font-weight:700;}
+
+  /* MODAL */
   .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:998;backdrop-filter:blur(4px);}
   .modal{background:var(--bg2);border:1px solid var(--border);border-radius:1rem;padding:2rem;width:100%;max-width:420px;display:flex;flex-direction:column;gap:1.25rem;}
   .modal h2{font-size:1.2rem;font-weight:900;}
   .modal p{color:var(--muted);font-size:0.88rem;line-height:1.5;}
   .modal-actions{display:flex;gap:0.75rem;justify-content:flex-end;}
+
   .bottom-bar{position:fixed;bottom:0;left:220px;right:0;background:rgba(13,15,20,0.9);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:0.75rem 2rem;display:flex;gap:1rem;justify-content:flex-end;z-index:100;}
   @media(max-width:900px){.bottom-bar{left:0;}}
   .hidden{display:none!important;}
@@ -138,7 +145,42 @@
   .sync-dot.saving{background:var(--gold);animation:pulse 1s infinite;}
   .format-badge{font-size:0.68rem;font-weight:700;padding:0.15rem 0.6rem;border-radius:9999px;background:rgba(99,102,241,0.15);color:var(--accent2);border:1px solid rgba(99,102,241,0.2);}
   @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
-  @media print{.sidebar,.bottom-bar,.no-print{display:none!important;}body{background:white;color:black;}}
+
+  /* PRINTING */
+  @media print {
+    .sidebar, .bottom-bar, .no-print, .login-overlay, .modal-overlay, .set-inputs button { display: none !important; }
+    body { background: white !important; color: black !important; }
+    .app { display: block !important; }
+    .main { padding: 0 !important; }
+    .card, .round-card, .match-card { 
+      background: white !important; 
+      color: black !important; 
+      border: 1px solid #ddd !important; 
+      box-shadow: none !important; 
+      margin-bottom: 1rem !important;
+      page-break-inside: avoid;
+    }
+    .round-header, .match-teams, .set-row { border-color: #eee !important; background: #f9f9f9 !important; }
+    input { background: white !important; border: 1px solid #ccc !important; color: black !important; }
+    .division-header h2 { color: black !important; }
+    .division-header .line { background: #ccc !important; }
+    .pts-cell { background: #f0f0f0 !important; color: black !important; }
+    .rounds-grid { display: block !important; }
+    .active-grid { grid-template-columns: 1fr !important; }
+    .format-badge { border: 1px solid black !important; color: black !important; background: transparent !important; }
+  }
+
+  /* PRINT VIEW SPECIFIC */
+  #print-view-container { display: none; }
+  @media print {
+    #print-view-container { display: block; }
+    #setup-section, #active-leagues-section { display: none !important; }
+  }
+  .print-page { padding: 2rem; page-break-after: always; }
+  .print-round { margin-bottom: 2rem; border-bottom: 2px solid #eee; padding-bottom: 1rem; }
+  .print-match { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem; border-bottom: 1px solid #eee; }
+  .print-team { font-weight: bold; width: 40%; }
+  .print-score-box { width: 30px; height: 30px; border: 1px solid black; display: inline-block; margin: 0 5px; vertical-align: middle; }
 </style>
 </head>
 <body>
@@ -149,15 +191,15 @@
     <div class="login-logo">Pétanque <span>Pro</span></div>
     <p class="login-subtitle">Adminåtkomst krävs</p>
     <div class="login-field">
-      <label>E-post</label>
-      <input type="email" id="login-email" placeholder="din@email.se" onkeydown="if(event.key==='Enter')tryLogin()">
+      <label>Användarnamn</label>
+      <input type="text" id="login-user" placeholder="Användarnamn" onkeydown="if(event.key==='Enter')tryLogin()">
     </div>
     <div class="login-field">
       <label>Lösenord</label>
       <input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')tryLogin()">
     </div>
-    <div class="login-error" id="login-error">Fel e-post eller lösenord.</div>
-    <button class="btn-login" id="login-btn" onclick="tryLogin()">Logga in</button>
+    <div class="login-error" id="login-error">Fel användarnamn eller lösenord.</div>
+    <button class="btn-login" onclick="tryLogin()">Logga in</button>
   </div>
 </div>
 
@@ -179,7 +221,7 @@
 
 <!-- APP -->
 <div class="app" id="app" style="display:none">
-  <nav class="sidebar">
+  <nav class="sidebar no-print">
     <div class="sidebar-logo">Pétanque <span>Pro</span></div>
     <div id="nav-setup" class="nav-item active" onclick="showSetup()">
       <div class="nav-dot"></div> Inställningar
@@ -187,16 +229,21 @@
     <div id="nav-divisions-header" class="nav-section hidden">Divisioner</div>
     <div id="nav-divisions"></div>
     <div class="sidebar-footer">
-      <div class="session-info" id="session-email"></div>
+      <div class="session-info">Inloggad som admin</div>
       <button class="btn-logout" onclick="logout()">Logga ut</button>
     </div>
   </nav>
+
   <main class="main">
+    <!-- PRINT VIEW (Only visible when printing) -->
+    <div id="print-view-container"></div>
+
     <div id="setup-section">
       <div class="page-header">
         <h1>Sätt upp seriespel</h1>
         <p>Välj format, skapa divisioner och lägg till lag.</p>
       </div>
+
       <div class="card" style="margin-bottom:1.5rem">
         <div class="card-title">Spelformat för säsongen</div>
         <div class="format-picker">
@@ -216,6 +263,7 @@
           </label>
         </div>
       </div>
+
       <div class="setup-grid">
         <div class="card">
           <div class="card-title">Divisioner</div>
@@ -239,6 +287,7 @@
         </div>
       </div>
     </div>
+
     <div id="active-leagues-section" class="hidden">
       <div class="page-header no-print" style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
         <div>
@@ -252,21 +301,20 @@
   </main>
 </div>
 
-<div id="bottom-bar" class="bottom-bar hidden">
+<div id="bottom-bar" class="bottom-bar hidden no-print">
   <div class="sync-indicator"><div class="sync-dot" id="sync-dot"></div><span id="sync-text">Synkad</span></div>
-  <button class="btn btn-ghost" onclick="window.print()">🖨 Skriv ut</button>
+  <button class="btn btn-ghost" onclick="prepareAndPrint()">🖨 Skriv ut spelprogram</button>
   <button class="btn btn-gold" onclick="openEndSeasonModal()">🏆 Avsluta säsong</button>
   <button class="btn btn-danger" onclick="resetAll()">Nollställ allt</button>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script>
-const firebaseConfig={apiKey:"AIzaSyCwzdwGEjN5LVw3RSLz2dy7f70Reafbe2c",authDomain:"databas-serie.firebaseapp.com",databaseURL:"https://databas-serie-default-rtdb.europe-west1.firebasedatabase.app",projectId:"databas-serie",storageBucket:"databas-serie.firebasestorage.app",messagingSenderId:"672666417012",appId:"1:672666417012:web:93613783fe51cd2ce81e21"};
+const ADMIN_USER='admin',ADMIN_PASS='petanque123';
+const firebaseConfig={apiKey:"AIzaSyAw-cizjTdKHd3-FOmxyaXvD-vQTum-NSk",authDomain:"databas-serie.firebaseapp.com",databaseURL:"https://databas-serie-default-rtdb.europe-west1.firebasedatabase.app",projectId:"databas-serie",storageBucket:"databas-serie.firebasestorage.app",messagingSenderId:"672666417012",appId:"1:672666417012:web:93613783fe51cd2ce81e21"};
 firebase.initializeApp(firebaseConfig);
 const db=firebase.database();
-const auth=firebase.auth();
 const dataRef=db.ref('petanque');
 const archiveRef=db.ref('archive');
 
@@ -274,41 +322,43 @@ let divisions=[];
 let seasonFormat='sets';
 let saveTimeout=null;
 
-// ─── AUTH ─────────────────────────────────────────────────
-auth.onAuthStateChanged(user=>{
-  if(user){
-    document.getElementById('login-overlay').style.display='none';
-    document.getElementById('app').style.display='flex';
-    document.getElementById('session-email').textContent=user.email;
-    dataRef.once('value',snap=>{
-      const val=snap.val()||{};
-      divisions=val.divisions||[];
-      seasonFormat=val.format||'sets';
-      selectFormat(seasonFormat);
-      if(divisions.some(d=>d.rounds&&d.rounds.length>0)) activateLeagueView();
-      else updateSetupUI();
+// ─── UTDRAG FÖR UTSKRIFT ──────────────────────────────────
+function prepareAndPrint() {
+  const container = document.getElementById('print-view-container');
+  let html = `<h1 style="text-align:center;margin-bottom:2rem;">Spelprogram & Resultatrapport</h1>`;
+  
+  divisions.forEach(div => {
+    html += `<div class="print-page">
+      <h2 style="border-bottom: 2px solid black; padding-bottom: 5px;">${div.name}</h2>
+      <p style="margin-bottom: 20px;">Format: ${seasonFormat === 'sets' ? 'Set-format (Bäst av 3 till 13)' : 'Enkelmatch'}</p>`;
+    
+    div.rounds.forEach((round, rIdx) => {
+      html += `<div class="print-round">
+        <h3 style="background:#eee; padding: 5px 10px; margin-bottom: 10px;">Omgång ${rIdx + 1}</h3>`;
+      
+      round.forEach(m => {
+        html += `<div class="print-match">
+          <div class="print-team">${m.home}</div>
+          <div style="flex: 1; text-align: center;">
+            ${seasonFormat === 'sets' ? `
+              Set 1: <span class="print-score-box"></span> - <span class="print-score-box"></span> | 
+              Set 2: <span class="print-score-box"></span> - <span class="print-score-box"></span> | 
+              Set 3: <span class="print-score-box"></span> - <span class="print-score-box"></span>
+            ` : `
+              Resultat: <span class="print-score-box"></span> - <span class="print-score-box"></span>
+            `}
+          </div>
+          <div class="print-team" style="text-align:right;">${m.away}</div>
+        </div>`;
+      });
+      html += `</div>`;
     });
-  } else {
-    document.getElementById('login-overlay').style.display='flex';
-    document.getElementById('app').style.display='none';
-  }
-});
-
-function tryLogin(){
-  const email=document.getElementById('login-email').value.trim();
-  const pass=document.getElementById('login-pass').value;
-  const btn=document.getElementById('login-btn');
-  const err=document.getElementById('login-error');
-  if(!email||!pass){err.classList.add('show');return;}
-  err.classList.remove('show');
-  btn.disabled=true;btn.textContent='Loggar in…';
-  auth.signInWithEmailAndPassword(email,pass).catch(()=>{
-    err.classList.add('show');
-    btn.disabled=false;btn.textContent='Logga in';
-    document.getElementById('login-pass').value='';
+    html += `</div>`;
   });
+
+  container.innerHTML = html;
+  window.print();
 }
-function logout(){auth.signOut();}
 
 // ─── FORMAT ───────────────────────────────────────────────
 function selectFormat(fmt){
@@ -321,19 +371,35 @@ function selectFormat(fmt){
 
 // ─── HELPERS ─────────────────────────────────────────────
 function calcMatch(m,fmt){
-  if(fmt==='simple'){const h=m.homeScore,a=m.awayScore;if(h===null||a===null)return{hS:0,aS:0,hK:0,aK:0};return{hS:0,aS:0,hK:h,aK:a};}
+  if(fmt==='simple'){
+    const h=m.homeScore,a=m.awayScore;
+    if(h===null||a===null) return{hS:0,aS:0,hK:0,aK:0};
+    return{hS:0,aS:0,hK:h,aK:a};
+  }
   let hS=0,aS=0,hK=0,aK=0;
+  if(!m.s1) return{hS,aS,hK,aK};
   [m.s1,m.s2,m.s3].forEach((s,i)=>{
     if(!s||s.h===null||s.a===null)return;
-    if(i===2){const r1=m.s1,r2=m.s2;if(!r1||!r2||r1.h===null||r2.h===null)return;if((r1.h>r1.a?1:0)+(r2.h>r2.a?1:0)!==1)return;}
+    if(i===2){
+      const r1=m.s1,r2=m.s2;
+      if(!r1||!r2||r1.h===null||r2.h===null)return;
+      if((r1.h>r1.a?1:0)+(r2.h>r2.a?1:0)!==1)return;
+    }
     hK+=s.h;aK+=s.a;if(s.h>s.a)hS++;else aS++;
   });
   return{hS,aS,hK,aK};
 }
 function matchWinner(m,fmt){
-  if(fmt==='simple'){if(m.homeScore===null||m.awayScore===null)return null;return m.homeScore>m.awayScore?'home':m.awayScore>m.homeScore?'away':null;}
-  const{hS,aS}=calcMatch(m,fmt);return hS===2?'home':aS===2?'away':null;
+  if(fmt==='simple'){
+    if(m.homeScore===null||m.awayScore===null)return null;
+    if(m.homeScore>m.awayScore)return'home';
+    if(m.awayScore>m.homeScore)return'away';
+    return null;
+  }
+  const{hS,aS}=calcMatch(m,fmt);
+  if(hS===2)return'home';if(aS===2)return'away';return null;
 }
+
 function setSyncStatus(saving){
   const dot=document.getElementById('sync-dot'),txt=document.getElementById('sync-text');
   if(saving){dot.classList.add('saving');txt.textContent='Sparar…';}
@@ -344,7 +410,40 @@ function save(){
   saveTimeout=setTimeout(()=>dataRef.set({format:seasonFormat,divisions}).then(()=>setSyncStatus(false)),600);
 }
 
-// ─── SEASON MODAL ─────────────────────────────────────────
+// ─── AUTH ─────────────────────────────────────────────────
+function tryLogin(){
+  const u=document.getElementById('login-user').value.trim();
+  const p=document.getElementById('login-pass').value;
+  if(u===ADMIN_USER&&p===ADMIN_PASS){
+    document.getElementById('login-error').classList.remove('show');
+    document.getElementById('login-overlay').style.display='none';
+    document.getElementById('app').style.display='flex';
+    dataRef.once('value',snap=>{
+      const val=snap.val()||{};
+      divisions=val.divisions||[];
+      seasonFormat=val.format||'sets';
+      selectFormat(seasonFormat);
+      if(divisions.some(d=>d.rounds&&d.rounds.length>0))activateLeagueView();
+      else updateSetupUI();
+    });
+  }else{
+    document.getElementById('login-error').classList.add('show');
+    document.getElementById('login-pass').value='';
+  }
+}
+function logout(){
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-overlay').style.display='flex';
+}
+
+function resetAll() {
+  if(confirm("Är du säker på att du vill nollställa allt? All data försvinner.")) {
+    divisions = [];
+    save();
+    location.reload();
+  }
+}
+
 function openEndSeasonModal(){
   document.getElementById('season-name-input').value='Säsong '+new Date().getFullYear();
   document.getElementById('end-season-modal').classList.remove('hidden');
@@ -360,15 +459,12 @@ function confirmEndSeason(){
       document.getElementById('setup-section').classList.remove('hidden');
       document.getElementById('active-leagues-section').classList.add('hidden');
       document.getElementById('bottom-bar').classList.add('hidden');
-      document.getElementById('nav-divisions-header').classList.add('hidden');
-      document.getElementById('nav-divisions').innerHTML='';
-      setNavActive('nav-setup');updateSetupUI();
-      alert(`✅ "${name}" arkiverad! Sätt upp en ny säsong.`);
+      updateSetupUI();
+      alert(`✅ "${name}" arkiverad!`);
     });
   });
 }
 
-// ─── NAV ──────────────────────────────────────────────────
 function showSetup(){
   document.getElementById('setup-section').classList.remove('hidden');
   document.getElementById('active-leagues-section').classList.add('hidden');
@@ -385,7 +481,6 @@ function setNavActive(id){
   document.getElementById(id)?.classList.add('active');
 }
 
-// ─── SETUP ────────────────────────────────────────────────
 function addDivision(){
   const inp=document.getElementById('div-input');
   const name=inp.value.trim();if(!name)return;
@@ -425,9 +520,8 @@ function updateSetupUI(){
   document.getElementById('start-all-container').classList.toggle('hidden',!divisions.some(d=>d.teams.length>=2));
 }
 
-// ─── GENERATE ─────────────────────────────────────────────
 function newMatch(h,a){
-  if(seasonFormat==='simple')return{home:h,away:a,homeScore:null,awayScore:null};
+  if(seasonFormat==='simple') return{home:h,away:a,homeScore:null,awayScore:null};
   return{home:h,away:a,s1:{h:null,a:null},s2:{h:null,a:null},s3:{h:null,a:null}};
 }
 function generateAllLeagues(){
@@ -436,10 +530,12 @@ function generateAllLeagues(){
     const temps=[...div.teams];
     if(temps.length%2!==0)temps.push(null);
     const n=temps.length;let base=[];
+    const t = [...temps];
     for(let r=0;r<n-1;r++){
       let matches=[];
-      for(let i=0;i<n/2;i++){const h=temps[i],a=temps[n-1-i];if(h&&a)matches.push(newMatch(h,a));}
-      base.push(matches);temps.splice(1,0,temps.pop());
+      for(let i=0;i<n/2;i++){const h=t[i],a=t[n-1-i];if(h&&a)matches.push(newMatch(h,a));}
+      base.push(matches);
+      t.splice(1, 0, t.pop());
     }
     div.rounds=[];
     for(let m=0;m<div.meetings;m++){
@@ -457,27 +553,21 @@ function activateLeagueView(){
     <div class="nav-item" id="nav-div-${d.id}" onclick="showDivision(${d.id})">
       <div class="nav-dot"></div>${d.name}</div>`).join('');
   setNavActive('nav-div-'+divisions[0]?.id);
-  const fmtLabel=seasonFormat==='sets'?'Set-format (2–3 set till 13)':'Enkelt resultat';
-  document.getElementById('active-format-badge').textContent=fmtLabel;
-  document.getElementById('active-format-desc').textContent=seasonFormat==='sets'
-    ?'Fyll i klotresultat per set. Tredje set aktiveras automatiskt vid 1–1.'
-    :'Fyll i slutresultatet per match.';
+  document.getElementById('active-format-badge').textContent=seasonFormat==='sets'?'Set-format':'Enkelt resultat';
   renderActiveLeagues();
 }
 
-// ─── RENDER ───────────────────────────────────────────────
 function renderActiveLeagues(){
   const cont=document.getElementById('active-leagues-content');cont.innerHTML='';
   divisions.forEach(div=>{
     if(!div.rounds||!div.rounds.length)return;
     const block=document.createElement('div');
     block.className='division-block';block.id='div-block-'+div.id;
-    const thSets=seasonFormat==='sets'?'<th title="Setskillnad">SS</th>':'';
     block.innerHTML=`
       <div class="division-header"><h2>${div.name}</h2><div class="line"></div></div>
       <div class="active-grid">
         <div><div class="card" style="padding:0;overflow:hidden">
-          <table><thead><tr><th>#</th><th>Lag</th><th>S</th><th>V</th><th>F</th>${thSets}<th title="Klotdifferens">KD</th><th>P</th></tr></thead>
+          <table><thead><tr><th>#</th><th>Lag</th><th>S</th><th>V</th><th>F</th>${seasonFormat==='sets'?'<th>SS</th>':''}<th>KD</th><th>P</th></tr></thead>
           <tbody id="tb-${div.id}"></tbody></table></div></div>
         <div class="rounds-grid" id="rg-${div.id}"></div>
       </div>`;
@@ -485,6 +575,25 @@ function renderActiveLeagues(){
     renderTable(div.id);renderRounds(div.id);
   });
 }
+
+function updateScore(divId, rIdx, mIdx, field, val, setNum) {
+  const div = divisions.find(d => d.id === divId);
+  const match = div.rounds[rIdx][mIdx];
+  const num = val === '' ? null : parseInt(val);
+  
+  if (seasonFormat === 'simple') {
+    if (field === 'h') match.homeScore = num;
+    else match.awayScore = num;
+  } else {
+    const s = match['s' + setNum];
+    if (field === 'h') s.h = num;
+    else s.a = num;
+  }
+  save();
+  renderTable(divId);
+  renderRounds(divId);
+}
+
 function renderTable(divId){
   const div=divisions.find(d=>d.id===divId);
   const stats={};
@@ -499,99 +608,62 @@ function renderTable(divId){
     else{stats[m.away].wins++;stats[m.away].pts+=2;stats[m.home].losses++;}
   }));
   const sorted=Object.entries(stats).map(([name,s])=>({name,...s,sd:s.sF-s.sA,kd:s.kF-s.kA}))
-    .sort((a,b)=>b.pts-a.pts||b.sd-a.sd||b.kd-a.kd||b.kF-a.kF);
+    .sort((a,b)=>b.pts-a.pts||b.sd-a.sd||b.kd-a.kd);
   const tbody=document.getElementById('tb-'+divId);if(!tbody)return;
   tbody.innerHTML=sorted.map((t,i)=>`
     <tr class="${i===0&&t.pts>0?'gold-row':''}">
       <td>${i+1}</td><td>${t.name}</td><td>${t.played}</td>
       <td style="color:var(--green)">${t.wins}</td><td style="color:var(--red)">${t.losses}</td>
-      ${seasonFormat==='sets'?`<td class="${t.sd>0?'diff-pos':t.sd<0?'diff-neg':''}">${t.sd>0?'+':''}${t.sd}</td>`:''}
-      <td class="${t.kd>0?'diff-pos':t.kd<0?'diff-neg':''}">${t.kd>0?'+':''}${t.kd}</td>
+      ${seasonFormat==='sets'?`<td class="${t.sd>=0?'diff-pos':'diff-neg'}">${t.sd}</td>`:''}
+      <td class="${t.kd>=0?'diff-pos':'diff-neg'}">${t.kd}</td>
       <td class="pts-cell">${t.pts}</td>
     </tr>`).join('');
 }
+
 function renderRounds(divId){
   const div=divisions.find(d=>d.id===divId);
   const grid=document.getElementById('rg-'+divId);if(!grid)return;
-  grid.innerHTML=div.rounds.map((round,rIdx)=>{
-    const total=round.length,done=round.filter(m=>matchWinner(m,seasonFormat)!==null).length,allDone=done===total;
-    const matchesHTML=round.map((m,mIdx)=>{
-      if(seasonFormat==='simple'){
-        return`<div class="match-card"><div class="match-teams" style="border-bottom:none">
-          <div class="simple-match-row">
-            <span class="simple-team right">${m.home}</span>
-            <div class="simple-score-area">
-              <input type="number" class="simple-input" min="0" value="${m.homeScore!==null?m.homeScore:''}" placeholder="-"
-                onchange="setSimpleScore(${divId},${rIdx},${mIdx},'home',this.value)">
-              <span class="simple-sep">–</span>
-              <input type="number" class="simple-input" min="0" value="${m.awayScore!==null?m.awayScore:''}" placeholder="-"
-                onchange="setSimpleScore(${divId},${rIdx},${mIdx},'away',this.value)">
+  grid.innerHTML=div.rounds.map((round,rIdx)=>`
+    <div class="round-card ${round.every(m=>matchWinner(m,seasonFormat))?'done':''}">
+      <div class="round-header"><span class="round-label">Omgång ${rIdx+1}</span></div>
+      <div class="round-body">${round.map((m,mIdx)=>{
+        if(seasonFormat==='simple'){
+          return `<div class="match-card">
+            <div class="match-teams">
+              <span class="match-team">${m.home}</span>
+              <div class="simple-score-area">
+                <input type="number" class="simple-input" value="${m.homeScore??''}" onchange="updateScore(${div.id},${rIdx},${mIdx},'h',this.value)">
+                <span class="simple-sep">-</span>
+                <input type="number" class="simple-input" value="${m.awayScore??''}" onchange="updateScore(${div.id},${rIdx},${mIdx},'a',this.value)">
+              </div>
+              <span class="match-team right">${m.away}</span>
             </div>
-            <span class="simple-team">${m.away}</span>
-          </div>
-        </div></div>`;
-      }
-      const{hS,aS}=calcMatch(m,'sets'),w=matchWinner(m,'sets');
-      const s1d=m.s1.h!==null&&m.s1.a!==null,s2d=m.s2.h!==null&&m.s2.a!==null;
-      const need3=s1d&&s2d&&(m.s1.h>m.s1.a?1:0)+(m.s2.h>m.s2.a?1:0)===1;
-      const setRows=[{key:'s1',label:'Set 1',locked:false},{key:'s2',label:'Set 2',locked:false},{key:'s3',label:'Set 3',locked:!need3}]
-        .map(({key,label,locked})=>{
-          const s=m[key],sv=s.h!==null&&s.a!==null?(s.h>s.a?'home':s.a>s.h?'away':null):null;
-          return`<div class="set-row ${locked?'set3-locked':''}">
-            <span class="set-label">${label}</span>
-            <div class="set-inputs">
-              <input type="number" class="set-input" min="0" max="13" value="${s.h!==null?s.h:''}" placeholder="-"
-                onchange="setSetScore(${divId},${rIdx},${mIdx},'${key}','h',this.value)">
-              <span class="set-sep">–</span>
-              <input type="number" class="set-input" min="0" max="13" value="${s.a!==null?s.a:''}" placeholder="-"
-                onchange="setSetScore(${divId},${rIdx},${mIdx},'${key}','a',this.value)">
-            </div>
-            ${sv?`<span class="set-winner ${sv}">${sv==='home'?m.home:m.away}</span>`:'<span style="width:60px"></span>'}
           </div>`;
-        }).join('');
-      return`<div class="match-card">
-        <div class="match-teams">
-          <span class="match-team right">${m.home}</span>
-          <span class="match-set-score">${w?hS+' – '+aS:'– –'}</span>
-          <span class="match-team">${m.away}</span>
-        </div>
-        <div class="sets-area">${setRows}</div>
-      </div>`;
-    }).join('');
-    return`<div class="round-card ${allDone?'done':''}">
-      <div class="round-header"><span class="round-label">Omgång ${rIdx+1}</span>
-        ${allDone?'<span class="done-badge">✓ Klar</span>':`<span style="font-size:0.7rem;color:var(--muted)">${done}/${total}</span>`}
-      </div>
-      <div class="progress-bar"><div class="progress-fill" style="width:${total?Math.round(done/total*100):0}%"></div></div>
-      <div class="round-body">${matchesHTML}</div>
-    </div>`;
-  }).join('');
-}
-function setSimpleScore(divId,rIdx,mIdx,side,val){
-  const div=divisions.find(d=>d.id===divId);
-  const score=val===''?null:parseInt(val);
-  if(side==='home')div.rounds[rIdx][mIdx].homeScore=score;
-  else div.rounds[rIdx][mIdx].awayScore=score;
-  save();renderTable(divId);renderRounds(divId);
-}
-function setSetScore(divId,rIdx,mIdx,setKey,side,val){
-  const div=divisions.find(d=>d.id===divId);
-  const score=val===''?null:parseInt(val);
-  div.rounds[rIdx][mIdx][setKey][side]=score;
-  save();renderTable(divId);renderRounds(divId);
-}
-function resetAll(){
-  if(!confirm('Nollställ allt utan arkivering?'))return;
-  divisions=[];seasonFormat='sets';
-  dataRef.set({format:'sets',divisions:[]}).then(()=>{
-    selectFormat('sets');
-    document.getElementById('setup-section').classList.remove('hidden');
-    document.getElementById('active-leagues-section').classList.add('hidden');
-    document.getElementById('bottom-bar').classList.add('hidden');
-    document.getElementById('nav-divisions-header').classList.add('hidden');
-    document.getElementById('nav-divisions').innerHTML='';
-    setNavActive('nav-setup');updateSetupUI();
-  });
+        } else {
+          const {hS, aS} = calcMatch(m, 'sets');
+          const needsS3 = (m.s1?.h!==null && m.s2?.h!==null) && ((m.s1.h>m.s1.a?1:0) + (m.s2.h>m.s2.a?1:0) === 1);
+          return `<div class="match-card">
+            <div class="match-teams">
+              <span class="match-team">${m.home}</span>
+              <span class="match-set-score">${hS} - ${aS}</span>
+              <span class="match-team right">${m.away}</span>
+            </div>
+            <div class="sets-area">
+              ${[1,2,3].map(n => `
+                <div class="set-row ${n===3 && !needsS3 ? 'set3-locked' : ''}">
+                  <span class="set-label">Set ${n}</span>
+                  <div class="set-inputs">
+                    <input type="number" class="set-input" value="${m['s'+n]?.h??''}" onchange="updateScore(${div.id},${rIdx},${mIdx},'h',this.value,${n})">
+                    <span class="set-sep">-</span>
+                    <input type="number" class="set-input" value="${m['s'+n]?.a??''}" onchange="updateScore(${div.id},${rIdx},${mIdx},'a',this.value,${n})">
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>`;
+        }
+      }).join('')}</div>
+    </div>`).join('');
 }
 </script>
 </body>
