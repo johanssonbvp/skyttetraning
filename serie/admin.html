@@ -9,8 +9,8 @@
   *{box-sizing:border-box;margin:0;padding:0;}
   body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;}
   ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--bg2);}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
-  
-  /* LOGIN & UI COMPONENTS */
+
+  /* LOGIN */
   .login-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;}
   .login-box{background:var(--bg2);border:1px solid var(--border);border-radius:1rem;padding:2.5rem;width:100%;max-width:360px;display:flex;flex-direction:column;gap:1.25rem;}
   .login-logo{font-size:1.4rem;font-weight:900;color:var(--accent2);text-align:center;}
@@ -42,7 +42,7 @@
   .btn-logout{width:100%;background:none;border:1px solid var(--border);color:var(--muted);border-radius:0.5rem;padding:0.45rem;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.15s;}
   .btn-logout:hover{border-color:var(--red);color:var(--red);}
 
-  /* TABLES & CARDS */
+  /* CARDS & INPUTS */
   .card{background:var(--bg2);border:1px solid var(--border);border-radius:0.75rem;padding:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,0.4);margin-bottom:1.5rem;}
   .card-title{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:1rem;}
   .setup-grid{display:grid;grid-template-columns:280px 1fr;gap:1.5rem;}
@@ -66,61 +66,146 @@
   @media(max-width:900px){.bottom-bar{left:0;}}
   .hidden{display:none!important;}
 
-  /* ─────────────── PRINT OPTIMIZATION ─────────────── */
-  #print-view-container { display: none; }
+  /* PRINT MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:flex;align-items:center;justify-content:center;z-index:500;backdrop-filter:blur(4px);}
+  .modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:1rem;padding:2rem;width:100%;max-width:520px;display:flex;flex-direction:column;gap:1rem;}
+  .modal-title{font-size:1rem;font-weight:800;color:var(--text);}
+  .modal-section{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-top:0.5rem;}
+  .round-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:0.5rem;margin-top:0.4rem;}
+  .round-btn{background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:0.5rem;padding:0.5rem 0.75rem;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.15s;text-align:center;}
+  .round-btn:hover{border-color:var(--accent);color:var(--accent2);}
+  .div-select-list{display:flex;flex-direction:column;gap:0.4rem;margin-top:0.4rem;}
+  .div-select-item{background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:0.5rem;padding:0.55rem 0.85rem;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.15s;}
+  .div-select-item:hover{border-color:var(--accent);color:var(--accent2);}
+  .modal-actions{display:flex;gap:0.75rem;justify-content:flex-end;margin-top:0.5rem;}
+
+  /* ─────────────── PRINT STYLES ─────────────── */
+  #print-view-container{display:none;}
 
   @media print {
-    /* Hide everything that isn't the print container */
-    body { background: white !important; color: black !important; }
-    .sidebar, .bottom-bar, .no-print, .login-overlay, .modal-overlay, #setup-section, #active-leagues-section { 
-        display: none !important; 
-    }
-    .app { display: block !important; }
-    .main { padding: 0 !important; }
-    
-    #print-view-container { 
-        display: block !important; 
-        color: black !important;
-    }
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    body{background:white!important;color:black!important;font-family:'Segoe UI',system-ui,sans-serif;}
+    .sidebar,.bottom-bar,.no-print,.login-overlay,.modal-overlay,
+    #setup-section,#active-leagues-section{display:none!important;}
+    .app{display:block!important;}
+    .main{padding:0!important;}
+    #print-view-container{display:block!important;}
 
-    .print-page { 
-        padding: 40px; 
-        page-break-after: always; 
-        background: white;
+    .print-page{
+      padding:30px 40px;
+      page-break-after:always;
+      background:white;
     }
-    
-    .print-round { 
-        margin-bottom: 30px; 
-        border: 1px solid #000;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-    
-    .print-round-header {
-        background: #f0f0f0;
-        padding: 10px;
-        font-weight: bold;
-        border-bottom: 1px solid #000;
-        text-transform: uppercase;
-        font-size: 14px;
-    }
+    .print-page:last-child{page-break-after:auto;}
 
-    .print-match { 
-        display: flex; 
-        align-items: center; 
-        justify-content: space-between; 
-        padding: 12px; 
-        border-bottom: 1px solid #eee; 
+    .print-header{
+      border-bottom:3px solid #1a1a2e;
+      padding-bottom:12px;
+      margin-bottom:22px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
     }
-    .print-match:last-child { border-bottom: none; }
+    .print-header-left h1{font-size:22px;font-weight:900;color:#1a1a2e;margin-bottom:3px;}
+    .print-header-left p{font-size:12px;color:#666;}
+    .print-header-right{font-size:11px;color:#888;text-align:right;}
 
-    .print-team { font-weight: bold; width: 35%; font-size: 16px; }
-    .print-score-area { flex: 1; display: flex; justify-content: center; align-items: center; gap: 8px; }
-    .print-score-box { 
-        width: 35px; height: 35px; border: 2px solid black; 
-        display: inline-block; vertical-align: middle; 
+    .print-round{
+      border:2px solid #1a1a2e;
+      border-radius:8px;
+      overflow:hidden;
+      margin-bottom:0;
     }
-    .print-vs { font-size: 12px; color: #666; font-weight: bold; margin: 0 10px; }
+    .print-round-header{
+      background:#1a1a2e;
+      color:white;
+      padding:10px 16px;
+      font-weight:800;
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+    }
+    .print-match{
+      display:flex;
+      align-items:center;
+      padding:14px 16px;
+      border-bottom:1px solid #e5e7eb;
+      gap:12px;
+    }
+    .print-match:last-child{border-bottom:none;}
+    .print-match:nth-child(even){background:#f9fafb;}
+
+    .print-match-num{
+      width:24px;
+      height:24px;
+      background:#1a1a2e;
+      color:white;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:10px;
+      font-weight:800;
+      flex-shrink:0;
+    }
+    .print-team{font-weight:700;font-size:15px;flex:1;}
+    .print-team.right{text-align:right;}
+
+    /* SET FORMAT: 3 set */
+    .print-score-area-sets{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      flex-shrink:0;
+    }
+    .print-set-group{display:flex;align-items:center;gap:4px;}
+    .print-score-box{
+      width:32px;height:32px;
+      border:2px solid #1a1a2e;
+      border-radius:4px;
+      display:inline-block;
+    }
+    .print-vs{font-size:10px;color:#999;font-weight:700;}
+    .print-separator{color:#ccc;font-size:18px;margin:0 4px;}
+
+    /* SIMPLE FORMAT */
+    .print-score-area-simple{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-shrink:0;
+    }
+    .print-score-box-lg{
+      width:40px;height:40px;
+      border:2px solid #1a1a2e;
+      border-radius:4px;
+      display:inline-block;
+    }
+    .print-vs-lg{font-size:14px;color:#999;font-weight:800;}
+
+    /* TABLE PRINT */
+    .print-table-page{padding:30px 40px;background:white;}
+    .print-standings{width:100%;border-collapse:collapse;margin-top:16px;}
+    .print-standings th{
+      background:#1a1a2e;
+      color:white;
+      padding:10px 12px;
+      text-align:left;
+      font-size:11px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:0.06em;
+    }
+    .print-standings th.num{text-align:center;}
+    .print-standings td{
+      padding:10px 12px;
+      border-bottom:1px solid #e5e7eb;
+      font-size:13px;
+    }
+    .print-standings tr:nth-child(even) td{background:#f9fafb;}
+    .print-standings td.num{text-align:center;font-weight:700;}
+    .print-standings td.rank{font-weight:900;font-size:15px;width:36px;}
+    .print-footer{margin-top:20px;font-size:10px;color:#aaa;text-align:right;}
   }
 </style>
 </head>
@@ -144,6 +229,31 @@
   </div>
 </div>
 
+<!-- PRINT MODAL -->
+<div class="modal-overlay hidden" id="print-modal">
+  <div class="modal-box">
+    <div class="modal-title">🖨 Välj vad du vill skriva ut</div>
+
+    <div id="print-modal-rounds-section">
+      <div class="modal-section">Omgångar – en omgång per papper</div>
+      <div id="print-modal-div-tabs" style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.5rem;"></div>
+      <div class="round-grid" id="print-modal-rounds"></div>
+      <div style="display:flex;gap:0.5rem;margin-top:0.5rem;">
+        <button class="btn btn-ghost" style="flex:1" onclick="printAllRounds()">Alla omgångar</button>
+      </div>
+    </div>
+
+    <div id="print-modal-table-section">
+      <div class="modal-section">Tabell – skriv ut aktuell ställning</div>
+      <div class="div-select-list" id="print-modal-tables"></div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closePrintModal()">Avbryt</button>
+    </div>
+  </div>
+</div>
+
 <!-- APP -->
 <div class="app" id="app" style="display:none">
   <nav class="sidebar no-print">
@@ -157,14 +267,14 @@
   </nav>
 
   <main class="main">
-    <!-- PRINT VIEW (Only visible in print mode) -->
+    <!-- PRINT VIEW (endast synligt vid utskrift) -->
     <div id="print-view-container"></div>
 
-    <!-- SETUP SECTION -->
+    <!-- SETUP -->
     <div id="setup-section">
-      <div class="page-header">
+      <div class="page-header" style="margin-bottom:1.5rem;">
         <h1>Sätt upp seriespel</h1>
-        <p>Välj format och hantera divisioner.</p>
+        <p style="color:var(--muted);margin-top:0.3rem;">Välj format och hantera divisioner.</p>
       </div>
 
       <div class="card">
@@ -172,9 +282,11 @@
         <div class="format-picker">
           <label class="format-card selected" id="fc-sets" onclick="setFormat('sets')">
             <input type="radio" name="fmt" checked> 🎯 Set-format
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:0.4rem;">3 set till 13 poäng</div>
           </label>
           <label class="format-card" id="fc-simple" onclick="setFormat('simple')">
             <input type="radio" name="fmt"> ⚡ Enkelt resultat
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:0.4rem;">2p vinst / 1p oavgjort</div>
           </label>
         </div>
       </div>
@@ -183,7 +295,7 @@
         <div class="card">
           <div class="card-title">Divisioner</div>
           <div class="input-row">
-            <input type="text" id="div-input" placeholder="Namn">
+            <input type="text" id="div-input" placeholder="Namn" style="flex:1">
             <button class="btn btn-primary" onclick="addDivision()">Skapa</button>
           </div>
           <div id="div-list"></div>
@@ -191,7 +303,7 @@
         <div class="card">
           <div class="card-title">Lägg till lag</div>
           <div class="input-row">
-            <input type="text" id="team-input" placeholder="Lagnamn">
+            <input type="text" id="team-input" placeholder="Lagnamn" style="flex:1">
             <select id="div-select"><option value="">Välj division...</option></select>
             <button class="btn btn-success" onclick="addTeam()">Lägg till</button>
           </div>
@@ -201,128 +313,341 @@
       </div>
     </div>
 
-    <!-- ACTIVE LEAGUE SECTION -->
+    <!-- ACTIVE LEAGUE -->
     <div id="active-leagues-section" class="hidden">
-        <h1 class="no-print">Aktivt Seriespel</h1>
-        <div id="active-content"></div>
+      <h1 class="no-print" style="margin-bottom:1.5rem;">Aktivt Seriespel</h1>
+      <div id="active-content"></div>
     </div>
   </main>
 </div>
 
 <!-- BOTTOM BAR -->
 <div id="bottom-bar" class="bottom-bar hidden no-print">
-  <button class="btn btn-ghost" onclick="prepareAndPrint()">🖨 Skriv ut spelprogram</button>
+  <button class="btn btn-ghost" onclick="openPrintModal()">🖨 Skriv ut</button>
   <button class="btn btn-danger" onclick="resetAll()">Nollställ</button>
 </div>
 
 <script>
 let divisions = [];
 let format = 'sets';
+let activePrintDivIndex = 0;
 
-// ─── UTDRAG FÖR UTSKRIFT (RENA RAPPORTER) ──────────────────
-function prepareAndPrint() {
-    const container = document.getElementById('print-view-container');
-    let html = '';
-    
-    divisions.forEach(div => {
-        html += `<div class="print-page">
-            <h1 style="margin-bottom:5px;">Spelprogram: ${div.name}</h1>
-            <p style="margin-bottom:25px; border-bottom: 2px solid #000; padding-bottom: 10px;">Format: ${format === 'sets' ? 'Set-spel (3 set till 13)' : 'Enkelmatch (2p vid vinst)'}</p>`;
-        
-        div.rounds.forEach((round, rIdx) => {
-            html += `<div class="print-round">
-                <div class="print-round-header">Omgång ${rIdx + 1}</div>`;
-            
-            round.forEach(match => {
-                html += `<div class="print-match">
-                    <div class="print-team">${match.home}</div>
-                    <div class="print-score-area">
-                        ${format === 'sets' ? 
-                            `<div class="print-score-box"></div> <span class="print-vs">-</span> <div class="print-score-box"></div> 
-                             <span style="margin:0 15px">|</span>
-                             <div class="print-score-box"></div> <span class="print-vs">-</span> <div class="print-score-box"></div>
-                             <span style="margin:0 15px">|</span>
-                             <div class="print-score-box"></div> <span class="print-vs">-</span> <div class="print-score-box"></div>` 
-                            : 
-                            `<div class="print-score-box"></div> <span class="print-vs">-</span> <div class="print-score-box"></div>`
-                        }
-                    </div>
-                    <div class="print-team" style="text-align:right">${match.away}</div>
-                </div>`;
-            });
-            html += `</div>`;
-        });
-        html += `</div>`;
+// ─── PRINT MODAL ─────────────────────────────────────────
+function openPrintModal() {
+  buildPrintModal();
+  document.getElementById('print-modal').classList.remove('hidden');
+}
+function closePrintModal() {
+  document.getElementById('print-modal').classList.add('hidden');
+}
+
+function buildPrintModal() {
+  // Division tabs
+  const tabsEl = document.getElementById('print-modal-div-tabs');
+  tabsEl.innerHTML = divisions.map((d, i) =>
+    `<button class="round-btn ${i===activePrintDivIndex?'active':''}"
+      style="${i===activePrintDivIndex?'border-color:var(--accent);color:var(--accent2)':''}"
+      onclick="setPrintDiv(${i})">${d.name}</button>`
+  ).join('');
+
+  // Rounds for active division
+  const div = divisions[activePrintDivIndex];
+  const roundsEl = document.getElementById('print-modal-rounds');
+  roundsEl.innerHTML = div.rounds.map((_, rIdx) =>
+    `<button class="round-btn" onclick="printRound(${activePrintDivIndex},${rIdx});closePrintModal()">Omgång ${rIdx+1}</button>`
+  ).join('');
+
+  // Table options
+  const tablesEl = document.getElementById('print-modal-tables');
+  tablesEl.innerHTML = divisions.map((d, i) =>
+    `<button class="div-select-item" onclick="printTable(${i});closePrintModal()">📋 Tabell: ${d.name}</button>`
+  ).join('');
+}
+
+function setPrintDiv(idx) {
+  activePrintDivIndex = idx;
+  buildPrintModal();
+}
+
+// ─── PRINT: EN OMGÅNG ────────────────────────────────────
+function printRound(divIdx, roundIdx) {
+  const div = divisions[divIdx];
+  const round = div.rounds[roundIdx];
+  const container = document.getElementById('print-view-container');
+
+  container.innerHTML = buildRoundPage(div, round, roundIdx);
+  window.print();
+  container.innerHTML = '';
+}
+
+function buildRoundPage(div, round, roundIdx) {
+  const now = new Date().toLocaleDateString('sv-SE');
+  const formatName = format === 'sets' ? 'Set-spel (3 set till 13 poäng)' : 'Enkelmatch';
+  const scoreArea = (mIdx) => {
+    if (format === 'sets') {
+      return `<div class="print-score-area-sets">
+        <div class="print-set-group">
+          <div class="print-score-box"></div>
+          <span class="print-vs">–</span>
+          <div class="print-score-box"></div>
+        </div>
+        <span class="print-separator">|</span>
+        <div class="print-set-group">
+          <div class="print-score-box"></div>
+          <span class="print-vs">–</span>
+          <div class="print-score-box"></div>
+        </div>
+        <span class="print-separator">|</span>
+        <div class="print-set-group">
+          <div class="print-score-box"></div>
+          <span class="print-vs">–</span>
+          <div class="print-score-box"></div>
+        </div>
+      </div>`;
+    } else {
+      return `<div class="print-score-area-simple">
+        <div class="print-score-box-lg"></div>
+        <span class="print-vs-lg">–</span>
+        <div class="print-score-box-lg"></div>
+      </div>`;
+    }
+  };
+
+  const matches = round.map((match, mIdx) => `
+    <div class="print-match">
+      <div class="print-match-num">${mIdx + 1}</div>
+      <div class="print-team">${match.home}</div>
+      ${scoreArea(mIdx)}
+      <div class="print-team right">${match.away}</div>
+    </div>
+  `).join('');
+
+  return `<div class="print-page">
+    <div class="print-header">
+      <div class="print-header-left">
+        <h1>${div.name} – Omgång ${roundIdx + 1}</h1>
+        <p>Format: ${formatName} &nbsp;·&nbsp; ${round.length} matcher</p>
+      </div>
+      <div class="print-header-right">Utskrivet: ${now}<br>Pétanque Pro</div>
+    </div>
+    <div class="print-round">
+      <div class="print-round-header">Omgång ${roundIdx + 1} av ${divisions.find(d=>d.rounds===divisions[activePrintDivIndex]?.rounds||true)?.rounds?.length||'?'}</div>
+      ${matches}
+    </div>
+  </div>`;
+}
+
+// ─── PRINT: ALLA OMGÅNGAR ────────────────────────────────
+function printAllRounds() {
+  closePrintModal();
+  const div = divisions[activePrintDivIndex];
+  const container = document.getElementById('print-view-container');
+  container.innerHTML = div.rounds.map((round, rIdx) =>
+    buildRoundPage(div, round, rIdx)
+  ).join('');
+  window.print();
+  container.innerHTML = '';
+}
+
+// ─── PRINT: TABELL ───────────────────────────────────────
+function printTable(divIdx) {
+  const div = divisions[divIdx];
+  const standings = computeStandings(div);
+  const container = document.getElementById('print-view-container');
+  const now = new Date().toLocaleDateString('sv-SE');
+
+  const rows = standings.map((t, i) => {
+    if (format === 'sets') {
+      return `<tr>
+        <td class="num rank">${i+1}</td>
+        <td>${t.name}</td>
+        <td class="num">${t.played}</td>
+        <td class="num">${t.wins}</td>
+        <td class="num">${t.draws}</td>
+        <td class="num">${t.losses}</td>
+        <td class="num">${t.setsFor}–${t.setsAgainst}</td>
+        <td class="num">${t.pointsFor}–${t.pointsAgainst}</td>
+        <td class="num" style="font-weight:900">${t.pts}</td>
+      </tr>`;
+    } else {
+      return `<tr>
+        <td class="num rank">${i+1}</td>
+        <td>${t.name}</td>
+        <td class="num">${t.played}</td>
+        <td class="num">${t.wins}</td>
+        <td class="num">${t.draws}</td>
+        <td class="num">${t.losses}</td>
+        <td class="num" style="font-weight:900">${t.pts}</td>
+      </tr>`;
+    }
+  }).join('');
+
+  const headers = format === 'sets'
+    ? `<th>#</th><th>Lag</th><th class="num">S</th><th class="num">V</th><th class="num">O</th><th class="num">F</th><th class="num">Set</th><th class="num">Poäng</th><th class="num">Pts</th>`
+    : `<th>#</th><th>Lag</th><th class="num">S</th><th class="num">V</th><th class="num">O</th><th class="num">F</th><th class="num">Pts</th>`;
+
+  container.innerHTML = `<div class="print-table-page">
+    <div class="print-header">
+      <div class="print-header-left">
+        <h1>Tabell: ${div.name}</h1>
+        <p>Format: ${format === 'sets' ? 'Set-spel' : 'Enkelmatch'}</p>
+      </div>
+      <div class="print-header-right">Utskrivet: ${now}<br>Pétanque Pro</div>
+    </div>
+    <table class="print-standings">
+      <thead><tr>${headers}</tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="print-footer">S = Spelade &nbsp;·&nbsp; V = Vinster &nbsp;·&nbsp; O = Oavgjorda &nbsp;·&nbsp; F = Förluster &nbsp;·&nbsp; Pts = Poäng</div>
+  </div>`;
+
+  window.print();
+  container.innerHTML = '';
+}
+
+// ─── STANDINGS CALC ───────────────────────────────────────
+function computeStandings(div) {
+  const table = {};
+  div.teams.filter(t => t !== 'Vilohelg').forEach(t => {
+    table[t] = { name: t, played: 0, wins: 0, draws: 0, losses: 0, pts: 0,
+                 setsFor: 0, setsAgainst: 0, pointsFor: 0, pointsAgainst: 0 };
+  });
+
+  div.rounds.forEach(round => {
+    round.forEach(match => {
+      if (!match.result) return;
+      const h = match.home, a = match.away;
+      if (h === 'Vilohelg' || a === 'Vilohelg') return;
+      if (!table[h] || !table[a]) return;
+      const r = match.result;
+
+      if (format === 'sets') {
+        // result: { setsH, setsA, ptsH:[], ptsA:[] }
+        const sH = r.setsH || 0, sA = r.setsA || 0;
+        table[h].played++; table[a].played++;
+        table[h].setsFor += sH; table[h].setsAgainst += sA;
+        table[a].setsFor += sA; table[a].setsAgainst += sH;
+        if (sH > sA) { table[h].wins++; table[a].losses++; table[h].pts += 2; }
+        else if (sA > sH) { table[a].wins++; table[h].losses++; table[a].pts += 2; }
+        else { table[h].draws++; table[a].draws++; table[h].pts++; table[a].pts++; }
+      } else {
+        const wH = r.wH, wA = r.wA;
+        table[h].played++; table[a].played++;
+        if (wH > wA) { table[h].wins++; table[a].losses++; table[h].pts += 2; }
+        else if (wA > wH) { table[a].wins++; table[h].losses++; table[a].pts += 2; }
+        else { table[h].draws++; table[a].draws++; table[h].pts++; table[a].pts++; }
+      }
     });
+  });
 
-    container.innerHTML = html;
-    window.print();
+  return Object.values(table).sort((a, b) => b.pts - a.pts || b.wins - a.wins);
 }
 
 // ─── CORE LOGIC ───────────────────────────────────────────
 function tryLogin() {
-    if(document.getElementById('login-user').value === 'admin' && document.getElementById('login-pass').value === 'petanque123') {
-        document.getElementById('login-overlay').style.display = 'none';
-        document.getElementById('app').style.display = 'flex';
-    } else {
-        document.getElementById('login-error').classList.add('show');
-    }
+  if(document.getElementById('login-user').value === 'admin' &&
+     document.getElementById('login-pass').value === 'petanque123') {
+    document.getElementById('login-overlay').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+  } else {
+    document.getElementById('login-error').classList.add('show');
+  }
 }
 
 function setFormat(f) {
-    format = f;
-    document.getElementById('fc-sets').classList.toggle('selected', f==='sets');
-    document.getElementById('fc-simple').classList.toggle('selected', f==='simple');
+  format = f;
+  document.getElementById('fc-sets').classList.toggle('selected', f==='sets');
+  document.getElementById('fc-simple').classList.toggle('selected', f==='simple');
 }
 
 function addDivision() {
-    const name = document.getElementById('div-input').value;
-    if(!name) return;
-    divisions.push({id: Date.now(), name, teams: [], rounds: []});
-    document.getElementById('div-input').value = '';
-    updateUI();
+  const name = document.getElementById('div-input').value.trim();
+  if(!name) return;
+  divisions.push({id: Date.now(), name, teams: [], rounds: []});
+  document.getElementById('div-input').value = '';
+  updateUI();
 }
 
 function addTeam() {
-    const name = document.getElementById('team-input').value;
-    const divId = parseInt(document.getElementById('div-select').value);
-    if(!name || !divId) return;
-    const div = divisions.find(d => d.id === divId);
-    div.teams.push(name);
-    document.getElementById('team-input').value = '';
-    updateUI();
+  const name = document.getElementById('team-input').value.trim();
+  const divId = parseInt(document.getElementById('div-select').value);
+  if(!name || !divId) return;
+  const div = divisions.find(d => d.id === divId);
+  if (div) div.teams.push(name);
+  document.getElementById('team-input').value = '';
+  updateUI();
 }
 
 function updateUI() {
-    document.getElementById('div-list').innerHTML = divisions.map(d => `<div class="btn-ghost" style="padding:10px; margin-bottom:5px; border-radius:5px">${d.name}</div>`).join('');
-    document.getElementById('div-select').innerHTML = '<option value="">Välj...</option>' + divisions.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
-    document.getElementById('division-preview').innerHTML = divisions.map(d => `<div><strong>${d.name}:</strong> ${d.teams.join(', ')}</div>`).join('<br>');
-    document.getElementById('start-btn').classList.toggle('hidden', divisions.length === 0);
+  document.getElementById('div-list').innerHTML = divisions.map(d =>
+    `<div style="background:var(--bg3);border:1px solid var(--border);padding:10px 12px;margin-bottom:5px;border-radius:0.5rem;font-size:0.85rem;">
+      <strong>${d.name}</strong> <span style="color:var(--muted)">${d.teams.length} lag</span>
+    </div>`
+  ).join('');
+  document.getElementById('div-select').innerHTML =
+    '<option value="">Välj...</option>' +
+    divisions.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
+  document.getElementById('division-preview').innerHTML = divisions.map(d =>
+    `<div style="margin-bottom:0.5rem"><strong>${d.name}:</strong> <span style="color:var(--muted)">${d.teams.join(', ') || '–'}</span></div>`
+  ).join('');
+  document.getElementById('start-btn').classList.toggle('hidden', divisions.length === 0);
 }
 
 function generateTournament() {
-    divisions.forEach(div => {
-        const teams = [...div.teams];
-        if(teams.length % 2 !== 0) teams.push("Vilohelg");
-        
-        const n = teams.length;
-        div.rounds = [];
-        for (let j = 0; j < n - 1; j++) {
-            let matches = [];
-            for (let i = 0; i < n / 2; i++) {
-                matches.push({ home: teams[i], away: teams[n - 1 - i] });
-            }
-            div.rounds.push(matches);
-            teams.splice(1, 0, teams.pop());
-        }
-    });
-    
-    document.getElementById('setup-section').classList.add('hidden');
-    document.getElementById('active-leagues-section').classList.remove('hidden');
-    document.getElementById('bottom-bar').classList.remove('hidden');
+  divisions.forEach(div => {
+    const teams = [...div.teams];
+    if(teams.length % 2 !== 0) teams.push('Vilohelg');
+    const n = teams.length;
+    div.rounds = [];
+    for (let j = 0; j < n - 1; j++) {
+      let matches = [];
+      for (let i = 0; i < n / 2; i++) {
+        matches.push({ home: teams[i], away: teams[n - 1 - i], result: null });
+      }
+      div.rounds.push(matches);
+      teams.splice(1, 0, teams.pop());
+    }
+  });
+
+  document.getElementById('setup-section').classList.add('hidden');
+  document.getElementById('active-leagues-section').classList.remove('hidden');
+  document.getElementById('bottom-bar').classList.remove('hidden');
+  renderActiveLeague();
 }
 
-function resetAll() { if(confirm("Nollställ allt?")) location.reload(); }
+function renderActiveLeague() {
+  const el = document.getElementById('active-content');
+  el.innerHTML = divisions.map((div, dIdx) => `
+    <div class="card" style="margin-bottom:2rem;">
+      <div class="card-title">${div.name}</div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+          <thead>
+            <tr style="color:var(--muted);text-align:left;">
+              <th style="padding:6px 8px;">Omgång</th>
+              <th style="padding:6px 8px;">Hemmalag</th>
+              <th style="padding:6px 8px;text-align:center;">Resultat</th>
+              <th style="padding:6px 8px;text-align:right;">Bortalag</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${div.rounds.map((round, rIdx) =>
+              round.map((match, mIdx) => `
+                <tr style="border-top:1px solid var(--border);">
+                  ${mIdx===0 ? `<td style="padding:8px;color:var(--muted);white-space:nowrap" rowspan="${round.length}">Omg. ${rIdx+1}</td>` : ''}
+                  <td style="padding:8px;">${match.home}</td>
+                  <td style="padding:8px;text-align:center;color:var(--muted)">–</td>
+                  <td style="padding:8px;text-align:right;">${match.away}</td>
+                </tr>`).join('')
+            ).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `).join('');
+}
+
+function resetAll() { if(confirm('Nollställ allt?')) location.reload(); }
 function logout() { location.reload(); }
 </script>
 </body>
