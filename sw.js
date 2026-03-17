@@ -1,4 +1,4 @@
-const CACHE = 'petanque-v12';
+const CACHE = 'petanque-v13';
 
 const FILES = [
   './',
