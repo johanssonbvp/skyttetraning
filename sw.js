@@ -1,4 +1,4 @@
-const CACHE = 'petanque-' + new Date().toISOString().slice(0,10);
+const CACHE = 'petanque-v17';
 
 const FILES = [
   './',
