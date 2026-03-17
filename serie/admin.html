@@ -25,7 +25,7 @@
   .btn-google:disabled{opacity:0.5;cursor:not-allowed;}
   .btn-google svg{width:20px;height:20px;flex-shrink:0;}
 
-  /* APP STRUCTURE */
+  /* APP */
   .app{display:flex;min-height:100vh;}
   .sidebar{width:220px;min-width:220px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:1.5rem 1rem;gap:0.5rem;position:sticky;top:0;height:100vh;overflow-y:auto;}
   .main{flex:1;padding:2rem;overflow-x:hidden;}
@@ -37,6 +37,7 @@
   .nav-item.active{background:rgba(99,102,241,0.15);color:var(--accent2);}
   .nav-dot{width:8px;height:8px;border-radius:50%;background:var(--border);flex-shrink:0;}
   .nav-item.active .nav-dot{background:var(--accent);}
+  .nav-section{font-size:0.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin:1rem 0 0.3rem 0.75rem;}
   .sidebar-footer{margin-top:auto;}
   .sidebar-user{font-size:0.72rem;color:var(--muted);padding:0.4rem 0.75rem;margin-bottom:0.3rem;word-break:break-all;line-height:1.4;}
   .btn-logout{width:100%;background:none;border:1px solid var(--border);color:var(--muted);border-radius:0.5rem;padding:0.45rem;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.15s;}
@@ -49,12 +50,15 @@
   @media(max-width:900px){.setup-grid{grid-template-columns:1fr;}}
   .input-row{display:flex;gap:0.5rem;margin-bottom:0.75rem;}
   input[type="text"],input[type="number"],select{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:0.5rem;padding:0.55rem 0.75rem;font-size:0.9rem;outline:none;transition:border 0.15s;}
+  input[type="number"]{width:60px;text-align:center;}
   input:focus,select:focus{border-color:var(--accent);}
   .btn{padding:0.55rem 1.1rem;border-radius:0.5rem;font-weight:700;font-size:0.85rem;border:none;cursor:pointer;transition:all 0.15s;}
   .btn-primary{background:var(--accent);color:#fff;}
   .btn-success{background:rgba(34,197,94,0.15);color:var(--green);border:1px solid rgba(34,197,94,0.3);}
   .btn-danger{background:rgba(239,68,68,0.1);color:var(--red);border:1px solid rgba(239,68,68,0.2);}
   .btn-ghost{background:var(--bg3);color:var(--muted);border:1px solid var(--border);}
+  .btn-gold{background:rgba(245,158,11,0.15);color:var(--gold);border:1px solid rgba(245,158,11,0.3);}
+  .btn-sm{padding:0.35rem 0.7rem;font-size:0.78rem;}
   .btn-xl{padding:1rem 2rem;font-size:1rem;border-radius:0.75rem;width:100%;margin-top:1rem;letter-spacing:0.05em;}
   .format-picker{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
   .format-card{background:var(--bg3);border:2px solid var(--border);border-radius:0.75rem;padding:1.25rem;cursor:pointer;transition:all 0.2s;position:relative;}
@@ -64,9 +68,54 @@
   @media(max-width:900px){.bottom-bar{left:0;}}
   .hidden{display:none!important;}
 
-  /* PRINT MODAL */
+  /* TABS */
+  .tabs{display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+  .tab{padding:0.5rem 1rem;border-radius:0.5rem;font-size:0.85rem;font-weight:600;color:var(--muted);cursor:pointer;border:1px solid var(--border);background:var(--bg3);transition:all 0.15s;}
+  .tab.active{background:rgba(99,102,241,0.15);color:var(--accent2);border-color:var(--accent);}
+
+  /* MATCH ROWS */
+  .match-row{display:flex;align-items:center;gap:0.75rem;padding:0.85rem 1rem;border-bottom:1px solid var(--border);transition:background 0.1s;}
+  .match-row:last-child{border-bottom:none;}
+  .match-row:hover{background:rgba(255,255,255,0.02);}
+  .match-num{width:22px;height:22px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:var(--muted);flex-shrink:0;}
+  .match-team{font-weight:600;font-size:0.9rem;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .match-team.bye{color:var(--muted);font-style:italic;}
+  .match-score-area{display:flex;align-items:center;gap:0.4rem;flex-shrink:0;}
+  .score-input{width:48px!important;height:36px;text-align:center;font-size:1rem;font-weight:700;padding:0.2rem!important;}
+  .score-sep{color:var(--muted);font-weight:700;font-size:0.9rem;}
+  .set-divider{width:1px;height:28px;background:var(--border);margin:0 0.3rem;}
+  .match-status{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .match-status.done{background:var(--green);}
+  .match-status.pending{background:var(--border);}
+  .btn-save-match{padding:0.3rem 0.65rem;font-size:0.75rem;border-radius:0.4rem;}
+
+  /* STANDINGS TABLE */
+  .standings-table{width:100%;border-collapse:collapse;font-size:0.85rem;}
+  .standings-table th{padding:8px 10px;text-align:left;color:var(--muted);font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid var(--border);}
+  .standings-table th.num{text-align:center;}
+  .standings-table td{padding:10px 10px;border-bottom:1px solid rgba(37,42,56,0.5);}
+  .standings-table td.num{text-align:center;}
+  .standings-table tr:last-child td{border-bottom:none;}
+  .rank-badge{width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;}
+  .rank-1{background:rgba(245,158,11,0.2);color:var(--gold);}
+  .rank-2{background:rgba(148,163,184,0.15);color:#94a3b8;}
+  .rank-3{background:rgba(180,120,60,0.15);color:#b4783c;}
+  .rank-n{background:var(--bg3);color:var(--muted);}
+  .pts-badge{font-weight:800;color:var(--accent2);}
+
+  /* ROUND SECTION */
+  .round-section{margin-bottom:1.5rem;}
+  .round-header{display:flex;align-items:center;justify-content:space-between;padding:0.6rem 1rem;background:var(--bg3);border:1px solid var(--border);border-radius:0.5rem 0.5rem 0 0;cursor:pointer;user-select:none;}
+  .round-header-left{display:flex;align-items:center;gap:0.75rem;font-weight:700;font-size:0.9rem;}
+  .round-progress{font-size:0.75rem;color:var(--muted);}
+  .round-body{border:1px solid var(--border);border-top:none;border-radius:0 0 0.5rem 0.5rem;overflow:hidden;}
+  .round-body.collapsed{display:none;}
+  .round-chevron{transition:transform 0.2s;color:var(--muted);}
+  .round-chevron.open{transform:rotate(180deg);}
+
+  /* MODAL */
   .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:flex;align-items:center;justify-content:center;z-index:500;backdrop-filter:blur(4px);}
-  .modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:1rem;padding:2rem;width:100%;max-width:520px;display:flex;flex-direction:column;gap:1rem;}
+  .modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:1rem;padding:2rem;width:100%;max-width:520px;display:flex;flex-direction:column;gap:1rem;max-height:90vh;overflow-y:auto;}
   .modal-title{font-size:1rem;font-weight:800;color:var(--text);}
   .modal-section{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-top:0.5rem;}
   .round-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:0.5rem;margin-top:0.4rem;}
@@ -77,12 +126,18 @@
   .div-select-item:hover{border-color:var(--accent);color:var(--accent2);}
   .modal-actions{display:flex;gap:0.75rem;justify-content:flex-end;margin-top:0.5rem;}
 
-  /* PRINT STYLES */
+  /* LOADING */
+  .loading-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:998;flex-direction:column;gap:1rem;}
+  .loading-screen p{color:var(--muted);font-size:0.9rem;}
+  .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* PRINT */
   #print-view-container{display:none;}
   @media print {
     *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     body{background:white!important;color:black!important;font-family:'Segoe UI',system-ui,sans-serif;}
-    .sidebar,.bottom-bar,.no-print,.login-overlay,.modal-overlay,
+    .sidebar,.bottom-bar,.no-print,.login-overlay,.modal-overlay,.loading-screen,
     #setup-section,#active-leagues-section{display:none!important;}
     .app{display:block!important;}
     .main{padding:0!important;}
@@ -123,8 +178,14 @@
 </head>
 <body>
 
+<!-- LOADING -->
+<div class="loading-screen" id="loading-screen">
+  <div class="spinner"></div>
+  <p>Laddar…</p>
+</div>
+
 <!-- LOGIN -->
-<div class="login-overlay" id="login-overlay">
+<div class="login-overlay" id="login-overlay" style="display:none">
   <div class="login-box">
     <div class="login-logo">Pétanque <span>Pro</span></div>
     <p class="login-subtitle">Adminåtkomst krävs</p>
@@ -163,7 +224,11 @@
 <div class="app" id="app" style="display:none">
   <nav class="sidebar no-print">
     <div class="sidebar-logo">Pétanque <span>Pro</span></div>
-    <div class="nav-item active"><div class="nav-dot"></div> Inställningar</div>
+    <div class="nav-item active" id="nav-setup" onclick="showSection('setup')"><div class="nav-dot"></div> Inställningar</div>
+    <div id="nav-league-section" class="hidden">
+      <div class="nav-section">Divisioner</div>
+      <div id="nav-divisions"></div>
+    </div>
     <div class="sidebar-footer">
       <div class="sidebar-user" id="sidebar-user"></div>
       <button class="btn-logout" onclick="logout()">Logga ut</button>
@@ -215,7 +280,6 @@
 
     <!-- ACTIVE LEAGUE -->
     <div id="active-leagues-section" class="hidden">
-      <h1 class="no-print" style="margin-bottom:1.5rem;">Aktivt Seriespel</h1>
       <div id="active-content"></div>
     </div>
   </main>
@@ -224,7 +288,7 @@
 <!-- BOTTOM BAR -->
 <div id="bottom-bar" class="bottom-bar hidden no-print">
   <button class="btn btn-ghost" onclick="openPrintModal()">🖨 Skriv ut</button>
-  <button class="btn btn-danger" onclick="resetAll()">Nollställ</button>
+  <button class="btn btn-danger" onclick="resetAll()">Nollställ allt</button>
 </div>
 
 <!-- Firebase SDK -->
@@ -233,6 +297,8 @@
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getDatabase, ref, set, get, onValue }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey:            "AIzaSyCwzdwGEjN5LVw3RSLz2dy7f70Reafbe2c",
@@ -244,21 +310,39 @@
     appId:             "1:672666417012:web:93613783fe51cd2ce81e21"
   };
 
-  const app      = initializeApp(firebaseConfig);
-  const auth     = getAuth(app);
-  const provider = new GoogleAuthProvider();
+  const firebaseApp = initializeApp(firebaseConfig);
+  const auth        = getAuth(firebaseApp);
+  const db          = getDatabase(firebaseApp);
+  const provider    = new GoogleAuthProvider();
 
   window._signIn  = () => signInWithPopup(auth, provider);
   window._signOut = () => signOut(auth);
 
-  onAuthStateChanged(auth, (user) => {
+  // Spara hela state till Firebase
+  window._saveState = async (state) => {
+    await set(ref(db, 'serie/state'), state);
+  };
+
+  // Ladda state från Firebase
+  window._loadState = async () => {
+    const snap = await get(ref(db, 'serie/state'));
+    return snap.exists() ? snap.val() : null;
+  };
+
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
-      document.getElementById('login-overlay').style.display = 'none';
-      document.getElementById('app').style.display           = 'flex';
-      document.getElementById('sidebar-user').textContent    = user.displayName || user.email;
+      document.getElementById('sidebar-user').textContent = user.displayName || user.email;
+      // Ladda sparad data
+      const saved = await window._loadState();
+      if (saved) {
+        window._initFromSaved(saved);
+      } else {
+        window._initFresh();
+      }
     } else {
-      document.getElementById('login-overlay').style.display = 'flex';
-      document.getElementById('app').style.display           = 'none';
+      document.getElementById('loading-screen').style.display = 'none';
+      document.getElementById('login-overlay').style.display  = 'flex';
+      document.getElementById('app').style.display            = 'none';
     }
   });
 </script>
@@ -267,20 +351,49 @@
 let divisions = [];
 let format = 'sets';
 let activePrintDivIndex = 0;
+let activeLeagueSection = null; // vilken division visas
+
+// ─── INIT ─────────────────────────────────────────────────
+window._initFresh = function() {
+  document.getElementById('loading-screen').style.display = 'none';
+  document.getElementById('app').style.display            = 'flex';
+  showSection('setup');
+};
+
+window._initFromSaved = function(saved) {
+  divisions = saved.divisions || [];
+  format    = saved.format    || 'sets';
+
+  // Uppdatera format-UI
+  document.getElementById('fc-sets').classList.toggle('selected', format==='sets');
+  document.getElementById('fc-simple').classList.toggle('selected', format==='simple');
+
+  document.getElementById('loading-screen').style.display = 'none';
+  document.getElementById('app').style.display            = 'flex';
+
+  if (divisions.length > 0 && divisions[0].rounds && divisions[0].rounds.length > 0) {
+    showLeague();
+  } else {
+    showSection('setup');
+    updateUI();
+  }
+};
+
+function saveState() {
+  window._saveState({ divisions, format });
+}
 
 // ─── AUTH ─────────────────────────────────────────────────
 async function tryLogin() {
   const errEl  = document.getElementById('login-error');
   const spinEl = document.getElementById('login-spinner');
   const btnEl  = document.getElementById('login-btn');
-
   errEl.classList.remove('show');
   spinEl.classList.add('show');
   btnEl.disabled = true;
-
   try {
     await window._signIn();
-  } catch (e) {
+  } catch(e) {
     if (e.code !== 'auth/popup-closed-by-user' && e.code !== 'auth/cancelled-popup-request') {
       errEl.classList.add('show');
       console.error(e);
@@ -293,6 +406,286 @@ async function tryLogin() {
 
 function logout() {
   if (confirm('Logga ut?')) window._signOut();
+}
+
+// ─── NAVIGATION ───────────────────────────────────────────
+function showSection(s) {
+  document.getElementById('setup-section').classList.toggle('hidden', s !== 'setup');
+  document.getElementById('active-leagues-section').classList.toggle('hidden', s !== 'league');
+  document.getElementById('nav-setup').classList.toggle('active', s === 'setup');
+}
+
+function showLeague() {
+  document.getElementById('setup-section').classList.add('hidden');
+  document.getElementById('active-leagues-section').classList.remove('hidden');
+  document.getElementById('bottom-bar').classList.remove('hidden');
+  document.getElementById('nav-league-section').classList.remove('hidden');
+  buildNavDivisions();
+  if (!activeLeagueSection && divisions.length > 0) {
+    activeLeagueSection = divisions[0].id;
+  }
+  renderActiveLeague();
+}
+
+function buildNavDivisions() {
+  document.getElementById('nav-divisions').innerHTML = divisions.map(d =>
+    `<div class="nav-item ${activeLeagueSection===d.id?'active':''}" onclick="switchDivision(${d.id})">
+      <div class="nav-dot"></div> ${d.name}
+    </div>`
+  ).join('');
+}
+
+function switchDivision(id) {
+  activeLeagueSection = id;
+  buildNavDivisions();
+  renderActiveLeague();
+}
+
+// ─── SETUP ────────────────────────────────────────────────
+function setFormat(f) {
+  format = f;
+  document.getElementById('fc-sets').classList.toggle('selected', f==='sets');
+  document.getElementById('fc-simple').classList.toggle('selected', f==='simple');
+}
+
+function addDivision() {
+  const name = document.getElementById('div-input').value.trim();
+  if (!name) return;
+  divisions.push({ id: Date.now(), name, teams: [], rounds: [] });
+  document.getElementById('div-input').value = '';
+  updateUI();
+}
+
+function addTeam() {
+  const name  = document.getElementById('team-input').value.trim();
+  const divId = parseInt(document.getElementById('div-select').value);
+  if (!name || !divId) return;
+  const div = divisions.find(d => d.id === divId);
+  if (div) div.teams.push(name);
+  document.getElementById('team-input').value = '';
+  updateUI();
+}
+
+function updateUI() {
+  document.getElementById('div-list').innerHTML = divisions.map(d =>
+    `<div style="background:var(--bg3);border:1px solid var(--border);padding:10px 12px;margin-bottom:5px;border-radius:0.5rem;font-size:0.85rem;">
+      <strong>${d.name}</strong> <span style="color:var(--muted)">${d.teams.length} lag</span>
+    </div>`
+  ).join('');
+  document.getElementById('div-select').innerHTML =
+    '<option value="">Välj...</option>' +
+    divisions.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
+  document.getElementById('division-preview').innerHTML = divisions.map(d =>
+    `<div style="margin-bottom:0.5rem"><strong>${d.name}:</strong> <span style="color:var(--muted)">${d.teams.join(', ')||'–'}</span></div>`
+  ).join('');
+  document.getElementById('start-btn').classList.toggle('hidden', divisions.length === 0);
+}
+
+function generateTournament() {
+  divisions.forEach(div => {
+    const teams = [...div.teams];
+    if (teams.length % 2 !== 0) teams.push('Vilohelg');
+    const n = teams.length;
+    div.rounds = [];
+    for (let j = 0; j < n - 1; j++) {
+      const matches = [];
+      for (let i = 0; i < n / 2; i++)
+        matches.push({ home: teams[i], away: teams[n-1-i], result: null });
+      div.rounds.push(matches);
+      teams.splice(1, 0, teams.pop());
+    }
+  });
+  saveState();
+  showLeague();
+}
+
+// ─── ACTIVE LEAGUE ────────────────────────────────────────
+function renderActiveLeague() {
+  const el  = document.getElementById('active-content');
+  const div = divisions.find(d => d.id === activeLeagueSection);
+  if (!div) { el.innerHTML = ''; return; }
+
+  const standings = computeStandings(div);
+
+  // Tabs: Spelprogram | Tabell
+  el.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:0.5rem;">
+      <h2>${div.name}</h2>
+    </div>
+    <div class="tabs" id="league-tabs">
+      <div class="tab active" onclick="switchTab('matches')">📅 Spelprogram</div>
+      <div class="tab" onclick="switchTab('standings')">📊 Tabell</div>
+    </div>
+    <div id="tab-matches">${buildMatchesHTML(div)}</div>
+    <div id="tab-standings" class="hidden">${buildStandingsHTML(standings)}</div>
+  `;
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (tab==='matches'&&i===0)||(tab==='standings'&&i===1)));
+  document.getElementById('tab-matches').classList.toggle('hidden', tab !== 'matches');
+  document.getElementById('tab-standings').classList.toggle('hidden', tab !== 'standings');
+}
+
+function buildMatchesHTML(div) {
+  return div.rounds.map((round, rIdx) => {
+    const done   = round.filter(m => m.result).length;
+    const total  = round.filter(m => m.home !== 'Vilohelg' && m.away !== 'Vilohelg').length;
+    const isOpen = rIdx === div.rounds.findIndex(r => r.some(m => !m.result && m.home !== 'Vilohelg' && m.away !== 'Vilohelg'));
+    return `
+      <div class="round-section">
+        <div class="round-header" onclick="toggleRound(this)">
+          <div class="round-header-left">
+            <span>Omgång ${rIdx + 1}</span>
+            <span class="round-progress">${done}/${total} klara</span>
+          </div>
+          <span class="round-chevron ${isOpen?'open':''}">▼</span>
+        </div>
+        <div class="round-body ${isOpen?'':'collapsed'}">
+          ${round.map((match, mIdx) => buildMatchRow(div, rIdx, mIdx, match)).join('')}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function toggleRound(header) {
+  const body    = header.nextElementSibling;
+  const chevron = header.querySelector('.round-chevron');
+  body.classList.toggle('collapsed');
+  chevron.classList.toggle('open');
+}
+
+function buildMatchRow(div, rIdx, mIdx, match) {
+  const isBye = match.home === 'Vilohelg' || match.away === 'Vilohelg';
+  if (isBye) return `
+    <div class="match-row">
+      <div class="match-num">${mIdx+1}</div>
+      <div class="match-team bye">${match.home === 'Vilohelg' ? match.away : match.home}</div>
+      <div style="flex:1;text-align:center;color:var(--muted);font-size:0.8rem;">Vilohelg</div>
+      <div class="match-status pending"></div>
+    </div>`;
+
+  const r   = match.result;
+  const did = `d${div.id}_r${rIdx}_m${mIdx}`;
+
+  if (format === 'sets') {
+    const s = r ? r.sets : [[null,null],[null,null],[null,null]];
+    return `
+      <div class="match-row" id="row_${did}">
+        <div class="match-num">${mIdx+1}</div>
+        <div class="match-team">${match.home}</div>
+        <div class="match-score-area">
+          ${[0,1,2].map(i => `
+            <div class="print-set-group" style="display:flex;align-items:center;gap:3px;">
+              <input type="number" class="score-input" id="${did}_h${i}" min="0" max="99"
+                value="${s&&s[i]?s[i][0]:''}" placeholder="–" onchange="autoSave('${div.id}',${rIdx},${mIdx})">
+              <span class="score-sep">–</span>
+              <input type="number" class="score-input" id="${did}_a${i}" min="0" max="99"
+                value="${s&&s[i]?s[i][1]:''}" placeholder="–" onchange="autoSave('${div.id}',${rIdx},${mIdx})">
+            </div>
+            ${i<2?'<div class="set-divider"></div>':''}`).join('')}
+        </div>
+        <div class="match-team" style="text-align:right">${match.away}</div>
+        <div class="match-status ${r?'done':'pending'}" id="status_${did}"></div>
+      </div>`;
+  } else {
+    return `
+      <div class="match-row" id="row_${did}">
+        <div class="match-num">${mIdx+1}</div>
+        <div class="match-team">${match.home}</div>
+        <div class="match-score-area">
+          <input type="number" class="score-input" id="${did}_h" min="0" max="99"
+            value="${r?r.h:''}" placeholder="–" onchange="autoSave('${div.id}',${rIdx},${mIdx})">
+          <span class="score-sep">–</span>
+          <input type="number" class="score-input" id="${did}_a" min="0" max="99"
+            value="${r?r.a:''}" placeholder="–" onchange="autoSave('${div.id}',${rIdx},${mIdx})">
+        </div>
+        <div class="match-team" style="text-align:right">${match.away}</div>
+        <div class="match-status ${r?'done':'pending'}" id="status_${did}"></div>
+      </div>`;
+  }
+}
+
+// Autospara när ett resultat ändras
+function autoSave(divId, rIdx, mIdx) {
+  const div   = divisions.find(d => d.id == divId);
+  const match = div.rounds[rIdx][mIdx];
+  const did   = `d${divId}_r${rIdx}_m${mIdx}`;
+
+  if (format === 'sets') {
+    const sets = [0,1,2].map(i => {
+      const h = document.getElementById(`${did}_h${i}`)?.value;
+      const a = document.getElementById(`${did}_a${i}`)?.value;
+      return (h !== '' && a !== '') ? [parseInt(h), parseInt(a)] : null;
+    });
+    const filled = sets.filter(s => s !== null);
+    match.result = filled.length > 0 ? { sets } : null;
+  } else {
+    const h = document.getElementById(`${did}_h`)?.value;
+    const a = document.getElementById(`${did}_a`)?.value;
+    match.result = (h !== '' && a !== '') ? { h: parseInt(h), a: parseInt(a) } : null;
+  }
+
+  // Uppdatera statusdot
+  const dot = document.getElementById(`status_${did}`);
+  if (dot) { dot.className = `match-status ${match.result ? 'done' : 'pending'}`; }
+
+  saveState();
+}
+
+// ─── STANDINGS ────────────────────────────────────────────
+function buildStandingsHTML(standings) {
+  if (!standings.length) return '<p style="color:var(--muted);padding:1rem;">Inga resultat ännu.</p>';
+
+  const headers = format === 'sets'
+    ? `<th>#</th><th>Lag</th><th class="num">S</th><th class="num">V</th><th class="num">O</th><th class="num">F</th><th class="num">Set</th><th class="num">Pts</th>`
+    : `<th>#</th><th>Lag</th><th class="num">S</th><th class="num">V</th><th class="num">O</th><th class="num">F</th><th class="num">Pts</th>`;
+
+  const rows = standings.map((t, i) => {
+    const rc = i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-n';
+    const base = `<td><span class="rank-badge ${rc}">${i+1}</span></td><td style="font-weight:600">${t.name}</td>
+      <td class="num">${t.played}</td><td class="num">${t.wins}</td><td class="num">${t.draws}</td><td class="num">${t.losses}</td>`;
+    if (format === 'sets')
+      return `<tr>${base}<td class="num">${t.setsFor}–${t.setsAgainst}</td><td class="num pts-badge">${t.pts}</td></tr>`;
+    else
+      return `<tr>${base}<td class="num pts-badge">${t.pts}</td></tr>`;
+  }).join('');
+
+  return `<div style="overflow-x:auto"><table class="standings-table"><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+function computeStandings(div) {
+  const table = {};
+  div.teams.filter(t => t !== 'Vilohelg').forEach(t => {
+    table[t] = { name:t, played:0, wins:0, draws:0, losses:0, pts:0, setsFor:0, setsAgainst:0 };
+  });
+  div.rounds.forEach(round => {
+    round.forEach(match => {
+      if (!match.result) return;
+      const h = match.home, a = match.away;
+      if (h==='Vilohelg'||a==='Vilohelg'||!table[h]||!table[a]) return;
+      const r = match.result;
+      if (format === 'sets') {
+        let sH=0, sA=0;
+        (r.sets||[]).forEach(s => {
+          if (!s) return;
+          if (s[0]>s[1]) sH++; else if (s[1]>s[0]) sA++;
+        });
+        table[h].played++; table[a].played++;
+        table[h].setsFor+=sH; table[h].setsAgainst+=sA;
+        table[a].setsFor+=sA; table[a].setsAgainst+=sH;
+        if(sH>sA){table[h].wins++;table[a].losses++;table[h].pts+=2;}
+        else if(sA>sH){table[a].wins++;table[h].losses++;table[a].pts+=2;}
+        else{table[h].draws++;table[a].draws++;table[h].pts++;table[a].pts++;}
+      } else {
+        table[h].played++; table[a].played++;
+        if(r.h>r.a){table[h].wins++;table[a].losses++;table[h].pts+=2;}
+        else if(r.a>r.h){table[a].wins++;table[h].losses++;table[a].pts+=2;}
+        else{table[h].draws++;table[a].draws++;table[h].pts++;table[a].pts++;}
+      }
+    });
+  });
+  return Object.values(table).sort((a,b)=>b.pts-a.pts||b.wins-a.wins);
 }
 
 // ─── PRINT MODAL ─────────────────────────────────────────
@@ -317,7 +710,6 @@ function buildPrintModal() {
 
 function setPrintDiv(idx) { activePrintDivIndex = idx; buildPrintModal(); }
 
-// ─── PRINT: EN OMGÅNG ────────────────────────────────────
 function printRound(divIdx, roundIdx) {
   const div = divisions[divIdx];
   document.getElementById('print-view-container').innerHTML =
@@ -327,7 +719,7 @@ function printRound(divIdx, roundIdx) {
 }
 
 function buildRoundPage(div, round, roundIdx, totalRounds) {
-  const now = new Date().toLocaleDateString('sv-SE');
+  const now     = new Date().toLocaleDateString('sv-SE');
   const fmtName = format === 'sets' ? 'Set-spel (3 set till 13 poäng)' : 'Enkelmatch';
   const scoreArea = () => format === 'sets'
     ? `<div class="print-score-area-sets">
@@ -340,20 +732,16 @@ function buildRoundPage(div, round, roundIdx, totalRounds) {
     : `<div class="print-score-area-simple">
         <div class="print-score-box-lg"></div><span class="print-vs-lg">–</span><div class="print-score-box-lg"></div>
        </div>`;
-
   return `<div class="print-page">
     <div class="print-header">
-      <div class="print-header-left">
-        <h1>${div.name} – Omgång ${roundIdx + 1}</h1>
-        <p>Format: ${fmtName} &nbsp;·&nbsp; ${round.length} matcher</p>
-      </div>
+      <div class="print-header-left"><h1>${div.name} – Omgång ${roundIdx+1}</h1><p>Format: ${fmtName} &nbsp;·&nbsp; ${round.length} matcher</p></div>
       <div class="print-header-right">Utskrivet: ${now}<br>Pétanque Pro</div>
     </div>
     <div class="print-round">
-      <div class="print-round-header">Omgång ${roundIdx + 1} av ${totalRounds}</div>
+      <div class="print-round-header">Omgång ${roundIdx+1} av ${totalRounds}</div>
       ${round.map((match, mIdx) => `
         <div class="print-match">
-          <div class="print-match-num">${mIdx + 1}</div>
+          <div class="print-match-num">${mIdx+1}</div>
           <div class="print-team">${match.home}</div>
           ${scoreArea()}
           <div class="print-team right">${match.away}</div>
@@ -366,20 +754,19 @@ function printAllRounds() {
   closePrintModal();
   const div = divisions[activePrintDivIndex];
   document.getElementById('print-view-container').innerHTML =
-    div.rounds.map((r, i) => buildRoundPage(div, r, i, div.rounds.length)).join('');
+    div.rounds.map((r,i) => buildRoundPage(div, r, i, div.rounds.length)).join('');
   window.print();
   document.getElementById('print-view-container').innerHTML = '';
 }
 
-// ─── PRINT: TABELL ───────────────────────────────────────
 function printTable(divIdx) {
-  const div = divisions[divIdx];
+  const div      = divisions[divIdx];
   const standings = computeStandings(div);
-  const now = new Date().toLocaleDateString('sv-SE');
-  const headers = format === 'sets'
+  const now      = new Date().toLocaleDateString('sv-SE');
+  const headers  = format === 'sets'
     ? `<th>#</th><th>Lag</th><th class="num">S</th><th class="num">V</th><th class="num">O</th><th class="num">F</th><th class="num">Set</th><th class="num">Pts</th>`
     : `<th>#</th><th>Lag</th><th class="num">S</th><th class="num">V</th><th class="num">O</th><th class="num">F</th><th class="num">Pts</th>`;
-  const rows = standings.map((t, i) => format === 'sets'
+  const rows = standings.map((t,i) => format === 'sets'
     ? `<tr><td class="num rank">${i+1}</td><td>${t.name}</td><td class="num">${t.played}</td><td class="num">${t.wins}</td><td class="num">${t.draws}</td><td class="num">${t.losses}</td><td class="num">${t.setsFor}–${t.setsAgainst}</td><td class="num" style="font-weight:900">${t.pts}</td></tr>`
     : `<tr><td class="num rank">${i+1}</td><td>${t.name}</td><td class="num">${t.played}</td><td class="num">${t.wins}</td><td class="num">${t.draws}</td><td class="num">${t.losses}</td><td class="num" style="font-weight:900">${t.pts}</td></tr>`
   ).join('');
@@ -390,127 +777,20 @@ function printTable(divIdx) {
         <div class="print-header-right">Utskrivet: ${now}<br>Pétanque Pro</div>
       </div>
       <table class="print-standings"><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table>
-      <div class="print-footer">S = Spelade · V = Vinster · O = Oavgjorda · F = Förluster · Pts = Poäng</div>
+      <div class="print-footer">S=Spelade · V=Vinster · O=Oavgjorda · F=Förluster · Pts=Poäng</div>
     </div>`;
   window.print();
   document.getElementById('print-view-container').innerHTML = '';
 }
 
-// ─── STANDINGS CALC ───────────────────────────────────────
-function computeStandings(div) {
-  const table = {};
-  div.teams.filter(t => t !== 'Vilohelg').forEach(t => {
-    table[t] = { name:t, played:0, wins:0, draws:0, losses:0, pts:0, setsFor:0, setsAgainst:0 };
-  });
-  div.rounds.forEach(round => {
-    round.forEach(match => {
-      if (!match.result) return;
-      const h = match.home, a = match.away;
-      if (h==='Vilohelg'||a==='Vilohelg'||!table[h]||!table[a]) return;
-      const r = match.result;
-      if (format === 'sets') {
-        const sH=r.setsH||0, sA=r.setsA||0;
-        table[h].played++; table[a].played++;
-        table[h].setsFor+=sH; table[h].setsAgainst+=sA;
-        table[a].setsFor+=sA; table[a].setsAgainst+=sH;
-        if(sH>sA){table[h].wins++;table[a].losses++;table[h].pts+=2;}
-        else if(sA>sH){table[a].wins++;table[h].losses++;table[a].pts+=2;}
-        else{table[h].draws++;table[a].draws++;table[h].pts++;table[a].pts++;}
-      } else {
-        table[h].played++; table[a].played++;
-        if(r.wH>r.wA){table[h].wins++;table[a].losses++;table[h].pts+=2;}
-        else if(r.wA>r.wH){table[a].wins++;table[h].losses++;table[a].pts+=2;}
-        else{table[h].draws++;table[a].draws++;table[h].pts++;table[a].pts++;}
-      }
-    });
-  });
-  return Object.values(table).sort((a,b)=>b.pts-a.pts||b.wins-a.wins);
+// ─── RESET ────────────────────────────────────────────────
+async function resetAll() {
+  if (!confirm('Nollställ hela seriespelet? Detta går inte att ångra.')) return;
+  divisions = [];
+  format    = 'sets';
+  await window._saveState({ divisions: [], format: 'sets' });
+  location.reload();
 }
-
-// ─── CORE LOGIC ───────────────────────────────────────────
-function setFormat(f) {
-  format = f;
-  document.getElementById('fc-sets').classList.toggle('selected', f==='sets');
-  document.getElementById('fc-simple').classList.toggle('selected', f==='simple');
-}
-function addDivision() {
-  const name = document.getElementById('div-input').value.trim();
-  if (!name) return;
-  divisions.push({ id: Date.now(), name, teams: [], rounds: [] });
-  document.getElementById('div-input').value = '';
-  updateUI();
-}
-function addTeam() {
-  const name  = document.getElementById('team-input').value.trim();
-  const divId = parseInt(document.getElementById('div-select').value);
-  if (!name || !divId) return;
-  const div = divisions.find(d => d.id === divId);
-  if (div) div.teams.push(name);
-  document.getElementById('team-input').value = '';
-  updateUI();
-}
-function updateUI() {
-  document.getElementById('div-list').innerHTML = divisions.map(d =>
-    `<div style="background:var(--bg3);border:1px solid var(--border);padding:10px 12px;margin-bottom:5px;border-radius:0.5rem;font-size:0.85rem;">
-      <strong>${d.name}</strong> <span style="color:var(--muted)">${d.teams.length} lag</span>
-    </div>`
-  ).join('');
-  document.getElementById('div-select').innerHTML =
-    '<option value="">Välj...</option>' +
-    divisions.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
-  document.getElementById('division-preview').innerHTML = divisions.map(d =>
-    `<div style="margin-bottom:0.5rem"><strong>${d.name}:</strong> <span style="color:var(--muted)">${d.teams.join(', ')||'–'}</span></div>`
-  ).join('');
-  document.getElementById('start-btn').classList.toggle('hidden', divisions.length === 0);
-}
-function generateTournament() {
-  divisions.forEach(div => {
-    const teams = [...div.teams];
-    if (teams.length % 2 !== 0) teams.push('Vilohelg');
-    const n = teams.length;
-    div.rounds = [];
-    for (let j = 0; j < n - 1; j++) {
-      const matches = [];
-      for (let i = 0; i < n / 2; i++)
-        matches.push({ home: teams[i], away: teams[n-1-i], result: null });
-      div.rounds.push(matches);
-      teams.splice(1, 0, teams.pop());
-    }
-  });
-  document.getElementById('setup-section').classList.add('hidden');
-  document.getElementById('active-leagues-section').classList.remove('hidden');
-  document.getElementById('bottom-bar').classList.remove('hidden');
-  renderActiveLeague();
-}
-function renderActiveLeague() {
-  document.getElementById('active-content').innerHTML = divisions.map(div => `
-    <div class="card" style="margin-bottom:2rem;">
-      <div class="card-title">${div.name}</div>
-      <div style="overflow-x:auto;">
-        <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
-          <thead><tr style="color:var(--muted);text-align:left;">
-            <th style="padding:6px 8px;">Omgång</th>
-            <th style="padding:6px 8px;">Hemmalag</th>
-            <th style="padding:6px 8px;text-align:center;">Resultat</th>
-            <th style="padding:6px 8px;text-align:right;">Bortalag</th>
-          </tr></thead>
-          <tbody>
-            ${div.rounds.map((round, rIdx) =>
-              round.map((match, mIdx) => `
-                <tr style="border-top:1px solid var(--border);">
-                  ${mIdx===0?`<td style="padding:8px;color:var(--muted);white-space:nowrap" rowspan="${round.length}">Omg. ${rIdx+1}</td>`:''}
-                  <td style="padding:8px">${match.home}</td>
-                  <td style="padding:8px;text-align:center;color:var(--muted)">–</td>
-                  <td style="padding:8px;text-align:right">${match.away}</td>
-                </tr>`).join('')
-            ).join('')}
-          </tbody>
-        </table>
-      </div>
-    </div>`
-  ).join('');
-}
-function resetAll() { if (confirm('Nollställ allt?')) location.reload(); }
 </script>
 </body>
 </html>
