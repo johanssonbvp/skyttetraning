@@ -12,21 +12,20 @@
 
   /* LOGIN */
   .login-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;}
-  .login-box{background:var(--bg2);border:1px solid var(--border);border-radius:1rem;padding:2.5rem;width:100%;max-width:360px;display:flex;flex-direction:column;gap:1.25rem;}
+  .login-box{background:var(--bg2);border:1px solid var(--border);border-radius:1rem;padding:2.5rem;width:100%;max-width:360px;display:flex;flex-direction:column;gap:1.25rem;align-items:center;}
   .login-logo{font-size:1.4rem;font-weight:900;color:var(--accent2);text-align:center;}
   .login-logo span{color:var(--gold);}
   .login-subtitle{text-align:center;color:var(--muted);font-size:0.85rem;margin-top:-0.75rem;}
-  .login-field{display:flex;flex-direction:column;gap:0.4rem;}
-  .login-field label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);}
-  .login-field input{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:0.5rem;padding:0.65rem 0.85rem;font-size:0.95rem;outline:none;transition:border 0.15s;}
-  .login-field input:focus{border-color:var(--accent);}
-  .login-error{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);color:var(--red);font-size:0.8rem;padding:0.5rem 0.75rem;border-radius:0.4rem;text-align:center;display:none;}
+  .login-error{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);color:var(--red);font-size:0.8rem;padding:0.5rem 0.75rem;border-radius:0.4rem;text-align:center;display:none;width:100%;}
   .login-error.show{display:block;}
-  .btn-login{background:var(--accent);color:#fff;border:none;border-radius:0.5rem;padding:0.75rem;font-size:0.95rem;font-weight:700;cursor:pointer;transition:background 0.15s;}
-  .btn-login:hover:not(:disabled){background:var(--accent2);}
-  .btn-login:disabled{opacity:0.5;cursor:not-allowed;}
   .login-spinner{display:none;text-align:center;color:var(--muted);font-size:0.85rem;}
   .login-spinner.show{display:block;}
+
+  /* Google-knapp */
+  .btn-google{display:flex;align-items:center;justify-content:center;gap:0.75rem;background:#fff;color:#1f1f1f;border:1px solid #dadce0;border-radius:0.5rem;padding:0.75rem 1.5rem;font-size:0.95rem;font-weight:600;cursor:pointer;width:100%;transition:box-shadow 0.15s;}
+  .btn-google:hover{box-shadow:0 2px 8px rgba(0,0,0,0.2);}
+  .btn-google:disabled{opacity:0.5;cursor:not-allowed;}
+  .btn-google svg{width:20px;height:20px;flex-shrink:0;}
 
   /* APP STRUCTURE */
   .app{display:flex;min-height:100vh;}
@@ -51,7 +50,7 @@
   .setup-grid{display:grid;grid-template-columns:280px 1fr;gap:1.5rem;}
   @media(max-width:900px){.setup-grid{grid-template-columns:1fr;}}
   .input-row{display:flex;gap:0.5rem;margin-bottom:0.75rem;}
-  input[type="text"],input[type="number"],input[type="password"],input[type="email"],select{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:0.5rem;padding:0.55rem 0.75rem;font-size:0.9rem;outline:none;transition:border 0.15s;}
+  input[type="text"],input[type="number"],select{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:0.5rem;padding:0.55rem 0.75rem;font-size:0.9rem;outline:none;transition:border 0.15s;}
   input:focus,select:focus{border-color:var(--accent);}
   .btn{padding:0.55rem 1.1rem;border-radius:0.5rem;font-weight:700;font-size:0.85rem;border:none;cursor:pointer;transition:all 0.15s;}
   .btn-primary{background:var(--accent);color:#fff;}
@@ -131,18 +130,12 @@
   <div class="login-box">
     <div class="login-logo">Pétanque <span>Pro</span></div>
     <p class="login-subtitle">Adminåtkomst krävs</p>
-    <div class="login-field">
-      <label>E-post</label>
-      <input type="email" id="login-user" placeholder="admin@exempel.se">
-    </div>
-    <div class="login-field">
-      <label>Lösenord</label>
-      <input type="password" id="login-pass" placeholder="••••••••"
-             onkeydown="if(event.key==='Enter') tryLogin()">
-    </div>
-    <div class="login-error" id="login-error">Fel e-post eller lösenord.</div>
+    <div class="login-error" id="login-error">Inloggningen misslyckades. Försök igen.</div>
     <div class="login-spinner" id="login-spinner">Loggar in…</div>
-    <button class="btn-login" id="login-btn" onclick="tryLogin()">Logga in</button>
+    <button class="btn-google" id="login-btn" onclick="tryLogin()">
+      <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+      Logga in med Google
+    </button>
   </div>
 </div>
 
@@ -236,11 +229,11 @@
   <button class="btn btn-danger" onclick="resetAll()">Nollställ</button>
 </div>
 
-<!-- Firebase SDK (module) -->
+<!-- Firebase SDK -->
 <script type="module">
   import { initializeApp }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
   const firebaseConfig = {
@@ -253,18 +246,18 @@
     appId:             "1:672666417012:web:93613783fe51cd2ce81e21"
   };
 
-  const app  = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+  const app      = initializeApp(firebaseConfig);
+  const auth     = getAuth(app);
+  const provider = new GoogleAuthProvider();
 
-  // Exponera till global scope så vanliga <script>-taggar når dem
-  window._signIn  = (email, pw) => signInWithEmailAndPassword(auth, email, pw);
-  window._signOut = ()          => signOut(auth);
+  window._signIn  = () => signInWithPopup(auth, provider);
+  window._signOut = () => signOut(auth);
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
       document.getElementById('login-overlay').style.display = 'none';
       document.getElementById('app').style.display           = 'flex';
-      document.getElementById('sidebar-user').textContent    = user.email;
+      document.getElementById('sidebar-user').textContent    = user.displayName || user.email;
     } else {
       document.getElementById('login-overlay').style.display = 'flex';
       document.getElementById('app').style.display           = 'none';
@@ -279,8 +272,6 @@ let activePrintDivIndex = 0;
 
 // ─── AUTH ─────────────────────────────────────────────────
 async function tryLogin() {
-  const email  = document.getElementById('login-user').value.trim();
-  const pw     = document.getElementById('login-pass').value;
   const errEl  = document.getElementById('login-error');
   const spinEl = document.getElementById('login-spinner');
   const btnEl  = document.getElementById('login-btn');
@@ -290,10 +281,12 @@ async function tryLogin() {
   btnEl.disabled = true;
 
   try {
-    await window._signIn(email, pw);
-    // onAuthStateChanged visar appen automatiskt
-  } catch {
-    errEl.classList.add('show');
+    await window._signIn();
+  } catch (e) {
+    // Användaren stängde popupen – visa inget fel
+    if (e.code !== 'auth/popup-closed-by-user' && e.code !== 'auth/cancelled-popup-request') {
+      errEl.classList.add('show');
+    }
   } finally {
     spinEl.classList.remove('show');
     btnEl.disabled = false;
@@ -313,14 +306,12 @@ function buildPrintModal() {
     `<button class="round-btn" style="${i===activePrintDivIndex?'border-color:var(--accent);color:var(--accent2)':''}"
       onclick="setPrintDiv(${i})">${d.name}</button>`
   ).join('');
-
   const div = divisions[activePrintDivIndex];
   document.getElementById('print-modal-rounds').innerHTML = div
     ? div.rounds.map((_, rIdx) =>
         `<button class="round-btn" onclick="printRound(${activePrintDivIndex},${rIdx});closePrintModal()">Omgång ${rIdx+1}</button>`
       ).join('')
     : '';
-
   document.getElementById('print-modal-tables').innerHTML = divisions.map((d, i) =>
     `<button class="div-select-item" onclick="printTable(${i});closePrintModal()">📋 Tabell: ${d.name}</button>`
   ).join('');
@@ -340,7 +331,6 @@ function printRound(divIdx, roundIdx) {
 function buildRoundPage(div, round, roundIdx, totalRounds) {
   const now = new Date().toLocaleDateString('sv-SE');
   const fmtName = format === 'sets' ? 'Set-spel (3 set till 13 poäng)' : 'Enkelmatch';
-
   const scoreArea = () => format === 'sets'
     ? `<div class="print-score-area-sets">
         <div class="print-set-group"><div class="print-score-box"></div><span class="print-vs">–</span><div class="print-score-box"></div></div>
@@ -388,16 +378,13 @@ function printTable(divIdx) {
   const div = divisions[divIdx];
   const standings = computeStandings(div);
   const now = new Date().toLocaleDateString('sv-SE');
-
   const headers = format === 'sets'
     ? `<th>#</th><th>Lag</th><th class="num">S</th><th class="num">V</th><th class="num">O</th><th class="num">F</th><th class="num">Set</th><th class="num">Pts</th>`
     : `<th>#</th><th>Lag</th><th class="num">S</th><th class="num">V</th><th class="num">O</th><th class="num">F</th><th class="num">Pts</th>`;
-
   const rows = standings.map((t, i) => format === 'sets'
     ? `<tr><td class="num rank">${i+1}</td><td>${t.name}</td><td class="num">${t.played}</td><td class="num">${t.wins}</td><td class="num">${t.draws}</td><td class="num">${t.losses}</td><td class="num">${t.setsFor}–${t.setsAgainst}</td><td class="num" style="font-weight:900">${t.pts}</td></tr>`
     : `<tr><td class="num rank">${i+1}</td><td>${t.name}</td><td class="num">${t.played}</td><td class="num">${t.wins}</td><td class="num">${t.draws}</td><td class="num">${t.losses}</td><td class="num" style="font-weight:900">${t.pts}</td></tr>`
   ).join('');
-
   document.getElementById('print-view-container').innerHTML = `
     <div class="print-table-page">
       <div class="print-header">
@@ -448,7 +435,6 @@ function setFormat(f) {
   document.getElementById('fc-sets').classList.toggle('selected', f==='sets');
   document.getElementById('fc-simple').classList.toggle('selected', f==='simple');
 }
-
 function addDivision() {
   const name = document.getElementById('div-input').value.trim();
   if (!name) return;
@@ -456,7 +442,6 @@ function addDivision() {
   document.getElementById('div-input').value = '';
   updateUI();
 }
-
 function addTeam() {
   const name  = document.getElementById('team-input').value.trim();
   const divId = parseInt(document.getElementById('div-select').value);
@@ -466,7 +451,6 @@ function addTeam() {
   document.getElementById('team-input').value = '';
   updateUI();
 }
-
 function updateUI() {
   document.getElementById('div-list').innerHTML = divisions.map(d =>
     `<div style="background:var(--bg3);border:1px solid var(--border);padding:10px 12px;margin-bottom:5px;border-radius:0.5rem;font-size:0.85rem;">
@@ -481,7 +465,6 @@ function updateUI() {
   ).join('');
   document.getElementById('start-btn').classList.toggle('hidden', divisions.length === 0);
 }
-
 function generateTournament() {
   divisions.forEach(div => {
     const teams = [...div.teams];
@@ -501,7 +484,6 @@ function generateTournament() {
   document.getElementById('bottom-bar').classList.remove('hidden');
   renderActiveLeague();
 }
-
 function renderActiveLeague() {
   document.getElementById('active-content').innerHTML = divisions.map(div => `
     <div class="card" style="margin-bottom:2rem;">
@@ -530,7 +512,6 @@ function renderActiveLeague() {
     </div>`
   ).join('');
 }
-
 function resetAll() { if (confirm('Nollställ allt?')) location.reload(); }
 </script>
 </body>
