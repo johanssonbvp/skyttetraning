@@ -191,6 +191,31 @@ body::before {
   -webkit-tap-highlight-color: transparent;
 }
 .end-session-btn:hover { background: rgba(61,255,160,0.15); border-color: var(--carreau); }
+/* ÅNGRA-KNAPP */
+.undo-btn {
+  display: none;
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border2);
+  color: var(--muted2);
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 11px;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.undo-btn:hover { background: rgba(255,255,255,0.08); color: var(--text); border-color: var(--border2); }
+/* BYTA AVSTÅND-MODAL */
+.dist-switch-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin: 12px 0 4px; }
+.dist-switch-btn { background: var(--card2); border: 1px solid var(--border2); color: var(--muted2); font-family: var(--font-display); font-size: 1rem; font-weight: 800; padding: 12px 4px; border-radius: 12px; cursor: pointer; transition: all 0.15s; text-align: center; }
+.dist-switch-btn:hover { border-color: var(--accent); color: var(--accent); }
+.dist-switch-btn.current { border-color: var(--accent); background: rgba(232,255,71,0.1); color: var(--accent); }
 /* STATS */
 .stats-wrap { max-width: 480px; margin: 0 auto; padding: 24px 16px 120px; }
 .stats-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
@@ -356,6 +381,11 @@ body::before {
       <button class="shot-btn btn-traff" onclick="shoot('traff',event)"><span class="btn-icon">◎</span> <span data-i18n="hit">Träff</span></button>
       <button class="shot-btn btn-carreau" onclick="shoot('carreau',event)"><span class="btn-icon">★</span> Carreau</button>
     </div>
+    <!-- ÅNGRA + BYTA AVSTÅND -->
+    <div style="display:flex;gap:8px;margin-bottom:4px">
+      <button class="undo-btn" id="undo-btn" onclick="undoShot()" style="flex:1">↩ Ångra</button>
+      <button class="undo-btn" id="switch-dist-btn" onclick="openSwitchDistModal()" style="flex:1;display:none">⇄ Byt avstånd</button>
+    </div>
     <!-- AVSLUTA-KNAPP: visas efter första skottet -->
     <button class="end-session-btn" id="end-session-btn" onclick="openEndModal()">
       ✓ Avsluta & spara passet
@@ -462,6 +492,16 @@ body::before {
       <button class="mbtn mbtn-ghost" id="close-btn" onclick="closeModal('sum-modal')" data-i18n="close">Stäng</button>
     </div>
     <a href="https://ko-fi.com/petanqueapp" target="_blank" rel="noopener" class="kofi-link">☕ <span data-i18n="kofiText">Gillar du appen? Bjud på en kaffe</span></a>
+  </div>
+</div>
+<div class="overlay" id="switch-dist-modal">
+  <div class="sheet">
+    <h2>Byt avstånd</h2>
+    <p style="margin-bottom:0">Välj ett nytt avstånd. Det nuvarande resultatet sparas och du börjar om på det nya avståndet.</p>
+    <div class="dist-switch-grid" id="dist-switch-grid"></div>
+    <div class="sheet-actions" style="margin-top:12px">
+      <button class="mbtn mbtn-ghost" onclick="closeModal('switch-dist-modal')">Avbryt</button>
+    </div>
   </div>
 </div>
 <div class="overlay" id="reset-modal">
@@ -600,6 +640,7 @@ window.addEventListener('online',updateOnline);window.addEventListener('offline'
 
 const DISTS=[6,7,8,9];
 let distIdx=0,shotCount=0,total=50,stats={miss:0,traff:0,carreau:0},pendingFn=null,activeFilter='all';
+let shotLog=[]; // håller koll på varje skott för ångra-funktion
 let calYear=new Date().getFullYear(),calMonth=new Date().getMonth();
 
 const ls={
@@ -610,9 +651,10 @@ const ls={
 function loadSession(){
   const s=ls.get('pt_s');
   if(s){distIdx=s.d??0;shotCount=s.n??0;total=s.t??50;stats=s.stats??{miss:0,traff:0,carreau:0};
+  shotLog=s.log??[];
   if(stats.stann!==undefined){stats.carreau=stats.stann;delete stats.stann;}}
 }
-function saveSession(){ls.set('pt_s',{d:distIdx,n:shotCount,t:total,stats});}
+function saveSession(){ls.set('pt_s',{d:distIdx,n:shotCount,t:total,stats,log:shotLog});}
 function getHistory(){
   const h=ls.get('pt_h')||[];
   return h.map(e=>{if(e.stann!==undefined){e.carreau=e.stann;delete e.stann;}return e;});
@@ -641,14 +683,46 @@ function switchStatsTab(name,btn){
   document.getElementById('stats-'+name).classList.add('active');btn.classList.add('active');
 }
 
-function setDistance(idx){if(shotCount>0){pendingFn=()=>_setDist(idx);openModal('change-modal');return;}_setDist(idx);}
+function setDistance(idx){
+  if(shotCount>0){
+    // Spara nuvarande avstånd och byt utan att förlora data
+    pendingFn=()=>_switchDistWithSave(idx);
+    openModal('change-modal');
+    return;
+  }
+  _setDist(idx);
+}
 function _setDist(idx){distIdx=idx;refreshDistPills();refreshUI();}
+function _switchDistWithSave(idx){
+  // Spara pågående session och byt avstånd
+  pushHistory();
+  distIdx=idx;shotCount=0;stats={miss:0,traff:0,carreau:0};shotLog=[];
+  saveSession();refreshUI();
+}
 function setTotal(n){if(shotCount>0){pendingFn=()=>_setTotal(n);openModal('change-modal');return;}_setTotal(n);}
 function _setTotal(n){total=n;refreshCountPills();refreshUI();}
 
+// Byt avstånd direkt från knappen (spara + byt)
+function openSwitchDistModal(){
+  const grid=document.getElementById('dist-switch-grid');
+  grid.innerHTML=DISTS.map((d,i)=>
+    `<button class="dist-switch-btn ${i===distIdx?'current':''}" onclick="switchDistSave(${i})">${d}m</button>`
+  ).join('');
+  openModal('switch-dist-modal');
+}
+function switchDistSave(idx){
+  closeModal('switch-dist-modal');
+  if(idx===distIdx)return;
+  if(shotCount>0) pushHistory();
+  distIdx=idx;shotCount=0;stats={miss:0,traff:0,carreau:0};shotLog=[];
+  saveSession();refreshUI();
+}
+
 function shoot(type,event){
   if(shotCount>=total)return;
-  stats[type]++;shotCount++;saveSession();
+  stats[type]++;shotCount++;
+  shotLog.push(type); // logga för ångra
+  saveSession();
   if(window.navigator.vibrate)navigator.vibrate(type==='carreau'?[30,20,30]:30);
   if(event){
     const btn=event.currentTarget;
@@ -664,12 +738,19 @@ function shoot(type,event){
   const chipMap={miss:'live-miss',traff:'live-traff',carreau:'live-carreau'};
   const el=document.getElementById(chipMap[type]);
   el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump');
-
-  // Visa "Avsluta"-knappen efter första skottet
-  document.getElementById('end-session-btn').style.display = shotCount > 0 ? 'block' : 'none';
-
   refreshUI();
   if(shotCount===total){pushHistory();setTimeout(()=>showSummary(false),200);}
+}
+
+// ── ÅNGRA SENASTE SKOTT ──
+function undoShot(){
+  if(shotCount===0||shotLog.length===0)return;
+  const last=shotLog.pop();
+  stats[last]=Math.max(0,stats[last]-1);
+  shotCount--;
+  saveSession();
+  if(window.navigator.vibrate)navigator.vibrate(20);
+  refreshUI();
 }
 
 // ── AVSLUTA MITT I PASSET ──
@@ -712,10 +793,8 @@ function showSummary(midSession){
 function saveAndEnd(){
   pushHistory();
   closeModal('sum-modal');
-  // Nollställ inför nästa avstånd
-  shotCount=0;stats={miss:0,traff:0,carreau:0};
+  shotCount=0;stats={miss:0,traff:0,carreau:0};shotLog=[];
   saveSession();
-  document.getElementById('end-session-btn').style.display='none';
   refreshUI();
 }
 
@@ -739,8 +818,11 @@ function refreshUI(){
   if(shotCount===0)sub.setAttribute('data-i18n','readyToShoot'),sub.textContent=t('readyToShoot');
   else sub.textContent=pct+'% – '+(stats.traff+stats.carreau)+' '+t('hitsOf')+' '+shotCount;
   refreshDistPills();refreshCountPills();
-  // Visa/dölj avsluta-knapp
-  document.getElementById('end-session-btn').style.display = shotCount > 0 ? 'block' : 'none';
+  // Visa/dölj knappar
+  const active = shotCount > 0;
+  document.getElementById('end-session-btn').style.display  = active ? 'block' : 'none';
+  document.getElementById('undo-btn').style.display         = active ? 'flex' : 'none';
+  document.getElementById('switch-dist-btn').style.display  = active ? 'flex' : 'none';
 }
 
 function openModal(id){document.getElementById(id).classList.add('show');}
@@ -748,18 +830,18 @@ function closeModal(id){document.getElementById(id).classList.remove('show');}
 
 function nextDist(){
   closeModal('sum-modal');
-  if(distIdx<DISTS.length-1){distIdx++;shotCount=0;stats={miss:0,traff:0,carreau:0};saveSession();refreshUI();}
-  else{shotCount=0;stats={miss:0,traff:0,carreau:0};distIdx=0;saveSession();refreshUI();}
+  if(distIdx<DISTS.length-1){distIdx++;}
+  else{distIdx=0;}
+  shotCount=0;stats={miss:0,traff:0,carreau:0};shotLog=[];
+  saveSession();refreshUI();
 }
 
 function doReset(){
-  shotCount=0;stats={miss:0,traff:0,carreau:0};saveSession();
-  document.getElementById('end-session-btn').style.display='none';
+  shotCount=0;stats={miss:0,traff:0,carreau:0};shotLog=[];saveSession();
   refreshUI();closeModal('reset-modal');
 }
 function doChange(){
-  shotCount=0;stats={miss:0,traff:0,carreau:0};saveSession();
-  document.getElementById('end-session-btn').style.display='none';
+  shotCount=0;stats={miss:0,traff:0,carreau:0};shotLog=[];saveSession();
   if(pendingFn){pendingFn();pendingFn=null;}
   closeModal('change-modal');
 }
@@ -851,25 +933,66 @@ function renderStats(){
     </div>`;
   }).join('');
 
-  // Charts
+  // Charts med trendlinje
   const charts=document.getElementById('dist-charts');
   charts.innerHTML=DISTS.map(d=>{
     const dh=h.filter(e=>e.dist===d).slice(0,20).reverse();
     if(!dh.length)return'';
-    const maxPct=100;
-    const bars=dh.map(e=>{
-      const color=e.pct>=70?'var(--carreau)':e.pct>=40?'var(--traff)':'var(--miss)';
-      return`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
-        <div style="font-family:var(--font-display);font-size:0.6rem;color:var(--muted2)">${e.pct}%</div>
-        <div style="width:100%;background:var(--card2);border-radius:4px;height:80px;display:flex;align-items:flex-end">
-          <div style="width:100%;background:${color};border-radius:4px;height:${e.pct/maxPct*80}px;transition:height 0.3s"></div>
-        </div>
-        <div style="font-family:var(--font-display);font-size:0.55rem;color:var(--muted);transform:rotate(-45deg);white-space:nowrap">${new Date(e.date).toLocaleDateString('sv-SE').slice(0,5)}</div>
-      </div>`;
+    const W=320,H=100,PAD=8;
+    const vals=dh.map(e=>e.pct);
+    const n=vals.length;
+
+    // Staplar
+    const barW=(W-(n-1)*4)/n;
+    const bars=vals.map((v,i)=>{
+      const color=v>=70?'var(--carreau)':v>=40?'var(--traff)':'var(--miss)';
+      const bh=Math.max(3,(v/100)*(H-PAD));
+      const x=i*(barW+4);
+      const y=H-bh;
+      return`<rect x="${x}" y="${y}" width="${barW}" height="${bh}" rx="3" fill="${color}" opacity="0.7"/>
+             <text x="${x+barW/2}" y="${y-3}" text-anchor="middle" font-size="8" fill="#8888aa" font-family="Barlow Condensed,sans-serif">${v}%</text>`;
     }).join('');
+
+    // Trendlinje (linjär regression)
+    let trendLine='';
+    if(n>=2){
+      const xMean=(n-1)/2;
+      const yMean=vals.reduce((a,b)=>a+b,0)/n;
+      let num=0,den=0;
+      vals.forEach((v,i)=>{num+=(i-xMean)*(v-yMean);den+=(i-xMean)**2;});
+      const slope=den?num/den:0;
+      const intercept=yMean-slope*xMean;
+      const x0=barW/2;
+      const x1=(n-1)*(barW+4)+barW/2;
+      const y0=H-(Math.max(0,Math.min(100,intercept))/100*(H-PAD));
+      const y1=H-(Math.max(0,Math.min(100,intercept+slope*(n-1)))/100*(H-PAD));
+      trendLine=`<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="#e8ff47" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.8"/>
+                 <circle cx="${x1}" cy="${y1}" r="3" fill="#e8ff47" opacity="0.9"/>`;
+    }
+
+    // Datum-labels
+    const labels=vals.map((v,i)=>{
+      const x=i*(barW+4)+barW/2;
+      const dateStr=new Date(dh[i].date).toLocaleDateString('sv-SE').slice(0,5);
+      return`<text x="${x}" y="${H+14}" text-anchor="middle" font-size="7" fill="#5a5a78" font-family="Barlow Condensed,sans-serif" transform="rotate(-30,${x},${H+14})">${dateStr}</text>`;
+    }).join('');
+
+    // Genomsnittslinje
+    const avg=vals.reduce((a,b)=>a+b,0)/n;
+    const avgY=H-(avg/100*(H-PAD));
+    const avgLine=`<line x1="0" y1="${avgY}" x2="${W}" y2="${avgY}" stroke="#5a5a78" stroke-width="1" stroke-dasharray="2,3" opacity="0.5"/>
+                   <text x="${W-2}" y="${avgY-3}" text-anchor="end" font-size="8" fill="#5a5a78" font-family="Barlow Condensed,sans-serif">snitt ${avg.toFixed(0)}%</text>`;
+
     return`<div class="chart-card">
-      <div class="chart-head">${d}m – ${t('history')}</div>
-      <div style="display:flex;gap:4px;align-items:flex-end;padding-bottom:24px">${bars}</div>
+      <div class="chart-head" style="display:flex;justify-content:space-between;align-items:center">
+        <span>${d}m – ${t('history')}</span>
+        <span style="color:var(--accent);font-size:0.85rem">— trend</span>
+      </div>
+      <div style="overflow-x:auto">
+        <svg viewBox="0 0 ${W} ${H+24}" style="width:100%;min-width:${Math.max(200,n*20)}px;display:block">
+          ${avgLine}${bars}${trendLine}${labels}
+        </svg>
+      </div>
     </div>`;
   }).join('');
 
@@ -942,8 +1065,6 @@ loadSession();
 applyTranslations();
 if(ls.get('pt_sync_dismissed'))document.getElementById('sync-info').style.display='none';
 updateOnline();
-// Visa avsluta-knapp om pågående session finns
-if(shotCount>0)document.getElementById('end-session-btn').style.display='block';
 </script>
 </body>
 </html>
