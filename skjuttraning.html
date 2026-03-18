@@ -773,18 +773,27 @@ function showSummary(midSession){
   document.getElementById('sum-carreau').textContent = stats.carreau;
 
   // Visa rätt knappar beroende på läge
+  const isLastDist = distIdx === DISTS.length - 1;
   if (midSession) {
     // Mitt i passet: visa spara+avsluta och fortsätt
     document.getElementById('next-btn').style.display     = 'none';
     document.getElementById('close-btn').style.display    = 'none';
     document.getElementById('save-end-btn').style.display = '';
     document.getElementById('continue-btn').style.display = '';
+  } else if (isLastDist) {
+    // Sista avståndet klart: visa bara avsluta & spara
+    document.getElementById('next-btn').style.display     = 'none';
+    document.getElementById('close-btn').style.display    = 'none';
+    document.getElementById('save-end-btn').style.display = '';
+    document.getElementById('continue-btn').style.display = 'none';
+    document.getElementById('save-end-btn').textContent   = '🏁 Avsluta session';
   } else {
-    // Avstånd klart: visa nästa avstånd OCH spara+avsluta
+    // Avstånd klart, fler kvar: visa nästa avstånd OCH avsluta
     document.getElementById('next-btn').style.display     = '';
     document.getElementById('close-btn').style.display    = 'none';
     document.getElementById('save-end-btn').style.display = '';
     document.getElementById('continue-btn').style.display = 'none';
+    document.getElementById('save-end-btn').textContent   = '💾 Avsluta & spara';
   }
 
   openModal('sum-modal');
