@@ -10,7 +10,6 @@
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://petanquetraning.se">
 <link rel="sitemap" type="application/xml" href="./sitemap.xml">
-<!-- Open Graph (sociala medier) -->
 <meta property="og:title" content="Petanque Träning – Träningsappar för petanquespelare">
 <meta property="og:description" content="Gratis träningsappar för petanque. Skjutträning, läggträning, poängräknare och träningsdagbok.">
 <meta property="og:url" content="https://petanquetraning.se">
@@ -56,8 +55,6 @@ body::before {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
   pointer-events: none; z-index: 0; opacity: 0.5;
 }
-
-/* LANG BAR */
 .lang-bar {
   display: flex; justify-content: flex-end;
   padding: 10px 16px;
@@ -72,8 +69,6 @@ body::before {
   cursor: pointer; transition: all 0.2s;
 }
 .lang-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-/* HERO */
 .hero-wrap {
   max-width: 480px; margin: 0 auto;
   padding: 48px 20px 20px;
@@ -106,8 +101,6 @@ body::before {
   font-size: 0.92rem; color: var(--muted2); line-height: 1.6;
   max-width: 320px; margin: 0 auto 36px;
 }
-
-/* APPS */
 .apps-wrap {
   max-width: 480px; margin: 0 auto;
   padding: 0 16px 100px;
@@ -132,12 +125,10 @@ body::before {
 .app-card:hover { transform: translateY(-3px); border-color: var(--border2); }
 .app-card:hover::before { opacity: 1; }
 .app-card:active { transform: scale(0.98); }
-
 .card-shooting::before { background: linear-gradient(90deg, var(--miss), #ff8080); }
 .card-lagg::before    { background: linear-gradient(90deg, var(--carreau), #00cc80); }
 .card-dagbok::before  { background: linear-gradient(90deg, var(--accent), #c8dd00); }
 .card-tavling::before { background: linear-gradient(90deg, var(--traff), #ff8c00); }
-
 .app-icon-wrap {
   width: 52px; height: 52px; border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
@@ -147,7 +138,6 @@ body::before {
 .app-card.card-lagg .app-icon-wrap     { background: rgba(61,255,160,0.1); }
 .app-card.card-dagbok .app-icon-wrap   { background: rgba(232,255,71,0.1); }
 .app-card.card-tavling .app-icon-wrap  { background: rgba(245,200,66,0.12); }
-
 .app-info { flex: 1; min-width: 0; }
 .app-name {
   font-family: var(--font-display); font-size: 1.15rem; font-weight: 800;
@@ -162,11 +152,8 @@ body::before {
 .badge-live { background: rgba(61,255,160,0.15); color: var(--carreau); }
 .badge-soon { background: rgba(90,90,120,0.3); color: var(--muted2); }
 .badge-new  { background: rgba(232,255,71,0.15); color: var(--accent); }
-
 .app-arrow { color: var(--muted); font-size: 1.2rem; transition: transform 0.2s, color 0.2s; flex-shrink: 0; }
 .app-card:hover .app-arrow { transform: translateX(4px); color: var(--accent); }
-
-/* STATS STRIP */
 .stats-strip {
   display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 40px;
 }
@@ -183,14 +170,10 @@ body::before {
   letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted2);
   margin-top: 2px; display: block;
 }
-
-/* FOOTER */
 .footer { text-align: center; padding: 0 16px 40px; position: relative; z-index: 1; }
 .footer p { font-size: 0.75rem; color: var(--muted); line-height: 1.8; }
 .footer a { color: var(--muted2); text-decoration: none; }
 .footer a:hover { color: var(--accent); }
-
-/* ── INSTALL BANNER ── */
 #install-banner{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border2);padding:14px 16px calc(14px + env(safe-area-inset-bottom));z-index:30;flex-direction:row;align-items:center;gap:12px;}
 #install-banner.show{display:flex;}
 .install-text{flex:1;}
@@ -199,7 +182,6 @@ body::before {
 .install-btn{background:var(--accent);color:#080810;border:none;padding:9px 18px;border-radius:10px;font-family:var(--font-display);font-size:0.85rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;flex-shrink:0;}
 .install-dismiss{background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:4px;flex-shrink:0;}
 </style>
-<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XT4NB1HR2J"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -315,8 +297,6 @@ body::before {
 
 </div>
 
-
-<!-- SEO-text -->
 <div style="max-width:480px;margin:0 auto;padding:0 16px 32px;position:relative;z-index:1;">
   <p style="font-size:0.78rem;color:var(--muted);line-height:1.8;">
     Petanque Träning är en gratis webb-app för petanquespelare i Sverige. 
@@ -348,34 +328,34 @@ function toggleLang() {
 }
 applyLang();
 
-// ── TOTAL STATS (aggregates all app data) ──
+// ── TOTAL STATS ──
 function loadStats() {
   let sessions = 0, shots = 0;
   const days = new Set();
 
-  // Skjutträning
+  // Skjutträning – sparas under pt_h
   try {
-    JSON.parse(localStorage.getItem('pt_history') || '[]').forEach(s => {
+    JSON.parse(localStorage.getItem('pt_h') || '[]').forEach(s => {
       sessions++;
       shots += (s.miss||0) + (s.traff||0) + (s.carreau||0);
       if (s.date) days.add(s.date.split('T')[0]);
     });
   } catch(e){}
 
-  // Läggträning
+  // Läggträning – sparas under pt_lagg_history
   try {
     JSON.parse(localStorage.getItem('pt_lagg_history') || '[]').forEach(s => {
       sessions++;
-      shots += (s.attempts||0);
+      shots += (s.throws||0);
       if (s.date) days.add(s.date.split('T')[0]);
     });
   } catch(e){}
 
-  // Taktik
+  // Dagbok – sparas under pt_dagbok
   try {
-    JSON.parse(localStorage.getItem('pt_taktik_history') || '[]').forEach(s => {
+    JSON.parse(localStorage.getItem('pt_dagbok') || '[]').forEach(s => {
       sessions++;
-      if (s.date) days.add(s.date.split('T')[0]);
+      if (s.date) days.add(s.date);
     });
   } catch(e){}
 
@@ -413,7 +393,6 @@ window.addEventListener('appinstalled', () => { document.getElementById('install
 function dismissInstall() { document.getElementById('install-banner').classList.remove('show'); localStorage.setItem('pt_install_dismissed','1'); }
 
 _showBanner();
-
 </script>
 
 <!-- INSTALL BANNER -->
@@ -432,10 +411,10 @@ _showBanner();
   <div style="background:var(--card);border:1px solid var(--border2);border-radius:24px;padding:28px 24px;width:100%;max-width:440px;animation:slideUp 0.3s cubic-bezier(.4,0,.2,1);">
     <h2 style="font-family:var(--font-display);font-size:1.3rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px;">📲 <span data-sv="Installera på din enhet" data-en="Install on your device">Installera på din enhet</span></h2>
     <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:20px;">
-      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.4rem;flex-shrink:0">1️⃣</span><span style="font-size:0.9rem;color:var(--muted2);line-height:1.5;" data-sv="Öppna sidan i <strong style='color:var(--text)'>Safari</strong>" data-en="Open in <strong style='color:var(--text)'>Safari</strong>">Öppna sidan i <strong style="color:var(--text)">Safari</strong></span></div>
-      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.4rem;flex-shrink:0">2️⃣</span><span style="font-size:0.9rem;color:var(--muted2);line-height:1.5;" data-sv="Tryck på <strong style='color:var(--text)'>dela-ikonen</strong> &#x2197; längst ner" data-en="Tap the <strong style='color:var(--text)'>share icon</strong> &#x2197; at the bottom">Tryck på <strong style="color:var(--text)">dela-ikonen</strong> &#x2197; längst ner</span></div>
-      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.4rem;flex-shrink:0">3️⃣</span><span style="font-size:0.9rem;color:var(--muted2);line-height:1.5;" data-sv="Tryck <strong style='color:var(--text)'>"Lägg till på hemskärmen"</strong>" data-en="Tap <strong style='color:var(--text)'>'Add to Home Screen'</strong>">Tryck <strong style="color:var(--text)">"Lägg till på hemskärmen"</strong></span></div>
-      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.4rem;flex-shrink:0">4️⃣</span><span style="font-size:0.9rem;color:var(--muted2);line-height:1.5;" data-sv="Tryck <strong style='color:var(--text)'>"Lägg till"</strong> – klart! 🎉" data-en="Tap <strong style='color:var(--text)'>'Add'</strong> – done! 🎉">Tryck <strong style="color:var(--text)">"Lägg till"</strong> – klart! 🎉</span></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.4rem;flex-shrink:0">1️⃣</span><span style="font-size:0.9rem;color:var(--muted2);line-height:1.5;" data-sv="Öppna sidan i Safari" data-en="Open in Safari">Öppna sidan i <strong style="color:var(--text)">Safari</strong></span></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.4rem;flex-shrink:0">2️⃣</span><span style="font-size:0.9rem;color:var(--muted2);line-height:1.5;" data-sv="Tryck på dela-ikonen längst ner" data-en="Tap the share icon at the bottom">Tryck på <strong style="color:var(--text)">dela-ikonen</strong> &#x2197; längst ner</span></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.4rem;flex-shrink:0">3️⃣</span><span style="font-size:0.9rem;color:var(--muted2);line-height:1.5;" data-sv="Tryck Lägg till på hemskärmen" data-en="Tap Add to Home Screen">Tryck <strong style="color:var(--text)">"Lägg till på hemskärmen"</strong></span></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.4rem;flex-shrink:0">4️⃣</span><span style="font-size:0.9rem;color:var(--muted2);line-height:1.5;" data-sv="Tryck Lägg till – klart!" data-en="Tap Add – done!">Tryck <strong style="color:var(--text)">"Lägg till"</strong> – klart! 🎉</span></div>
     </div>
     <button onclick="document.getElementById('ios-install-modal').classList.remove('show');document.getElementById('ios-install-modal').style.display='none';dismissInstall();" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid var(--border2);color:var(--text);border-radius:14px;padding:15px;font-family:var(--font-display);font-size:1rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;" data-sv="Stäng" data-en="Close">Stäng</button>
   </div>
