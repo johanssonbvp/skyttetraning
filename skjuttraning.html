@@ -925,11 +925,39 @@ function renderStats(){
     const best=Math.max(...dh.map(e=>e.pct));
     const be=dh.find(e=>e.pct===best);
     const avg=+(dh.reduce((a,e)=>a+e.pct,0)/dh.length).toFixed(1);
+
+    // Beräkna snitt-fördelning miss/träff/carreau
+    const totalShots=dh.reduce((a,e)=>a+e.shots,0);
+    const totalMiss=dh.reduce((a,e)=>a+(e.miss||0),0);
+    const totalTraff=dh.reduce((a,e)=>a+(e.traff||0),0);
+    const totalCarreau=dh.reduce((a,e)=>a+(e.carreau||0),0);
+    const missPct=totalShots?Math.round(totalMiss/totalShots*100):0;
+    const traffPct=totalShots?Math.round(totalTraff/totalShots*100):0;
+    const carreauPct=totalShots?Math.round(totalCarreau/totalShots*100):0;
+
+    // Fördelningsstaplar
+    const distBar=(pct,color,label)=>`
+      <div style="display:flex;align-items:center;gap:6px;margin-top:5px">
+        <div style="font-family:var(--font-display);font-size:0.6rem;font-weight:700;color:var(--muted2);width:44px;flex-shrink:0">${label}</div>
+        <div style="flex:1;height:6px;background:var(--card2);border-radius:999px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:${color};border-radius:999px;transition:width 0.4s"></div>
+        </div>
+        <div style="font-family:var(--font-display);font-size:0.65rem;font-weight:800;color:${color};width:28px;text-align:right">${pct}%</div>
+      </div>`;
+
     return`<div class="record-card ${distClasses[d]}">
       <div class="record-dist">${d}m</div>
-      <div class="record-pct" style="color:${best>=70?'var(--carreau)':best>=40?'var(--traff)':'var(--miss)'}">${best}%</div>
+      <div style="display:flex;align-items:baseline;gap:8px">
+        <div class="record-pct" style="color:${best>=70?'var(--carreau)':best>=40?'var(--traff)':'var(--miss)'}">${best}%</div>
+        <div style="font-size:0.7rem;color:var(--muted2)">rekord</div>
+      </div>
       <div class="record-detail">${t('bestSession')} · ${new Date(be.date).toLocaleDateString('sv-SE')}</div>
-      <div class="record-detail">${t('avgLabel')}: ${avg}% · ${dh.length} ${t('sessionsLabel')}</div>
+      <div class="record-detail" style="margin-bottom:6px">${t('avgLabel')}: ${avg}% · ${dh.length} ${t('sessionsLabel')}</div>
+      <div style="border-top:1px solid var(--border);padding-top:8px">
+        ${distBar(missPct,'var(--miss)','Miss')}
+        ${distBar(traffPct,'var(--traff)','Träff')}
+        ${distBar(carreauPct,'var(--carreau)','Carreau')}
+      </div>
     </div>`;
   }).join('');
 
