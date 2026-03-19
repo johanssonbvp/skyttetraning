@@ -186,7 +186,7 @@
   const auth  = getAuth(fbApp);
   const db    = getDatabase(fbApp);
   const prov  = new GoogleAuthProvider();
-
+ 
   // REDIRECT istället för popup – löser Cross-Origin-Opener-Policy-felet
   window._signIn  = () => signInWithRedirect(auth, prov);
   window._signOut = () => signOut(auth);
