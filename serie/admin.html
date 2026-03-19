@@ -186,21 +186,25 @@
   const auth  = getAuth(fbApp);
   const db    = getDatabase(fbApp);
   const prov  = new GoogleAuthProvider();
- 
+
   // REDIRECT istället för popup – löser Cross-Origin-Opener-Policy-felet
   window._signIn  = () => signInWithRedirect(auth, prov);
   window._signOut = () => signOut(auth);
   window._saveState = (s) => set(ref(db,'petanque'), s);
   window._loadState = async () => { const snap=await get(ref(db,'petanque')); return snap.exists()?snap.val():null; };
 
-  // Fånga upp redirect-resultatet när sidan laddas tillbaka efter Google
-  getRedirectResult(auth).catch(err => {
-    if (err?.code && err.code !== 'auth/null-user') {
+  // Fånga redirect-resultatet explicit med await
+  try {
+    const result = await getRedirectResult(auth);
+    if (result?.user) console.log('Redirect OK:', result.user.email);
+  } catch(err) {
+    if (err?.code && err.code !== 'auth/null-user' && err.code !== 'auth/no-auth-event') {
+      console.error('Redirect fel:', err.code);
       document.getElementById('login-error').classList.add('show');
       document.getElementById('login-spinner').classList.remove('show');
       document.getElementById('login-btn').disabled = false;
     }
-  });
+  }
 
   onAuthStateChanged(auth, async (user) => {
     document.getElementById('loading-screen').style.display = 'none';
