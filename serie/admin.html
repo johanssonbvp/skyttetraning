@@ -385,21 +385,51 @@ function onScoreChange(divId,rIdx,mIdx){
 
 function buildStandingsHTML(div){
   const stats={};
-  div.teams.filter(t=>t!=='Vilohelg').forEach(t=>{stats[t]={name:t,played:0,wins:0,losses:0,setsFor:0,setsAgainst:0,pts:0};});
+  div.teams.filter(t=>t!=='Vilohelg').forEach(t=>{stats[t]={name:t,played:0,wins:0,losses:0,setsFor:0,setsAgainst:0,kF:0,kA:0,pts:0};});
   div.rounds.forEach(round=>round.forEach(m=>{
     const w=matchWinner(m);if(!w||!stats[m.home]||!stats[m.away])return;
-    let hS=0,aS=0;if(m.s1.h>m.s1.a)hS++;else aS++;if(m.s2.h>m.s2.a)hS++;else aS++;
-    if(needsSet3(m)&&m.s3.h!==null){if(m.s3.h>m.s3.a)hS++;else aS++;}
+    let hS=0,aS=0,hK=0,aK=0;
+    [m.s1,m.s2,m.s3].forEach((s,i)=>{
+      if(!s||s.h===null||s.a===null)return;
+      if(i===2&&!needsSet3(m))return;
+      hK+=s.h;aK+=s.a;
+      if(s.h>s.a)hS++;else aS++;
+    });
     stats[m.home].played++;stats[m.away].played++;
     stats[m.home].setsFor+=hS;stats[m.home].setsAgainst+=aS;
     stats[m.away].setsFor+=aS;stats[m.away].setsAgainst+=hS;
+    stats[m.home].kF+=hK;stats[m.home].kA+=aK;
+    stats[m.away].kF+=aK;stats[m.away].kA+=hK;
     if(w==='h'){stats[m.home].wins++;stats[m.home].pts+=2;stats[m.away].losses++;}
     else{stats[m.away].wins++;stats[m.away].pts+=2;stats[m.home].losses++;}
   }));
-  const sorted=Object.values(stats).sort((a,b)=>b.pts-a.pts||(b.setsFor-b.setsAgainst)-(a.setsFor-a.setsAgainst)||b.setsFor-a.setsFor);
+  const sorted=Object.values(stats)
+    .map(s=>({...s,sd:s.setsFor-s.setsAgainst,kd:s.kF-s.kA}))
+    .sort((a,b)=>b.pts-a.pts||b.sd-a.sd||b.kd-a.kd||b.kF-a.kF);
   if(!sorted.length)return'<p style="color:var(--muted);padding:1rem">Inga resultat ännu.</p>';
-  const rows=sorted.map((t,i)=>{const rc=i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-n';const sd=t.setsFor-t.setsAgainst;return`<tr><td><span class="rank-badge ${rc}">${i+1}</span></td><td style="font-weight:600">${t.name}</td><td class="num">${t.played}</td><td class="num" style="color:var(--green)">${t.wins}</td><td class="num" style="color:var(--red)">${t.losses}</td><td class="num" style="color:${sd>0?'var(--green)':sd<0?'var(--red)':'var(--muted)'}">${sd>0?'+':''}${sd}</td><td class="num pts-badge">${t.pts}</td></tr>`;}).join('');
-  return`<div style="overflow-x:auto"><table class="standings-table"><thead><tr><th>#</th><th>Lag</th><th class="num">S</th><th class="num">V</th><th class="num">F</th><th class="num">+/–</th><th class="num">Pts</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  const rows=sorted.map((t,i)=>{
+    const rc=i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-n';
+    return`<tr>
+      <td><span class="rank-badge ${rc}">${i+1}</span></td>
+      <td style="font-weight:600">${t.name}</td>
+      <td class="num">${t.played}</td>
+      <td class="num" style="color:var(--green)">${t.wins}</td>
+      <td class="num" style="color:var(--red)">${t.losses}</td>
+      <td class="num" style="color:${t.sd>0?'var(--green)':t.sd<0?'var(--red)':'var(--muted)'}">${t.sd>0?'+':''}${t.sd}</td>
+      <td class="num" style="color:${t.kd>0?'var(--green)':t.kd<0?'var(--red)':'var(--muted)'}">${t.kd>0?'+':''}${t.kd}</td>
+      <td class="num pts-badge">${t.pts}</td>
+    </tr>`;
+  }).join('');
+  return`<div style="overflow-x:auto"><table class="standings-table">
+    <thead><tr>
+      <th>#</th><th>Lag</th>
+      <th class="num">S</th><th class="num">V</th><th class="num">F</th>
+      <th class="num" title="Setskillnad">SS</th>
+      <th class="num" title="Klotdifferens">KD</th>
+      <th class="num">Pts</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table></div>`;
 }
 
 function openPrintModal(){buildPrintModal();document.getElementById('print-modal').classList.remove('hidden');}
