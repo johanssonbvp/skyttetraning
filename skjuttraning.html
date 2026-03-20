@@ -1070,7 +1070,25 @@ function renderCalendar(){
 function calPrev(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
 function calNext(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendar();}
 
+// ── Ta bort dubbletter från befintlig historik ──
+function deduplicateHistory(){
+  const h=getHistory();
+  const seen=new Set();
+  const deduped=h.filter(e=>{
+    // Avrunda till närmaste minut för att fånga dubbletter med samma tidsstämpel
+    const key=e.dist+'_'+e.shots+'_'+e.miss+'_'+e.traff+'_'+e.carreau+'_'+e.date.slice(0,16);
+    if(seen.has(key))return false;
+    seen.add(key);
+    return true;
+  });
+  if(deduped.length < h.length){
+    saveHistory(deduped);
+    console.log('Tog bort '+(h.length-deduped.length)+' dubbletter från historiken.');
+  }
+}
+
 loadSession();
+deduplicateHistory(); // rensa eventuella gamla dubbletter vid uppstart
 applyTranslations();
 if(ls.get('pt_sync_dismissed'))document.getElementById('sync-info').style.display='none';
 updateOnline();
