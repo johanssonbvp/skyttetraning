@@ -383,9 +383,24 @@ function onScoreChange(divId,rIdx,mIdx){
   saveState();
 }
 
+// ─── INBÖRDES MÖTEN ──────────────────────────────────────────────────────────
+function headToHeadPoints(rounds, teamA, teamB) {
+  let ptsA=0, ptsB=0;
+  rounds.forEach(round=>round.forEach(m=>{
+    const isMatch=(m.home===teamA&&m.away===teamB)||(m.home===teamB&&m.away===teamA);
+    if(!isMatch)return;
+    const w=matchWinner(m);if(!w)return;
+    if((m.home===teamA&&w==='h')||(m.away===teamA&&w==='a'))ptsA+=2;
+    else ptsB+=2;
+  }));
+  return{ptsA,ptsB};
+}
+
 function buildStandingsHTML(div){
   const stats={};
-  div.teams.filter(t=>t!=='Vilohelg').forEach(t=>{stats[t]={name:t,played:0,wins:0,losses:0,setsFor:0,setsAgainst:0,kF:0,kA:0,pts:0};});
+  div.teams.filter(t=>t!=='Vilohelg').forEach(t=>{
+    stats[t]={name:t,played:0,wins:0,losses:0,setsFor:0,setsAgainst:0,kF:0,kA:0,pts:0};
+  });
   div.rounds.forEach(round=>round.forEach(m=>{
     const w=matchWinner(m);if(!w||!stats[m.home]||!stats[m.away])return;
     let hS=0,aS=0,hK=0,aK=0;
@@ -403,11 +418,20 @@ function buildStandingsHTML(div){
     if(w==='h'){stats[m.home].wins++;stats[m.home].pts+=2;stats[m.away].losses++;}
     else{stats[m.away].wins++;stats[m.away].pts+=2;stats[m.home].losses++;}
   }));
-  const sorted=Object.values(stats)
-    .map(s=>({...s,sd:s.setsFor-s.setsAgainst,kd:s.kF-s.kA}))
-    .sort((a,b)=>b.pts-a.pts||b.sd-a.sd||b.kd-a.kd||b.kF-a.kF);
-  if(!sorted.length)return'<p style="color:var(--muted);padding:1rem">Inga resultat ännu.</p>';
-  const rows=sorted.map((t,i)=>{
+
+  const teams=Object.values(stats).map(s=>({...s,sd:s.setsFor-s.setsAgainst,kd:s.kF-s.kA}));
+  teams.sort((a,b)=>{
+    if(b.pts!==a.pts)return b.pts-a.pts;
+    if(b.wins!==a.wins)return b.wins-a.wins;
+    if(b.sd!==a.sd)return b.sd-a.sd;
+    if(b.kd!==a.kd)return b.kd-a.kd;
+    // Inbördes möten
+    const h2h=headToHeadPoints(div.rounds,a.name,b.name);
+    return h2h.ptsB-h2h.ptsA;
+  });
+
+  if(!teams.length)return'<p style="color:var(--muted);padding:1rem">Inga resultat ännu.</p>';
+  const rows=teams.map((t,i)=>{
     const rc=i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-n';
     return`<tr>
       <td><span class="rank-badge ${rc}">${i+1}</span></td>
@@ -415,8 +439,8 @@ function buildStandingsHTML(div){
       <td class="num">${t.played}</td>
       <td class="num" style="color:var(--green)">${t.wins}</td>
       <td class="num" style="color:var(--red)">${t.losses}</td>
-      <td class="num" style="color:${t.sd>0?'var(--green)':t.sd<0?'var(--red)':'var(--muted)'}">${t.sd>0?'+':''}${t.sd}</td>
-      <td class="num" style="color:${t.kd>0?'var(--green)':t.kd<0?'var(--red)':'var(--muted)'}">${t.kd>0?'+':''}${t.kd}</td>
+      <td class="num" style="color:${t.sd>0?'var(--green)':t.sd<0?'var(--red)':'var(--muted)'}">${t.sd>0?'+':''  }${t.sd}</td>
+      <td class="num" style="color:${t.kd>0?'var(--green)':t.kd<0?'var(--red)':'var(--muted)'}">${t.kd>0?'+':''  }${t.kd}</td>
       <td class="num pts-badge">${t.pts}</td>
     </tr>`;
   }).join('');
