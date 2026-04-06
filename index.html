@@ -129,6 +129,7 @@ body::before {
 .card-lagg::before    { background: linear-gradient(90deg, var(--carreau), #00cc80); }
 .card-dagbok::before  { background: linear-gradient(90deg, var(--accent), #c8dd00); }
 .card-tavling::before { background: linear-gradient(90deg, var(--traff), #ff8c00); }
+.card-precision::before { background: linear-gradient(90deg, #a78bfa, #7c6ff7); }
 .app-icon-wrap {
   width: 52px; height: 52px; border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
@@ -138,6 +139,7 @@ body::before {
 .app-card.card-lagg .app-icon-wrap     { background: rgba(61,255,160,0.1); }
 .app-card.card-dagbok .app-icon-wrap   { background: rgba(232,255,71,0.1); }
 .app-card.card-tavling .app-icon-wrap  { background: rgba(245,200,66,0.12); }
+.app-card.card-precision .app-icon-wrap { background: rgba(167,139,250,0.12); }
 .app-info { flex: 1; min-width: 0; }
 .app-name {
   font-family: var(--font-display); font-size: 1.15rem; font-weight: 800;
@@ -274,6 +276,17 @@ body::before {
       <span class="app-arrow">›</span>
     </a>
 
+    <a class="app-card card-precision" href="precisionsskytte.html">
+      <div class="app-icon-wrap">🏅</div>
+      <div class="app-info">
+        <div class="app-name">
+          <span data-sv="Precisionsskytte" data-en="Precision Shooting">Precisionsskytte</span>
+        </div>
+        <p class="app-desc" data-sv="20 skott på 5 stationer enligt svenska regler. Poängsätt och följ din utveckling." data-en="20 shots at 5 stations per Swedish rules. Score and track your progress.">20 skott på 5 stationer enligt svenska regler. Poängsätt och följ din utveckling.</p>
+      </div>
+      <span class="app-arrow">›</span>
+    </a>
+
   </div>
 
   <p class="section-label" data-sv="Din träning totalt" data-en="Your Total Training">Din träning totalt</p>
@@ -330,7 +343,6 @@ function loadStats() {
   let sessions = 0, shots = 0;
   const days = new Set();
 
-  // Skjutträning – sparas under pt_h
   try {
     JSON.parse(localStorage.getItem('pt_h') || '[]').forEach(s => {
       sessions++;
@@ -339,7 +351,6 @@ function loadStats() {
     });
   } catch(e){}
 
-  // Läggträning – sparas under pt_lagg_history
   try {
     JSON.parse(localStorage.getItem('pt_lagg_history') || '[]').forEach(s => {
       sessions++;
@@ -348,11 +359,18 @@ function loadStats() {
     });
   } catch(e){}
 
-  // Dagbok – sparas under pt_dagbok
   try {
     JSON.parse(localStorage.getItem('pt_dagbok') || '[]').forEach(s => {
       sessions++;
       if (s.date) days.add(s.date);
+    });
+  } catch(e){}
+
+  try {
+    JSON.parse(localStorage.getItem('pt_precision_v2') || '[]').forEach(s => {
+      sessions++;
+      shots += 20;
+      if (s.date) days.add(new Date(s.date).toISOString().split('T')[0]);
     });
   } catch(e){}
 
