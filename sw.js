@@ -1,4 +1,4 @@
-const CACHE = 'petanque-v38';
+const CACHE = 'petanque-v39';
 
 const FILES = [
   './',
@@ -7,7 +7,7 @@ const FILES = [
   './laggtraning.html',
   './tavlingssimulator.html',
   './dagbok.html',
-  './precisionsskytte.html'
+  './precisionsskytte.html',
   'https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap'
 ];
 
