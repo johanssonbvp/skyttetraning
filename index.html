@@ -330,7 +330,18 @@ body::before {
 <div class="footer">
   <p><a href="https://petanquetraning.se">petanquetraning.se</a> &nbsp;·&nbsp; <span data-sv="Byggd för petanquespelare" data-en="Built for pétanque players">Byggd för petanquespelare</span></p>
   <p style="margin-top:6px;"><span data-sv="Utvecklad av" data-en="Developed by">Utvecklad av</span> Pär Johansson</p>
-  <p style="margin-top:6px;"><a href="/cdn-cgi/l/email-protection#5c35323a331c2c39283d322d2939282e3d3235323b722f39" style="color:var(--muted2);text-decoration:none;font-size:0.75rem;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted2)'"><span class="__cf_email__" data-cfemail="ea83848c85aa9a8f9e8b849b9f8f9e988b8483848dc4998f">[email&#160;protected]</span></a></p>
+  <p style="margin-top:6px;" id="mail-container"></p>
+
+<script>
+  (function() {
+    const u = "info";
+    const d = "petanquetraning.se";
+    const container = document.getElementById('mail-container');
+    if(container) {
+      container.innerHTML = `<a href="mailto:${u}@${d}" style="color:var(--muted2);text-decoration:none;font-size:0.75rem;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted2)'">${u}@${d}</a>`;
+    }
+  })();
+</script>
   <p style="margin-top:10px;"><a href="https://ko-fi.com/petanqueapp" target="_blank" rel="noopener" style="color:var(--muted2);text-decoration:none;font-size:0.78rem;font-weight:600;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted2)'">☕ <span data-sv="Gillar du appen? Bjud på en kaffe" data-en="Enjoying the app? Buy me a coffee">Gillar du appen? Bjud på en kaffe</span></a></p>
 </div>
 
