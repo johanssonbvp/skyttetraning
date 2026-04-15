@@ -129,7 +129,6 @@ body::before {
 .card-lagg::before    { background: linear-gradient(90deg, var(--carreau), #00cc80); }
 .card-dagbok::before  { background: linear-gradient(90deg, var(--accent), #c8dd00); }
 .card-tavling::before { background: linear-gradient(90deg, var(--traff), #ff8c00); }
-.card-precision::before { background: linear-gradient(90deg, #a78bfa, #7c6ff7); }
 .app-icon-wrap {
   width: 52px; height: 52px; border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
@@ -139,7 +138,6 @@ body::before {
 .app-card.card-lagg .app-icon-wrap     { background: rgba(61,255,160,0.1); }
 .app-card.card-dagbok .app-icon-wrap   { background: rgba(232,255,71,0.1); }
 .app-card.card-tavling .app-icon-wrap  { background: rgba(245,200,66,0.12); }
-.app-card.card-precision .app-icon-wrap { background: rgba(167,139,250,0.12); }
 .app-info { flex: 1; min-width: 0; }
 .app-name {
   font-family: var(--font-display); font-size: 1.15rem; font-weight: 800;
@@ -157,7 +155,7 @@ body::before {
 .app-arrow { color: var(--muted); font-size: 1.2rem; transition: transform 0.2s, color 0.2s; flex-shrink: 0; }
 .app-card:hover .app-arrow { transform: translateX(4px); color: var(--accent); }
 .stats-strip {
-  display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 40px;
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 16px;
 }
 .strip-stat {
   background: var(--card); border: 1px solid var(--border);
@@ -172,6 +170,43 @@ body::before {
   letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted2);
   margin-top: 2px; display: block;
 }
+
+/* DATA ACTIONS ROW */
+.data-actions {
+  display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap;
+}
+.data-btn {
+  flex: 1; min-width: 120px;
+  background: var(--card); border: 1px solid var(--border2);
+  border-radius: 12px; padding: 12px 10px;
+  font-family: var(--font-display); font-size: 0.78rem; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--muted2); cursor: pointer;
+  transition: all 0.2s; text-align: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.data-btn:hover { border-color: var(--accent); color: var(--accent); }
+.data-btn:active { transform: scale(0.97); }
+
+/* Import result feedback */
+.import-result {
+  display: none;
+  background: var(--card); border: 1px solid var(--border2); border-radius: 12px;
+  padding: 14px 16px; margin-bottom: 20px;
+  font-size: 0.85rem; line-height: 1.6;
+}
+.import-result.show { display: block; }
+.import-result.success { border-color: rgba(61,255,160,0.3); }
+.import-result.error   { border-color: rgba(255,77,77,0.3); }
+.import-result-title {
+  font-family: var(--font-display); font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px;
+}
+.import-result.success .import-result-title { color: var(--carreau); }
+.import-result.error   .import-result-title { color: var(--miss); }
+.import-result-row { display: flex; justify-content: space-between; color: var(--muted2); padding: 3px 0; }
+.import-result-row span:last-child { font-weight: 700; color: var(--text); }
+
 .footer { text-align: center; padding: 0 16px 40px; position: relative; z-index: 1; }
 .footer p { font-size: 0.75rem; color: var(--muted); line-height: 1.8; }
 .footer a { color: var(--muted2); text-decoration: none; }
@@ -276,17 +311,6 @@ body::before {
       <span class="app-arrow">›</span>
     </a>
 
-    <a class="app-card card-precision" href="precisionsskytte.html">
-      <div class="app-icon-wrap">🏅</div>
-      <div class="app-info">
-        <div class="app-name">
-          <span data-sv="Precisionsskytte" data-en="Precision Shooting">Precisionsskytte</span>
-        </div>
-        <p class="app-desc" data-sv="20 skott på 5 stationer enligt svenska regler. Poängsätt och följ din utveckling." data-en="20 shots at 5 stations per Swedish rules. Score and track your progress.">20 skott på 5 stationer enligt svenska regler. Poängsätt och följ din utveckling.</p>
-      </div>
-      <span class="app-arrow">›</span>
-    </a>
-
   </div>
 
   <p class="section-label" data-sv="Din träning totalt" data-en="Your Total Training">Din träning totalt</p>
@@ -305,6 +329,25 @@ body::before {
     </div>
   </div>
 
+  <!-- DATA HANTERING -->
+  <p class="section-label" data-sv="Din data" data-en="Your Data">Din data</p>
+  <div class="data-actions">
+    <button class="data-btn" onclick="exportAllData()">
+      ↓ <span data-sv="Exportera all data" data-en="Export all data">Exportera all data</span>
+    </button>
+    <button class="data-btn" onclick="triggerImportAll()">
+      ↑ <span data-sv="Importera all data" data-en="Import all data">Importera all data</span>
+    </button>
+  </div>
+  <!-- Dold fil-input för import -->
+  <input type="file" id="import-all-file" accept=".csv" style="display:none" onchange="handleImportAll(event)">
+
+  <!-- Feedback efter import -->
+  <div class="import-result" id="import-result">
+    <div class="import-result-title" id="import-result-title"></div>
+    <div id="import-result-rows"></div>
+  </div>
+
 </div>
 
 <div style="max-width:480px;margin:0 auto;padding:0 16px 32px;position:relative;z-index:1;">
@@ -315,37 +358,13 @@ body::before {
     Fungerar på mobil och kan installeras som en app på hemskärmen – helt utan nedladdning.
   </p>
 </div>
-
-<div style="max-width:480px;margin:0 auto;padding:0 16px 24px;position:relative;z-index:1;">
-  <p class="section-label" data-sv="Exportera all data" data-en="Export all data">Exportera all data</p>
-  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 20px;">
-    <p style="font-size:0.82rem;color:var(--muted2);line-height:1.6;margin-bottom:16px;" data-sv="Ladda ner all din träningsdata som en CSV-fil. Filen innehåller skjutträning, läggträning, precisionsskytte och träningsdagbok." data-en="Download all your training data as a CSV file. The file includes shooting, pointing, precision shooting and training journal.">Ladda ner all din träningsdata som en CSV-fil. Filen innehåller skjutträning, läggträning, precisionsskytte och träningsdagbok.</p>
-    <button onclick="exportAllData()" style="display:block;width:100%;background:var(--accent);color:#080810;border:none;border-radius:12px;padding:14px;font-family:var(--font-display);font-size:1rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 20px rgba(232,255,71,0.25);transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 6px 28px rgba(232,255,71,0.4)'" onmouseout="this.style.boxShadow='0 4px 20px rgba(232,255,71,0.25)'">
-      ↓ <span data-sv="Exportera all träningsdata" data-en="Export all training data">Exportera all träningsdata</span>
-    </button>
-    <p style="font-size:0.72rem;color:var(--muted);text-align:center;margin-top:10px;" id="export-status"></p>
-  </div>
-</div>
-
 <div class="footer">
   <p><a href="https://petanquetraning.se">petanquetraning.se</a> &nbsp;·&nbsp; <span data-sv="Byggd för petanquespelare" data-en="Built for pétanque players">Byggd för petanquespelare</span></p>
   <p style="margin-top:6px;"><span data-sv="Utvecklad av" data-en="Developed by">Utvecklad av</span> Pär Johansson</p>
-  <p style="margin-top:6px;" id="mail-container"></p>
-
-<script>
-  (function() {
-    const u = "info";
-    const d = "petanquetraning.se";
-    const container = document.getElementById('mail-container');
-    if(container) {
-      container.innerHTML = `<a href="mailto:${u}@${d}" style="color:var(--muted2);text-decoration:none;font-size:0.75rem;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted2)'">${u}@${d}</a>`;
-    }
-  })();
-</script>
   <p style="margin-top:10px;"><a href="https://ko-fi.com/petanqueapp" target="_blank" rel="noopener" style="color:var(--muted2);text-decoration:none;font-size:0.78rem;font-weight:600;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted2)'">☕ <span data-sv="Gillar du appen? Bjud på en kaffe" data-en="Enjoying the app? Buy me a coffee">Gillar du appen? Bjud på en kaffe</span></a></p>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ── LANGUAGE ──
 let lang = localStorage.getItem('lang') || 'sv';
 function applyLang() {
@@ -390,109 +409,226 @@ function loadStats() {
     });
   } catch(e){}
 
-  try {
-    JSON.parse(localStorage.getItem('pt_precision_v2') || '[]').forEach(s => {
-      sessions++;
-      shots += 20;
-      if (s.date) days.add(new Date(s.date).toISOString().split('T')[0]);
-    });
-  } catch(e){}
-
   document.getElementById('totalSessions').textContent = sessions || '0';
   document.getElementById('totalShots').textContent = shots || '0';
   document.getElementById('totalDays').textContent = days.size || '0';
 }
 loadStats();
 
-// ── EXPORT ALL DATA ──
+// ── EXPORT ALL DATA (CSV med sektioner) ──
 function exportAllData() {
-  const rows = [];
-  let totalRows = 0;
+  const lines = [];
+  const now = new Date().toISOString().split('T')[0];
 
-  const esc = v => {
-    if (v === null || v === undefined) return '';
-    const s = String(v);
-    return s.includes(',') || s.includes('"') || s.includes('\n') ? '"' + s.replace(/"/g,'""') + '"' : s;
+  // Sektion 1: Skjutträning
+  lines.push('# SKJUTTRANING');
+  lines.push('Datum,Tid,Avstånd (m),Antal skott,Miss,Träff,Carreau,Träff%');
+  try {
+    const h = JSON.parse(localStorage.getItem('pt_h') || '[]');
+    h.forEach(e => {
+      const d = new Date(e.date);
+      lines.push([
+        d.toLocaleDateString('sv-SE'),
+        d.toLocaleTimeString('sv-SE'),
+        e.dist, e.shots, e.miss||0, e.traff||0, e.carreau||0, e.pct
+      ].join(','));
+    });
+  } catch(e){}
+
+  // Sektion 2: Läggträning
+  lines.push('');
+  lines.push('# LAGGTRANING');
+  lines.push('Datum,Tid,Övning,Avstånd (m),Kast,Godkänd,Underkänd,Träff%');
+  try {
+    const h = JSON.parse(localStorage.getItem('pt_lagg_history') || '[]');
+    h.forEach(e => {
+      const d = new Date(e.date);
+      lines.push([
+        d.toLocaleDateString('sv-SE'),
+        d.toLocaleTimeString('sv-SE'),
+        e.ex||'', e.dist||0, e.throws||0, e.ok||0, e.fail||0, e.pct||0
+      ].join(','));
+    });
+  } catch(e){}
+
+  // Sektion 3: Träningsdagbok
+  lines.push('');
+  lines.push('# DAGBOK');
+  lines.push('Datum,Plats,Typ,Känsla (1-5),Anteckningar');
+  try {
+    const h = JSON.parse(localStorage.getItem('pt_dagbok') || '[]');
+    h.forEach(e => {
+      // Escapa anteckningar (ersätt kommatecken och radbrytningar)
+      const note = (e.note||'').replace(/,/g,' ').replace(/\n/g,' ');
+      lines.push([
+        e.date||'', e.place||'', e.type||'', e.mood||0, note
+      ].join(','));
+    });
+  } catch(e){}
+
+  const csv = lines.join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'petanque_all_data_' + now + '.csv';
+  a.click();
+}
+
+// ── IMPORT ALL DATA (CSV med sektioner) ──
+function triggerImportAll() {
+  document.getElementById('import-all-file').click();
+}
+
+function handleImportAll(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const text = ev.target.result;
+      const result = parseAllDataCSV(text);
+      applyImportedData(result);
+    } catch(err) {
+      showImportResult(false, null, lang === 'sv'
+        ? 'Ogiltig fil. Välj en CSV-fil exporterad från appen.'
+        : 'Invalid file. Please choose a CSV file exported from the app.');
+    }
   };
-  const fmtDate = iso => {
-    if (!iso) return '';
-    const d = new Date(iso);
-    return d.toLocaleDateString('sv-SE') + ' ' + d.toLocaleTimeString('sv-SE', {hour:'2-digit',minute:'2-digit'});
-  };
-  const row = arr => rows.push(arr.map(esc).join(','));
-  const blank = () => rows.push('');
-  const header = (title, cols) => {
-    blank();
-    row([title]);
-    row(cols);
-  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
 
-  // ── SKJUTTRÄNING ──
-  try {
-    const data = JSON.parse(localStorage.getItem('pt_h') || '[]');
-    header('SKJUTTRÄNING', ['Datum','Avstånd (m)','Antal skott','Miss','Träff','Carreau','Träff%']);
-    data.forEach(s => {
-      row([fmtDate(s.date), s.dist, s.shots, s.miss||0, s.traff||0, s.carreau||0, s.pct]);
-      totalRows++;
-    });
-    if (!data.length) row(['Ingen data']);
-  } catch(e) { row(['Fel vid läsning']); }
+function parseAllDataCSV(text) {
+  const lines = text.split('\n');
+  let section = null;
+  const skjut = [], lagg = [], dagbok = [];
 
-  // ── LÄGGTRÄNING ──
-  try {
-    const data = JSON.parse(localStorage.getItem('pt_lagg_history') || '[]');
-    const exNames = { precision:'Precisionsmål', zones:'Avståndszoner', serie:'3-boulerserie' };
-    header('LÄGGTRÄNING', ['Datum','Övning','Avstånd (m)','Kast','Godkända','Underkända','%']);
-    data.forEach(s => {
-      row([fmtDate(s.date), exNames[s.ex]||s.ex, s.dist, s.throws, s.ok, s.fail, s.pct]);
-      totalRows++;
-    });
-    if (!data.length) row(['Ingen data']);
-  } catch(e) { row(['Fel vid läsning']); }
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
+    if (!line) continue;
 
-  // ── PRECISIONSSKYTTE ──
-  try {
-    const data = JSON.parse(localStorage.getItem('pt_precision_v2') || '[]');
-    header('PRECISIONSSKYTTE', ['Datum','Poäng (av 100)']);
-    data.forEach(s => {
-      row([fmtDate(s.date), s.score]);
-      totalRows++;
-    });
-    if (!data.length) row(['Ingen data']);
-  } catch(e) { row(['Fel vid läsning']); }
+    if (line === '# SKJUTTRANING') { section = 'skjut'; continue; }
+    if (line === '# LAGGTRANING')  { section = 'lagg';  continue; }
+    if (line === '# DAGBOK')       { section = 'dagbok';continue; }
+    if (line.startsWith('#'))      { section = null; continue; }
 
-  // ── TRÄNINGSDAGBOK ──
-  try {
-    const data = JSON.parse(localStorage.getItem('pt_dagbok') || '[]');
-    const typeNames = { shoot:'Skjutträning', lagg:'Läggträning', match:'Match', annan:'Annat' };
-    header('TRÄNINGSDAGBOK', ['Datum','Typ','Plats','Känsla (1-5)','Anteckningar']);
-    data.forEach(s => {
-      row([s.date, typeNames[s.type]||s.type||'', s.place||'', s.mood||'', (s.note||'').replace(/\n/g,' ')]);
-      totalRows++;
-    });
-    if (!data.length) row(['Ingen data']);
-  } catch(e) { row(['Fel vid läsning']); }
+    // Hoppa över header-rader
+    if (line.startsWith('Datum,')) continue;
 
-  if (totalRows === 0) {
-    document.getElementById('export-status').textContent = lang === 'sv'
-      ? 'Ingen träningsdata hittades att exportera.'
-      : 'No training data found to export.';
-    return;
+    const cols = line.split(',');
+
+    if (section === 'skjut' && cols.length >= 8) {
+      const dateStr = cols[0].trim();
+      const timeStr = cols[1].trim();
+      const dist    = parseInt(cols[2]);
+      const shots   = parseInt(cols[3]);
+      const miss    = parseInt(cols[4]);
+      const traff   = parseInt(cols[5]);
+      const carreau = parseInt(cols[6]);
+      const pct     = parseFloat(cols[7]);
+      if (isNaN(dist) || isNaN(shots)) continue;
+      let isoDate;
+      try { isoDate = new Date(dateStr + 'T' + (timeStr||'12:00:00')).toISOString(); }
+      catch { isoDate = new Date().toISOString(); }
+      skjut.push({ dist, shots, miss, traff, carreau, pct, date: isoDate });
+    }
+
+    if (section === 'lagg' && cols.length >= 8) {
+      const dateStr = cols[0].trim();
+      const timeStr = cols[1].trim();
+      const ex      = cols[2].trim();
+      const dist    = parseInt(cols[3]);
+      const throws  = parseInt(cols[4]);
+      const ok      = parseInt(cols[5]);
+      const fail    = parseInt(cols[6]);
+      const pct     = parseFloat(cols[7]);
+      if (isNaN(dist) || isNaN(throws)) continue;
+      let isoDate;
+      try { isoDate = new Date(dateStr + 'T' + (timeStr||'12:00:00')).toISOString(); }
+      catch { isoDate = new Date().toISOString(); }
+      lagg.push({ ex, dist, throws, ok, fail, pct, date: isoDate });
+    }
+
+    if (section === 'dagbok' && cols.length >= 4) {
+      const date  = cols[0].trim();
+      const place = cols[1].trim();
+      const type  = cols[2].trim();
+      const mood  = parseInt(cols[3]) || 0;
+      const note  = cols.slice(4).join(',').trim();
+      if (!date) continue;
+      dagbok.push({ id: Date.now() + Math.random(), date, place, type, mood, note, created: new Date().toISOString() });
+    }
   }
 
-  const bom = '\uFEFF';
-  const csv = bom + rows.join('\n');
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'petanque_all_data_' + new Date().toISOString().split('T')[0] + '.csv';
-  a.click();
-  URL.revokeObjectURL(url);
+  return { skjut, lagg, dagbok };
+}
 
-  const status = document.getElementById('export-status');
-  status.textContent = (lang === 'sv' ? '✓ Exporterade ' : '✓ Exported ') + totalRows + (lang === 'sv' ? ' rader.' : ' rows.');
-  status.style.color = 'var(--carreau)';
+function applyImportedData(imported) {
+  let skjutAdded = 0, laggAdded = 0, dagbokAdded = 0;
+
+  // Skjutträning
+  if (imported.skjut.length > 0) {
+    try {
+      const existing = JSON.parse(localStorage.getItem('pt_h') || '[]');
+      const merged = [...imported.skjut, ...existing].filter((v,i,a) =>
+        a.findIndex(x => x.date.slice(0,16)===v.date.slice(0,16) && x.dist===v.dist && x.shots===v.shots) === i
+      );
+      skjutAdded = merged.length - existing.length;
+      localStorage.setItem('pt_h', JSON.stringify(merged));
+    } catch(e){}
+  }
+
+  // Läggträning
+  if (imported.lagg.length > 0) {
+    try {
+      const existing = JSON.parse(localStorage.getItem('pt_lagg_history') || '[]');
+      const merged = [...imported.lagg, ...existing].filter((v,i,a) =>
+        a.findIndex(x => x.date.slice(0,16)===v.date.slice(0,16) && x.dist===v.dist && x.throws===v.throws) === i
+      );
+      laggAdded = merged.length - existing.length;
+      localStorage.setItem('pt_lagg_history', JSON.stringify(merged));
+    } catch(e){}
+  }
+
+  // Dagbok
+  if (imported.dagbok.length > 0) {
+    try {
+      const existing = JSON.parse(localStorage.getItem('pt_dagbok') || '[]');
+      const merged = [...imported.dagbok, ...existing].filter((v,i,a) =>
+        a.findIndex(x => x.date===v.date && x.type===v.type && x.note===v.note) === i
+      );
+      dagbokAdded = merged.length - existing.length;
+      localStorage.setItem('pt_dagbok', JSON.stringify(merged));
+    } catch(e){}
+  }
+
+  const total = skjutAdded + laggAdded + dagbokAdded;
+  const rows = [];
+  if (imported.skjut.length > 0)  rows.push({ label: lang==='sv' ? 'Skjutträning' : 'Shooting',  val: '+' + skjutAdded });
+  if (imported.lagg.length > 0)   rows.push({ label: lang==='sv' ? 'Läggträning'  : 'Pointing',   val: '+' + laggAdded  });
+  if (imported.dagbok.length > 0) rows.push({ label: lang==='sv' ? 'Dagbok'       : 'Journal',    val: '+' + dagbokAdded});
+
+  showImportResult(true, rows,
+    total > 0
+      ? (lang==='sv' ? '✅ Import klar – ' + total + ' nya poster' : '✅ Import done – ' + total + ' new entries')
+      : (lang==='sv' ? '✅ Import klar – inga nya poster (redan uppdaterad)' : '✅ Import done – no new entries (already up to date)')
+  );
+
+  loadStats(); // uppdatera siffrorna
+}
+
+function showImportResult(success, rows, title) {
+  const el    = document.getElementById('import-result');
+  const titleEl = document.getElementById('import-result-title');
+  const rowsEl  = document.getElementById('import-result-rows');
+
+  el.className = 'import-result show ' + (success ? 'success' : 'error');
+  titleEl.textContent = title;
+  rowsEl.innerHTML = rows
+    ? rows.map(r => `<div class="import-result-row"><span>${r.label}</span><span>${r.val}</span></div>`).join('')
+    : '';
+
+  // Göm efter 6 sekunder
+  setTimeout(() => { el.classList.remove('show'); }, 6000);
 }
 
 // ── INSTALL BANNER ──
@@ -546,4 +682,9 @@ _showBanner();
       <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.4rem;flex-shrink:0">3️⃣</span><span style="font-size:0.9rem;color:var(--muted2);line-height:1.5;" data-sv="Tryck Lägg till på hemskärmen" data-en="Tap Add to Home Screen">Tryck <strong style="color:var(--text)">"Lägg till på hemskärmen"</strong></span></div>
       <div style="display:flex;align-items:flex-start;gap:12px;"><span style="font-size:1.4rem;flex-shrink:0">4️⃣</span><span style="font-size:0.9rem;color:var(--muted2);line-height:1.5;" data-sv="Tryck Lägg till – klart!" data-en="Tap Add – done!">Tryck <strong style="color:var(--text)">"Lägg till"</strong> – klart! 🎉</span></div>
     </div>
-    <button onclick="document.getElementById('ios-install-modal').classList.remove('show');document.getElementById('ios-install-modal').style.display='none';dismissInstall();" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid var(--border2);color:v
+    <button onclick="document.getElementById('ios-install-modal').classList.remove('show');document.getElementById('ios-install-modal').style.display='none';dismissInstall();" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid var(--border2);color:var(--text);border-radius:14px;padding:15px;font-family:var(--font-display);font-size:1rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;" data-sv="Stäng" data-en="Close">Stäng</button>
+  </div>
+</div>
+
+</body>
+</html>

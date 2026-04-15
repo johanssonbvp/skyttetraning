@@ -381,7 +381,7 @@ body::before {
       <button class="undo-btn" id="switch-dist-btn" onclick="openSwitchDistModal()" style="flex:1;display:none">⇄ Byt avstånd</button>
     </div>
     <button class="end-session-btn" id="end-session-btn" onclick="openEndModal()">
-      ✓ Avsluta & spara passet
+      ✓ Avsluta &amp; spara passet
     </button>
     <button class="reset-btn" onclick="openModal('reset-modal')" data-i18n="resetCurrent">Nollställ aktuellt resultat</button>
   </div>
@@ -408,7 +408,7 @@ body::before {
       <span class="sync-info-icon">💡</span>
       <div class="sync-info-text">
         <strong data-i18n="syncInfoTitle">Flytta data mellan enheter</strong>
-        <p data-i18n="syncInfoDesc">Exportera din data som en JSON-fil på den här enheten. Öppna sedan appen på en annan enhet och importera filen via ↑ Importera-knappen ovan.</p>
+        <p data-i18n="syncInfoDesc">Exportera din data som en CSV-fil på den här enheten. Öppna sedan appen på en annan enhet och importera filen via ↑ Importera-knappen ovan.</p>
       </div>
       <button class="sync-info-close" onclick="dismissSyncInfo()">✕</button>
     </div>
@@ -475,7 +475,7 @@ body::before {
     <div class="sheet-stat"><span>Carreau</span><span class="sv" style="color:var(--carreau)" id="sum-carreau">0</span></div>
     <div class="sheet-actions">
       <button class="mbtn mbtn-accent" id="next-btn" onclick="nextDist()">Nästa avstånd</button>
-      <button class="mbtn mbtn-green" id="save-end-btn" onclick="saveAndEnd()" style="display:none">💾 Avsluta & spara</button>
+      <button class="mbtn mbtn-green" id="save-end-btn" onclick="saveAndEnd()" style="display:none">💾 Avsluta &amp; spara</button>
       <button class="mbtn mbtn-ghost" id="continue-btn" onclick="closeModal('sum-modal')" style="display:none">← Fortsätt träna</button>
       <button class="mbtn mbtn-ghost" id="close-btn" onclick="closeModal('sum-modal')" data-i18n="close">Stäng</button>
     </div>
@@ -525,7 +525,7 @@ body::before {
 <div class="overlay" id="import-modal">
   <div class="sheet">
     <h2 data-i18n="importTitle">Importera data</h2>
-    <p data-i18n="importDesc">Välj en tidigare exporterad JSON-fil för att importera din träningshistorik.</p>
+    <p data-i18n="importDesc">Välj en tidigare exporterad CSV-fil för att importera din träningshistorik.</p>
     <div class="sheet-actions">
       <button class="mbtn mbtn-accent" onclick="triggerImport()" data-i18n="chooseFile">Välj fil</button>
       <button class="mbtn mbtn-ghost" onclick="closeModal('import-modal')" data-i18n="cancel">Avbryt</button>
@@ -533,7 +533,8 @@ body::before {
     <div id="import-msg" style="margin-top:12px;"></div>
   </div>
 </div>
-<input type="file" id="import-file" accept=".json" style="display:none" onchange="handleImport(event)">
+<!-- ÄNDRAT: accept=".csv" istället för ".json" -->
+<input type="file" id="import-file" accept=".csv" style="display:none" onchange="handleImport(event)">
 
 <script>
 const i18n = {
@@ -558,10 +559,10 @@ const i18n = {
     hitsOf:'träffar av', seriesDone:'Serien klar!',
     bestSession:'Bästa session', avgLabel:'Snitt', sessionsLabel:'sessioner',
     kofiText:'Gillar du appen? Bjud på en kaffe',
-    syncInfoTitle:'Flytta data mellan enheter', syncInfoDesc:'Exportera din data som en JSON-fil på den här enheten. Öppna sedan appen på en annan enhet och importera filen via ↑ Importera-knappen ovan.',
-    importTitle:'Importera data', importDesc:'Välj en tidigare exporterad JSON-fil för att importera din träningshistorik.',
+    syncInfoTitle:'Flytta data mellan enheter', syncInfoDesc:'Exportera din data som en CSV-fil på den här enheten. Öppna sedan appen på en annan enhet och importera filen via ↑ Importera-knappen ovan.',
+    importTitle:'Importera data', importDesc:'Välj en tidigare exporterad CSV-fil för att importera din träningshistorik.',
     chooseFile:'Välj fil', importSuccess:'✅ Importerade', importSessions:'sessioner!',
-    importError:'❌ Ogiltig fil. Välj en JSON-fil exporterad från appen.',
+    importError:'❌ Ogiltig fil. Välj en CSV-fil exporterad från appen.',
     langFlag:'🇬🇧', langLabel:'English',
     months:['Januari','Februari','Mars','April','Maj','Juni','Juli','Augusti','September','Oktober','November','December'],
     days:['Mån','Tis','Ons','Tor','Fre','Lör','Sön'],
@@ -588,10 +589,10 @@ const i18n = {
     hitsOf:'hits out of', seriesDone:'Series complete!',
     bestSession:'Best session', avgLabel:'Avg', sessionsLabel:'sessions',
     kofiText:'Enjoying the app? Buy me a coffee',
-    syncInfoTitle:'Move data between devices', syncInfoDesc:'Export your data as a JSON file on this device. Then open the app on another device and import the file using the ↑ Import button above.',
-    importTitle:'Import data', importDesc:'Choose a previously exported JSON file to import your training history.',
+    syncInfoTitle:'Move data between devices', syncInfoDesc:'Export your data as a CSV file on this device. Then open the app on another device and import the file using the ↑ Import button above.',
+    importTitle:'Import data', importDesc:'Choose a previously exported CSV file to import your training history.',
     chooseFile:'Choose file', importSuccess:'✅ Imported', importSessions:'sessions!',
-    importError:'❌ Invalid file. Please choose a JSON file exported from the app.',
+    importError:'❌ Invalid file. Please choose a CSV file exported from the app.',
     langFlag:'🇸🇪', langLabel:'Svenska',
     months:['January','February','March','April','May','June','July','August','September','October','November','December'],
     days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
@@ -627,7 +628,6 @@ window.addEventListener('online',updateOnline);window.addEventListener('offline'
 const DISTS=[6,7,8,9];
 let distIdx=0,shotCount=0,total=50,stats={miss:0,traff:0,carreau:0},pendingFn=null,activeFilter='all';
 let shotLog=[];
-// ── FIX: flagga för att förhindra dubbelsparning ──
 let sessionSaved=false;
 let calYear=new Date().getFullYear(),calMonth=new Date().getMonth();
 
@@ -650,7 +650,6 @@ function getHistory(){
 function saveHistory(h){ls.set('pt_h',h);}
 
 function pushHistory(){
-  // ── FIX: förhindra dubbelsparning ──
   if(sessionSaved) return;
   if(shotCount===0) return;
   sessionSaved=true;
@@ -729,7 +728,6 @@ function shoot(type,event){
   const el=document.getElementById(chipMap[type]);
   el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump');
   refreshUI();
-  // ── FIX: pushHistory anropas bara en gång när serien är klar ──
   if(shotCount===total){pushHistory();setTimeout(()=>showSummary(false),200);}
 }
 
@@ -766,13 +764,11 @@ function showSummary(midSession){
     document.getElementById('save-end-btn').style.display = '';
     document.getElementById('continue-btn').style.display = '';
   } else if (isLastDist) {
-    // Serien klar på sista avståndet – redan sparat i shoot(), visa bara stäng
     document.getElementById('next-btn').style.display     = 'none';
     document.getElementById('close-btn').style.display    = '';
     document.getElementById('save-end-btn').style.display = 'none';
     document.getElementById('continue-btn').style.display = 'none';
   } else {
-    // Avstånd klart, fler kvar – redan sparat i shoot(), nästa avstånd eller avsluta
     document.getElementById('next-btn').style.display     = '';
     document.getElementById('close-btn').style.display    = 'none';
     document.getElementById('save-end-btn').style.display = 'none';
@@ -783,7 +779,6 @@ function showSummary(midSession){
 }
 
 function saveAndEnd(){
-  // Anropas bara från "Avsluta & spara" i mid-session-läge
   pushHistory();
   closeModal('sum-modal');
   shotCount=0;stats={miss:0,traff:0,carreau:0};shotLog=[];
@@ -846,6 +841,7 @@ function doChange(){
 function doClear(){ls.set('pt_h',[]);renderStats();closeModal('clear-modal');}
 function dismissSyncInfo(){document.getElementById('sync-info').style.display='none';ls.set('pt_sync_dismissed',1);}
 
+// ── EXPORT: CSV (oförändrad) ──
 function exportHistory(){
   const h=getHistory();
   const cols=t('exportCols');
@@ -859,6 +855,8 @@ function exportHistory(){
   a.download='petanque_skjut_'+new Date().toISOString().split('T')[0]+'.csv';
   a.click();
 }
+
+// ── IMPORT: CSV (uppdaterad från JSON till CSV) ──
 function importHistory(){openModal('import-modal');}
 function triggerImport(){document.getElementById('import-file').click();}
 function handleImport(e){
@@ -866,14 +864,55 @@ function handleImport(e){
   const reader=new FileReader();
   reader.onload=ev=>{
     try{
-      const data=JSON.parse(ev.target.result);
-      if(!Array.isArray(data))throw new Error();
+      const text=ev.target.result.trim();
+      const lines=text.split('\n').filter(l=>l.trim());
+      if(lines.length < 2) throw new Error('empty');
+
+      // Hoppa över header-raden, parsea datarader
+      // Format: Datum,Tid,Avstånd (m),Antal skott,Miss,Träff,Carreau,Träff%
+      const imported=[];
+      for(let i=1;i<lines.length;i++){
+        const cols=lines[i].split(',');
+        if(cols.length < 8) continue;
+        const dateStr=cols[0].trim(); // YYYY-MM-DD eller datum-format
+        const timeStr=cols[1].trim(); // HH:MM:SS
+        const dist=parseInt(cols[2]);
+        const shots=parseInt(cols[3]);
+        const miss=parseInt(cols[4]);
+        const traff=parseInt(cols[5]);
+        const carreau=parseInt(cols[6]);
+        const pct=parseFloat(cols[7]);
+
+        if(isNaN(dist)||isNaN(shots)) continue;
+
+        // Bygg ISO-datum från datum + tid
+        let isoDate;
+        try {
+          // Försök parsa svenska datumformat (YYYY-MM-DD)
+          isoDate = new Date(dateStr+'T'+(timeStr||'12:00:00')).toISOString();
+          if(isoDate === 'Invalid Date') throw new Error();
+        } catch {
+          isoDate = new Date().toISOString();
+        }
+
+        imported.push({ dist, shots, miss, traff, carreau, pct, date: isoDate });
+      }
+
+      if(!imported.length) throw new Error('no valid rows');
+
       const existing=getHistory();
-      const merged=[...data,...existing].filter((v,i,a)=>a.findIndex(x=>x.date===v.date&&x.dist===v.dist)===i);
+      // Deduplicera: samma datum (till minuten), avstånd och antal skott
+      const merged=[...imported,...existing].filter((v,i,a)=>
+        a.findIndex(x=>x.date.slice(0,16)===v.date.slice(0,16)&&x.dist===v.dist&&x.shots===v.shots)===i
+      );
       saveHistory(merged);
-      document.getElementById('import-msg').innerHTML='<span style="color:var(--carreau)">'+t('importSuccess')+' '+data.length+' '+t('importSessions')+'</span>';
+      document.getElementById('import-msg').innerHTML=
+        '<span style="color:var(--carreau)">'+t('importSuccess')+' '+imported.length+' '+t('importSessions')+'</span>';
       renderStats();
-    }catch{document.getElementById('import-msg').innerHTML='<span style="color:var(--miss)">'+t('importError')+'</span>';}
+    }catch(err){
+      document.getElementById('import-msg').innerHTML=
+        '<span style="color:var(--miss)">'+t('importError')+'</span>';
+    }
   };
   reader.readAsText(file);
   e.target.value='';
@@ -1070,12 +1109,10 @@ function renderCalendar(){
 function calPrev(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
 function calNext(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendar();}
 
-// ── Ta bort dubbletter från befintlig historik ──
 function deduplicateHistory(){
   const h=getHistory();
   const seen=new Set();
   const deduped=h.filter(e=>{
-    // Avrunda till närmaste minut för att fånga dubbletter med samma tidsstämpel
     const key=e.dist+'_'+e.shots+'_'+e.miss+'_'+e.traff+'_'+e.carreau+'_'+e.date.slice(0,16);
     if(seen.has(key))return false;
     seen.add(key);
@@ -1083,12 +1120,11 @@ function deduplicateHistory(){
   });
   if(deduped.length < h.length){
     saveHistory(deduped);
-    console.log('Tog bort '+(h.length-deduped.length)+' dubbletter från historiken.');
   }
 }
 
 loadSession();
-deduplicateHistory(); // rensa eventuella gamla dubbletter vid uppstart
+deduplicateHistory();
 applyTranslations();
 if(ls.get('pt_sync_dismissed'))document.getElementById('sync-info').style.display='none';
 updateOnline();
