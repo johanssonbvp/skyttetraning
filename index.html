@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="sv">
+<script src="./storage-manager.js"></script> <script
+src="./lang-manager.js"></script> <script src="./offline-indicator.js"></script>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -129,6 +131,7 @@ body::before {
 .card-lagg::before    { background: linear-gradient(90deg, var(--carreau), #00cc80); }
 .card-dagbok::before  { background: linear-gradient(90deg, var(--accent), #c8dd00); }
 .card-tavling::before { background: linear-gradient(90deg, var(--traff), #ff8c00); }
+.card-precision::before { background: linear-gradient(90deg, #a78bfa, #ec4899); }
 .app-icon-wrap {
   width: 52px; height: 52px; border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
@@ -138,6 +141,7 @@ body::before {
 .app-card.card-lagg .app-icon-wrap     { background: rgba(61,255,160,0.1); }
 .app-card.card-dagbok .app-icon-wrap   { background: rgba(232,255,71,0.1); }
 .app-card.card-tavling .app-icon-wrap  { background: rgba(245,200,66,0.12); }
+.app-card.card-precision .app-icon-wrap { background: rgba(167,139,250,0.12); }
 .app-info { flex: 1; min-width: 0; }
 .app-name {
   font-family: var(--font-display); font-size: 1.15rem; font-weight: 800;
@@ -307,6 +311,18 @@ body::before {
           <span data-sv="Träningsdagbok" data-en="Training Journal">Träningsdagbok</span>
         </div>
         <p class="app-desc" data-sv="Logga dina pass, känsla och anteckningar. Se historiken i kalender." data-en="Log your sessions, mood and notes. View history in calendar.">Logga dina pass, känsla och anteckningar. Se historiken i kalender.</p>
+      </div>
+      <span class="app-arrow">›</span>
+    </a>
+
+    <a class="app-card card-precision" href="precisionsskytte.html">
+      <div class="app-icon-wrap">🎪</div>
+      <div class="app-info">
+        <div class="app-name">
+          <span data-sv="Precisionsskytte" data-en="Precision Shooting">Precisionsskytte</span>
+          <span class="app-badge badge-new">Ny</span>
+        </div>
+        <p class="app-desc" data-sv="Svenska regler för precisionsskytte. 20 skott från 5 stationer." data-en="Swedish precision shooting rules. 20 shots from 5 stations.">Svenska regler för precisionsskytte. 20 skott från 5 stationer.</p>
       </div>
       <span class="app-arrow">›</span>
     </a>
