@@ -682,6 +682,27 @@ window.addEventListener('beforeinstallprompt', e => {
 window.addEventListener('appinstalled', () => { document.getElementById('install-banner').classList.remove('show'); _deferredPrompt = null; });
 function dismissInstall() { document.getElementById('install-banner').classList.remove('show'); localStorage.setItem('pt_install_dismissed','1'); }
 
+// ── GOOGLE ANALYTICS 4 INITIALIZATION ──
+function initializeGATracking() {
+  if (typeof gtag === 'undefined') {
+    console.error('Google Analytics 4 är inte installerat.');
+    return false;
+  }
+  console.log('✅ Google Analytics 4 är aktivt');
+  return true;
+}
+
+// Kör initialisering när sidan laddar
+document.addEventListener('DOMContentLoaded', initializeGATracking);
+window.addEventListener('load', initializeGATracking);
+
+// Köra också direkt för säkerhet
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeGATracking);
+} else {
+  initializeGATracking();
+}
+
 _showBanner();
 </script>
 
