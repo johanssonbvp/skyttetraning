@@ -26,6 +26,14 @@ src="./lang-manager.js"></script> <script src="./offline-indicator.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" href="./icon-512.png">
+<!-- GOOGLE ANALYTICS 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XT4NB1HR2J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XT4NB1HR2J');
+</script>
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(() => {});
@@ -270,7 +278,7 @@ body::before {
   <p class="section-label" data-sv="Träningsappar" data-en="Training Apps">Träningsappar</p>
   <div class="app-grid">
 
-    <a class="app-card card-shooting" href="skjuttraning.html">
+    <a class="app-card card-shooting" href="skjuttraning.html" onclick="trackStartTraining('shooting_training')">
       <div class="app-icon-wrap">🎯</div>
       <div class="app-info">
         <div class="app-name">
@@ -282,7 +290,7 @@ body::before {
       <span class="app-arrow">›</span>
     </a>
 
-    <a class="app-card card-lagg" href="laggtraning.html">
+    <a class="app-card card-lagg" href="laggtraning.html" onclick="trackStartTraining('throw_training')">
       <div class="app-icon-wrap">🪃</div>
       <div class="app-info">
         <div class="app-name">
@@ -304,7 +312,7 @@ body::before {
       <span class="app-arrow">›</span>
     </a>
 
-    <a class="app-card card-dagbok" href="dagbok.html">
+    <a class="app-card card-dagbok" href="dagbok.html" onclick="trackViewResults('journal_view', 'journal_entry')">
       <div class="app-icon-wrap">📖</div>
       <div class="app-info">
         <div class="app-name">
@@ -315,7 +323,7 @@ body::before {
       <span class="app-arrow">›</span>
     </a>
 
-    <a class="app-card card-precision" href="precisionsskytte.html">
+    <a class="app-card card-precision" href="precisionsskytte.html" onclick="trackStartTraining('precision_shooting')">
       <div class="app-icon-wrap">🎪</div>
       <div class="app-info">
         <div class="app-name">

@@ -11,6 +11,14 @@ src="./lang-manager.js"></script> <script src="./offline-indicator.js"></script>
 <meta name="theme-color" content="#080810">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- GOOGLE ANALYTICS 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XT4NB1HR2J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XT4NB1HR2J');
+</script>
 <style>
 :root {
   --bg: #080810; --surface: #111120;
@@ -443,7 +451,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <div class="sheet-stat"><span data-sv="Avstånd" data-en="Distance">Avstånd</span><span class="sv" id="resDist">–</span></div>
     <div class="sheet-stat" id="resNewRecordRow" style="display:none;"><span data-sv="🏆 Nytt rekord!" data-en="🏆 New Record!">🏆 Nytt rekord!</span><span class="sv" id="resNewRecord">–</span></div>
     <div class="sheet-actions">
-      <button class="mbtn mbtn-accent" onclick="closeResult(true)" data-sv="Ny session" data-en="New Session">Ny session</button>
+      <button class="mbtn mbtn-accent" onclick="trackCompleteLaggTraining(); closeResult(true)" data-sv="Ny session" data-en="New Session">Ny session</button>
       <button class="mbtn mbtn-ghost" onclick="closeResult(false)" data-sv="Se statistik" data-en="View Stats">Se statistik</button>
     </div>
   </div>
@@ -891,6 +899,34 @@ function clearAll() {
   localStorage.removeItem('pt_lagg_records');
   document.getElementById('clearOverlay').classList.remove('show');
   renderStats();
+}
+
+// ── GOOGLE ANALYTICS 4 EVENT TRACKING ──
+function trackCompleteLaggTraining() {
+  const history = localStorage.getItem('pt_lagg_history');
+  if (!history) return;
+  const records = JSON.parse(history);
+  if (records.length === 0) return;
+  const lastSession = records[records.length - 1];
+  const score = lastSession.pct || 0;
+  gtag('event', 'complete_training', {
+    'training_type': 'throw_training',
+    'duration_minutes': 30,
+    'score': score,
+    'difficulty': 'medium',
+    'timestamp': new Date().toISOString(),
+    'session_id': getSessionId()
+  });
+  console.log('📊 Event spårat: complete_training (throw_training, Score: ' + score + '%)');
+}
+
+function getSessionId() {
+  let sessionId = sessionStorage.getItem('ga_session_id');
+  if (!sessionId) {
+    sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    sessionStorage.setItem('ga_session_id', sessionId);
+  }
+  return sessionId;
 }
 </script>
 </body>

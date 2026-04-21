@@ -11,6 +11,14 @@ src="./lang-manager.js"></script> <script src="./offline-indicator.js"></script>
 <meta name="theme-color" content="#080810">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- GOOGLE ANALYTICS 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XT4NB1HR2J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XT4NB1HR2J');
+</script>
 <style>
 :root {
   --bg:#080810;--surface:#111120;--card:#161628;--card2:#1c1c34;
@@ -237,7 +245,7 @@ input[type="date"].text-input{color-scheme:dark;}
         placeholder="Vad tränade du på? Hur gick det? Vad vill du förbättra?"></textarea>
     </div>
 
-    <button class="save-btn" onclick="saveEntry()" data-sv="Spara inlägg" data-en="Save Entry">Spara inlägg</button>
+    <button class="save-btn" onclick="trackDagbokEntry(); saveEntry()" data-sv="Spara inlägg" data-en="Save Entry">Spara inlägg</button>
   </div>
 
 </div>
@@ -568,6 +576,25 @@ function confirmDelete() {
   deleteId = null;
   document.getElementById('deleteOverlay').classList.remove('show');
   renderCalendar();
+}
+
+// ── GOOGLE ANALYTICS 4 EVENT TRACKING ──
+function trackDagbokEntry() {
+  gtag('event', 'page_view', {
+    'page_name': 'dagbok_entry_saved',
+    'timestamp': new Date().toISOString(),
+    'session_id': getSessionId()
+  });
+  console.log('📊 Event spårat: dagbok entry saved');
+}
+
+function getSessionId() {
+  let sessionId = sessionStorage.getItem('ga_session_id');
+  if (!sessionId) {
+    sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    sessionStorage.setItem('ga_session_id', sessionId);
+  }
+  return sessionId;
 }
 </script>
 </body>

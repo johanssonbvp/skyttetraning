@@ -9,6 +9,14 @@ src="./lang-manager.js"></script> <script src="./offline-indicator.js"></script>
 <meta name="theme-color" content="#080810">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- GOOGLE ANALYTICS 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XT4NB1HR2J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XT4NB1HR2J');
+</script>
 <style>
 :root {
   --miss: #ff4d4d;
@@ -477,7 +485,7 @@ body::before {
     <div class="sheet-stat"><span>Carreau</span><span class="sv" style="color:var(--carreau)" id="sum-carreau">0</span></div>
     <div class="sheet-actions">
       <button class="mbtn mbtn-accent" id="next-btn" onclick="nextDist()">Nästa avstånd</button>
-      <button class="mbtn mbtn-green" id="save-end-btn" onclick="saveAndEnd()" style="display:none">💾 Avsluta &amp; spara</button>
+      <button class="mbtn mbtn-green" id="save-end-btn" onclick="trackCompleteShootingTraining(); saveAndEnd()" style="display:none">💾 Avsluta &amp; spara</button>
       <button class="mbtn mbtn-ghost" id="continue-btn" onclick="closeModal('sum-modal')" style="display:none">← Fortsätt träna</button>
       <button class="mbtn mbtn-ghost" id="close-btn" onclick="closeModal('sum-modal')" data-i18n="close">Stäng</button>
     </div>
@@ -1123,6 +1131,34 @@ function deduplicateHistory(){
   if(deduped.length < h.length){
     saveHistory(deduped);
   }
+}
+
+// ── GOOGLE ANALYTICS 4 EVENT TRACKING ──
+function trackCompleteShootingTraining() {
+  const history = getHistory();
+  if (history.length === 0) return;
+  const lastSession = history[history.length - 1];
+  const shots = lastSession.shots || 0;
+  const traff = lastSession.traff || 0;
+  const score = shots > 0 ? Math.round((traff / shots) * 100) : 0;
+  gtag('event', 'complete_training', {
+    'training_type': 'shooting_training',
+    'duration_minutes': 30,
+    'score': score,
+    'difficulty': 'medium',
+    'timestamp': new Date().toISOString(),
+    'session_id': getSessionId()
+  });
+  console.log('📊 Event spårat: complete_training (shooting_training, Score: ' + score + '%)');
+}
+
+function getSessionId() {
+  let sessionId = sessionStorage.getItem('ga_session_id');
+  if (!sessionId) {
+    sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    sessionStorage.setItem('ga_session_id', sessionId);
+  }
+  return sessionId;
 }
 
 loadSession();
