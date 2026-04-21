@@ -692,6 +692,56 @@ function initializeGATracking() {
   return true;
 }
 
+// ── GOOGLE ANALYTICS 4 EVENT TRACKING ──
+function trackStartTraining(trainingType) {
+  gtag('event', 'start_training', {
+    'training_type': trainingType,
+    'timestamp': new Date().toISOString(),
+    'session_id': getSessionId()
+  });
+  console.log('📊 Event spårat: start_training (' + trainingType + ')');
+}
+
+function trackCompleteTraining(trainingType, duration, score, difficulty) {
+  gtag('event', 'complete_training', {
+    'training_type': trainingType,
+    'duration_minutes': duration,
+    'score': score,
+    'difficulty': difficulty,
+    'timestamp': new Date().toISOString(),
+    'session_id': getSessionId()
+  });
+  console.log('📊 Event spårat: complete_training (' + trainingType + ', ' + duration + 'min, Score: ' + score + ')');
+}
+
+function trackViewResults(resultType, trainingType) {
+  gtag('event', 'view_results', {
+    'result_type': resultType,
+    'training_type': trainingType,
+    'timestamp': new Date().toISOString(),
+    'session_id': getSessionId()
+  });
+  console.log('📊 Event spårat: view_results (' + resultType + ')');
+}
+
+function trackPageView(pageName) {
+  gtag('event', 'page_view', {
+    'page_name': pageName,
+    'timestamp': new Date().toISOString(),
+    'session_id': getSessionId()
+  });
+  console.log('📊 Event spårat: page_view (' + pageName + ')');
+}
+
+function getSessionId() {
+  let sessionId = sessionStorage.getItem('ga_session_id');
+  if (!sessionId) {
+    sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    sessionStorage.setItem('ga_session_id', sessionId);
+  }
+  return sessionId;
+}
+
 // Kör initialisering när sidan laddar
 document.addEventListener('DOMContentLoaded', initializeGATracking);
 window.addEventListener('load', initializeGATracking);
