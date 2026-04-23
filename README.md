@@ -241,7 +241,6 @@ Webbsidan uppdateras automatiskt inom några sekunder på [petanquetraning.se](h
 - **Utvecklare:** Pär Johansson
 - **GitHub:** [johanssonbvp](https://github.com/johanssonbvp)
 - **Webbsida:** [petanquetraning.se](https://petanquetraning.se)
-- **Länka till Svenska Petanqueförbundet:** [petanque.se](https://petanque.se)
 
 ---
 
@@ -276,7 +275,6 @@ Tack för att du använder Petanque Träning! Din feedback hjälper oss att gör
 - 📖 [Läs handboken](https://petanquetraning.se/dokumentation/manual.pdf)
 - 🐛 [Rapportera bug](https://github.com/johanssonbvp/skyttetraning/issues)
 - 💾 [Ladda ned data](https://petanquetraning.se)
-- 🔗 [Svenska Petanqueförbundet](https://petanque.se)
 
 ---
 
