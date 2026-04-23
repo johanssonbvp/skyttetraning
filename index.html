@@ -418,10 +418,10 @@ function toggleLang() {
 }
 
 function loadStats() {
-  // Läs från rätt localStorage-nycklar som skjuttraning.html faktiskt använder
+  // Läs från rätt localStorage-nycklar som varje app faktiskt använder
   const skjutHistory = JSON.parse(localStorage.getItem('pt_h') || '[]');
-  const laggHistory = JSON.parse(localStorage.getItem('pt_h_lagg') || '[]');
-  const dagbokData = JSON.parse(localStorage.getItem('dagbokData') || '[]');
+  const laggHistory = JSON.parse(localStorage.getItem('pt_lagg_history') || '[]');
+  const dagbokData = JSON.parse(localStorage.getItem('pt_dagbok') || '[]');
 
   // Räkna sessioner från alla träningstyper
   const totalSessions = (skjutHistory?.length || 0) + (laggHistory?.length || 0) + (dagbokData?.length || 0);
@@ -441,10 +441,10 @@ function loadStats() {
 }
 
 function exportDataAsCSV() {
-  // Exportera från rätt localStorage-nycklar
+  // Exportera från rätt localStorage-nycklar som varje app använder
   const skjutHistory = JSON.parse(localStorage.getItem('pt_h') || '[]');
-  const laggHistory = JSON.parse(localStorage.getItem('pt_h_lagg') || '[]');
-  const dagbokData = JSON.parse(localStorage.getItem('dagbokData') || '[]');
+  const laggHistory = JSON.parse(localStorage.getItem('pt_lagg_history') || '[]');
+  const dagbokData = JSON.parse(localStorage.getItem('pt_dagbok') || '[]');
 
   const exportData = {
     skjut: skjutHistory || [],
@@ -484,25 +484,25 @@ function importData(event) {
       }
 
       if (imported.lagg && Array.isArray(imported.lagg)) {
-        let existingLagg = JSON.parse(localStorage.getItem('pt_h_lagg') || '[]');
+        let existingLagg = JSON.parse(localStorage.getItem('pt_lagg_history') || '[]');
         const before = existingLagg.length;
         imported.lagg.forEach(h => {
           if (!existingLagg.some(x => x.date === h.date && x.type === h.type)) {
             existingLagg.push(h);
           }
         });
-        localStorage.setItem('pt_h_lagg', JSON.stringify(existingLagg));
+        localStorage.setItem('pt_lagg_history', JSON.stringify(existingLagg));
         console.log(`Imported ${existingLagg.length - before} läggtraning entries`);
       }
 
       if (imported.dagbok && Array.isArray(imported.dagbok)) {
-        let existingDagbok = JSON.parse(localStorage.getItem('dagbokData') || '[]');
+        let existingDagbok = JSON.parse(localStorage.getItem('pt_dagbok') || '[]');
         imported.dagbok.forEach(d => {
           if (!existingDagbok.some(x => x.id === d.id)) {
             existingDagbok.push(d);
           }
         });
-        localStorage.setItem('dagbokData', JSON.stringify(existingDagbok));
+        localStorage.setItem('pt_dagbok', JSON.stringify(existingDagbok));
       }
 
       showImportResult(true, [], lang === 'sv' ? '✅ Import klar' : '✅ Import done');
