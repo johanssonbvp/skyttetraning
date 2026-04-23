@@ -418,13 +418,21 @@ function toggleLang() {
 }
 
 function loadStats() {
-  const skjutData = JSON.parse(localStorage.getItem('skjutData') || '{"history":[]}');
-  const laggData = JSON.parse(localStorage.getItem('laggData') || '{"history":[]}');
+  // Läs från rätt localStorage-nycklar som skjuttraning.html faktiskt använder
+  const skjutHistory = JSON.parse(localStorage.getItem('pt_h') || '[]');
+  const laggHistory = JSON.parse(localStorage.getItem('pt_h_lagg') || '[]');
   const dagbokData = JSON.parse(localStorage.getItem('dagbokData') || '[]');
 
-  const totalSessions = (skjutData.history?.length || 0) + (laggData.history?.length || 0) + (dagbokData?.length || 0);
-  const totalShots = skjutData.history?.reduce((sum, h) => sum + (h.total || 0), 0) || 0;
-  const totalHits = skjutData.history?.reduce((sum, h) => sum + ((h.hits || 0) + (h.carreaux || 0)), 0) || 0;
+  // Räkna sessioner från alla träningstyper
+  const totalSessions = (skjutHistory?.length || 0) + (laggHistory?.length || 0) + (dagbokData?.length || 0);
+  
+  // Räkna skott och träffar från skjuttraning-historiken
+  const totalShots = skjutHistory?.reduce((sum, h) => sum + (h.shots || 0), 0) || 0;
+  const totalHits = skjutHistory?.reduce((sum, h) => {
+    // Räkna både 'traff' och 'carreau' från träningsentrierna (pt_h format)
+    const hits = (h.traff || 0) + (h.carreau || 0);
+    return sum + hits;
+  }, 0) || 0;
   const avgAccuracy = totalShots > 0 ? Math.round((totalHits / totalShots) * 100) : 0;
 
   document.getElementById('totalSessions').textContent = totalSessions;
@@ -433,13 +441,14 @@ function loadStats() {
 }
 
 function exportDataAsCSV() {
-  const skjutData = JSON.parse(localStorage.getItem('skjutData') || '{"history":[]}');
-  const laggData = JSON.parse(localStorage.getItem('laggData') || '{"history":[]}');
+  // Exportera från rätt localStorage-nycklar
+  const skjutHistory = JSON.parse(localStorage.getItem('pt_h') || '[]');
+  const laggHistory = JSON.parse(localStorage.getItem('pt_h_lagg') || '[]');
   const dagbokData = JSON.parse(localStorage.getItem('dagbokData') || '[]');
 
   const exportData = {
-    skjut: skjutData.history || [],
-    lagg: laggData.history || [],
+    skjut: skjutHistory || [],
+    lagg: laggHistory || [],
     dagbok: dagbokData
   };
 
@@ -463,24 +472,27 @@ function importData(event) {
       const imported = JSON.parse(e.target.result);
       
       if (imported.skjut && Array.isArray(imported.skjut)) {
-        let existingSkjut = JSON.parse(localStorage.getItem('skjutData') || '{"history":[]}');
-        const before = existingSkjut.history.length;
+        let existingSkjut = JSON.parse(localStorage.getItem('pt_h') || '[]');
+        const before = existingSkjut.length;
         imported.skjut.forEach(h => {
-          if (!existingSkjut.history.some(x => x.id === h.id)) {
-            existingSkjut.history.push(h);
+          if (!existingSkjut.some(x => x.date === h.date && x.shots === h.shots)) {
+            existingSkjut.push(h);
           }
         });
-        localStorage.setItem('skjutData', JSON.stringify(existingSkjut));
+        localStorage.setItem('pt_h', JSON.stringify(existingSkjut));
+        console.log(`Imported ${existingSkjut.length - before} skjuttraning entries`);
       }
 
       if (imported.lagg && Array.isArray(imported.lagg)) {
-        let existingLagg = JSON.parse(localStorage.getItem('laggData') || '{"history":[]}');
+        let existingLagg = JSON.parse(localStorage.getItem('pt_h_lagg') || '[]');
+        const before = existingLagg.length;
         imported.lagg.forEach(h => {
-          if (!existingLagg.history.some(x => x.id === h.id)) {
-            existingLagg.history.push(h);
+          if (!existingLagg.some(x => x.date === h.date && x.type === h.type)) {
+            existingLagg.push(h);
           }
         });
-        localStorage.setItem('laggData', JSON.stringify(existingLagg));
+        localStorage.setItem('pt_h_lagg', JSON.stringify(existingLagg));
+        console.log(`Imported ${existingLagg.length - before} läggtraning entries`);
       }
 
       if (imported.dagbok && Array.isArray(imported.dagbok)) {
@@ -496,6 +508,7 @@ function importData(event) {
       showImportResult(true, [], lang === 'sv' ? '✅ Import klar' : '✅ Import done');
       loadStats();
     } catch (err) {
+      console.error('Import error:', err);
       showImportResult(false, [], lang === 'sv' ? '❌ Import misslyckades' : '❌ Import failed');
     }
     document.getElementById('import-file').value = '';
