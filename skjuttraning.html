@@ -691,6 +691,205 @@ input, textarea {
   transition: none;
 }
 
+/* ===== VECKA 2: LOADING-STATES & ANIMERADE TAL ===== */
+
+/* 1. SKELETON-SCREENS (placeholders medan data laddar) */
+@keyframes skeletonPulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--card2) 25%, var(--card) 50%, var(--card2) 75%);
+  background-size: 200% 100%;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+  border-radius: 8px;
+  height: 1em;
+  margin: 8px 0;
+}
+
+.skeleton-card {
+  background: var(--card2);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+  min-height: 60px;
+}
+
+.skeleton-text {
+  height: 1.2em;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+/* 2. LOADING-SPINNER STYLES */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(232, 255, 71, 0.2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.loading-text {
+  text-align: center;
+  color: var(--muted2);
+  font-size: 0.85rem;
+  margin-top: 12px;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+/* 3. ANIMERA TAL FRÅN 0 → SLUTVÄRDE */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.number-animated {
+  animation: countUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 4. FÄRGFEEDBACK - Röd/Grön/Gul knappar */
+.btn-miss.active {
+  background: rgba(255, 77, 77, 0.2);
+  color: var(--miss);
+  border-color: var(--miss);
+  animation: colorPulse 0.4s ease-out;
+}
+
+.btn-traff.active {
+  background: rgba(61, 255, 160, 0.2);
+  color: var(--traff);
+  border-color: var(--traff);
+  animation: colorPulse 0.4s ease-out;
+}
+
+.btn-carreau.active {
+  background: rgba(232, 255, 71, 0.2);
+  color: var(--carreau);
+  border-color: var(--carreau);
+  animation: colorPulse 0.4s ease-out;
+}
+
+@keyframes colorPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(232, 255, 71, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(232, 255, 71, 0);
+    transform: scale(1.05);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(232, 255, 71, 0);
+    transform: scale(1);
+  }
+}
+
+/* 5. KORT-PULSEFFEKT när värden uppdateras */
+.card-pulse {
+  animation: cardPulseUpdate 0.5s ease-out;
+}
+
+@keyframes cardPulseUpdate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(232, 255, 71, 0.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* 6. PROGRESS-BAR ANIMATED */
+.progress-value {
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 7. STATS-CARD LOAD ANIMATION */
+.stats-card-load {
+  animation: statsCardSlide 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes statsCardSlide {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 8. SKOTT-CLICK FEEDBACK */
+.shot-registered {
+  animation: shotRegister 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes shotRegister {
+  0% {
+    transform: scale(0.8) rotateZ(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1) rotateZ(5deg);
+  }
+  100% {
+    transform: scale(1) rotateZ(0deg);
+    opacity: 1;
+  }
+}
+
+/* 9. REKORD-GLOW när nytt rekord sätts */
+.record-new {
+  animation: recordGlow 0.6s ease-out;
+}
+
+@keyframes recordGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(232, 255, 71, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 15px rgba(232, 255, 71, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(232, 255, 71, 0);
+  }
+}
+
+/* 10. MODAL LOAD STATE */
+.modal.loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.modal.loaded {
+  opacity: 1;
+  animation: slideUpModal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XT4NB1HR2J"></script>
 <script>
@@ -1128,10 +1327,19 @@ function shoot(type,event){
     ripple.style.left=(x-30)+'px';ripple.style.top=(y-30)+'px';
     btn.appendChild(ripple);
     setTimeout(()=>ripple.remove(),500);
+    
+    // VECKA 2: Lägg till färgfeedback-animation
+    btn.classList.add('active');
+    setTimeout(() => btn.classList.remove('active'), 400);
   }
   const chipMap={miss:'live-miss',traff:'live-traff',carreau:'live-carreau'};
   const el=document.getElementById(chipMap[type]);
   el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump');
+  
+  // VECKA 2: Lägg till shot-registered animation
+  el.classList.add('shot-registered');
+  setTimeout(() => el.classList.remove('shot-registered'), 500);
+  
   refreshUI();
   if(shotCount===total){pushHistory();setTimeout(()=>showSummary(false),200);}
 }
@@ -1351,12 +1559,29 @@ function renderStats(){
   const worstPct=Math.min(...h.map(e=>e.pct));
   const days=new Set(h.map(e=>e.date.split('T')[0])).size;
 
-  document.getElementById('ov-sessions').textContent=sessions;
-  document.getElementById('ov-shots').textContent=shots;
-  document.getElementById('ov-avg').textContent=avgPct+'%';
-  document.getElementById('ov-best').textContent=bestPct+'%';
-  document.getElementById('ov-worst').textContent=worstPct+'%';
-  document.getElementById('ov-days').textContent=days;
+  // VECKA 2: Animera talen från 0 → slutvärde
+  animateNumber(document.getElementById('ov-sessions'), 0, sessions, 600);
+  animateNumber(document.getElementById('ov-shots'), 0, shots, 600);
+  
+  // Procent animeras från 0 → slutvärde
+  const avgEl = document.getElementById('ov-avg');
+  animatePercentage(avgEl, 0, avgPct, 600, '%');
+  
+  const bestEl = document.getElementById('ov-best');
+  animatePercentage(bestEl, 0, bestPct, 600, '%');
+  
+  const worstEl = document.getElementById('ov-worst');
+  animatePercentage(worstEl, 0, worstPct, 600, '%');
+  
+  animateNumber(document.getElementById('ov-days'), 0, days, 600);
+  
+  // Lägg till pulse-effekt på kort efter animation
+  setTimeout(() => {
+    document.querySelectorAll('.ov-card').forEach(card => {
+      card.classList.add('card-pulse');
+      setTimeout(() => card.classList.remove('card-pulse'), 500);
+    });
+  }, 600);
 
   const recGrid=document.getElementById('records-grid');
   const distClasses={6:'rec-6m',7:'rec-7m',8:'rec-8m',9:'rec-9m'};
@@ -1519,6 +1744,61 @@ function renderHistory(){
       </div>`;
     }).join('');
   }
+}
+
+// VECKA 2: Animera tal från 0 → slutvärde
+function animateNumber(element, start, end, duration) {
+  if(!element) return;
+  
+  const startTime = performance.now();
+  const frameRate = 1000 / 60; // 60 FPS
+  
+  const animate = (currentTime) => {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    
+    // Easing function: ease-out
+    const easeProgress = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(start + (end - start) * easeProgress);
+    
+    element.textContent = current;
+    element.classList.add('number-animated');
+    
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      element.textContent = end;
+    }
+  };
+  
+  requestAnimationFrame(animate);
+}
+
+// VECKA 2: Animera procent från 0 → slutvärde
+function animatePercentage(element, start, end, duration, suffix='') {
+  if(!element) return;
+  
+  const startTime = performance.now();
+  
+  const animate = (currentTime) => {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    
+    // Easing function: ease-out
+    const easeProgress = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(start + (end - start) * easeProgress);
+    
+    element.textContent = current + suffix;
+    element.classList.add('number-animated');
+    
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      element.textContent = end + suffix;
+    }
+  };
+  
+  requestAnimationFrame(animate);
 }
 
 // Slå på/av mapper i historiken

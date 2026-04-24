@@ -351,6 +351,105 @@ input, textarea {
   transition: none;
 }
 
+/* ===== VECKA 2: LOADING-STATES & ANIMERADE TAL ===== */
+
+@keyframes skeletonPulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--card2) 25%, var(--card) 50%, var(--card2) 75%);
+  background-size: 200% 100%;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+  border-radius: 8px;
+  height: 1em;
+  margin: 8px 0;
+}
+
+.skeleton-card {
+  background: var(--card2);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+  min-height: 60px;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.loading-text {
+  text-align: center;
+  color: var(--muted2);
+  font-size: 0.85rem;
+  margin-top: 12px;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.number-animated {
+  animation: countUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-exercise.active {
+  background: rgba(61, 255, 160, 0.2);
+  color: var(--traff);
+  border-color: var(--traff);
+  animation: colorPulse 0.4s ease-out;
+}
+
+@keyframes colorPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(232, 255, 71, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(232, 255, 71, 0);
+    transform: scale(1.05);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(232, 255, 71, 0);
+    transform: scale(1);
+  }
+}
+
+.card-pulse {
+  animation: cardPulseUpdate 0.5s ease-out;
+}
+
+@keyframes cardPulseUpdate {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); box-shadow: 0 8px 20px rgba(232, 255, 71, 0.2); }
+  100% { transform: scale(1); }
+}
+
+.exercise-registered {
+  animation: exerciseRegister 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes exerciseRegister {
+  0% { opacity: 0; transform: scale(0.8) rotateZ(0deg); }
+  50% { transform: scale(1.1) rotateZ(5deg); }
+  100% { opacity: 1; transform: scale(1) rotateZ(0deg); }
+}
+
 </style>
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XT4NB1HR2J"></script>
@@ -639,6 +738,60 @@ function switchTab(tab) {
     document.getElementById('tab-'+tab+'-content').classList.add('active');
     if (tab === 'stats') renderStats();
   }, 200);
+}
+
+// VECKA 2: Animera tal från 0 → slutvärde
+function animateNumber(element, start, end, duration) {
+  if(!element) return;
+  
+  const startTime = performance.now();
+  
+  const animate = (currentTime) => {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    
+    // Easing: ease-out
+    const easeProgress = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(start + (end - start) * easeProgress);
+    
+    element.textContent = current;
+    element.classList.add('number-animated');
+    
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      element.textContent = end;
+    }
+  };
+  
+  requestAnimationFrame(animate);
+}
+
+// VECKA 2: Animera procent från 0 → slutvärde
+function animatePercentage(element, start, end, duration, suffix='') {
+  if(!element) return;
+  
+  const startTime = performance.now();
+  
+  const animate = (currentTime) => {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    
+    // Easing: ease-out
+    const easeProgress = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(start + (end - start) * easeProgress);
+    
+    element.textContent = current + suffix;
+    element.classList.add('number-animated');
+    
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      element.textContent = end + suffix;
+    }
+  };
+  
+  requestAnimationFrame(animate);
 }
 
 function switchStatsTab(tab) {
@@ -960,9 +1113,24 @@ function renderStats() {
   const totalThrows = history.reduce((s,h) => s + h.throws, 0);
   const totalOk = history.reduce((s,h) => s + h.ok, 0);
   const pctAll = totalThrows > 0 ? Math.round(totalOk / totalThrows * 100) : null;
-  document.getElementById('ovTotalSessions').textContent = total;
-  document.getElementById('ovTotalThrows').textContent = totalThrows;
-  document.getElementById('ovTotalPct').textContent = pctAll !== null ? pctAll + '%' : '–';
+  
+  // VECKA 2: Animera talen
+  animateNumber(document.getElementById('ovTotalSessions'), 0, total, 600);
+  animateNumber(document.getElementById('ovTotalThrows'), 0, totalThrows, 600);
+  
+  if(pctAll !== null) {
+    animatePercentage(document.getElementById('ovTotalPct'), 0, pctAll, 600, '%');
+  } else {
+    document.getElementById('ovTotalPct').textContent = '–';
+  }
+  
+  // Lägg till pulse-effekt på kort
+  setTimeout(() => {
+    document.querySelectorAll('.ov-card').forEach(card => {
+      card.classList.add('card-pulse');
+      setTimeout(() => card.classList.remove('card-pulse'), 500);
+    });
+  }, 600);
 
   // Records
   const rp = records.precision;
