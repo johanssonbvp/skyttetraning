@@ -236,11 +236,68 @@ body::before {
 .stats-section.active { display: block; animation: fadeUp 0.25s ease; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 .overview-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 10px; }
-.ov-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px 8px; text-align: center; }
+.ov-card { 
+  background: var(--card); 
+  border: 1px solid var(--border); 
+  border-radius: 16px; 
+  padding: 16px 8px; 
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+.ov-card:hover { 
+  background: var(--card2);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(232, 255, 71, 0.1);
+}
 .ov-card .sv { font-family: var(--font-display); font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px; display: block; }
 .ov-card .sk { font-family: var(--font-display); font-size: 0.6rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted2); margin-top: 3px; display: block; }
+.ov-card::after { 
+  content: '→'; 
+  position: absolute; 
+  right: 8px; 
+  top: 50%; 
+  transform: translateY(-50%);
+  opacity: 0;
+  color: var(--accent);
+  font-weight: 900;
+  transition: opacity 0.3s ease;
+}
+.ov-card:hover::after { 
+  opacity: 1;
+}
 .records-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 20px; }
-.record-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 16px; position: relative; overflow: hidden; transition: transform 0.2s, border-color 0.2s; }
+.record-card { 
+  background: var(--card); 
+  border: 1px solid var(--border); 
+  border-radius: 16px; 
+  padding: 20px 16px; 
+  position: relative; 
+  overflow: hidden; 
+  transition: transform 0.2s, border-color 0.2s;
+  cursor: pointer;
+}
+.record-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 8px 16px rgba(232, 255, 71, 0.1);
+}
+.record-card::after {
+  content: '↓ Se session';
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  font-size: 0.65rem;
+  color: var(--accent);
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.record-card:hover::after {
+  opacity: 1;
+}
 .record-card:hover { transform: translateY(-2px); border-color: var(--border2); }
 .record-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
 .rec-6m::before { background: linear-gradient(90deg,#7c6ff7,#a78bfa); }
@@ -279,6 +336,63 @@ body::before {
 .hist-date { font-size: 0.75rem; color: var(--muted2); font-weight: 500; }
 .hist-dots { font-size: 0.75rem; margin-top: 2px; }
 .hist-pct { font-family: var(--font-display); font-size: 1.8rem; font-weight: 900; letter-spacing: -1px; }
+
+/* Grupperade mappar för historik */
+.hist-folder {
+  margin-bottom: 16px;
+}
+.hist-folder-header {
+  background: var(--card2);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 8px;
+}
+.hist-folder-header:hover {
+  background: var(--card);
+  border-color: var(--accent);
+}
+.hist-folder-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+}
+.hist-folder-icon {
+  display: inline-block;
+  transition: transform 0.3s ease;
+  font-size: 1.2rem;
+}
+.hist-folder.collapsed .hist-folder-icon {
+  transform: rotate(-90deg);
+}
+.hist-folder-count {
+  font-size: 0.75rem;
+  color: var(--muted2);
+  font-weight: 600;
+  background: var(--card);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+.hist-folder-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 8px;
+  border-left: 2px solid var(--border2);
+  margin-left: 8px;
+  transition: all 0.3s ease;
+}
+.hist-folder.collapsed .hist-folder-items {
+  display: none;
+}
 .sync-info { background: var(--card); border: 1px solid var(--border2); border-left: 3px solid var(--accent); border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start; }
 .sync-info-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
 .sync-info-text { flex: 1; }
@@ -424,14 +538,14 @@ body::before {
     </div>
     <div id="stats-overview" class="stats-section active">
       <div class="overview-cards">
-        <div class="ov-card"><div class="sv" id="ov-sessions" style="color:var(--accent)">0</div><div class="sk" data-i18n="sessions">Sessioner</div></div>
-        <div class="ov-card"><div class="sv" id="ov-shots">0</div><div class="sk" data-i18n="shots">Skott</div></div>
-        <div class="ov-card"><div class="sv" id="ov-avg" style="color:var(--carreau)">0%</div><div class="sk" data-i18n="average">Snitt%</div></div>
+        <div class="ov-card" onclick="switchStatsTab('charts',this.closest('.stats-wrap').querySelector('[onclick*=charts]'))"><div class="sv" id="ov-sessions" style="color:var(--accent)">0</div><div class="sk" data-i18n="sessions">Sessioner</div></div>
+        <div class="ov-card" onclick="switchStatsTab('charts',this.closest('.stats-wrap').querySelector('[onclick*=charts]'))"><div class="sv" id="ov-shots">0</div><div class="sk" data-i18n="shots">Skott</div></div>
+        <div class="ov-card" onclick="switchStatsTab('charts',this.closest('.stats-wrap').querySelector('[onclick*=charts]'))"><div class="sv" id="ov-avg" style="color:var(--carreau)">0%</div><div class="sk" data-i18n="average">Snitt%</div></div>
       </div>
       <div class="overview-cards" style="margin-bottom:20px;">
-        <div class="ov-card"><div class="sv" id="ov-best" style="color:var(--carreau)">–</div><div class="sk" data-i18n="best">Bästa%</div></div>
-        <div class="ov-card"><div class="sv" id="ov-worst" style="color:var(--miss)">–</div><div class="sk" data-i18n="worst">Sämsta%</div></div>
-        <div class="ov-card"><div class="sv" id="ov-days" style="color:var(--accent)">0</div><div class="sk" data-i18n="trainingDays">Träningsdagar</div></div>
+        <div class="ov-card" onclick="switchStatsTab('charts',this.closest('.stats-wrap').querySelector('[onclick*=charts]'))"><div class="sv" id="ov-best" style="color:var(--carreau)">–</div><div class="sk" data-i18n="best">Bästa%</div></div>
+        <div class="ov-card" onclick="switchStatsTab('charts',this.closest('.stats-wrap').querySelector('[onclick*=charts]'))"><div class="sv" id="ov-worst" style="color:var(--miss)">–</div><div class="sk" data-i18n="worst">Sämsta%</div></div>
+        <div class="ov-card" onclick="switchStatsTab('charts',this.closest('.stats-wrap').querySelector('[onclick*=charts]'))"><div class="sv" id="ov-days" style="color:var(--accent)">0</div><div class="sk" data-i18n="trainingDays">Träningsdagar</div></div>
       </div>
       <div id="ov-empty" class="empty" style="display:none"><div class="empty-icon">🟡</div><p data-i18n="noSessionsYet">Inga sessioner sparade ännu.</p></div>
     </div>
@@ -986,7 +1100,8 @@ function renderStats(){
         </div>
         <div style="font-family:var(--font-display);font-size:0.65rem;font-weight:800;color:${color};width:28px;text-align:right">${pct}%</div>
       </div>`;
-    return`<div class="record-card ${distClasses[d]}">
+    const sessionJson=JSON.stringify(be).replace(/"/g,'&quot;');
+    return`<div class="record-card ${distClasses[d]}" onclick="showSessionDetail('${sessionJson}')" title="Klicka för att se detaljer om denna träning">
       <div class="record-dist">${d}m</div>
       <div style="display:flex;align-items:baseline;gap:8px">
         <div class="record-pct" style="color:${best>=70?'var(--carreau)':best>=40?'var(--traff)':'var(--miss)'}">${best}%</div>
@@ -1070,19 +1185,91 @@ function renderHistory(){
   const filtered=activeFilter==='all'?h:h.filter(e=>e.dist===activeFilter);
   const list=document.getElementById('hist-list');
   if(!filtered.length){list.innerHTML=`<div class="empty"><div class="empty-icon">📋</div><p>Inga sessioner för detta avstånd.</p></div>`;return;}
-  list.innerHTML=filtered.map(e=>{
-    const d=new Date(e.date);
-    const dots='●'.repeat(e.carreau||0)+'◎'.repeat(e.traff||0)+'✕'.repeat(e.miss||0);
-    const color=e.pct>=70?'var(--carreau)':e.pct>=40?'var(--traff)':'var(--miss)';
-    return`<div class="hist-item">
-      <div class="hist-left">
-        <div class="hist-dist">${e.dist}m · ${e.shots} skott</div>
-        <div class="hist-date">${d.toLocaleDateString('sv-SE')} ${d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'})}</div>
-        <div class="hist-dots" style="color:var(--muted2)">${dots.slice(0,30)}${dots.length>30?'…':''}</div>
-      </div>
-      <div class="hist-pct" style="color:${color}">${e.pct}%</div>
-    </div>`;
-  }).join('');
+  
+  if(activeFilter==='all'){
+    // Gruppera efter avstånd när det är "Alla"
+    const byDist={};
+    DISTS.forEach(d=>byDist[d]=[]);
+    filtered.forEach(e=>byDist[e.dist].push(e));
+    
+    list.innerHTML=DISTS.map(dist=>{
+      const items=byDist[dist];
+      if(!items.length)return'';
+      const itemsHtml=items.map(e=>{
+        const d=new Date(e.date);
+        const dots='●'.repeat(e.carreau||0)+'◎'.repeat(e.traff||0)+'✕'.repeat(e.miss||0);
+        const color=e.pct>=70?'var(--carreau)':e.pct>=40?'var(--traff)':'var(--miss)';
+        return`<div class="hist-item">
+          <div class="hist-left">
+            <div class="hist-dist">${e.shots} skott</div>
+            <div class="hist-date">${d.toLocaleDateString('sv-SE')} ${d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'})}</div>
+            <div class="hist-dots" style="color:var(--muted2)">${dots.slice(0,30)}${dots.length>30?'…':''}</div>
+          </div>
+          <div class="hist-pct" style="color:${color}">${e.pct}%</div>
+        </div>`;
+      }).join('');
+      
+      return`<div class="hist-folder" id="folder-${dist}m">
+        <div class="hist-folder-header" onclick="toggleFolder(this.parentElement)">
+          <div class="hist-folder-title">
+            <span class="hist-folder-icon">▼</span>
+            <span>${dist}m</span>
+          </div>
+          <div class="hist-folder-count">${items.length} ${items.length===1?'pass':'pass'}</div>
+        </div>
+        <div class="hist-folder-items">
+          ${itemsHtml}
+        </div>
+      </div>`;
+    }).join('');
+  } else {
+    // Visa bara aktuellt avstånd utan gruppering
+    list.innerHTML=filtered.map(e=>{
+      const d=new Date(e.date);
+      const dots='●'.repeat(e.carreau||0)+'◎'.repeat(e.traff||0)+'✕'.repeat(e.miss||0);
+      const color=e.pct>=70?'var(--carreau)':e.pct>=40?'var(--traff)':'var(--miss)';
+      return`<div class="hist-item">
+        <div class="hist-left">
+          <div class="hist-dist">${e.shots} skott</div>
+          <div class="hist-date">${d.toLocaleDateString('sv-SE')} ${d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'})}</div>
+          <div class="hist-dots" style="color:var(--muted2)">${dots.slice(0,30)}${dots.length>30?'…':''}</div>
+        </div>
+        <div class="hist-pct" style="color:${color}">${e.pct}%</div>
+      </div>`;
+    }).join('');
+  }
+}
+
+// Slå på/av mapper i historiken
+function toggleFolder(folderEl){
+  folderEl.classList.toggle('collapsed');
+}
+
+// Visa detaljer om en specifik träningssession från rekord
+function showSessionDetail(sessionJson){
+  try{
+    const session=JSON.parse(sessionJson);
+    const d=new Date(session.date);
+    const dateStr=d.toLocaleDateString('sv-SE')+' '+d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'});
+    const dots='●'.repeat(session.carreau||0)+'◎'.repeat(session.traff||0)+'✕'.repeat(session.miss||0);
+    
+    document.getElementById('sum-title').textContent=session.dist+'m träning';
+    document.getElementById('sum-subtitle').textContent=dateStr;
+    document.getElementById('sum-pct').textContent=session.pct+'%';
+    document.getElementById('sum-miss').textContent=session.miss||0;
+    document.getElementById('sum-traff').textContent=session.traff||0;
+    document.getElementById('sum-carreau').textContent=session.carreau||0;
+    
+    // Visa endast stäng-knapp i modal
+    document.getElementById('next-btn').style.display='none';
+    document.getElementById('save-end-btn').style.display='none';
+    document.getElementById('continue-btn').style.display='none';
+    document.getElementById('close-btn').style.display='';
+    
+    openModal('sum-modal');
+  }catch(e){
+    console.error('Error showing session detail:',e);
+  }
 }
 
 function renderCalendar(){
