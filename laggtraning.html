@@ -153,7 +153,18 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .stats-nav{display:flex;background:var(--card);border-radius:14px;padding:4px;margin-bottom:24px;gap:3px;border:1px solid var(--border);}
 .snav-btn{flex:1;padding:9px 4px;border:none;border-radius:10px;background:none;color:var(--muted2);font-family:var(--font-display);font-size:0.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
 .snav-btn.active{background:var(--accent);color:#080810;}
-.stats-section{display:none;}
+.stats-section {
+  display: none;
+  opacity: 1;
+  transition: opacity 0.4s ease-in-out;
+}
+.stats-section.active {
+  display: block;
+}
+.stats-section.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
 .stats-section.active{display:block;animation:fadeUp 0.25s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 
@@ -221,6 +232,125 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .stats-top h2{font-family:var(--font-display);font-size:1.3rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;}
 .clear-btn{background:none;border:1px solid var(--border2);color:var(--muted2);font-family:var(--font-body);font-size:0.72rem;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer;transition:all 0.2s;}
 .clear-btn:hover{border-color:var(--fail);color:var(--fail);}
+
+/* ===== VECKA 1: ANIMATIONER & VISUELL FEEDBACK ===== */
+
+/* FADE-EFFEKT MELLAN FLIKAR */
+.tab-content {
+  opacity: 1;
+  transition: opacity 0.4s ease-in-out;
+}
+.tab-content.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.tab-btn {
+  transition: all 0.3s ease;
+  position: relative;
+}
+.tab-btn.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.tab-btn:hover {
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* KNAPP-PRESSEFFEKTER */
+button, .btn, .mbtn {
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+button:active, .btn:active, .mbtn:active {
+  transform: scale(0.96);
+}
+button:hover, .btn:hover, .mbtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(232, 255, 71, 0.15) !important;
+}
+
+/* ANIMERADE ÖVNING-ITEMS */
+.exercise-item {
+  animation: slideInItem 0.3s ease-out;
+}
+
+@keyframes slideInItem {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* LOADING SPINNER */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(232, 255, 71, 0.3);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* POPUP EFFEKT FÖR TAL */
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.number-pop {
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* SUCCESS-ANIMATION */
+@keyframes successPulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.success-feedback {
+  animation: successPulse 0.5s ease-out;
+}
+
+/* SMOOTH TRANSITIONS */
+* {
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+input, textarea {
+  transition: none;
+}
+
 </style>
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XT4NB1HR2J"></script>
@@ -494,16 +624,36 @@ applyLang();
 // TABS
 // ════════════════════════════════════
 function switchTab(tab) {
+  // Fade out gamla tab
+  const oldContent = document.querySelector('.tab-content.active');
+  if(oldContent) oldContent.classList.add('hidden');
+  
+  // Uppdatera knappar
   ['train','stats'].forEach(t => {
-    document.getElementById('tab-'+t+'-content').classList.toggle('active', t===tab);
     document.getElementById('tab-'+t).classList.toggle('active', t===tab);
   });
-  if (tab === 'stats') renderStats();
+  
+  // Fade in nya tab
+  setTimeout(() => {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('hidden'));
+    document.getElementById('tab-'+tab+'-content').classList.add('active');
+    if (tab === 'stats') renderStats();
+  }, 200);
 }
+
 function switchStatsTab(tab) {
-  document.querySelectorAll('.stats-section').forEach(s => s.classList.remove('active'));
-  document.getElementById('stats-'+tab).classList.add('active');
+  // Fade out gamla section
+  const oldSection = document.querySelector('.stats-section.active');
+  if(oldSection) oldSection.classList.add('hidden');
+  
+  // Uppdatera knappar
   document.querySelectorAll('.snav-btn').forEach((b,i) => b.classList.toggle('active', ['overview','exercises','history'][i]===tab));
+  
+  // Fade in nya section
+  setTimeout(() => {
+    document.querySelectorAll('.stats-section').forEach(s => s.classList.remove('active', 'hidden'));
+    document.getElementById('stats-'+tab).classList.add('active');
+  }, 200);
 }
 
 // ════════════════════════════════════

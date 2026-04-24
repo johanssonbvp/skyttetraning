@@ -431,6 +431,266 @@ body::before {
 .ripple-effect { position: absolute; border-radius: 50%; width: 60px; height: 60px; background: rgba(255,255,255,0.25); animation: ripple 0.5s ease-out forwards; pointer-events: none; }
 #offline-badge { display: none; position: fixed; top: 56px; left: 50%; transform: translateX(-50%); background: #2a2a40; color: var(--muted2); font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 5px 16px; border-radius: 999px; z-index: 25; border: 1px solid var(--border2); }
 #offline-badge.show { display: block; }
+
+/* ===== VECKA 1: ANIMATIONER & VISUELL FEEDBACK ===== */
+
+.stats-section {
+  opacity: 1;
+  transition: opacity 0.4s ease-in-out;
+}
+.stats-section.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tab-content {
+  opacity: 1;
+  transition: opacity 0.4s ease-in-out;
+}
+.tab-content.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.tab-btn {
+  transition: all 0.3s ease;
+  position: relative;
+}
+.tab-btn.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.tab-btn:hover {
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* 2. KNAPP-PRESSEFFEKTER */
+button, .btn, .mbtn {
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+button:active, .btn:active, .mbtn:active {
+  transform: scale(0.96);
+}
+button:hover, .btn:hover, .mbtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(232, 255, 71, 0.15) !important;
+}
+
+/* Ripple effect på knappar */
+button::before, .btn::before, .mbtn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* 3. ANIMERAD RESULTATMODAL */
+@keyframes slideUpModal {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeBackdrop {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(4px);
+  }
+}
+
+.modal {
+  animation: slideUpModal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-overlay {
+  animation: fadeBackdrop 0.3s ease-out;
+  backdrop-filter: blur(4px);
+}
+
+/* 4. ANIMATED COLLAPSE FÖR MAPPAR */
+@keyframes expandFolder {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 1000px;
+    opacity: 1;
+  }
+}
+
+@keyframes collapseFolder {
+  from {
+    max-height: 1000px;
+    opacity: 1;
+  }
+  to {
+    max-height: 0;
+    opacity: 0;
+  }
+}
+
+.hist-folder-items {
+  max-height: 1000px;
+  animation: expandFolder 0.4s ease-out;
+  overflow: hidden;
+}
+
+.hist-folder.collapsed .hist-folder-items {
+  max-height: 0;
+  animation: collapseFolder 0.3s ease-in;
+}
+
+.hist-folder-icon {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 5. ANIMERADE HISTORIA-ITEMS */
+.hist-item {
+  animation: slideInItem 0.3s ease-out;
+}
+
+@keyframes slideInItem {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 6. LOADING SPINNER */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(232, 255, 71, 0.3);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* 7. POPUP EFFEKT FÖR TAL */
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.number-pop {
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 8. KORT-ANIMATIONER (Översikt) */
+.ov-card {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ov-card:hover {
+  animation: cardPulse 0.3s ease-out;
+}
+
+@keyframes cardPulse {
+  0% { transform: scale(1) translateY(0); }
+  50% { transform: scale(1.02) translateY(-4px); }
+  100% { transform: scale(1) translateY(-2px); }
+}
+
+/* 9. SUCCESS-ANIMATION */
+@keyframes successPulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.success-feedback {
+  animation: successPulse 0.5s ease-out;
+}
+
+/* 10. PROGRESS-BAR ANIMATION */
+.progress-bar {
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes progressPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 255, 71, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(232, 255, 71, 0); }
+}
+
+.progress-active {
+  animation: progressPulse 1.5s infinite;
+}
+
+/* 11. SKOTT-POPUP EFFEKT */
+@keyframes shotPop {
+  0% {
+    opacity: 0;
+    transform: scale(0) translateY(-20px);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.shot-feedback {
+  animation: shotPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 12. SMOOTH TRANSITIONS FÖR ALLT */
+* {
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+/* Undvik transition på specifika element */
+input, textarea {
+  transition: none;
+}
+
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XT4NB1HR2J"></script>
 <script>
@@ -790,15 +1050,36 @@ function pushHistory(){
 function resetSessionSaved(){sessionSaved=false;saveSession();}
 
 function switchTab(name,btn){
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  // Fade out gamla tab
+  const oldTab = document.querySelector('.tab-content.active');
+  if(oldTab) oldTab.classList.add('hidden');
+  
+  // Uppdatera active state på knappar
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');btn.classList.add('active');
-  if(name==='stats')renderStats();
+  btn.classList.add('active');
+  
+  // Fade in nya tab
+  setTimeout(() => {
+    document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active', 'hidden'));
+    document.getElementById('tab-'+name).classList.add('active');
+    if(name==='stats')renderStats();
+  }, 200);
 }
+
 function switchStatsTab(name,btn){
-  document.querySelectorAll('.stats-section').forEach(s=>s.classList.remove('active'));
+  // Fade out gamla section
+  const oldSection = document.querySelector('.stats-section.active');
+  if(oldSection) oldSection.classList.add('hidden');
+  
+  // Uppdatera active state på knappar
   document.querySelectorAll('.stats-nav-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('stats-'+name).classList.add('active');btn.classList.add('active');
+  btn.classList.add('active');
+  
+  // Fade in nya section
+  setTimeout(() => {
+    document.querySelectorAll('.stats-section').forEach(s=>s.classList.remove('active', 'hidden'));
+    document.getElementById('stats-'+name).classList.add('active');
+  }, 200);
 }
 
 function setDistance(idx){
