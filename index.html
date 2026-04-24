@@ -389,6 +389,11 @@ body::before {
       <a href="https://ko-fi.com/parjohansson" target="_blank" rel="noopener" data-sv="Stöd utvecklingen" data-en="Support development">Stöd utvecklingen</a>
     </p>
     <p style="margin-top:8px; font-size:0.68rem;" data-sv="Utvecklad av Pär Johansson · © 2026" data-en="Developed by Pär Johansson · © 2026">Utvecklad av Pär Johansson · © 2026</p>
+    <p style="margin-top:8px; font-size:0.75rem;">
+      <span data-sv="Kontakt: " data-en="Contact: " style="color:var(--accent);">Kontakt:</span>&nbsp;
+      <a href="javascript:void(0)" id="email-link" style="color:var(--muted2); text-decoration:none;" onclick="showEmail(event)">info@petanquetraning.se</a>
+      <span id="email-text" style="color:var(--muted2); display:none;"></span>
+    </p>
   </div>
 
 </div>
@@ -556,6 +561,23 @@ window.addEventListener('beforeinstallprompt', e => {
 window.addEventListener('appinstalled', () => { document.getElementById('install-banner').classList.remove('show'); _deferredPrompt = null; });
 
 function dismissInstall() { document.getElementById('install-banner').classList.remove('show'); localStorage.setItem('pt_install_dismissed','1'); }
+
+// Dekryptera och visa mailadressen när användare klickar
+function showEmail(event) {
+  event.preventDefault();
+  const encoded = 'aW5mb0BwZXRhbnF1ZXRyYW5pbmcuc2U='; // Base64-kodad mailadress
+  const email = atob(encoded);
+  const link = document.getElementById('email-link');
+  const text = document.getElementById('email-text');
+  
+  link.style.display = 'none';
+  text.textContent = email;
+  text.style.display = 'inline';
+  
+  // Gör det möjligt att kopiera eller klicka för mailto
+  text.style.cursor = 'pointer';
+  text.onclick = () => window.location.href = 'mailto:' + email;
+}
 
 function initializeGATracking() {
   if (typeof gtag === 'undefined') {
