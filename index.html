@@ -1,1 +1,551 @@
-<!DOCTYPE html><html lang="sv"><script src="./storage-manager.js"></script><script src="./lang-manager.js"></script><script src="./offline-indicator.js"></script><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>Petanque Träning – Träningsappar för petanquespelare</title><meta name="description" content="Gratis träningsappar för petanque. Skjutträning, läggträning, poängräknare och träningsdagbok. Förbättra ditt petanquespel med statistik och historik."><meta name="keywords" content="petanque, petanque träning, petanque app, skjutträning, läggträning, petanque Sverige, pétanque, boule, boulespel, träningsapp"><meta name="author" content="Pär Johansson"><meta name="robots" content="index, follow"><link rel="canonical" href="https://petanquetraning.se"><link rel="sitemap" type="application/xml" href="./sitemap.xml"><meta property="og:title" content="Petanque Träning – Träningsappar för petanquespelare"><meta property="og:description" content="Gratis träningsappar för petanque. Skjutträning, läggträning, poängräknare och träningsdagbok."><meta property="og:url" content="https://petanquetraning.se"><meta property="og:type" content="website"><meta property="og:locale" content="sv_SE"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Petanque"><meta name="mobile-web-app-capable" content="yes"><meta name="theme-color" content="#080810"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="manifest" href="./manifest.json"><link rel="apple-touch-icon" href="./icon-512.png"><script async src="https://www.googletagmanager.com/gtag/js?id=G-XT4NB1HR2J"></script><script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-XT4NB1HR2J")</script><script>"serviceWorker"in navigator&&navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(()=>{})</script><style>:root{--bg:#080810;--bg2:#0d0d1a;--surface:#111120;--card:#161628;--card2:#1c1c34;--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.12);--text:#f0f0f8;--muted:#5a5a78;--muted2:#8888aa;--accent:#e8ff47;--accent-dim:rgba(232,255,71,0.12);--accent-glow:rgba(232,255,71,0.3);--carreau:#3dffa0;--traff:#f5c842;--miss:#ff4d4d;--font-display:'Barlow Condensed',sans-serif;--font-body:'Barlow',sans-serif}*,::after,::before{box-sizing:border-box;margin:0;padding:0}body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;overscroll-behavior-y:contain;touch-action:manipulation}body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.5}.lang-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);position:relative;z-index:1}.lang-bar-left{display:flex;gap:8px}.help-link{background:0 0;border:1px solid var(--border2);border-radius:8px;padding:5px 12px;font-family:var(--font-body);font-size:.78rem;font-weight:600;color:var(--muted2);cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:4px}.help-link:hover{border-color:var(--accent);color:var(--accent)}.lang-btn{background:0 0;border:1px solid var(--border2);border-radius:8px;padding:5px 12px;font-family:var(--font-body);font-size:.78rem;font-weight:600;color:var(--muted2);cursor:pointer;transition:all .2s}.lang-btn:hover{border-color:var(--accent);color:var(--accent)}.hero-wrap{max-width:480px;margin:0 auto;padding:48px 20px 20px;text-align:center;position:relative;z-index:1}.hero-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:320px;height:320px;background:radial-gradient(circle,rgba(232,255,71,.07) 0,transparent 65%);pointer-events:none}.hero-icon{width:72px;height:72px;margin:0 auto 20px;animation:pulse 3s ease-in-out infinite}@keyframes pulse{0%,100%{filter:drop-shadow(0 0 12px rgba(232,255,71,.3))}50%{filter:drop-shadow(0 0 28px rgba(232,255,71,.6))}}.hero-eyebrow{font-family:var(--font-display);font-size:.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted2);margin-bottom:8px}.hero-title{font-family:var(--font-display);font-size:3.4rem;font-weight:900;line-height:.95;letter-spacing:-1px;color:var(--text);margin-bottom:14px}.hero-title span{color:var(--accent)}.hero-sub{font-size:.92rem;color:var(--muted2);line-height:1.6;max-width:320px;margin:0 auto 36px}.apps-wrap{max-width:480px;margin:0 auto;padding:0 16px 100px;position:relative;z-index:1}.section-label{font-family:var(--font-display);font-size:.68rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}.app-grid{display:flex;flex-direction:column;gap:12px;margin-bottom:36px}.app-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:22px 20px;display:flex;align-items:center;gap:18px;cursor:pointer;text-decoration:none;color:inherit;transition:transform .18s cubic-bezier(.4,0,.2,1),border-color .18s,box-shadow .18s;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}.app-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;opacity:0;transition:opacity .2s}.app-card:hover{transform:translateY(-3px);border-color:var(--border2)}.app-card:hover::before{opacity:1}.app-card:active{transform:scale(.98)}.card-shooting::before{background:linear-gradient(90deg,var(--miss),#ff8080)}.card-lagg::before{background:linear-gradient(90deg,var(--carreau),#00cc80)}.card-dagbok::before{background:linear-gradient(90deg,var(--accent),#c8dd00)}.card-tavling::before{background:linear-gradient(90deg,var(--traff),#ff8c00)}.card-precision::before{background:linear-gradient(90deg,#a78bfa,#ec4899)}.app-icon-wrap{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0}.app-card.card-shooting .app-icon-wrap{background:rgba(255,77,77,.12)}.app-card.card-lagg .app-icon-wrap{background:rgba(61,255,160,.1)}.app-card.card-dagbok .app-icon-wrap{background:rgba(232,255,71,.1)}.app-card.card-tavling .app-icon-wrap{background:rgba(245,200,66,.12)}.app-card.card-precision .app-icon-wrap{background:rgba(167,139,250,.12)}.app-info{flex:1;min-width:0}.app-name{font-family:var(--font-display);font-size:1.15rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;display:flex;align-items:center;gap:8px}.app-desc{font-size:.82rem;color:var(--muted2);line-height:1.4}.app-badge{font-family:var(--font-display);font-size:.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border-radius:6px}.badge-live{background:rgba(61,255,160,.15);color:var(--carreau)}.badge-soon{background:rgba(90,90,120,.3);color:var(--muted2)}.badge-new{background:rgba(232,255,71,.15);color:var(--accent)}.app-arrow{color:var(--muted);font-size:1.2rem;transition:transform .2s,color .2s;flex-shrink:0}.app-card:hover .app-arrow{transform:translateX(4px);color:var(--accent)}.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}.strip-stat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 10px;text-align:center}.strip-val{font-family:var(--font-display);font-size:1.8rem;font-weight:900;color:var(--accent);letter-spacing:-.5px;display:block}.strip-lbl{font-family:var(--font-display);font-size:.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);margin-top:2px;display:block}.data-actions{display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap}.data-btn{flex:1;min-width:120px;background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:12px 10px;font-family:var(--font-display);font-size:.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted2);cursor:pointer;transition:all .2s;text-align:center;-webkit-tap-highlight-color:transparent}.data-btn:hover{border-color:var(--accent);color:var(--accent)}.data-btn:active{transform:scale(.97)}.import-result{display:none;background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:14px 16px;margin-bottom:20px;font-size:.85rem;line-height:1.6}.import-result.show{display:block}.import-result.success{border-color:rgba(61,255,160,.3)}.import-result.error{border-color:rgba(255,77,77,.3)}.import-result-title{font-family:var(--font-display);font-size:.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}.import-result.success .import-result-title{color:var(--carreau)}.import-result.error .import-result-title{color:var(--miss)}.import-result-row{display:flex;justify-content:space-between;color:var(--muted2);padding:3px 0}.import-result-row span:last-child{font-weight:700;color:var(--text)}.footer{text-align:center;padding:0 16px 40px;position:relative;z-index:1}.footer p{font-size:.75rem;color:var(--muted);line-height:1.8}.footer a{color:var(--muted2);text-decoration:none}.footer a:hover{color:var(--accent)}#install-banner{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border2);padding:14px 16px calc(14px + env(safe-area-inset-bottom));z-index:30;flex-direction:row;align-items:center;gap:12px}#install-banner.show{display:flex}.install-text{flex:1}.install-text strong{font-family:var(--font-display);font-size:.95rem;font-weight:700;display:block;letter-spacing:.5px}.install-text span{font-size:.78rem;color:var(--muted2)}.install-btn{background:var(--accent);color:#080810;border:none;padding:9px 18px;border-radius:10px;font-family:var(--font-display);font-size:.85rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;flex-shrink:0}.install-dismiss{background:0 0;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:4px;flex-shrink:0}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-XT4NB1HR2J"></script><script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-XT4NB1HR2J")</script></head><body><div class="lang-bar"><div class="lang-bar-left"><a class="help-link" href="dokumentation/manual.pdf" target="_blank" rel="noopener"><span>📖</span> <span id="helpText" data-sv="Handbok" data-en="Manual">Handbok</span></a></div><button class="lang-btn" onclick="toggleLang()" id="langBtn">🌐 EN</button></div><div class="hero-wrap"><div class="hero-glow"></div><div class="hero-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><radialGradient id="boule" cx="38%" cy="32%" r="65%"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/><stop offset="40%" stop-color="#e8ff47" stop-opacity="0.15"/><stop offset="100%" stop-color="#b8cc00" stop-opacity="0"/></radialGradient><radialGradient id="base" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4e800"/><stop offset="60%" stop-color="#a8b800"/><stop offset="100%" stop-color="#6a7500"/></radialGradient></defs><circle cx="256" cy="256" r="240" fill="url(#base)" stroke="#e8ff47" stroke-width="8" opacity="0.95"/><circle cx="256" cy="256" r="240" fill="url(#boule)"/><circle cx="204" cy="190" r="38" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="14"/><path d="M 256 16 A 240 240 0 0 1 456 190" fill="none" stroke="rgba(255,255,255,0.13)" stroke-width="14" stroke-linecap="round"/><circle cx="220" cy="175" r="14" fill="rgba(255,255,255,0.35)"/></svg></div><p class="hero-eyebrow" data-sv="Träningsplattform" data-en="Training Platform">Träningsplattform</p><h1 class="hero-title">Petanque<br><span>Träning</span></h1><p class="hero-sub" data-sv="Välj en träningsapp nedan och börja förbättra ditt spel." data-en="Choose a training app below and start improving your game.">Välj en träningsapp nedan och börja förbättra ditt spel.</p></div><div class="apps-wrap"><p class="section-label" data-sv="Träningsappar" data-en="Training Apps">Träningsappar</p><div class="app-grid"><a class="app-card card-shooting" href="skjuttraning.html" onclick='trackStartTraining("shooting_training")'><div class="app-icon-wrap">🎯</div><div class="app-info"><div class="app-name"><span data-sv="Skjutträning" data-en="Shooting">Skjutträning</span> <span class="app-badge badge-live">Live</span></div><p class="app-desc" data-sv="Registrera miss, träff och carreau. Spåra precision per avstånd." data-en="Log miss, hit and carreau. Track precision per distance.">Registrera miss, träff och carreau. Spåra precision per avstånd.</p></div><span class="app-arrow">›</span> </a><a class="app-card card-lagg" href="laggtraning.html" onclick='trackStartTraining("throw_training")'><div class="app-icon-wrap">🪃</div><div class="app-info"><div class="app-name"><span data-sv="Läggträning" data-en="Pointing">Läggträning</span></div><p class="app-desc" data-sv="Träna precision och avstånd. Mät hur nära du lägger boulerna." data-en="Train precision and distance. Measure how close you point.">Träna precision och avstånd. Mät hur nära du lägger boulerna.</p></div><span class="app-arrow">›</span> </a><a class="app-card card-dagbok" href="dagbok.html" onclick='trackStartTraining("diary")'><div class="app-icon-wrap">📔</div><div class="app-info"><div class="app-name"><span data-sv="Träningsdagbok" data-en="Training Diary">Träningsdagbok</span></div><p class="app-desc" data-sv="Logga träningspass och följ din utveckling månad för månad." data-en="Log training sessions and track your progress month by month.">Logga träningspass och följ din utveckling månad för månad.</p></div><span class="app-arrow">›</span> </a><a class="app-card card-tavling" href="tavlingssimulator.html" onclick='trackStartTraining("competition_simulator")'><div class="app-icon-wrap">🏆</div><div class="app-info"><div class="app-name"><span data-sv="Poängräknare" data-en="Scoreboard">Poängräknare</span></div><p class="app-desc" data-sv="Digital poängräknare för matcher. Stöd för singel och lag." data-en="Digital scoreboard for matches. Support for singles and teams.">Digital poängräknare för matcher. Stöd för singel och lag.</p></div><span class="app-arrow">›</span> </a><a class="app-card card-precision" href="precisionsskytte.html" onclick='trackStartTraining("precision_shooting")'><div class="app-icon-wrap">🎪</div><div class="app-info"><div class="app-name"><span data-sv="Precisionsskytte" data-en="Precision Shooting">Precisionsskytte</span></div><p class="app-desc" data-sv="Träna enligt svenska regler för precisionsskytte (SBF)." data-en="Train according to Swedish precision shooting rules (SBF).">Träna enligt svenska regler för precisionsskytte (SBF).</p></div><span class="app-arrow">›</span></a></div><p class="section-label" data-sv="Statistik" data-en="Statistics">Statistik</p><div class="stats-strip"><div class="strip-stat"><span class="strip-val" id="totalSessions">0</span> <span class="strip-lbl" data-sv="Pass" data-en="Sessions">Pass</span></div><div class="strip-stat"><span class="strip-val" id="totalShots">0</span> <span class="strip-lbl" data-sv="Skott" data-en="Shots">Skott</span></div><div class="strip-stat"><span class="strip-val" id="avgAccuracy">0%</span> <span class="strip-lbl" data-sv="Träffprocent" data-en="Accuracy">Träffprocent</span></div></div><p class="section-label" data-sv="Datahantering" data-en="Data Management">Datahantering</p><div class="data-actions"><button class="data-btn" onclick="exportDataAsCSV()" data-sv="Exportera" data-en="Export">Exportera</button> <button class="data-btn" onclick='document.getElementById("import-file").click()' data-sv="Importera" data-en="Import">Importera</button> <input type="file" id="import-file" style="display:none" accept=".json,.csv" onchange="importData(event)"></div><div class="import-result" id="import-result"><div class="import-result-title" id="import-result-title">✅ Klar</div><div class="import-result-rows" id="import-result-rows"></div></div><div class="footer"><p data-sv="Petanque Träning är en gratis plattform för petanquespelare" data-en="Petanque Training is a free platform for petanque players.">Petanque Träning är en gratis plattform för petanquespelare</p><p style="margin-top:8px"><a href="dokumentation/manual.pdf" target="_blank" rel="noopener" data-sv="Läs användarhandboken" data-en="Read the user manual">Läs användarhandboken</a> &nbsp;·&nbsp; <a href="https://ko-fi.com/parjohansson" target="_blank" rel="noopener" data-sv="Stöd utvecklingen" data-en="Support development">Stöd utvecklingen</a></p><p style="margin-top:8px;font-size:.68rem" data-sv="Utvecklad av Pär Johansson · © 2026" data-en="Developed by Pär Johansson · © 2026">Utvecklad av Pär Johansson · © 2026</p><p style="margin-top:8px;font-size:.75rem"><span data-sv="Kontakt: " data-en="Contact: " style="color:var(--accent)">Kontakt:</span>&nbsp; <a href="javascript:void(0)" id="email-link" style="color:var(--muted2);text-decoration:none" onclick="showEmail(event)">info@petanquetraning.se</a> <span id="email-text" style="color:var(--muted2);display:none"></span></p></div></div><script>let lang=localStorage.getItem("pt_lang")||"sv";function updateLangUI(){document.querySelectorAll("[data-sv]").forEach(t=>{"helpText"!==t.id&&"langBtn"!==t.id&&(t.textContent="sv"===lang?t.dataset.sv:t.dataset.en)});var t=document.getElementById("langBtn"),t=(t&&(t.textContent="🌐 "+("sv"===lang?"EN":"SV")),document.getElementById("helpText"));t&&(t.textContent="sv"===lang?"Handbok":"Manual")}function toggleLang(){lang="sv"===lang?"en":"sv",localStorage.setItem("pt_lang",lang),updateLangUI()}function loadStats(){var t=JSON.parse(localStorage.getItem("pt_h")||"[]"),e=JSON.parse(localStorage.getItem("pt_lagg_history")||"[]"),n=JSON.parse(localStorage.getItem("pt_dagbok")||"[]"),e=(t?.length||0)+(e?.length||0)+(n?.length||0),n=t?.reduce((t,e)=>t+(e.shots||0),0)||0,t=t?.reduce((t,e)=>t+((e.traff||0)+(e.carreau||0)),0)||0,t=0<n?Math.round(t/n*100):0;document.getElementById("totalSessions").textContent=e,document.getElementById("totalShots").textContent=n,document.getElementById("avgAccuracy").textContent=t+"%"}function exportDataAsCSV(){var t=JSON.parse(localStorage.getItem("pt_h")||"[]"),e=JSON.parse(localStorage.getItem("pt_lagg_history")||"[]"),n=JSON.parse(localStorage.getItem("pt_dagbok")||"[]"),t=JSON.stringify({skjut:t||[],lagg:e||[],dagbok:n},null,2),e=new Blob([t],{type:"application/json"}),n=URL.createObjectURL(e),t=document.createElement("a");t.href=n,t.download="petanque-traningdata-"+(new Date).toISOString().split("T")[0]+".json",t.click(),URL.revokeObjectURL(n)}function importData(t){var e,t=t.target.files[0];t&&((e=new FileReader).onload=t=>{try{var e=JSON.parse(t.target.result);if(e.skjut&&Array.isArray(e.skjut)){let t=JSON.parse(localStorage.getItem("pt_h")||"[]");var n=t.length;e.skjut.forEach(e=>{t.some(t=>t.date===e.date&&t.shots===e.shots)||t.push(e)}),localStorage.setItem("pt_h",JSON.stringify(t)),console.log(`Imported ${t.length-n} skjuttraning entries`)}if(e.lagg&&Array.isArray(e.lagg)){let t=JSON.parse(localStorage.getItem("pt_lagg_history")||"[]");var a=t.length;e.lagg.forEach(e=>{t.some(t=>t.date===e.date&&t.type===e.type)||t.push(e)}),localStorage.setItem("pt_lagg_history",JSON.stringify(t)),console.log(`Imported ${t.length-a} läggtraning entries`)}if(e.dagbok&&Array.isArray(e.dagbok)){let t=JSON.parse(localStorage.getItem("pt_dagbok")||"[]");e.dagbok.forEach(e=>{t.some(t=>t.id===e.id)||t.push(e)}),localStorage.setItem("pt_dagbok",JSON.stringify(t))}showImportResult(!0,[],"sv"===lang?"✅ Import klar":"✅ Import done"),loadStats()}catch(t){console.error("Import error:",t),showImportResult(!1,[],"sv"===lang?"❌ Import misslyckades":"❌ Import failed")}document.getElementById("import-file").value=""},e.readAsText(t))}function showImportResult(t,e,n){let a=document.getElementById("import-result");var o=document.getElementById("import-result-title"),s=document.getElementById("import-result-rows");a.className="import-result show "+(t?"success":"error"),o.textContent=n,s.innerHTML=e?e.map(t=>`<div class="import-result-row"><span>${t.label}</span><span>${t.val}</span></div>`).join(""):"",setTimeout(()=>{a.classList.remove("show")},6e3)}let _isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent),_isStandalone=window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone,_deferredPrompt=null;function _showBanner(){var t,e;_isStandalone||localStorage.getItem("pt_install_dismissed")||(t=document.getElementById("install-banner"),e=document.getElementById("install-action-btn"),_isIOS&&(document.getElementById("install-sub").textContent="sv"===lang?"Tryck för instruktioner":"Tap for instructions",e.textContent="sv"===lang?"Visa hur":"Show how",e.onclick=()=>{document.getElementById("ios-install-modal").style.display="flex",document.getElementById("ios-install-modal").classList.add("show")},t.classList.add("show")))}function dismissInstall(){document.getElementById("install-banner").classList.remove("show"),localStorage.setItem("pt_install_dismissed","1")}function showEmail(t){t.preventDefault();let e=atob("aW5mb0BwZXRhbnF1ZXRyYW5pbmcuc2U=");var t=document.getElementById("email-link"),n=document.getElementById("email-text");t.style.display="none",n.textContent=e,n.style.display="inline",n.style.cursor="pointer",n.onclick=()=>window.location.href="mailto:"+e}function initializeGATracking(){return"undefined"==typeof gtag?(console.error("Google Analytics 4 är inte installerat."),!1):(console.log("✅ Google Analytics 4 är aktivt"),!0)}function trackStartTraining(t){gtag("event","start_training",{training_type:t,timestamp:(new Date).toISOString(),session_id:getSessionId()}),console.log("📊 Event spårat: start_training ("+t+")")}function trackCompleteTraining(t,e,n,a){gtag("event","complete_training",{training_type:t,duration_minutes:e,score:n,difficulty:a,timestamp:(new Date).toISOString(),session_id:getSessionId()}),console.log("📊 Event spårat: complete_training ("+t+", "+e+"min, Score: "+n+")")}function trackViewResults(t,e){gtag("event","view_results",{result_type:t,training_type:e,timestamp:(new Date).toISOString(),session_id:getSessionId()}),console.log("📊 Event spårat: view_results ("+t+")")}function trackPageView(t){gtag("event","page_view",{page_name:t,timestamp:(new Date).toISOString(),session_id:getSessionId()}),console.log("📊 Event spårat: page_view ("+t+")")}function getSessionId(){let t=sessionStorage.getItem("ga_session_id");return t||(t="session_"+Date.now()+"_"+Math.random().toString(36).substr(2,9),sessionStorage.setItem("ga_session_id",t)),t}window.addEventListener("beforeinstallprompt",t=>{t.preventDefault(),_deferredPrompt=t,_isStandalone||localStorage.getItem("pt_install_dismissed")||((t=document.getElementById("install-action-btn")).textContent="sv"===lang?"Installera":"Install",t.onclick=()=>{_deferredPrompt&&(_deferredPrompt.prompt(),_deferredPrompt.userChoice.then(()=>{_deferredPrompt=null,document.getElementById("install-banner").classList.remove("show")}))},document.getElementById("install-banner").classList.add("show"))}),window.addEventListener("appinstalled",()=>{document.getElementById("install-banner").classList.remove("show"),_deferredPrompt=null}),document.addEventListener("DOMContentLoaded",()=>{updateLangUI(),initializeGATracking(),loadStats(),_showBanner()}),window.addEventListener("load",initializeGATracking),"loading"===document.readyState?document.addEventListener("DOMContentLoaded",initializeGATracking):initializeGATracking()</script><div id="install-banner"><span style="font-size:2rem;flex-shrink:0">🎯</span><div class="install-text"><strong data-sv="Installera appen" data-en="Install app">Installera appen</strong> <span id="install-sub" data-sv="Lägg till på hemskärmen" data-en="Add to home screen">Lägg till på hemskärmen</span></div><button class="install-btn" id="install-action-btn" data-sv="Installera" data-en="Install">Installera</button> <button class="install-dismiss" onclick="dismissInstall()">✕</button></div><div class="overlay" id="ios-install-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(12px);z-index:50;justify-content:center;align-items:flex-end;padding:16px"><div style="background:var(--card);border:1px solid var(--border2);border-radius:24px;padding:28px 24px;width:100%;max-width:440px;animation:slideUp .3s cubic-bezier(.4,0,.2,1)"><h2 style="font-family:var(--font-display);font-size:1.3rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px">📲 <span data-sv="Installera på din enhet" data-en="Install on your device">Installera på din enhet</span></h2><div style="display:flex;flex-direction:column;gap:14px;margin-bottom:20px"><div style="display:flex;align-items:flex-start;gap:12px"><span style="font-size:1.4rem;flex-shrink:0">1️⃣</span><span style="font-size:.9rem;color:var(--muted2);line-height:1.5" data-sv="Öppna sidan i Safari" data-en="Open in Safari">Öppna sidan i <strong style="color:var(--text)">Safari</strong></span></div><div style="display:flex;align-items:flex-start;gap:12px"><span style="font-size:1.4rem;flex-shrink:0">2️⃣</span><span style="font-size:.9rem;color:var(--muted2);line-height:1.5" data-sv="Tryck på dela-ikonen längst ner" data-en="Tap the share icon at the bottom">Tryck på <strong style="color:var(--text)">dela-ikonen</strong> &#x2197; längst ner</span></div><div style="display:flex;align-items:flex-start;gap:12px"><span style="font-size:1.4rem;flex-shrink:0">3️⃣</span><span style="font-size:.9rem;color:var(--muted2);line-height:1.5" data-sv="Tryck Lägg till på hemskärmen" data-en="Tap Add to Home Screen">Tryck <strong style="color:var(--text)">"Lägg till på hemskärmen"</strong></span></div><div style="display:flex;align-items:flex-start;gap:12px"><span style="font-size:1.4rem;flex-shrink:0">4️⃣</span><span style="font-size:.9rem;color:var(--muted2);line-height:1.5" data-sv="Tryck Lägg till – klart!" data-en="Tap Add – done!">Tryck <strong style="color:var(--text)">"Lägg till"</strong> – klart! 🎉</span></div></div><button onclick='document.getElementById("ios-install-modal").classList.remove("show"),document.getElementById("ios-install-modal").style.display="none",dismissInstall()' style="width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border2);color:var(--text);border-radius:14px;padding:15px;font-family:var(--font-display);font-size:1rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer" data-sv="Stäng" data-en="Close">Stäng</button></div></div></body></html>
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>Petanque Träning – Gratis träningsapp för petanquespelare</title>
+  <meta name="description" content="Din personliga träningscoach för petanque. Spåra skjutträning, statistik, trendlinjer och träningsdagbok - helt gratis!">
+  <meta name="keywords" content="petanque, petanque träning, petanque app, skjutträning, träningsapp, statistik, boule">
+  <meta name="author" content="Pär Johansson">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://petanquetraning.se">
+  <meta property="og:title" content="Petanque Träning – Din träningscoach">
+  <meta property="og:description" content="Spåra din utveckling. Träna smartare. Bli bättre.">
+  <meta property="og:url" content="https://petanquetraning.se">
+  <meta property="og:image" content="https://petanquetraning.se/petanque-logo.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0A0E27">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icon-192.png">
+  <link rel="apple-touch-icon" href="./icon-512.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0A0E27;
+      --bg2: #1a1f3a;
+      --text: #FFFFFF;
+      --text-muted: #B0B0B0;
+      --accent: #e8ff47;
+      --accent-dark: #c8dd00;
+      --border: rgba(232, 255, 71, 0.1);
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* HERO SECTION - COMPACT */
+    .hero {
+      text-align: center;
+      padding: 40px 20px 30px;
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(232, 255, 71, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 100%;
+    }
+
+    .hero-logo {
+      width: 100px;
+      height: auto;
+      margin: 0 auto 20px;
+      display: block;
+      animation: float 3s ease-in-out infinite;
+      max-width: 85%;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .hero-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      margin-bottom: 10px;
+      letter-spacing: -1px;
+      line-height: 1.1;
+    }
+
+    .hero-title span {
+      color: var(--accent);
+    }
+
+    .hero-subtitle {
+      display: none;
+    }
+
+    .hero-cta {
+      background: var(--accent);
+      color: #000;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 0;
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .hero-cta:hover {
+      background: var(--accent-dark);
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(232, 255, 71, 0.3);
+    }
+
+    .hero-cta:active {
+      transform: scale(0.98);
+    }
+
+    /* FEATURES SECTION */
+    .features {
+      display: none;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 35px;
+    }
+
+    .features-grid {
+      max-width: 500px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin-bottom: 50px;
+    }
+
+    .feature-item {
+      background: rgba(232, 255, 71, 0.05);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: left;
+      transition: all 0.3s ease;
+    }
+
+    .feature-item:hover {
+      border-color: var(--accent);
+      background: rgba(232, 255, 71, 0.08);
+      transform: translateX(5px);
+    }
+
+    .feature-icon {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .feature-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 5px;
+      color: var(--text);
+    }
+
+    .feature-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* STATS SECTION */
+    .stats {
+      display: none;
+    }
+
+    .stat-item {
+      margin-bottom: 15px;
+    }
+
+    .stat-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--accent);
+      display: block;
+    }
+
+    .stat-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* APPS SECTION */
+    .apps-section {
+      padding: 20px 20px 50px;
+      max-width: 100%;
+    }
+
+    .apps-grid {
+      max-width: 500px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .app-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(232, 255, 71, 0.15);
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s ease;
+    }
+
+    .app-card:hover {
+      background: rgba(232, 255, 71, 0.08);
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .app-icon {
+      font-size: 1.8rem;
+      flex-shrink: 0;
+    }
+
+    .app-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .app-name {
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 3px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .app-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .app-arrow {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+
+    .app-card:hover .app-arrow {
+      color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    /* FOOTER */
+    .footer {
+      padding: 50px 20px 30px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      max-width: 100%;
+    }
+
+    .footer-section {
+      margin-bottom: 25px;
+    }
+
+    .footer-title {
+      font-size: 0.8rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 15px;
+    }
+
+    .footer-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .footer-link {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--accent-dark);
+    }
+
+    .email-link {
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .email-link:hover {
+      color: var(--accent);
+    }
+
+    .copyright {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.3);
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .ko-fi-button {
+      background: linear-gradient(135deg, #FF5E78 0%, #FF218C 100%);
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .ko-fi-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(255, 33, 140, 0.4);
+    }
+
+    @media (max-width: 600px) {
+      .hero-title {
+        font-size: 2.2rem;
+      }
+
+      .hero-subtitle {
+        font-size: 0.95rem;
+      }
+
+      .hero-logo {
+        width: 100px;
+      }
+    }
+  </style>
+
+  <script src="./storage-manager.js"></script>
+  <script src="./lang-manager.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XT4NB1HR2J"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XT4NB1HR2J');
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(() => {});
+    }
+  </script>
+</head>
+
+<body>
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-content">
+      <img src="./petanque-logo.png" alt="Petanque Träning Logo" class="hero-logo">
+      <h1 class="hero-title">PETANQUE <span>TRÄNING</span></h1>
+      <p class="hero-subtitle">Din personliga träningscoach. Spåra, analysera, förbättra.</p>
+      <button class="hero-cta" onclick="document.querySelector('.apps-section').scrollIntoView({behavior: 'smooth'})">🚀 BÖRJA TRÄNA NU</button>
+    </div>
+  </section>
+
+  <!-- FEATURES SECTION -->
+  <section class="features">
+    <h2 class="section-title">── VAD DU KAN GÖRA ──</h2>
+    
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">🎯</span>
+        <div class="feature-name">Skjutträning</div>
+        <div class="feature-desc">Träna precision och spåra din utveckling på alla avstånd</div>
+      </div>
+
+      <div class="feature-item">
+        <span class="feature-icon">📊</span>
+        <div class="feature-name">Statistik & Grafer</div>
+        <div class="feature-desc">Se dina framsteg med detaljerade grafer och trendlinjer</div>
+      </div>
+
+      <div class="feature-item">
+        <span class="feature-icon">📓</span>
+        <div class="feature-name">Träningsdagbok</div>
+        <div class="feature-desc">Logga varje träningspass med datum, plats och känsla</div>
+      </div>
+
+      <div class="feature-item">
+        <span class="feature-icon">🧮</span>
+        <div class="feature-name">Poängräknare</div>
+        <div class="feature-desc">Digital poängräknare för singel och lagmatcher</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS SECTION -->
+  <section class="stats">
+    <div class="stat-item">
+      <span class="stat-number">211</span>
+      <span class="stat-text">Aktiva användare</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">⭐</span>
+      <span class="stat-text">Älskad av petanquespelare i Sverige</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">100%</span>
+      <span class="stat-text">Helt gratis – ingen annonsering</span>
+    </div>
+  </section>
+
+  <!-- APPS SECTION -->
+  <section class="apps-section">
+    <h2 class="section-title">── ALLA APPAR ──</h2>
+    
+    <div class="apps-grid">
+      <a href="./skjuttraning.html" class="app-card">
+        <span class="app-icon">🎯</span>
+        <div class="app-info">
+          <div class="app-name">Skjutträning</div>
+          <div class="app-desc">Träna och mät precisionen</div>
+        </div>
+        <span class="app-arrow">→</span>
+      </a>
+
+      <a href="./laggtraning.html" class="app-card">
+        <span class="app-icon">🏐</span>
+        <div class="app-info">
+          <div class="app-name">Läggträning</div>
+          <div class="app-desc">Träna läggning och avstånd</div>
+        </div>
+        <span class="app-arrow">→</span>
+      </a>
+
+      <a href="./tavlingssimulator.html" class="app-card">
+        <span class="app-icon">🏆</span>
+        <div class="app-info">
+          <div class="app-name">Poängräknare</div>
+          <div class="app-desc">Digital match-räknare</div>
+        </div>
+        <span class="app-arrow">→</span>
+      </a>
+
+      <a href="./dagbok.html" class="app-card">
+        <span class="app-icon">📓</span>
+        <div class="app-info">
+          <div class="app-name">Träningsdagbok</div>
+          <div class="app-desc">Logga dina träningspass</div>
+        </div>
+        <span class="app-arrow">→</span>
+      </a>
+
+      <a href="./precisionsskytte.html" class="app-card">
+        <span class="app-icon">🎪</span>
+        <div class="app-info">
+          <div class="app-name">Precisionsskytte</div>
+          <div class="app-desc">Tävlingssimulator enligt SBF-regler</div>
+        </div>
+        <span class="app-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-section">
+      <h3 class="footer-title">🤝 Stöd Petanque Träning</h3>
+      <p class="footer-text">Tycker du att appen är bra? Ge gärna en donation för att stödja utvecklingen!</p>
+      <a href="https://ko-fi.com/petanquetraning" target="_blank" class="ko-fi-button">☕ Köp mig en kaffe</a>
+    </div>
+
+    <div class="footer-section">
+      <h3 class="footer-title">✉️ Kontakt</h3>
+      <p class="footer-text">
+        Feedback? Önskemål? Kontakta mig på:<br>
+        <span class="email-link" onclick="showEmail(event)">info@petanquetraning.se</span>
+        <span id="email-text" style="display:none; cursor:pointer;"></span>
+      </p>
+    </div>
+
+    <div class="footer-section">
+      <h3 class="footer-title">ℹ️ Om Appen</h3>
+      <p class="footer-text">
+        Utvecklad av Pär Johansson<br>
+        <a href="https://github.com/johanssonbvp/skyttetraning" target="_blank" class="footer-link">GitHub</a> · 
+        <a href="./manifest.json" class="footer-link">PWA</a> · 
+        Offline-stöd
+      </p>
+    </div>
+
+    <div class="copyright">
+      © 2026 Petanque Träning · Helt gratis träningsapp för petanquespelare
+    </div>
+  </footer>
+
+  <script>
+    function showEmail(event) {
+      event.preventDefault();
+      const encoded = 'aW5mb0BwZXRhbnF1ZXRyYW5pbmcuc2U=';
+      const email = atob(encoded);
+      const link = document.querySelector('.email-link');
+      const text = document.getElementById('email-text');
+      
+      link.style.display = 'none';
+      text.textContent = email;
+      text.style.display = 'inline';
+      text.onclick = () => window.location.href = 'mailto:' + email;
+    }
+  </script>
+</body>
+
+</html>
