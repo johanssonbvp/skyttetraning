@@ -195,7 +195,7 @@ function enableGADebugMode() {
    * Öppna DevTools (F12) och gå till Network-fliken
    */
   
-  window.gtag('config', 'G_YOUR_MEASUREMENT_ID', {
+  window.gtag('config', 'G-XT4NB1HR2J', {
     'debug_mode': true
   });
   
