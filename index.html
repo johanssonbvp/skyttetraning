@@ -504,10 +504,14 @@
     gtag('config', 'G-XT4NB1HR2J');
   </script>
 
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(() => {});
-    }
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "cb08989e-539c-4e94-b967-9df09f0434c5",
+      });
+    });
   </script>
 </head>
 
