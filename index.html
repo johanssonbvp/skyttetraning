@@ -108,27 +108,29 @@
     .hero-cta {
       background: var(--accent);
       color: #000;
-      padding: 12px 30px;
+      padding: 18px 50px;
       border: none;
-      border-radius: 10px;
-      font-size: 0.95rem;
+      border-radius: 14px;
+      font-size: 1.1rem;
       font-weight: 800;
       cursor: pointer;
       transition: all 0.3s ease;
       margin-bottom: 0;
       display: inline-block;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 2px;
+      box-shadow: 0 10px 40px rgba(232, 255, 71, 0.4);
+      margin-top: 25px;
     }
 
     .hero-cta:hover {
       background: var(--accent-dark);
-      transform: scale(1.05);
-      box-shadow: 0 8px 25px rgba(232, 255, 71, 0.3);
+      transform: scale(1.08);
+      box-shadow: 0 15px 50px rgba(232, 255, 71, 0.6);
     }
 
     .hero-cta:active {
-      transform: scale(0.98);
+      transform: scale(0.97);
     }
 
     /* FEATURES SECTION */
@@ -709,7 +711,7 @@
 
       let totalSessions = skjutHistory.length + laggHistory.length + daybookHistory.length;
       let totalShots = skjutHistory.reduce((sum, entry) => sum + (entry.shots || 0), 0);
-      let totalHits = skjutHistory.reduce((sum, entry) => sum + ((entry.traff || 0) + (entry.carreau || 0)), 0);
+      let totalHits = skjutHistory.reduce((sum, entry) => sum + (entry.hits || 0), 0);
       let avgAccuracy = totalShots > 0 ? Math.round((totalHits / totalShots) * 100) : 0;
 
       document.getElementById('totalSessions').textContent = totalSessions;
