@@ -150,19 +150,45 @@ Appen fungerar **offline** när den väl är installerad. All data sparas lokalt
 
 ## 🌍 Språkstöd
 
-Appen stöder **svenska** och **engelska** med intelligent språkväljare:
-- 🔘 Knapp i toppraden för att byta språk
-- 🌐 Browser-språk detekteras automatiskt
-- 💾 Inställning sparas i localStorage
+Appen stöder **svenska, engelska och spanska** med intelligent språkväljare:
+- 🔘 **Språk-knapp i toppraden:** 🇸🇪 SV | 🇬🇧 EN | 🇪🇸 ES
+- 🌐 **Browser-språk detekteras automatiskt**
+- 💾 **Inställning sparas i localStorage**
+- ✨ **Professionell spansk översättning** — Relevant för petanque-spelare i Spanien
+
+### Spanska Översättningar
+- **Petanque Träning** → Entrenamiento Petanca
+- **Skjutträning** → Entrenamiento de Tiro
+- **Läggträning** → Entrenamiento de Colocación
+- **Poängräknare** → Contador de Puntos
+- **Träningsdagbok** → Diario de Entrenamiento
+- **Precisionsskytte** → Tiro de Precisión
+
+## 🔔 Push-Notiser (OneSignal)
+
+Appen stöder **push-notiser** via OneSignal för PWA:
+- 📱 Installera appen → Få notiser om nya funktioner
+- 🔔 Notiser fungerar offline (sparas lokalt)
+- 📲 Fungerar på Android PWA och webbläsare
+- ✅ **Testad och fungerar** på Pixel 8 Pro
+
+**Installation:** Appen frågar om notiser när du installerar den.
 
 ---
 
-## 📊 Analytics & Spårning
+## 📊 Analytics & Statistik
 
-Appen använder **Google Analytics 4** för att förstå användningen:
-- Vilka appar som är mest populära
-- Hur länge användare tränar
-- Vilka funktioner som används mest
+### Google Analytics 4
+- **Aktiva användare:** 231+ (maj 2026)
+- **Nya användare:** 227+ denna månad
+- **Engagering:** 1m 15s genomsnittlig engagemangstid
+- **Populäraste app:** Skjutträning (204 användare, 8% avvisning)
+
+### Trafikskällor
+- **Direct (92%)** — Folk skriver in URL direkt
+- **Facebook (30%)** — Från Facebook-grupper
+- **Google Organic (6%)** — Sökmotorer (kan förbättras)
+- **Instagram (1%)** — Från Reels (kan förbättras)
 
 **Ingen personlig data samlas in** — bara aggregerad statistik.
 
@@ -181,7 +207,36 @@ Appen är en **Progressive Web App** (PWA) med:
 
 ---
 
-## 🛠️ Development
+## 🔧 Development
+
+### Senaste förbättringar (April 2026)
+
+#### ✨ **UI & UX**
+- ✅ **Större CTA-knapp** ("BÖRJA TRÄNA NU") — Mer synlig, lägre avvisningsfrekvens
+- ✅ **Förbättrad footer** — Copyright-information tydlig, länk till LICENSE
+- ✅ **Responsiv design** — Optimerad för alla skärmstorlekar
+
+#### 🐛 **Bugfixar**
+- ✅ **Träffprocent-beräkning fixad** — Räknar nu rätt (traff + carreau)
+- ✅ **localStorage-nycklar korrigerade** — Konsistent datalagrng
+- ✅ **Dubbelsparning åtgärdad** — sessionSaved-flagga + deduplicateHistory()
+- ✅ **Email-skydd** — Base64-kodad kontaktinfo i footer
+
+#### 🎨 **Design & Branding**
+- ✅ **Ny logotyp** — Modern, minimalistisk design (Adobe Firefly)
+- ✅ **PWA-ikoner uppdaterade** — 192x192 och 512x512 PNG
+- ✅ **Färgschema** — Mörkblå (#0A0E27) + gul accent (#e8ff47)
+
+#### 📱 **Performance & PWA**
+- ✅ **Service Worker optimerad** — Stale-While-Revalidate caching
+- ✅ **Filstorlek reducerad** — 19% mindre (167KB → 136KB)
+- ✅ **Offline-funktionalitet** — Testad och fungerar
+- ✅ **OneSignal push-notiser** — Fungerar på Android PWA
+
+#### 🌍 **Internationalisering**
+- ✅ **Spansk support tillagd** — Completa UI på spanska
+- ✅ **Språk-knapp uppdaterad** — 🇸🇪 SV | 🇬🇧 EN | 🇪🇸 ES
+- ✅ **Petanque-termer korrekt översatta**
 
 ### Förutsättningar
 - Node.js (optional, för lokal development)
@@ -254,11 +309,51 @@ Har du idéer, bug-rapporter eller funktionförfrågningar?
 
 ---
 
+## 🛍️ Merch & Community
+
+### Petanque Träning Merch (Planerat)
+- 👕 **T-shirts** — Med logotypen
+- 🎒 **Tygväskor** — Perfekt för att bära bollar
+- 🧢 **Kepsar** — Snygg marknadsföring på banorna
+- 💧 **Vattenflaskor** — Klassisk sportutrustning
+- 🧣 **Sweatshirts** — För kallare dagar
+- 🏷️ **Klistermärken** — Gratis marknadsföring!
+
+**Tillverkare:** Printful.com / Demitasse.se
+
+### Marknadsföring & Spridning
+- 📱 **Instagram Reels** — Träningsvideos och tips
+- 🎬 **TikTok** — Kort format content för ungdom
+- 📘 **Facebook** — Kontakt med petanque-grupper och klubbar
+- 🇪🇸 **Spanien/Portugal** — Target marknad (nu med spansk UI!)
+- 🏆 **Svenska Petanqueförbundet** — Officiell länkning (planerat)
+
+**Målgrupp:** Petanquespelare i Sverige, Spanien, Portugal och Tyskland
+
+### Användar-statistik
+- **Aktiva användare:** 231+ (maj 2026)
+- **Nya användare/månad:** 227+
+- **Främsta städer:** Stockholm (31%), Göteborg (10%), Malmö (5%)
+- **Populäraste app:** Skjutträning (88% av användarflödet)
+
+---
+
 ## 📄 Licens
 
-**MIT License** — Du är fri att använda, modifiera och distribuera denna kod.
+**PROPRIETARY AND CONFIDENTIAL** — Pär Johansson, 2026
 
 Se [LICENSE](LICENSE) för detaljer.
+
+**Juridisk skydd:**
+- ✅ **Copyright © 2026 Pär Johansson** — Alla rättigheter förbehållna
+- ✅ **Proprietary License** — Appen kan inte kopieras eller säljas utan tillstånd
+- ✅ **GitHub License-fil** — Officiell juridisk skyddning
+- 📝 **Varumärke registrerat hos Svenska Varumärkesverket**
+
+**Användning:** 
+- ❌ Inte tillåtet att kopiera eller ändra koden
+- ❌ Inte tillåtet att sälja appen eller merch utan tillstånd
+- ✅ Gratis att användera appen
 
 ---
 
@@ -278,5 +373,16 @@ Tack för att du använder Petanque Träning! Din feedback hjälper oss att gör
 
 ---
 
-**Senast uppdaterad:** April 2026  
-**Projektet är aktivt underhållet** ✨
+**Senast uppdaterad:** 3 maj 2026  
+**Uppdateringar denna version:**
+- ✅ Spansk språkstöd tillagd (ES)
+- ✅ Juridiskt skydd implementerat (PROPRIETARY License)
+- ✅ Push-notiser via OneSignal (testad)
+- ✅ CTA-knapp förbättrad (större & mer lysande)
+- ✅ Copyright-information tillagd i alla filer
+- ✅ Footer-design uppdaterad
+
+**Projektet är aktivt underhållet** ✨  
+**Utvecklare:** Pär Johansson  
+**Licens:** PROPRIETARY — Alla rättigheter förbehållna © 2026  
+**GitHub:** [johanssonbvp/skyttetraning](https://github.com/johanssonbvp/skyttetraning)
