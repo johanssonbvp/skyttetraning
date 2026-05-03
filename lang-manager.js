@@ -12,7 +12,7 @@
 const LanguageManager = (() => {
   const STORAGE_KEY = 'petanque-lang';
   const DEFAULT_LANG = 'sv';
-  const SUPPORTED_LANGS = ['sv', 'en'];
+  const SUPPORTED_LANGS = ['sv', 'en', 'es'];
 
   let current = DEFAULT_LANG;
   let isInitialized = false;
@@ -119,7 +119,7 @@ const LanguageManager = (() => {
         // Update lang-buttons
         const langBtns = document.querySelectorAll('[data-lang-toggle]');
         langBtns.forEach(btn => {
-          btn.textContent = current === 'sv' ? '🌐 EN' : '🌐 SV';
+          const langs = { sv: '🇸🇪 SV', en: '🇬🇧 EN', es: '🇪🇸 ES' }; btn.textContent = langs[current] || '🌐';
         });
 
         console.log('[Lang] Translations applied');
