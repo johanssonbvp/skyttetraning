@@ -79,6 +79,14 @@ const LanguageManager = (() => {
         // Applicera translations
         this.applyTranslations();
         
+        // UPPDATERA KNAPPEN DIREKT!
+        const langBtn = document.getElementById('langBtn');
+        if (langBtn) {
+          const langs = { sv: '🇸🇪 SV', en: '🇬🇧 EN', es: '🇪🇸 ES' };
+          langBtn.textContent = langs[lang] || '🌐';
+          console.log('[Lang] Button updated to:', langs[lang]);
+        }
+        
         // Dispatch event för lyssning
         window.dispatchEvent(new CustomEvent('language-changed', { detail: { lang } }));
         
