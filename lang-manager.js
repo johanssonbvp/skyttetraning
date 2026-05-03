@@ -175,11 +175,11 @@ const LanguageManager = (() => {
 // Auto-init när DOM är klar
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
-    LanguageManager.init();
+    setTimeout(() => LanguageManager.init(), 100);
   });
 } else {
   // DOM redan lastad
-  LanguageManager.init();
+  setTimeout(() => LanguageManager.init(), 100);
 }
 
 // Gör tillgänglig globalt
