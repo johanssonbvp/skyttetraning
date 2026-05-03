@@ -1,5 +1,9 @@
 /**
- * UNIVERSAL LANGUAGE MANAGER
+ * PETANQUE TRÄNING - Language Manager
+ * Copyright (c) 2026 Pär Johansson
+ * All rights reserved - Proprietary and Confidential
+ * https://petanquetraning.se
+ * 
  * Enhetlig språkhantering för alla petanque-appar
  * Användning: <script src="lang-manager.js"></script>
  * Sedan: LanguageManager.set('en') eller LanguageManager.toggle()

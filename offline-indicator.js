@@ -1,5 +1,9 @@
 /**
- * UNIVERSAL OFFLINE INDICATOR
+ * PETANQUE TRÄNING - Offline Indicator
+ * Copyright (c) 2026 Pär Johansson
+ * All rights reserved - Proprietary and Confidential
+ * https://petanquetraning.se
+ * 
  * Visar offline-status i alla appar med en konsistent badge
  * Använd: <script src="offline-indicator.js"></script>
  */

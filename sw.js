@@ -1,4 +1,9 @@
 // SERVICE WORKER - Optimized Version
+// Copyright (c) 2026 Pär Johansson
+// All rights reserved - Proprietary and Confidential
+// https://petanquetraning.se
+// Made with ❤️ by Pär Johansson
+//
 // Automatisk cache-versionering + Stale-While-Revalidate strategi
 
 const CACHE_VERSION = new Date().toISOString().slice(0, 10).replace(/-/g, ''); // YYYYMMDD

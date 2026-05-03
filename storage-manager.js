@@ -1,5 +1,9 @@
 /**
- * UNIVERSAL STORAGE MANAGER
+ * PETANQUE TRÄNING - Storage Manager
+ * Copyright (c) 2026 Pär Johansson
+ * All rights reserved - Proprietary and Confidential
+ * https://petanquetraning.se
+ * 
  * Robust localStorage med validering, deduplication och error handling
  * Använd denna i alla appar för konsistent lagring
  */
