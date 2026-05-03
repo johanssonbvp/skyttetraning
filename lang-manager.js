@@ -91,10 +91,12 @@ const LanguageManager = (() => {
     },
 
     /**
-     * Byt mellan sv och en
+     * Byt mellan sv, en och es
      */
     toggle() {
-      const newLang = current === 'sv' ? 'en' : 'sv';
+      const index = SUPPORTED_LANGS.indexOf(current);
+      const nextIndex = (index + 1) % SUPPORTED_LANGS.length;
+      const newLang = SUPPORTED_LANGS[nextIndex];
       return this.set(newLang);
     },
 
