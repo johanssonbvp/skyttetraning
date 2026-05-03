@@ -102,12 +102,13 @@ const LanguageManager = (() => {
 
     /**
      * Applicera translations från data-attribut
-     * Targets: [data-sv] och [data-en]
+     * Targets: [data-sv], [data-en], [data-es]
      */
     applyTranslations() {
       try {
         document.querySelectorAll('[data-sv]').forEach(el => {
-          const content = current === 'sv' ? el.dataset.sv : el.dataset.en;
+          // Hämta text baserat på aktuellt språk
+          const content = el.dataset[current] || el.dataset.sv;
           
           if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
             el.placeholder = content || el.placeholder;
@@ -121,10 +122,11 @@ const LanguageManager = (() => {
         // Update lang-buttons
         const langBtns = document.querySelectorAll('[data-lang-toggle]');
         langBtns.forEach(btn => {
-          const langs = { sv: '🇸🇪 SV', en: '🇬🇧 EN', es: '🇪🇸 ES' }; btn.textContent = langs[current] || '🌐';
+          const langs = { sv: '🇸🇪 SV', en: '🇬🇧 EN', es: '🇪🇸 ES' }; 
+          btn.textContent = langs[current] || '🌐';
         });
 
-        console.log('[Lang] Translations applied');
+        console.log('[Lang] Translations applied for language: ' + current);
       } catch (e) {
         console.error('[Lang] Error applying translations:', e.message);
       }
