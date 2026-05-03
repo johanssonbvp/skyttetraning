@@ -761,7 +761,7 @@
 
       let totalSessions = skjutHistory.length + laggHistory.length + daybookHistory.length;
       let totalShots = skjutHistory.reduce((sum, entry) => sum + (entry.shots || 0), 0);
-      let totalHits = skjutHistory.reduce((sum, entry) => sum + (entry.hits || 0), 0);
+      let totalHits = skjutHistory.reduce((sum, entry) => sum + ((entry.traff || 0) + (entry.carreau || 0)), 0);
       let avgAccuracy = totalShots > 0 ? Math.round((totalHits / totalShots) * 100) : 0;
 
       document.getElementById('totalSessions').textContent = totalSessions;
