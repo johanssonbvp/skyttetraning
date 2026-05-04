@@ -114,7 +114,11 @@ const LanguageManager = (() => {
      */
     applyTranslations() {
       try {
-        document.querySelectorAll('[data-sv]').forEach(el => {
+        // Hitta ALLA element med data-sv attribut (även nested)
+        const allElements = document.querySelectorAll('[data-sv]');
+        console.log('[Lang] Found ' + allElements.length + ' elements with data-sv');
+        
+        allElements.forEach(el => {
           // Hämta text baserat på aktuellt språk
           const content = el.dataset[current] || el.dataset.sv;
           
@@ -125,6 +129,8 @@ const LanguageManager = (() => {
           } else {
             el.textContent = content || el.textContent;
           }
+          
+          console.log('[Lang] Updated element:', el.tagName, 'content:', content);
         });
 
         // Update lang-buttons
