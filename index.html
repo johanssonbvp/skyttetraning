@@ -618,7 +618,7 @@
 
   <!-- APPS SECTION -->
   <section class="apps-section">
-    <h2 class="section-title" data-sv="── ALLA APPAR ──" data-en="── ALL APPS ──" data-es="── TODAS LAS APPS ──">── ALLA APPAR ──</h2>
+    <h2 class="section-title">── ALLA APPAR ──</h2>
     
     <div class="apps-grid">
       <a href="./skjuttraning.html" class="app-card">
@@ -668,27 +668,27 @@
     </div>
 
     <!-- STATISTICS -->
-    <p class="section-title" data-sv="Statistik" data-en="Statistics" data-es="Estadísticas">Statistik</p>
+    <p class="section-title">Statistik</p>
     <div class="stats-strip">
       <div class="strip-stat">
         <span class="strip-val" id="totalSessions">0</span>
-        <span class="strip-lbl" data-sv="Pass" data-en="Sessions" data-es="Sesiones">Pass</span>
+        <span class="strip-lbl">Pass</span>
       </div>
       <div class="strip-stat">
         <span class="strip-val" id="totalShots">0</span>
-        <span class="strip-lbl" data-sv="Skott" data-en="Shots" data-es="Disparos">Skott</span>
+        <span class="strip-lbl">Skott</span>
       </div>
       <div class="strip-stat">
         <span class="strip-val" id="avgAccuracy">0%</span>
-        <span class="strip-lbl" data-sv="Träffprocent" data-en="Accuracy" data-es="Precisión">Träffprocent</span>
+        <span class="strip-lbl">Träffprocent</span>
       </div>
     </div>
 
     <!-- DATA MANAGEMENT -->
-    <p class="section-title" data-sv="Datahantering" data-en="Data Management" data-es="Gestión de Datos">Datahantering</p>
+    <p class="section-title">Datahantering</p>
     <div class="data-actions">
-      <button class="data-btn" onclick="exportDataAsCSV()" data-sv="Exportera" data-en="Export" data-es="Exportar">Exportera</button>
-      <button class="data-btn" onclick="document.getElementById('import-file').click()" data-sv="Importera" data-en="Import" data-es="Importar">Importera</button>
+      <button class="data-btn" onclick="exportDataAsCSV()">Exportera</button>
+      <button class="data-btn" onclick="document.getElementById('import-file').click()">Importera</button>
       <input type="file" id="import-file" style="display:none" accept=".json,.csv" onchange="importData(event)">
     </div>
 
@@ -761,7 +761,7 @@
 
       let totalSessions = skjutHistory.length + laggHistory.length + daybookHistory.length;
       let totalShots = skjutHistory.reduce((sum, entry) => sum + (entry.shots || 0), 0);
-      let totalHits = skjutHistory.reduce((sum, entry) => sum + ((entry.traff || 0) + (entry.carreau || 0)), 0);
+      let totalHits = skjutHistory.reduce((sum, entry) => sum + (entry.hits || 0), 0);
       let avgAccuracy = totalShots > 0 ? Math.round((totalHits / totalShots) * 100) : 0;
 
       document.getElementById('totalSessions').textContent = totalSessions;

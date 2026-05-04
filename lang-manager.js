@@ -79,14 +79,6 @@ const LanguageManager = (() => {
         // Applicera translations
         this.applyTranslations();
         
-        // UPPDATERA KNAPPEN DIREKT!
-        const langBtn = document.getElementById('langBtn');
-        if (langBtn) {
-          const langs = { sv: '🇸🇪 SV', en: '🇬🇧 EN', es: '🇪🇸 ES' };
-          langBtn.textContent = langs[lang] || '🌐';
-          console.log('[Lang] Button updated to:', langs[lang]);
-        }
-        
         // Dispatch event för lyssning
         window.dispatchEvent(new CustomEvent('language-changed', { detail: { lang } }));
         
@@ -114,11 +106,7 @@ const LanguageManager = (() => {
      */
     applyTranslations() {
       try {
-        // Hitta ALLA element med data-sv attribut (även nested)
-        const allElements = document.querySelectorAll('[data-sv]');
-        console.log('[Lang] Found ' + allElements.length + ' elements with data-sv');
-        
-        allElements.forEach(el => {
+        document.querySelectorAll('[data-sv]').forEach(el => {
           // Hämta text baserat på aktuellt språk
           const content = el.dataset[current] || el.dataset.sv;
           
@@ -129,8 +117,6 @@ const LanguageManager = (() => {
           } else {
             el.textContent = content || el.textContent;
           }
-          
-          console.log('[Lang] Updated element:', el.tagName, 'content:', content);
         });
 
         // Update lang-buttons
