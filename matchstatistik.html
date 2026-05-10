@@ -911,6 +911,11 @@ class MatchApp {
         const label = type === 'lagg' ? (hit ? 'Poängkula ✓' : 'Lägg miss ✗') : (hit ? 'Skott träff ✓' : 'Skott miss ✗');
         this.match.timeline.push({ time: elapsed, player: p.name, type, hit, label });
 
+        // Haptic feedback - längre vibration för träff, kort för miss
+        if (navigator.vibrate) {
+            navigator.vibrate(hit ? 80 : 40);
+        }
+
         this.renderLiveTable();
     }
 
