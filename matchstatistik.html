@@ -1416,22 +1416,68 @@ class MatchApp {
         const m = this.history[this.currentDetailIdx];
         const {jsPDF} = window.jspdf;
         const doc = new jsPDF();
-        let y = 20;
-        doc.setFont(undefined,'bold'); doc.setFontSize(16);
-        doc.text('Petanque Matchstatistik', 20, y); y+=10;
-        doc.setFont(undefined,'normal'); doc.setFontSize(10);
-        doc.text(`Tränarkod: ${this.trainerCode} | Exportdatum: ${new Date().toLocaleDateString('sv-SE')}`, 20, y); y+=10;
+        let y = 15;
         
-        doc.setFont(undefined,'bold'); doc.setFontSize(12);
-        doc.text(m.name, 20, y); y+=7;
+        // HEADER
+        doc.setFont(undefined,'bold'); doc.setFontSize(16);
+        doc.text('Petanque Matchstatistik', 15, y); y+=8;
         doc.setFont(undefined,'normal'); doc.setFontSize(9);
         const date = new Date(m.startTime).toLocaleDateString('sv-SE');
-        doc.text(`${m.team} | ${date} | ${m.duration??0} min`, 20, y); y+=5;
-        m.players.forEach(p => {
-            const la = this.acc(p.stats.lagg);
-            const sa = this.acc(p.stats.skott);
-            doc.text(`  ${p.name}: Lägg ${p.stats.lagg.hit}/${p.stats.lagg.total} (${la}%) | Skott ${p.stats.skott.hit}/${p.stats.skott.total} (${sa}%)`, 20, y); y+=5;
+        const time = new Date(m.startTime).toLocaleTimeString('sv-SE', {hour:'2-digit',minute:'2-digit'});
+        doc.text(`Tränarkod: ${this.trainerCode} | ${date} ${time} | ${m.duration??0} min`, 15, y); y+=6;
+        
+        // MATCH INFO
+        doc.setFont(undefined,'bold'); doc.setFontSize(11);
+        doc.text(m.name, 15, y); y+=5;
+        doc.setFont(undefined,'normal'); doc.setFontSize(9);
+        doc.text(`Lag: ${m.team}`, 15, y); y+=5;
+        
+        // SPELARE STATS
+        y+=2;
+        doc.setFont(undefined,'bold'); doc.setFontSize(10);
+        doc.text('SPELARE STATISTIK', 15, y); y+=5;
+        doc.setFont(undefined,'normal'); doc.setFontSize(8);
+        
+        const streaks = this.calcStreaks(m);
+        const hist = {};
+        m.players.forEach(p => hist[p.name] = this.getHistoricalAvg(p.name));
+        
+        m.players.forEach((p,idx) => {
+            if (y > 250) { doc.addPage(); y = 15; }
+            doc.setFont(undefined,'bold'); doc.setFontSize(9);
+            doc.text(`${p.name} (${p.position})`, 15, y); y+=4;
+            doc.setFont(undefined,'normal'); doc.setFontSize(8);
+            
+            const laggAcc = this.acc(p.stats.lagg);
+            const skottAcc = this.acc(p.stats.skott);
+            doc.text(`Lägg: ${p.stats.lagg.hit}/${p.stats.lagg.total} (${laggAcc}%) | Skott: ${p.stats.skott.hit}/${p.stats.skott.total} (${skottAcc}%)`, 15, y); y+=3;
+            
+            const lagStreaks = streaks[p.name];
+            doc.text(`Streaks - Lägg: ${lagStreaks.lagg.maxHit}h/${lagStreaks.lagg.maxMiss}m | Skott: ${lagStreaks.skott.maxHit}h/${lagStreaks.skott.maxMiss}m`, 15, y); y+=3;
+            
+            const ha = hist[p.name];
+            const laggDiff = laggAcc - ha.laggAvg;
+            const skottDiff = skottAcc - ha.skottAvg;
+            doc.text(`Vs snitt (${ha.totalMatches} matcher): Lägg ${laggAcc}% (${laggDiff>0?'+':''}${laggDiff}%) | Skott ${skottAcc}% (${skottDiff>0?'+':''}${skottDiff}%)`, 15, y); y+=3;
+            y+=2;
         });
+        
+        // POSITION ANALYS
+        if (y > 240) { doc.addPage(); y = 15; }
+        y+=3;
+        doc.setFont(undefined,'bold'); doc.setFontSize(10);
+        doc.text('POSITION-ANALYS', 15, y); y+=5;
+        doc.setFont(undefined,'normal'); doc.setFontSize(8);
+        
+        const posStats = this.getPositionStats(m);
+        Object.entries(posStats).forEach(([pos, stats]) => {
+            if (stats) {
+                const laggAcc = stats.lagg.t ? Math.round((stats.lagg.h/stats.lagg.t)*100) : 0;
+                const skottAcc = stats.skott.t ? Math.round((stats.skott.h/stats.skott.t)*100) : 0;
+                doc.text(`${pos}: Lägg ${stats.lagg.h}/${stats.lagg.t} (${laggAcc}%) | Skott ${stats.skott.h}/${stats.skott.t} (${skottAcc}%)`, 15, y); y+=4;
+            }
+        });
+        
         doc.save(`petanque-${m.name.replace(/[^a-z0-9]/gi,'_')}.pdf`);
     }
 
@@ -1439,12 +1485,38 @@ class MatchApp {
     exportDetailCSV() {
         if (this.currentDetailIdx === null) return;
         const m = this.history[this.currentDetailIdx];
-        let csv = 'Match,Lag,Datum,Tid,Varaktighet,Spelare,Position,Lägg poängkula,Lägg totalt,Lägg %,Skott träff,Skott totalt,Skott %\n';
         const date = new Date(m.startTime).toLocaleDateString('sv-SE');
         const time = new Date(m.startTime).toLocaleTimeString('sv-SE', {hour:'2-digit',minute:'2-digit'});
+        
+        let csv = `Match: ${m.name}\nLag: ${m.team}\nDatum: ${date}\nTid: ${time}\nVaraktighet: ${m.duration??0} min\nTränarkod: ${this.trainerCode}\n\n`;
+        csv += `SPELARE STATISTIK\n`;
+        csv += `Spelare,Position,Lägg träffar,Lägg totalt,Lägg %,Skott träffar,Skott totalt,Skott %,Längsta träffsekvens Lägg,Längsta misssekvens Lägg,Längsta träffsekvens Skott,Längsta misssekvens Skott,Lägg vs snitt,Skott vs snitt\n`;
+        
+        const streaks = this.calcStreaks(m);
+        const hist = {};
+        m.players.forEach(p => hist[p.name] = this.getHistoricalAvg(p.name));
+        
         m.players.forEach(p => {
-            csv += `"${m.name}","${m.team}","${date}","${time}","${m.duration??0}","${p.name}","${p.position}",${p.stats.lagg.hit},${p.stats.lagg.total},${this.acc(p.stats.lagg)},${p.stats.skott.hit},${p.stats.skott.total},${this.acc(p.stats.skott)}\n`;
+            const laggAcc = this.acc(p.stats.lagg);
+            const skottAcc = this.acc(p.stats.skott);
+            const ha = hist[p.name];
+            const laggDiff = laggAcc - ha.laggAvg;
+            const skottDiff = skottAcc - ha.skottAvg;
+            const lagStreaks = streaks[p.name];
+            
+            csv += `"${p.name}","${p.position}",${p.stats.lagg.hit},${p.stats.lagg.total},${laggAcc},${p.stats.skott.hit},${p.stats.skott.total},${skottAcc},${lagStreaks.lagg.maxHit},${lagStreaks.lagg.maxMiss},${lagStreaks.skott.maxHit},${lagStreaks.skott.maxMiss},"${laggAcc}% (${laggDiff>0?'+':''}${laggDiff}%)","${skottAcc}% (${skottDiff>0?'+':''}${skottDiff}%)"\n`;
         });
+        
+        csv += `\nPOSITION-ANALYS\nPosition,Lägg träffar,Lägg totalt,Lägg %,Skott träffar,Skott totalt,Skott %\n`;
+        const posStats = this.getPositionStats(m);
+        Object.entries(posStats).forEach(([pos, stats]) => {
+            if (stats) {
+                const laggAcc = stats.lagg.t ? Math.round((stats.lagg.h/stats.lagg.t)*100) : 0;
+                const skottAcc = stats.skott.t ? Math.round((stats.skott.h/stats.skott.t)*100) : 0;
+                csv += `"${pos}",${stats.lagg.h},${stats.lagg.t},${laggAcc},${stats.skott.h},${stats.skott.t},${skottAcc}\n`;
+            }
+        });
+        
         const blob = new Blob([csv], {type:'text/csv'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -1458,22 +1530,68 @@ class MatchApp {
         const m = this.history[this.currentHomeDetailIdx];
         const {jsPDF} = window.jspdf;
         const doc = new jsPDF();
-        let y = 20;
-        doc.setFont(undefined,'bold'); doc.setFontSize(16);
-        doc.text('Petanque Matchstatistik', 20, y); y+=10;
-        doc.setFont(undefined,'normal'); doc.setFontSize(10);
-        doc.text(`Tränarkod: ${this.trainerCode} | Exportdatum: ${new Date().toLocaleDateString('sv-SE')}`, 20, y); y+=10;
+        let y = 15;
         
-        doc.setFont(undefined,'bold'); doc.setFontSize(12);
-        doc.text(m.name, 20, y); y+=7;
+        // HEADER
+        doc.setFont(undefined,'bold'); doc.setFontSize(16);
+        doc.text('Petanque Matchstatistik', 15, y); y+=8;
         doc.setFont(undefined,'normal'); doc.setFontSize(9);
         const date = new Date(m.startTime).toLocaleDateString('sv-SE');
-        doc.text(`${m.team} | ${date} | ${m.duration??0} min`, 20, y); y+=5;
-        m.players.forEach(p => {
-            const la = this.acc(p.stats.lagg);
-            const sa = this.acc(p.stats.skott);
-            doc.text(`  ${p.name}: Lägg ${p.stats.lagg.hit}/${p.stats.lagg.total} (${la}%) | Skott ${p.stats.skott.hit}/${p.stats.skott.total} (${sa}%)`, 20, y); y+=5;
+        const time = new Date(m.startTime).toLocaleTimeString('sv-SE', {hour:'2-digit',minute:'2-digit'});
+        doc.text(`Tränarkod: ${this.trainerCode} | ${date} ${time} | ${m.duration??0} min`, 15, y); y+=6;
+        
+        // MATCH INFO
+        doc.setFont(undefined,'bold'); doc.setFontSize(11);
+        doc.text(m.name, 15, y); y+=5;
+        doc.setFont(undefined,'normal'); doc.setFontSize(9);
+        doc.text(`Lag: ${m.team}`, 15, y); y+=5;
+        
+        // SPELARE STATS
+        y+=2;
+        doc.setFont(undefined,'bold'); doc.setFontSize(10);
+        doc.text('SPELARE STATISTIK', 15, y); y+=5;
+        doc.setFont(undefined,'normal'); doc.setFontSize(8);
+        
+        const streaks = this.calcStreaks(m);
+        const hist = {};
+        m.players.forEach(p => hist[p.name] = this.getHistoricalAvg(p.name));
+        
+        m.players.forEach((p,idx) => {
+            if (y > 250) { doc.addPage(); y = 15; }
+            doc.setFont(undefined,'bold'); doc.setFontSize(9);
+            doc.text(`${p.name} (${p.position})`, 15, y); y+=4;
+            doc.setFont(undefined,'normal'); doc.setFontSize(8);
+            
+            const laggAcc = this.acc(p.stats.lagg);
+            const skottAcc = this.acc(p.stats.skott);
+            doc.text(`Lägg: ${p.stats.lagg.hit}/${p.stats.lagg.total} (${laggAcc}%) | Skott: ${p.stats.skott.hit}/${p.stats.skott.total} (${skottAcc}%)`, 15, y); y+=3;
+            
+            const lagStreaks = streaks[p.name];
+            doc.text(`Streaks - Lägg: ${lagStreaks.lagg.maxHit}h/${lagStreaks.lagg.maxMiss}m | Skott: ${lagStreaks.skott.maxHit}h/${lagStreaks.skott.maxMiss}m`, 15, y); y+=3;
+            
+            const ha = hist[p.name];
+            const laggDiff = laggAcc - ha.laggAvg;
+            const skottDiff = skottAcc - ha.skottAvg;
+            doc.text(`Vs snitt (${ha.totalMatches} matcher): Lägg ${laggAcc}% (${laggDiff>0?'+':''}${laggDiff}%) | Skott ${skottAcc}% (${skottDiff>0?'+':''}${skottDiff}%)`, 15, y); y+=3;
+            y+=2;
         });
+        
+        // POSITION ANALYS
+        if (y > 240) { doc.addPage(); y = 15; }
+        y+=3;
+        doc.setFont(undefined,'bold'); doc.setFontSize(10);
+        doc.text('POSITION-ANALYS', 15, y); y+=5;
+        doc.setFont(undefined,'normal'); doc.setFontSize(8);
+        
+        const posStats = this.getPositionStats(m);
+        Object.entries(posStats).forEach(([pos, stats]) => {
+            if (stats) {
+                const laggAcc = stats.lagg.t ? Math.round((stats.lagg.h/stats.lagg.t)*100) : 0;
+                const skottAcc = stats.skott.t ? Math.round((stats.skott.h/stats.skott.t)*100) : 0;
+                doc.text(`${pos}: Lägg ${stats.lagg.h}/${stats.lagg.t} (${laggAcc}%) | Skott ${stats.skott.h}/${stats.skott.t} (${skottAcc}%)`, 15, y); y+=4;
+            }
+        });
+        
         doc.save(`petanque-${m.name.replace(/[^a-z0-9]/gi,'_')}.pdf`);
     }
 
@@ -1481,12 +1599,38 @@ class MatchApp {
     exportHomeCSV() {
         if (this.currentHomeDetailIdx === null) return;
         const m = this.history[this.currentHomeDetailIdx];
-        let csv = 'Match,Lag,Datum,Tid,Varaktighet,Spelare,Position,Lägg poängkula,Lägg totalt,Lägg %,Skott träff,Skott totalt,Skott %\n';
         const date = new Date(m.startTime).toLocaleDateString('sv-SE');
         const time = new Date(m.startTime).toLocaleTimeString('sv-SE', {hour:'2-digit',minute:'2-digit'});
+        
+        let csv = `Match: ${m.name}\nLag: ${m.team}\nDatum: ${date}\nTid: ${time}\nVaraktighet: ${m.duration??0} min\nTränarkod: ${this.trainerCode}\n\n`;
+        csv += `SPELARE STATISTIK\n`;
+        csv += `Spelare,Position,Lägg träffar,Lägg totalt,Lägg %,Skott träffar,Skott totalt,Skott %,Längsta träffsekvens Lägg,Längsta misssekvens Lägg,Längsta träffsekvens Skott,Längsta misssekvens Skott,Lägg vs snitt,Skott vs snitt\n`;
+        
+        const streaks = this.calcStreaks(m);
+        const hist = {};
+        m.players.forEach(p => hist[p.name] = this.getHistoricalAvg(p.name));
+        
         m.players.forEach(p => {
-            csv += `"${m.name}","${m.team}","${date}","${time}","${m.duration??0}","${p.name}","${p.position}",${p.stats.lagg.hit},${p.stats.lagg.total},${this.acc(p.stats.lagg)},${p.stats.skott.hit},${p.stats.skott.total},${this.acc(p.stats.skott)}\n`;
+            const laggAcc = this.acc(p.stats.lagg);
+            const skottAcc = this.acc(p.stats.skott);
+            const ha = hist[p.name];
+            const laggDiff = laggAcc - ha.laggAvg;
+            const skottDiff = skottAcc - ha.skottAvg;
+            const lagStreaks = streaks[p.name];
+            
+            csv += `"${p.name}","${p.position}",${p.stats.lagg.hit},${p.stats.lagg.total},${laggAcc},${p.stats.skott.hit},${p.stats.skott.total},${skottAcc},${lagStreaks.lagg.maxHit},${lagStreaks.lagg.maxMiss},${lagStreaks.skott.maxHit},${lagStreaks.skott.maxMiss},"${laggAcc}% (${laggDiff>0?'+':''}${laggDiff}%)","${skottAcc}% (${skottDiff>0?'+':''}${skottDiff}%)"\n`;
         });
+        
+        csv += `\nPOSITION-ANALYS\nPosition,Lägg träffar,Lägg totalt,Lägg %,Skott träffar,Skott totalt,Skott %\n`;
+        const posStats = this.getPositionStats(m);
+        Object.entries(posStats).forEach(([pos, stats]) => {
+            if (stats) {
+                const laggAcc = stats.lagg.t ? Math.round((stats.lagg.h/stats.lagg.t)*100) : 0;
+                const skottAcc = stats.skott.t ? Math.round((stats.skott.h/stats.skott.t)*100) : 0;
+                csv += `"${pos}",${stats.lagg.h},${stats.lagg.t},${laggAcc},${stats.skott.h},${stats.skott.t},${skottAcc}\n`;
+            }
+        });
+        
         const blob = new Blob([csv], {type:'text/csv'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -1543,6 +1687,90 @@ class MatchApp {
     // ---- HELPERS ----
     acc(stat) { return stat.total ? Math.round((stat.hit/stat.total)*100) : 0; }
     accClass(acc, total) { return !total ? 'acc-neutral' : acc>=50 ? 'acc-good' : 'acc-bad'; }
+
+    // ---- STREAKS: Längsta träff/miss-sekvens ----
+    calcStreaks(match) {
+        const streaks = {};
+        match.players.forEach(p => {
+            streaks[p.name] = { lagg: {maxHit:0,maxMiss:0}, skott: {maxHit:0,maxMiss:0} };
+        });
+        
+        let currentStreaks = {};
+        match.timeline.forEach(ev => {
+            if (!currentStreaks[ev.player]) {
+                currentStreaks[ev.player] = { lagg:{hits:0,misses:0}, skott:{hits:0,misses:0} };
+            }
+            const type = ev.type;
+            if (ev.hit) {
+                currentStreaks[ev.player][type].hits++;
+                currentStreaks[ev.player][type].misses = 0;
+                streaks[ev.player][type].maxHit = Math.max(streaks[ev.player][type].maxHit, currentStreaks[ev.player][type].hits);
+            } else {
+                currentStreaks[ev.player][type].misses++;
+                currentStreaks[ev.player][type].hits = 0;
+                streaks[ev.player][type].maxMiss = Math.max(streaks[ev.player][type].maxMiss, currentStreaks[ev.player][type].misses);
+            }
+        });
+        return streaks;
+    }
+
+    // ---- PROGRESSION: Träffprocent över tid ----
+    calcProgression(match) {
+        const progression = {};
+        match.players.forEach(p => progression[p.name] = { lagg: [], skott: [] });
+        
+        let running = {};
+        match.timeline.forEach(ev => {
+            if (!running[ev.player]) {
+                running[ev.player] = { lagg:{h:0,t:0}, skott:{h:0,t:0} };
+            }
+            const s = running[ev.player][ev.type];
+            s.t++;
+            if (ev.hit) s.h++;
+            const pct = s.t ? Math.round((s.h/s.t)*100) : 0;
+            progression[ev.player][ev.type].push({time: ev.time, pct, h: s.h, t: s.t});
+        });
+        return progression;
+    }
+
+    // ---- HISTORISKA SNITT: Jämför med tidigare matcher ----
+    getHistoricalAvg(playerName) {
+        const avgData = { laggAvg: 0, skottAvg: 0, totalMatches: 0 };
+        if (!this.history || this.history.length === 0) return avgData;
+        
+        let laggSum = 0, laggCnt = 0, skottSum = 0, skottCnt = 0;
+        this.history.forEach(m => {
+            const p = m.players.find(x => x.name === playerName);
+            if (p) {
+                const lagg = this.acc(p.stats.lagg);
+                const skott = this.acc(p.stats.skott);
+                if (p.stats.lagg.total > 0) { laggSum += lagg; laggCnt++; }
+                if (p.stats.skott.total > 0) { skottSum += skott; skottCnt++; }
+            }
+        });
+        return {
+            laggAvg: laggCnt > 0 ? Math.round(laggSum / laggCnt) : 0,
+            skottAvg: skottCnt > 0 ? Math.round(skottSum / skottCnt) : 0,
+            totalMatches: this.history.length
+        };
+    }
+
+    // ---- POSITION-ANALYS ----
+    getPositionStats(match) {
+        const stats = { Läggare: null, Mittspelare: null, Skytt: null };
+        match.players.forEach(p => {
+            const pos = p.position;
+            if (stats[pos] === null) {
+                stats[pos] = { lagg: {h:0,t:0}, skott: {h:0,t:0} };
+            }
+            stats[pos].lagg.h += p.stats.lagg.hit;
+            stats[pos].lagg.t += p.stats.lagg.total;
+            stats[pos].skott.h += p.stats.skott.hit;
+            stats[pos].skott.t += p.stats.skott.total;
+        });
+        return stats;
+    }
+
     checkOnline() {
         document.getElementById('offline-badge').classList.toggle('show', !navigator.onLine);
     }
