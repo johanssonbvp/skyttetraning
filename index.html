@@ -792,8 +792,15 @@
       const daybookHistory = JSON.parse(localStorage.getItem('pt_dagbok') || '[]');
 
       let totalSessions = skjutHistory.length + laggHistory.length + daybookHistory.length;
+      
+      // Räkna skott från Skjutträning
       let totalShots = skjutHistory.reduce((sum, entry) => sum + (entry.shots || 0), 0);
       let totalHits = skjutHistory.reduce((sum, entry) => sum + (entry.hits || 0), 0);
+      
+      // Räkna även från Läggträning
+      totalShots += laggHistory.reduce((sum, entry) => sum + (entry.total || 0), 0);
+      totalHits += laggHistory.reduce((sum, entry) => sum + (entry.success || 0), 0);
+      
       let avgAccuracy = totalShots > 0 ? Math.round((totalHits / totalShots) * 100) : 0;
 
       document.getElementById('totalSessions').textContent = totalSessions;
