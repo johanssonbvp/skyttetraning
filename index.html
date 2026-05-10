@@ -793,13 +793,15 @@
 
       let totalSessions = skjutHistory.length + laggHistory.length + daybookHistory.length;
       
-      // Räkna skott från Skjutträning
+      // Räkna från Skjutträning (använder 'traff' inte 'hits')
       let totalShots = skjutHistory.reduce((sum, entry) => sum + (entry.shots || 0), 0);
-      let totalHits = skjutHistory.reduce((sum, entry) => sum + (entry.hits || 0), 0);
+      let totalHits = skjutHistory.reduce((sum, entry) => sum + (entry.traff || 0), 0);
       
-      // Räkna även från Läggträning
-      totalShots += laggHistory.reduce((sum, entry) => sum + (entry.total || 0), 0);
-      totalHits += laggHistory.reduce((sum, entry) => sum + (entry.success || 0), 0);
+      // Räkna även från Läggträning (om den finns)
+      if (laggHistory.length > 0) {
+        totalShots += laggHistory.reduce((sum, entry) => sum + (entry.total || 0), 0);
+        totalHits += laggHistory.reduce((sum, entry) => sum + (entry.success || 0), 0);
+      }
       
       let avgAccuracy = totalShots > 0 ? Math.round((totalHits / totalShots) * 100) : 0;
 
