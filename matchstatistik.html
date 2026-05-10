@@ -427,6 +427,10 @@
                 <div id="home-detail-timeline"></div>
             </div>
 
+            <div class="export-row">
+                <button class="btn btn-outline" id="btn-export-pdf-home">📄 PDF</button>
+                <button class="btn btn-outline" id="btn-export-csv-home">📊 CSV</button>
+            </div>
             <button class="btn btn-danger" id="btn-delete-home-detail" style="width:100%;margin-top:0.5rem;">🗑 Radera match</button>
         </div>
     </div>
@@ -518,6 +522,10 @@
                     <div id="detail-timeline"></div>
                 </div>
 
+                <div class="export-row">
+                    <button class="btn btn-outline" id="btn-export-pdf-detail">📄 PDF</button>
+                    <button class="btn btn-outline" id="btn-export-csv-detail">📊 CSV</button>
+                </div>
                 <button class="btn btn-danger" id="btn-delete-detail" style="width:100%;margin-top:0.5rem;" data-sv="Radera match" data-en="Delete match" data-es="Eliminar partido">Radera match</button>
             </div>
         </div>
@@ -799,6 +807,10 @@ class MatchApp {
         on('btn-reset', 'click', () => this.resetStats());
         on('btn-pdf', 'click', () => this.exportPDF());
         on('btn-csv', 'click', () => this.exportCSV());
+        on('btn-export-pdf-detail', 'click', () => this.exportDetailPDF());
+        on('btn-export-csv-detail', 'click', () => this.exportDetailCSV());
+        on('btn-export-pdf-home', 'click', () => this.exportHomePDF());
+        on('btn-export-csv-home', 'click', () => this.exportHomeCSV());
         on('btn-logout', 'click', () => this.logout());
         on('btn-back-home-detail', 'click', () => this.showHomeList());
         on('btn-back-detail', 'click', () => this.showHistList());
@@ -1398,7 +1410,91 @@ class MatchApp {
         this.currentHomeDetailIdx = null;
     }
 
-    // ---- EXPORT PDF ----
+    // ---- EXPORT SINGLE MATCH PDF (from Detail View) ----
+    exportDetailPDF() {
+        if (this.currentDetailIdx === null) return;
+        const m = this.history[this.currentDetailIdx];
+        const {jsPDF} = window.jspdf;
+        const doc = new jsPDF();
+        let y = 20;
+        doc.setFont(undefined,'bold'); doc.setFontSize(16);
+        doc.text('Petanque Matchstatistik', 20, y); y+=10;
+        doc.setFont(undefined,'normal'); doc.setFontSize(10);
+        doc.text(`Tränarkod: ${this.trainerCode} | Exportdatum: ${new Date().toLocaleDateString('sv-SE')}`, 20, y); y+=10;
+        
+        doc.setFont(undefined,'bold'); doc.setFontSize(12);
+        doc.text(m.name, 20, y); y+=7;
+        doc.setFont(undefined,'normal'); doc.setFontSize(9);
+        const date = new Date(m.startTime).toLocaleDateString('sv-SE');
+        doc.text(`${m.team} | ${date} | ${m.duration??0} min`, 20, y); y+=5;
+        m.players.forEach(p => {
+            const la = this.acc(p.stats.lagg);
+            const sa = this.acc(p.stats.skott);
+            doc.text(`  ${p.name}: Lägg ${p.stats.lagg.hit}/${p.stats.lagg.total} (${la}%) | Skott ${p.stats.skott.hit}/${p.stats.skott.total} (${sa}%)`, 20, y); y+=5;
+        });
+        doc.save(`petanque-${m.name.replace(/[^a-z0-9]/gi,'_')}.pdf`);
+    }
+
+    // ---- EXPORT SINGLE MATCH CSV (from Detail View) ----
+    exportDetailCSV() {
+        if (this.currentDetailIdx === null) return;
+        const m = this.history[this.currentDetailIdx];
+        let csv = 'Match,Lag,Datum,Tid,Varaktighet,Spelare,Position,Lägg poängkula,Lägg totalt,Lägg %,Skott träff,Skott totalt,Skott %\n';
+        const date = new Date(m.startTime).toLocaleDateString('sv-SE');
+        const time = new Date(m.startTime).toLocaleTimeString('sv-SE', {hour:'2-digit',minute:'2-digit'});
+        m.players.forEach(p => {
+            csv += `"${m.name}","${m.team}","${date}","${time}","${m.duration??0}","${p.name}","${p.position}",${p.stats.lagg.hit},${p.stats.lagg.total},${this.acc(p.stats.lagg)},${p.stats.skott.hit},${p.stats.skott.total},${this.acc(p.stats.skott)}\n`;
+        });
+        const blob = new Blob([csv], {type:'text/csv'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href=url; a.download=`petanque-${m.name.replace(/[^a-z0-9]/gi,'_')}.csv`; a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    // ---- EXPORT SINGLE MATCH PDF (from Home Screen) ----
+    exportHomePDF() {
+        if (this.currentHomeDetailIdx === null) return;
+        const m = this.history[this.currentHomeDetailIdx];
+        const {jsPDF} = window.jspdf;
+        const doc = new jsPDF();
+        let y = 20;
+        doc.setFont(undefined,'bold'); doc.setFontSize(16);
+        doc.text('Petanque Matchstatistik', 20, y); y+=10;
+        doc.setFont(undefined,'normal'); doc.setFontSize(10);
+        doc.text(`Tränarkod: ${this.trainerCode} | Exportdatum: ${new Date().toLocaleDateString('sv-SE')}`, 20, y); y+=10;
+        
+        doc.setFont(undefined,'bold'); doc.setFontSize(12);
+        doc.text(m.name, 20, y); y+=7;
+        doc.setFont(undefined,'normal'); doc.setFontSize(9);
+        const date = new Date(m.startTime).toLocaleDateString('sv-SE');
+        doc.text(`${m.team} | ${date} | ${m.duration??0} min`, 20, y); y+=5;
+        m.players.forEach(p => {
+            const la = this.acc(p.stats.lagg);
+            const sa = this.acc(p.stats.skott);
+            doc.text(`  ${p.name}: Lägg ${p.stats.lagg.hit}/${p.stats.lagg.total} (${la}%) | Skott ${p.stats.skott.hit}/${p.stats.skott.total} (${sa}%)`, 20, y); y+=5;
+        });
+        doc.save(`petanque-${m.name.replace(/[^a-z0-9]/gi,'_')}.pdf`);
+    }
+
+    // ---- EXPORT SINGLE MATCH CSV (from Home Screen) ----
+    exportHomeCSV() {
+        if (this.currentHomeDetailIdx === null) return;
+        const m = this.history[this.currentHomeDetailIdx];
+        let csv = 'Match,Lag,Datum,Tid,Varaktighet,Spelare,Position,Lägg poängkula,Lägg totalt,Lägg %,Skott träff,Skott totalt,Skott %\n';
+        const date = new Date(m.startTime).toLocaleDateString('sv-SE');
+        const time = new Date(m.startTime).toLocaleTimeString('sv-SE', {hour:'2-digit',minute:'2-digit'});
+        m.players.forEach(p => {
+            csv += `"${m.name}","${m.team}","${date}","${time}","${m.duration??0}","${p.name}","${p.position}",${p.stats.lagg.hit},${p.stats.lagg.total},${this.acc(p.stats.lagg)},${p.stats.skott.hit},${p.stats.skott.total},${this.acc(p.stats.skott)}\n`;
+        });
+        const blob = new Blob([csv], {type:'text/csv'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href=url; a.download=`petanque-${m.name.replace(/[^a-z0-9]/gi,'_')}.csv`; a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    // ---- EXPORT ALL MATCHES PDF ----
     exportPDF() {
         if (!this.history.length) { alert('Ingen matchdata att exportera'); return; }
         const {jsPDF} = window.jspdf;
