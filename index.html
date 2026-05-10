@@ -315,6 +315,29 @@
       transform: translateX(4px);
     }
 
+    /* DISABLED APP CARD */
+    .app-card-disabled {
+      background: rgba(100, 100, 120, 0.06);
+      border: 1px solid rgba(100, 100, 120, 0.2);
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .app-card-disabled:hover {
+      background: rgba(100, 100, 120, 0.06);
+      border-color: rgba(100, 100, 120, 0.2);
+      transform: none;
+    }
+
+    .app-status {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
     /* STATS SECTION */
     .stats-strip {
       display: grid;
@@ -665,6 +688,15 @@
         </div>
         <span class="app-arrow">→</span>
       </a>
+
+      <div class="app-card app-card-disabled">
+        <span class="app-icon">📊</span>
+        <div class="app-info">
+          <div class="app-name" data-sv="Matchstatistik" data-en="Match Statistics" data-es="Estadísticas de Partido">Matchstatistik</div>
+          <div class="app-desc" data-sv="Tränarverktyg för matchanalys" data-en="Coach tool for match analysis" data-es="Herramienta de análisis de partidos">Tränarverktyg för matchanalys</div>
+        </div>
+        <span class="app-status">🚧 Under uppbyggnad</span>
+      </div>
     </div>
 
     <!-- STATISTICS -->
