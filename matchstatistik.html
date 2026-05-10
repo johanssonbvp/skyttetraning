@@ -262,11 +262,20 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         @media (max-width: 600px) {
-            .player-grid { grid-template-columns: 1fr; }
-            .match-actions { flex-direction: column; }
+            .player-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+            .player-card { padding: 0.85rem; }
+            .player-card-name { font-size: 14px; margin-bottom: 0.75rem; }
+            .stat-group { margin-bottom: 0.75rem; }
+            .stat-group-label { font-size: 10px; margin-bottom: 0.4rem; }
+            .btn-row { gap: 0.3rem; }
+            .btn-success-log { padding: 0.4rem; font-size: 11px; border-radius: 6px; }
+            .btn-miss-log { padding: 0.4rem; font-size: 11px; border-radius: 6px; }
+            .match-actions { flex-direction: column; gap: 0.75rem; }
+            .match-actions .btn { min-width: auto; }
             .chart-wrap { height: 260px; }
             .chart-wrap canvas { max-height: 200px; }
             header h1 { font-size: 22px; }
+            .header h2 { font-size: 18px; }
             .keypad { gap: 0.5rem; }
             .key { padding: 0.85rem; font-size: 16px; }
         }
