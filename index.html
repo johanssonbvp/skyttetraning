@@ -560,6 +560,68 @@
   </style>
 </head>
 <body>
+<!-- UPPDATERINGSBANNER - ta bort efter 10 juni 2026 -->
+<div id="update-banner" style="background:linear-gradient(90deg,#1a1f2e,#0f1419);border-bottom:1px solid #e8ff47;padding:10px 40px 10px 16px;text-align:center;font-size:13px;color:#ccc;line-height:1.5;position:relative;">
+  🚀 <strong style="color:#e8ff47">Ny funktion 10 juni</strong> — Matchstatistik med live-loggning, grafer och motståndaranalys!
+  <a href="#" onclick="document.getElementById('update-info-modal').style.display='flex';return false;"
+     style="color:#e8ff47;text-decoration:underline;margin-left:6px;white-space:nowrap;">Läs mer →</a>
+  <button onclick="document.getElementById('update-banner').style.display='none';localStorage.setItem('update-banner-closed','1')"
+    style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:16px;cursor:pointer;color:#666;line-height:1;">✕</button>
+</div>
+
+<div id="update-info-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#0f1419;border-radius:20px;padding:32px 24px;max-width:440px;width:100%;border:1px solid #1a1f2e;text-align:center;">
+    
+    <div style="font-size:48px;margin-bottom:12px;">🎯</div>
+    <h2 style="color:#e8ff47;margin:0 0 8px;font-size:22px;font-weight:800;">Matchstatistik lanseras 10 juni</h2>
+    <p style="color:#8a8a9e;margin:0 0 24px;font-size:14px;line-height:1.7;">
+      En helt ny del av appen där du kan logga matcher i realtid och få djupgående analys av ditt och lagets spel.
+    </p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;text-align:left;">
+      <div style="background:#080810;border-radius:10px;padding:14px;">
+        <div style="font-size:22px;margin-bottom:6px;">📊</div>
+        <div style="color:#fff;font-weight:700;font-size:13px;margin-bottom:4px;">Live-loggning</div>
+        <div style="color:#666;font-size:12px;line-height:1.4;">Logga varje klot under matchen</div>
+      </div>
+      <div style="background:#080810;border-radius:10px;padding:14px;">
+        <div style="font-size:22px;margin-bottom:6px;">⚔️</div>
+        <div style="color:#fff;font-weight:700;font-size:13px;margin-bottom:4px;">Motståndaranalys</div>
+        <div style="color:#666;font-size:12px;line-height:1.4;">Jämför statistik mot motståndarlaget</div>
+      </div>
+      <div style="background:#080810;border-radius:10px;padding:14px;">
+        <div style="font-size:22px;margin-bottom:6px;">📈</div>
+        <div style="color:#fff;font-weight:700;font-size:13px;margin-bottom:4px;">Grafer & trender</div>
+        <div style="color:#666;font-size:12px;line-height:1.4;">Visualisera lagets utveckling</div>
+      </div>
+      <div style="background:#080810;border-radius:10px;padding:14px;">
+        <div style="font-size:22px;margin-bottom:6px;">☁️</div>
+        <div style="color:#fff;font-weight:700;font-size:13px;margin-bottom:4px;">Molnsynk</div>
+        <div style="color:#666;font-size:12px;line-height:1.4;">All data sparad och säkerhetskopierad</div>
+      </div>
+    </div>
+
+    <div style="background:#080810;border-radius:10px;padding:14px;margin-bottom:24px;border-left:3px solid #4ade80;text-align:left;">
+      <p style="color:#4ade80;font-weight:700;font-size:13px;margin:0 0 4px;">✅ Din befintliga data berörs inte</p>
+      <p style="color:#8a8a9e;font-size:12px;margin:0;line-height:1.5;">
+        Skjutträning, Läggträning, Precisionsskytte och Dagbok — allt fungerar precis som vanligt efter uppdateringen.
+      </p>
+    </div>
+
+    <button onclick="document.getElementById('update-info-modal').style.display='none'"
+      style="width:100%;padding:14px;background:#e8ff47;color:#000;border:none;border-radius:10px;font-weight:800;font-size:15px;cursor:pointer;">
+      Ser bra ut! 🎯
+    </button>
+  </div>
+</div>
+
+<script>
+  // Visa inte bannern om användaren stängt den tidigare
+  if (localStorage.getItem('update-banner-closed')) {
+    document.getElementById('update-banner').style.display = 'none';
+  }
+</script>
+
 
 <!-- HEADER -->
 <header>
