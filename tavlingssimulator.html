@@ -207,18 +207,22 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .clear-btn{background:none;border:1px solid var(--border2);color:var(--muted2);font-family:var(--font-body);font-size:0.72rem;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer;transition:all 0.2s;}
 .clear-btn:hover{border-color:var(--fail);color:var(--fail);}
 </style>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script src="./sync-manager.js"></script>
 </head>
 <body>
 
 <div class="top-bar">
-  <a class="back-btn" id="backBtn" href="index.html">← <span data-sv="Hem" data-en="Home">Hem</span></a>
-  <span class="top-title" data-sv="Poängräknare" data-en="Scoreboard">Poängräknare</span>
-  <button class="lang-btn" onclick="toggleLang()" id="langBtn">🌐 EN</button>
+  <a class="back-btn" id="backBtn" href="index.html">← <span data-sv="Hem" data-fr="Accueil" data-en="Home">Hem</span></a>
+  <span class="top-title" data-sv="Poängräknare" data-fr="Compteur de points" data-en="Scoreboard">Poängräknare</span>
+  <div style="display:flex;gap:4px"><button class="lang-btn" id="btn-sv" onclick="setLangApp('sv')" style="padding:4px 8px">🇸🇪 SV</button><button class="lang-btn" id="btn-en" onclick="setLangApp('en')" style="padding:4px 8px">🇬🇧 EN</button><button class="lang-btn" id="btn-fr" onclick="setLangApp('fr')" style="padding:4px 8px">🇫🇷 FR</button></div>
 </div>
 
 <div class="tab-bar">
   <button class="tab-btn active" onclick="switchTab('match')" id="tab-match" data-sv="Match" data-en="Match">Match</button>
-  <button class="tab-btn" onclick="switchTab('stats')" id="tab-stats" data-sv="Historik" data-en="History">Historik</button>
+  <button class="tab-btn" onclick="switchTab('stats')" id="tab-stats" data-sv="Historik" data-fr="Historique" data-en="History">Historik</button>
 </div>
 
 <!-- ═══ MATCH TAB ═══ -->
@@ -300,7 +304,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       </div>
     </div>
 
-    <button class="start-btn" onclick="startMatch()" data-sv="Starta match" data-en="Start Match">Starta match</button>
+    <button class="start-btn" onclick="startMatch()" data-sv="Starta match" data-en="Start Match" data-fr="Démarrer la partie">Starta match</button>
   </div>
 
   <!-- MATCH VIEW -->
@@ -373,11 +377,11 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 <div class="tab-content" id="tab-stats-content">
 <div class="wrap">
   <div class="stats-top">
-    <h2 data-sv="Matchhistorik" data-en="Match History">Matchhistorik</h2>
-    <button class="clear-btn" onclick="confirmClear()" data-sv="Rensa" data-en="Clear">Rensa</button>
+    <h2 data-sv="Matchhistorik" data-en="Match History" data-fr="Historique des parties">Matchhistorik</h2>
+    <button class="clear-btn" onclick="confirmClear()" data-sv="Rensa" data-en="Clear" data-fr="Effacer">Rensa</button>
   </div>
   <div class="stats-nav">
-    <button class="snav-btn active" onclick="switchStatsTab('overview')" data-sv="Översikt" data-en="Overview">Översikt</button>
+    <button class="snav-btn active" onclick="switchStatsTab('overview')" data-sv="Översikt" data-fr="Aperçu" data-en="Overview">Översikt</button>
     <button class="snav-btn" onclick="switchStatsTab('history')" data-sv="Matcher" data-en="Matches">Matcher</button>
   </div>
   <div class="stats-section active" id="stats-overview">
@@ -386,7 +390,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <div class="ov-card"><span class="ov-val" id="ovRounds" style="color:var(--mid)">0</span><span class="ov-lbl" data-sv="Rundor totalt" data-en="Total Rounds">Rundor totalt</span></div>
       <div class="ov-card"><span class="ov-val" id="ovAvgRounds" style="color:var(--a)">–</span><span class="ov-lbl" data-sv="Snitt rundor" data-en="Avg Rounds">Snitt rundor</span></div>
     </div>
-    <p class="section-label" data-sv="Senaste match" data-en="Latest Match">Senaste match</p>
+    <p class="section-label" data-sv="Senaste match" data-en="Latest Match" data-fr="Dernier match">Senaste match</p>
     <div id="latestMatch"></div>
   </div>
   <div class="stats-section" id="stats-history">
@@ -407,8 +411,8 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <div class="sheet-stat"><span data-sv="Rundor spelade" data-en="Rounds played">Rundor spelade</span><span class="sv" id="winRounds">–</span></div>
     <div class="sheet-stat"><span data-sv="Störst ledning" data-en="Biggest lead">Störst ledning</span><span class="sv" id="winLead">–</span></div>
     <div class="sheet-actions">
-      <button class="mbtn mbtn-accent" onclick="closeWin(true)" data-sv="Ny match" data-en="New Match">Ny match</button>
-      <button class="mbtn mbtn-ghost" onclick="closeWin(false)" data-sv="Se historik" data-en="View History">Se historik</button>
+      <button class="mbtn mbtn-accent" onclick="closeWin(true)" data-sv="Ny match" data-fr="Nouveau match" data-en="New Match">Ny match</button>
+      <button class="mbtn mbtn-ghost" onclick="closeWin(false)" data-sv="Se historik" data-en="View History" data-fr="Voir l'historique">Se historik</button>
     </div>
   </div>
 </div>
@@ -416,8 +420,8 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 <!-- ABANDON -->
 <div class="overlay" id="abandonOverlay">
   <div class="sheet">
-    <h2 data-sv="Avbryt match?" data-en="Abandon match?">Avbryt match?</h2>
-    <p class="sheet-sub" data-sv="Pågående match sparas inte." data-en="Ongoing match will not be saved.">Pågående match sparas inte.</p>
+    <h2 data-sv="Avbryt match?" data-en="Abandon match?" data-fr="Abandonner la partie?">Avbryt match?</h2>
+    <p class="sheet-sub" data-sv="Pågående match sparas inte." data-en="Ongoing match will not be saved." data-fr="La partie en cours ne sera pas sauvegardée.">Pågående match sparas inte.</p>
     <div class="sheet-actions">
       <button class="mbtn mbtn-danger" onclick="abandonMatch()" data-sv="Ja, avbryt" data-en="Yes, abandon">Ja, avbryt</button>
       <button class="mbtn mbtn-ghost" onclick="document.getElementById('abandonOverlay').classList.remove('show')" data-sv="Fortsätt spela" data-en="Keep playing">Fortsätt spela</button>
@@ -428,11 +432,11 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 <!-- CLEAR -->
 <div class="overlay" id="clearOverlay">
   <div class="sheet">
-    <h2 data-sv="Rensa historik?" data-en="Clear history?">Rensa historik?</h2>
-    <p class="sheet-sub" data-sv="All matchdata raderas permanent." data-en="All match data will be permanently deleted.">All matchdata raderas permanent.</p>
+    <h2 data-sv="Rensa historik?" data-fr="Effacer l'historique?" data-en="Clear history?">Rensa historik?</h2>
+    <p class="sheet-sub" data-sv="All matchdata raderas permanent." data-en="All match data will be permanently deleted." data-fr="Toutes les données seront supprimées.">All matchdata raderas permanent.</p>
     <div class="sheet-actions">
-      <button class="mbtn mbtn-danger" onclick="clearAll()" data-sv="Ja, rensa" data-en="Yes, clear">Ja, rensa</button>
-      <button class="mbtn mbtn-ghost" onclick="document.getElementById('clearOverlay').classList.remove('show')" data-sv="Avbryt" data-en="Cancel">Avbryt</button>
+      <button class="mbtn mbtn-danger" onclick="clearAll()" data-sv="Ja, rensa" data-fr="Oui, effacer" data-en="Yes, clear">Ja, rensa</button>
+      <button class="mbtn mbtn-ghost" onclick="document.getElementById('clearOverlay').classList.remove('show')" data-sv="Avbryt" data-fr="Annuler" data-en="Cancel">Avbryt</button>
     </div>
   </div>
 </div>
@@ -441,7 +445,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 // ══════════════════════════════════════════
 // LANGUAGE
 // ══════════════════════════════════════════
-let lang = localStorage.getItem('lang') || 'sv';
+let lang = localStorage.getItem('petanque-lang') || localStorage.getItem('pt_lang') || localStorage.getItem('lang') || 'sv';
 function applyLang() {
   document.querySelectorAll('[data-sv]').forEach(el => {
     el.textContent = lang==='sv' ? el.dataset.sv : el.dataset.en;
@@ -452,12 +456,16 @@ function applyLang() {
   document.getElementById('langBtn').textContent = lang==='sv' ? '🌐 EN' : '🌐 SV';
   document.documentElement.lang = lang;
 }
-function toggleLang() {
-  lang = lang==='sv' ? 'en' : 'sv';
-  localStorage.setItem('lang', lang);
+function setLangApp(l) {
+  lang = l;
+  localStorage.setItem('petanque-lang', l);
+  localStorage.setItem('pt_lang', l);
+  localStorage.setItem('lang', l);
   applyLang();
-  if (match.active) renderMatchUI();
-  renderStats();
+}
+function toggleLang() {
+  lang = lang==='sv' ? 'en' : lang==='en' ? 'fr' : 'sv';
+  setLangApp(lang);
 }
 applyLang();
 
@@ -714,7 +722,7 @@ function renderStats() {
 
   const latest = document.getElementById('latestMatch');
   latest.innerHTML = matches.length ? buildMatchCard(matches[0])
-    : `<div class="empty-state"><div class="empty-icon">🏆</div><div class="empty-text">${lang==='sv'?'Inga matcher ännu':'No matches yet'}</div><div class="empty-sub">${lang==='sv'?'Starta en match för att se historik.':'Start a match to see history.'}</div></div>`;
+    : `<div class="empty-state"><div class="empty-icon">🏆</div><div class="empty-text">${lang==='fr'?'Aucune partie encore':lang==='en'?'No matches yet':'Inga matcher ännu'}</div><div class="empty-sub">${lang==='fr'?'Démarrez une partie pour voir l\'historique.':lang==='en'?'Start a match to see history.':'Starta en match för att se historik.'}</div></div>`;
 
   const hist = document.getElementById('matchHistory');
   hist.innerHTML = '';
@@ -755,5 +763,20 @@ function clearAll() {
   renderStats();
 }
 </script>
-</body>
+<!-- Firebase Config -->
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCwzdwGEjN5LVw3RSLz2dy7f70Reafbe2c",
+    authDomain: "databas-serie.firebaseapp.com",
+    databaseURL: "https://databas-serie-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "databas-serie",
+    storageBucket: "databas-serie.firebasestorage.app",
+    messagingSenderId: "672666417012",
+    appId: "1:672666417012:web:93613783fe51cd2ce81e21"
+  };
+  if (typeof initSyncManager === 'function') {
+    initSyncManager(firebaseConfig);
+  }
+</script>
+<script>const firebaseConfig={apiKey:"AIzaSyCwzdwGEjN5LVw3RSLz2dy7f70Reafbe2c",authDomain:"databas-serie.firebaseapp.com",databaseURL:"https://databas-serie-default-rtdb.europe-west1.firebasedatabase.app",projectId:"databas-serie",storageBucket:"databas-serie.firebasestorage.app",messagingSenderId:"672666417012",appId:"1:672666417012:web:93613783fe51cd2ce81e21"};if(typeof initSyncManager==="function"){initSyncManager(firebaseConfig);}</script></body>
 </html>
