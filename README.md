@@ -20,7 +20,7 @@
 ✅ **Hantera serier** — Admin-panel för ligahantering och matchresultat (Firebase)
 
 **Allt utan registrering** — Data sparas lokalt på din enhet och synkroniseras offline.
-
+ 
 ---
 
 ## 🎯 Funktioner
