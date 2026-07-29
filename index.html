@@ -11,6 +11,16 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#0A0E27">
   <title>Petanque Träning – Din personliga träningscoach</title>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "cb08989e-539c-4e94-b967-9df09f0434c5",
+        notifyButton: { enable: false },
+      });
+    });
+  </script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XT4NB1HR2J"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config","G-XT4NB1HR2J");</script>
   <meta name="description" content="Spåra din utveckling. Träna smartare. Bli bättre. Gratis petanque-träningsapp med statistik, analyser och trendlinjer.">
   <link rel="manifest" href="./manifest.json">
@@ -959,7 +969,7 @@
   <div class="footer-links">
     <a href="https://github.com/johanssonbvp/skyttetraning" target="_blank">GitHub</a>
     <a href="mailto:info@petanquetraning.se">Kontakt</a>
-    <a href="#privacy">Integritet</a>
+    <a href="/integritetspolicy.html" data-sv="Integritetspolicy" data-en="Privacy Policy" data-fr="Politique de confidentialité">Integritetspolicy</a>
   </div>
   <p data-sv="Gjord med ❤️ av Pär Johansson | © 2026 Petanque Träning" data-fr="Fait avec ❤️ par Pär Johansson | © 2026 Pétanque Entraînement" 
      data-en="Made with ❤️ by Pär Johansson | © 2026 Petanque Training">
@@ -1220,6 +1230,49 @@ function skipMigration() {
 }
 
 // När användaren är inloggad
+// ============================================================
+// ONESIGNAL — Tagga användaren vid inloggning
+// ============================================================
+async function tagUserInOneSignal(user) {
+  try {
+    // Vänta tills OneSignal är redo
+    if (typeof window.OneSignalDeferred === 'undefined') return;
+
+    OneSignalDeferred.push(async function(OneSignal) {
+      // Hämta aktuellt språk
+      const lang = localStorage.getItem('petanque-lang')
+               || localStorage.getItem('pt_lang')
+               || localStorage.getItem('lang')
+               || 'sv';
+
+      // Kolla om användaren har loggade matcher
+      const localKey = 'match-history-' + user.uid;
+      let hasMatch = false;
+      try {
+        const matches = JSON.parse(localStorage.getItem(localKey) || '[]');
+        hasMatch = matches.length > 0;
+      } catch(e) {}
+
+      // Sätt External User ID — kopplar OneSignal-enheten till Firebase-kontot
+      await OneSignal.login(user.uid);
+
+      // Sätt taggar för segmentering
+      await OneSignal.User.addTags({
+        uid:        user.uid,
+        email:      user.email || '',
+        language:   lang,
+        logged_in:  'true',
+        has_match:  hasMatch ? 'true' : 'false',
+        last_seen:  new Date().toISOString().slice(0, 10),
+      });
+
+      console.log('[OneSignal] Användare taggad:', user.email, 'lang:', lang, 'match:', hasMatch);
+    });
+  } catch(e) {
+    console.warn('[OneSignal] Taggning misslyckades:', e);
+  }
+}
+
 function onUserLoggedIn(user) {
   // Uppdatera UI
   const logoutBtn = document.getElementById('logout-btn');
@@ -1257,8 +1310,23 @@ function onUserLoggedIn(user) {
   // Starta auto-sync
   waitForFirebaseAndSync();
 
+  // Tagga användaren i OneSignal för segmenterade push-notiser
+  tagUserInOneSignal(user);
+
   // Auto-restore: ladda ner Firebase-data till localStorage om lokalt är tomt
   autoRestoreFromFirebase(uid);
+}
+
+// Uppdatera OneSignal-taggen has_match när en match sparas
+// Anropas från matchstatistik.html efter finishMatch()
+function updateOneSignalMatchTag() {
+  try {
+    if (typeof window.OneSignalDeferred === 'undefined') return;
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.User.addTag('has_match', 'true');
+      await OneSignal.User.addTag('last_match', new Date().toISOString().slice(0, 10));
+    });
+  } catch(e) {}
 }
 
 async function autoRestoreFromFirebase(uid) {
