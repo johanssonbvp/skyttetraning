@@ -685,11 +685,11 @@
                 <div class="meta-value" id="hdr-id">---</div>
             </div>
             <div class="meta-item">
-                <div class="meta-label" data-sv="STARTTID" data-en="START TIME">STARTTID</div>
+                <div class="meta-label" data-sv="STARTTID" data-en="START TIME" data-fr="DÉBUT">STARTTID</div>
                 <div class="meta-value" id="hdr-time">---</div>
             </div>
             <div class="meta-item">
-                <div class="meta-label" data-sv="VARAKTIGHET" data-en="DURATION">VARAKTIGHET</div>
+                <div class="meta-label" data-sv="VARAKTIGHET" data-en="DURATION" data-fr="DURÉE">VARAKTIGHET</div>
                 <div class="meta-value" id="hdr-dur">0 min</div>
             </div>
             <div class="meta-item">
@@ -739,7 +739,7 @@
 
             <div class="input-group">
                 <label data-sv="Matchnamn" data-fr="Nom du match" data-en="Match name">Matchnamn</label>
-                <input type="text" id="inp-matchname" placeholder="T.ex. Träning mot Västra">
+                <input type="text" id="inp-matchname" placeholder="T.ex. Träning mot Västra" data-sv-placeholder="T.ex. Träning mot Västra" data-en-placeholder="E.g. Practice vs West" data-fr-placeholder="Ex. Entraînement vs Ouest">
             </div>
             <div class="input-group">
                 <label data-sv="Ditt lagnamn" data-fr="Nom de votre équipe" data-en="Your team name">Ditt lagnamn</label>
@@ -845,10 +845,10 @@
             <table class="live-table">
                 <thead>
                     <tr>
-                        <th data-sv="Spelare" data-en="Player">Spelare</th>
+                        <th data-sv="Spelare" data-en="Player" data-fr="Joueur">Spelare</th>
                         <th data-sv="Lägg P/S/Tot" data-en="Lägg H/B/Tot" data-fr="Pointé P/B/Tot">Lägg P/S/Tot</th>
                         <th class="tc">Lägg %</th>
-                        <th data-sv="Skott Träff/Tot" data-en="Shot Hit/Tot">Skott Träff/Tot</th>
+                        <th data-sv="Skott Träff/Tot" data-en="Shot Hit/Tot" data-fr="Tir Réussi/Tot">Skott Träff/Tot</th>
                         <th class="tc">Skott %</th>
                     </tr>
                 </thead>
@@ -864,13 +864,13 @@
 
         <!-- TAB: ANALYS -->
         <div class="tab-content" id="tab-analys">
-            <div class="live-badge"><div class="live-dot"></div> <span data-sv="Uppdateras var 10:e sekund" data-en="Updates every 10 seconds">Uppdateras var 10:e sekund</span></div>
+            <div class="live-badge"><div class="live-dot"></div> <span data-sv="Uppdateras var 10:e sekund" data-en="Updates every 10 seconds" data-fr="Mis à jour toutes les 10 secondes">Uppdateras var 10:e sekund</span></div>
             <div class="chart-wrap">
-                <div class="chart-title" data-sv="Träffprocent — Pågående match" data-en="Accuracy — Current match">Träffprocent — Pågående match</div>
+                <div class="chart-title" data-sv="Träffprocent — Pågående match" data-en="Accuracy — Current match" data-fr="Précision — Match en cours">Träffprocent — Pågående match</div>
                 <canvas id="chart-live"></canvas>
             </div>
             <div class="chart-wrap">
-                <div class="chart-title" data-sv="Träffar vs Missar" data-en="Hits vs Misses">Träffar vs Missar</div>
+                <div class="chart-title" data-sv="Träffar vs Missar" data-en="Hits vs Misses" data-fr="Réussites vs Ratés">Träffar vs Missar</div>
                 <canvas id="chart-compare"></canvas>
             </div>
             <div class="export-row">
@@ -885,7 +885,7 @@
                 <div id="match-history-list"><div class="empty">Ingen matchhistorik än</div></div>
             </div>
             <div id="detail-view" style="display:none;">
-                <button class="detail-back" id="btn-back-detail">← <span data-sv="Tillbaka" data-en="Back">Tillbaka</span></button>
+                <button class="detail-back" id="btn-back-detail">← <span data-sv="Tillbaka" data-en="Back" data-fr="Retour">Tillbaka</span></button>
                 <div class="detail-title" id="detail-title"></div>
                 <div class="detail-meta" id="detail-meta"></div>
 
@@ -909,13 +909,13 @@
 
                 <!-- Laginsnitt -->
                 <div class="card">
-                    <div class="card-title" data-sv="Laginsnitt" data-en="Team Average">Laginsnitt</div>
+                    <div class="card-title" data-sv="Laginsnitt" data-en="Team Average" data-fr="Moyenne d'équipe">Laginsnitt</div>
                     <div id="detail-team"></div>
                 </div>
 
                 <!-- Tidslinje -->
                 <div class="card">
-                    <div class="card-title" data-sv="Tidslinje" data-en="Timeline">Tidslinje</div>
+                    <div class="card-title" data-sv="Tidslinje" data-en="Timeline" data-fr="Chronologie">Tidslinje</div>
                     <div id="detail-timeline"></div>
                 </div>
 
@@ -923,7 +923,7 @@
                     <button class="btn btn-outline" id="btn-export-pdf-detail">📄 PDF</button>
                     <button class="btn btn-outline" id="btn-export-csv-detail">📊 CSV</button>
                 </div>
-                <button class="btn btn-danger" id="btn-delete-detail" style="width:100%;margin-top:0.5rem;" data-sv="Radera match" data-en="Delete match">Radera match</button>
+                <button class="btn btn-danger" id="btn-delete-detail" style="width:100%;margin-top:0.5rem;" data-sv="Radera match" data-en="Delete match" data-fr="Supprimer le match">Radera match</button>
             </div>
         </div>
 
@@ -934,7 +934,7 @@
                 <div id="player-stats-list"></div>
             </div>
             <div id="player-stats-detail-view" style="display:none;">
-                <button class="detail-back" id="btn-back-player-detail">← <span data-sv="Tillbaka" data-en="Back" data-fr="Retour">Tillbaka</span></button>
+                <button class="detail-back" id="btn-back-player-detail">← <span data-sv="Tillbaka" data-en="Back" data-fr="Retour" data-fr="Retour">Tillbaka</span></button>
                 <div class="player-detail-header">
                     <div class="player-detail-avatar" id="pdet-avatar"></div>
                     <div>
@@ -974,7 +974,7 @@
 
 </div>
 
-<div class="offline-badge" id="offline-badge" data-sv="Offline — sparar lokalt" data-en="Offline — saving locally">Offline — sparar lokalt</div>
+<div class="offline-badge" id="offline-badge" data-sv="Offline — sparar lokalt" data-en="Offline — saving locally" data-fr="Hors ligne — sauvegarde locale">Offline — sparar lokalt</div>
 
 <script>
 // ============================================================
@@ -1671,7 +1671,7 @@ class MatchApp {
     // ---- ÅNGRA SENASTE ----
     undoLast() {
         if (!this.match.actionHistory || this.match.actionHistory.length === 0) {
-            this.showToast('Inget att ångra');
+            this.showToast({sv:'Inget att ångra', en:'Nothing to undo', fr:'Rien à annuler'}[langMgr.lang]||'Inget att ångra');
             return;
         }
 
@@ -1725,7 +1725,7 @@ class MatchApp {
 
         this.renderLiveTable();
         this.updateBallCounts();
-        this.showToast('↩ Ångrade: ' + pName + ' (' + last.type + ')');
+        this.showToast(({sv:'↩ Ångrade: ', en:'↩ Undid: ', fr:'↩ Annulé : '}[langMgr.lang]||'↩ Ångrade: ') + pName + ' (' + last.type + ')');
     }
 
     // ---- CHECK AUTO NEXT ROUND ----
@@ -1767,7 +1767,7 @@ class MatchApp {
             this.match.currentRound = finishedRound + 1;
             this.updateBallCounts();
             if (!isAuto) {
-                this.showToast('🎯 Omgång ' + this.match.currentRound);
+                this.showToast('🎯 '+({sv:'Omgång', en:'Round', fr:'Manche'}[langMgr.lang]||'Omgång')+' '+this.match.currentRound);
             }
         });
     }
@@ -1924,7 +1924,7 @@ class MatchApp {
 
     // ---- RESET ----
     resetStats() {
-        if (!confirm('Återställ all statistik?')) return;
+        if (!confirm({sv:'Återställ all statistik?', en:'Reset all statistics?', fr:'Réinitialiser toutes les statistiques?'}[langMgr.lang]||'Återställ all statistik?')) return;
         this.match.players.forEach(p => { p.stats = { lagg:{hit:0,total:0}, skott:{hit:0,total:0} }; });
         if (this.match.opponents) {
             this.match.opponents.forEach(p => { p.stats = { lagg:{hit:0,total:0}, skott:{hit:0,total:0} }; });

@@ -619,7 +619,7 @@
     <div id="form-login">
       <input type="email" id="login-email" placeholder="E-postadress" autocomplete="email"
         style="width:100%;padding:13px;margin-bottom:12px;background:#080810;border:1px solid #1a1f2e;color:#fff;border-radius:8px;font-size:15px;box-sizing:border-box;">
-      <input type="password" id="login-password" placeholder="Lösenord" autocomplete="current-password"
+      <input type="password" id="login-password" placeholder="Lösenord" data-sv-placeholder="Lösenord" data-en-placeholder="Password" data-fr-placeholder="Mot de passe" autocomplete="current-password"
         style="width:100%;padding:13px;margin-bottom:8px;background:#080810;border:1px solid #1a1f2e;color:#fff;border-radius:8px;font-size:15px;box-sizing:border-box;">
       <div style="text-align:right;margin-bottom:16px;">
         <a href="#" onclick="showForgotPassword()" style="color:#8a8a9e;font-size:12px;text-decoration:none;">Glömt lösenord?</a>
@@ -631,9 +631,9 @@
     <div id="form-register" style="display:none;">
       <input type="email" id="reg-email" placeholder="E-postadress" autocomplete="email"
         style="width:100%;padding:13px;margin-bottom:12px;background:#080810;border:1px solid #1a1f2e;color:#fff;border-radius:8px;font-size:15px;box-sizing:border-box;">
-      <input type="password" id="reg-password" placeholder="Lösenord (minst 6 tecken)" autocomplete="new-password"
+      <input type="password" id="reg-password" placeholder="Lösenord (minst 6 tecken)" data-sv-placeholder="Lösenord (minst 6 tecken)" data-en-placeholder="Password (min. 6 characters)" data-fr-placeholder="Mot de passe (min. 6 caractères)" autocomplete="new-password"
         style="width:100%;padding:13px;margin-bottom:12px;background:#080810;border:1px solid #1a1f2e;color:#fff;border-radius:8px;font-size:15px;box-sizing:border-box;">
-      <input type="password" id="reg-password2" placeholder="Upprepa lösenord" autocomplete="new-password"
+      <input type="password" id="reg-password2" placeholder="Upprepa lösenord" data-sv-placeholder="Upprepa lösenord" data-en-placeholder="Repeat password" data-fr-placeholder="Répétez le mot de passe" autocomplete="new-password"
         style="width:100%;padding:13px;margin-bottom:16px;background:#080810;border:1px solid #1a1f2e;color:#fff;border-radius:8px;font-size:15px;box-sizing:border-box;">
       <button onclick="doRegister()" style="width:100%;padding:14px;background:#e8ff47;color:#080810;border:none;border-radius:8px;font-weight:800;font-size:16px;cursor:pointer;margin-bottom:12px;">SKAPA KONTO</button>
     </div>
@@ -803,7 +803,7 @@
       <a href="./dagbok.html" class="app-card">
         <span class="app-icon">📓</span>
         <div class="app-info">
-          <div class="app-name" data-sv="Träningsdagbok" data-en="Training Journal">Träningsdagbok</div>
+          <div class="app-name" data-sv="Träningsdagbok" data-en="Training Journal" data-fr="Journal d'entraînement">Träningsdagbok</div>
           <div class="app-desc" data-sv="Logga dina träningspass och framsteg" data-fr="Enregistrez vos séances et vos progrès" data-en="Log your training sessions">Logga dina träningspass och framsteg</div>
         </div>
         <span class="app-arrow">→</span>
@@ -1438,7 +1438,7 @@ document.addEventListener('keypress', function(e) {
 
 
 function logout() {
-  if (confirm('Är du säker på att du vill logga ut?')) {
+  if (confirm({sv:'Är du säker på att du vill logga ut?', en:'Are you sure you want to log out?', fr:'Voulez-vous vraiment vous déconnecter?'}[localStorage.getItem('petanque-lang')||'sv']||'Är du säker på att du vill logga ut?')) {
     firebase.auth().signOut().then(() => {
       localStorage.removeItem('pt_trainer_code');
       localStorage.removeItem('trainer-code');
@@ -1515,7 +1515,7 @@ window.addEventListener('DOMContentLoaded', function() {
 async function exportAllData() {
   const code = localStorage.getItem('pt_trainer_code');
   if (!code) {
-    alert('Du måste logga in först!');
+    alert({sv:'Du måste logga in först!', en:'You must be logged in first!', fr:'Vous devez être connecté d\'abord!'}[localStorage.getItem('petanque-lang')||'sv']||'Du måste logga in först!');
     return;
   }
   
@@ -1570,7 +1570,7 @@ async function exportAllData() {
     
   } catch (error) {
     console.error('Fel vid export:', error);
-    alert('❌ Något gick fel: ' + error.message);
+    alert(({sv:'❌ Något gick fel: ', en:'❌ Something went wrong: ', fr:'❌ Une erreur s\'est produite : '}[localStorage.getItem('petanque-lang')||'sv']||'❌ Något gick fel: ') + error.message);
     if (btn) btn.textContent = '💾 Backup all data';
   }
 }
@@ -1579,7 +1579,7 @@ async function importAllData(event) {
   const file = event.target.files[0];
   if (!file) return;
   
-  if (!confirm('⚠️ Detta kommer att skriva över all befintlig data. Vill du fortsätta?')) {
+  if (!confirm({sv:'⚠️ Detta kommer att skriva över all befintlig data. Vill du fortsätta?', en:'⚠️ This will overwrite all existing data. Continue?', fr:'⚠️ Ceci écrasera toutes les données existantes. Continuer?'}[localStorage.getItem('petanque-lang')||'sv']||'Vill du fortsätta?')) {
     event.target.value = '';
     return;
   }
@@ -1619,16 +1619,16 @@ async function importAllData(event) {
 async function syncLocalToFirebase() {
   const code = localStorage.getItem('pt_trainer_code');
   if (!code) {
-    alert('Du måste logga in först!');
+    alert({sv:'Du måste logga in först!', en:'You must be logged in first!', fr:'Vous devez être connecté d\'abord!'}[localStorage.getItem('petanque-lang')||'sv']||'Du måste logga in först!');
     return;
   }
   
   if (typeof firebase === 'undefined' || !firebase.database) {
-    alert('Firebase är inte tillgänglig!');
+    alert({sv:'Firebase är inte tillgänglig!', en:'Firebase is not available!', fr:'Firebase n\'est pas disponible!'}[localStorage.getItem('petanque-lang')||'sv']||'Firebase är inte tillgänglig!');
     return;
   }
   
-  if (!confirm('Detta laddar upp ALL lokal data till Firebase. Befintlig Firebase-data kan skrivas över. Fortsätt?')) {
+  if (!confirm({sv:'Detta laddar upp ALL lokal data till Firebase. Befintlig Firebase-data kan skrivas över. Fortsätt?', en:'This will upload ALL local data to Firebase. Existing Firebase data may be overwritten. Continue?', fr:'Cela téléchargera TOUTES les données locales vers Firebase. Les données existantes peuvent être écrasées. Continuer?'}[localStorage.getItem('petanque-lang')||'sv']||'Fortsätt?')) {
     return;
   }
   
@@ -1678,16 +1678,16 @@ async function syncLocalToFirebase() {
 async function syncFirebaseToLocal() {
   const code = localStorage.getItem('pt_trainer_code');
   if (!code) {
-    alert('Du måste logga in först!');
+    alert({sv:'Du måste logga in först!', en:'You must be logged in first!', fr:'Vous devez être connecté d\'abord!'}[localStorage.getItem('petanque-lang')||'sv']||'Du måste logga in först!');
     return;
   }
   
   if (typeof firebase === 'undefined') {
-    alert('Firebase är inte tillgänglig!');
+    alert({sv:'Firebase är inte tillgänglig!', en:'Firebase is not available!', fr:'Firebase n\'est pas disponible!'}[localStorage.getItem('petanque-lang')||'sv']||'Firebase är inte tillgänglig!');
     return;
   }
   
-  if (!confirm('Detta hämtar all data från Firebase till denna enhet. Lokal data kan skrivas över. Fortsätt?')) {
+  if (!confirm({sv:'Detta hämtar all data från Firebase till denna enhet. Lokal data kan skrivas över. Fortsätt?', en:'This will fetch all data from Firebase to this device. Local data may be overwritten. Continue?', fr:'Cela récupérera toutes les données depuis Firebase. Les données locales peuvent être écrasées. Continuer?'}[localStorage.getItem('petanque-lang')||'sv']||'Fortsätt?')) {
     return;
   }
   
@@ -1699,7 +1699,7 @@ async function syncFirebaseToLocal() {
     const data = snapshot.val();
     
     if (!data) {
-      alert('Ingen data hittades i Firebase för denna kod.');
+      alert({sv:'Ingen data hittades i Firebase för denna kod.', en:'No data found in Firebase for this code.', fr:'Aucune donnée trouvée dans Firebase pour ce code.'}[localStorage.getItem('petanque-lang')||'sv']||'Ingen data hittades.');
       if (btn) btn.textContent = '⬇️ Hämta från Firebase';
       return;
     }
@@ -1838,7 +1838,7 @@ function closeBackupMenu() {
 
 async function exportAllData() {
   const code = localStorage.getItem('pt_trainer_code');
-  if (!code) { alert('Logga in först!'); return; }
+  if (!code) { alert({sv:'Logga in först!', en:'Please log in first!', fr:'Veuillez vous connecter d\'abord!'}[localStorage.getItem('petanque-lang')||'sv']||'Logga in först!'); return; }
   
   try {
     const localData = {};
@@ -1881,7 +1881,7 @@ async function importAllData(event) {
   const file = event.target.files[0];
   if (!file) return;
   
-  if (!confirm('⚠️ Detta skriver över all data. Fortsätt?')) {
+  if (!confirm({sv:'⚠️ Detta skriver över all data. Fortsätt?', en:'⚠️ This will overwrite all data. Continue?', fr:'⚠️ Ceci écrasera toutes les données. Continuer?'}[localStorage.getItem('petanque-lang')||'sv']||'Fortsätt?')) {
     event.target.value = '';
     return;
   }
