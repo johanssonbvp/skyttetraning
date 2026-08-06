@@ -780,6 +780,12 @@
                 </div>
             </div>
 
+            <div id="offline-setup-warning" style="display:none;background:rgba(232,255,71,0.1);border:1px solid rgba(232,255,71,0.3);border-radius:8px;padding:0.75rem;margin-top:0.75rem;font-size:13px;color:#e8ff47;text-align:center;"
+                data-sv="⚡ Offline-läge — matcher sparas lokalt och synkas när du får internet"
+                data-en="⚡ Offline mode — matches saved locally and synced when online"
+                data-fr="⚡ Mode hors ligne — matchs sauvegardés localement">
+                ⚡ Offline-läge — matcher sparas lokalt och synkas när du får internet
+            </div>
             <button class="btn btn-primary" id="btn-start" style="margin-top:1rem;"
                 data-sv="STARTA MATCH" data-fr="DÉMARRER LE MATCH" data-en="START MATCH">STARTA MATCH</button>
         </div>
@@ -1064,6 +1070,21 @@ class MatchApp {
         window.addEventListener('online', () => { this.isOnline = true; this.checkOnline(); this.syncOfflineData(); });
         window.addEventListener('offline', () => { this.isOnline = false; this.checkOnline(); });
 
+        // Firebase-specifik uppkopplingsdetektering (mer tillförlitlig)
+        if (typeof firebase !== 'undefined' && firebase.database) {
+            firebase.database().ref('.info/connected').on('value', (snap) => {
+                const connected = snap.val() === true;
+                if (connected && !this.isOnline) {
+                    this.isOnline = true;
+                    this.checkOnline();
+                    this.syncOfflineData();
+                } else if (!connected) {
+                    this.isOnline = false;
+                    this.checkOnline();
+                }
+            });
+        }
+
         this.checkOnline();
         langMgr.apply();
 
@@ -1134,6 +1155,8 @@ class MatchApp {
         this.loadPlayers();
 
         this.fbRef = db.ref(`coaches/${this.trainerCode}/matches`);
+        // Förhämta och cacha matcher lokalt — fungerar sedan offline
+        try { this.fbRef.keepSynced(true); } catch(e) {}
         this.loadHistory();
         langMgr.apply();
     }
@@ -1300,6 +1323,14 @@ class MatchApp {
         if (synced > 0) {
             localStorage.removeItem(pendingKey);
             console.log(`[Firebase] Synced ${synced} offline matches`);
+            const lang = typeof langMgr !== 'undefined' ? langMgr.lang : 'sv';
+            const msg = {
+                sv: `☁️ ${synced} match${synced > 1 ? 'er' : ''} synkad${synced > 1 ? 'e' : ''} till molnet!`,
+                en: `☁️ ${synced} match${synced > 1 ? 'es' : ''} synced to cloud!`,
+                fr: `☁️ ${synced} match${synced > 1 ? 's' : ''} synchronisé${synced > 1 ? 's' : ''} !`,
+            };
+            this.showToast(msg[lang] || msg.sv);
+            this.checkOnline();
             this.loadHistory();
         }
     }
@@ -3268,7 +3299,30 @@ class MatchApp {
     }
 
     checkOnline() {
-        document.getElementById('offline-badge').classList.toggle('show', !navigator.onLine);
+        // Visa/dölj offline-varning i setup-skärmen
+        const setupWarning = document.getElementById('offline-setup-warning');
+        if (setupWarning) setupWarning.style.display = !this.isOnline ? 'block' : 'none';
+
+        const badge = document.getElementById('offline-badge');
+        const offline = !this.isOnline;
+        badge.classList.toggle('show', offline);
+
+        if (offline && this.trainerCode) {
+            const pending = JSON.parse(localStorage.getItem(`pending-sync-${this.trainerCode}`) || '[]');
+            const lang = typeof langMgr !== 'undefined' ? langMgr.lang : 'sv';
+            const labels = {
+                sv: pending.length > 0
+                    ? `Offline — ${pending.length} match${pending.length > 1 ? 'er' : ''} väntar på synk`
+                    : 'Offline — sparar lokalt',
+                en: pending.length > 0
+                    ? `Offline — ${pending.length} match${pending.length > 1 ? 'es' : ''} pending sync`
+                    : 'Offline — saving locally',
+                fr: pending.length > 0
+                    ? `Hors ligne — ${pending.length} match${pending.length > 1 ? 's' : ''} en attente`
+                    : 'Hors ligne — sauvegarde locale',
+            };
+            badge.textContent = labels[lang] || labels.sv;
+        }
     }
 }
 
