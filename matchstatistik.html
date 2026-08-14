@@ -1070,15 +1070,22 @@ class MatchApp {
         window.addEventListener('online', () => { this.isOnline = true; this.checkOnline(); this.syncOfflineData(); });
         window.addEventListener('offline', () => { this.isOnline = false; this.checkOnline(); });
 
-        // Firebase-specifik uppkopplingsdetektering (mer tillförlitlig)
+        // Firebase-specifik uppkopplingsdetektering
+        // OBS: .info/connected börjar alltid som false vid sidladdning —
+        // ignorera det initiala false-värdet för att undvika falskt offline-läge
         if (typeof firebase !== 'undefined' && firebase.database) {
+            let hasBeenConnected = false;
             firebase.database().ref('.info/connected').on('value', (snap) => {
                 const connected = snap.val() === true;
-                if (connected && !this.isOnline) {
-                    this.isOnline = true;
-                    this.checkOnline();
-                    this.syncOfflineData();
-                } else if (!connected) {
+                if (connected) {
+                    hasBeenConnected = true;
+                    if (!this.isOnline) {
+                        this.isOnline = true;
+                        this.checkOnline();
+                        this.syncOfflineData();
+                    }
+                } else if (!connected && hasBeenConnected) {
+                    // Bara markera offline om vi faktiskt HAFT en anslutning
                     this.isOnline = false;
                     this.checkOnline();
                 }
@@ -1943,8 +1950,9 @@ class MatchApp {
             data: {
                 labels,
                 datasets: [
-                    { label: 'Poängkula (lägg)', data: players.map(p => p.stats.lagg.hit), backgroundColor: '#51cf66' },
-                    { label: 'Lägg miss', data: players.map(p => p.stats.lagg.total - p.stats.lagg.hit), backgroundColor: 'rgba(81,207,102,0.25)' },
+                    { label: 'Poängkula', data: players.map(p => p.stats.lagg.hit), backgroundColor: '#51cf66' },
+                    { label: 'Stängning', data: players.map(p => p.stats.lagg.stang || 0), backgroundColor: '#ff9f43' },
+                    { label: 'Lägg miss', data: players.map(p => p.stats.lagg.total - p.stats.lagg.hit - (p.stats.lagg.stang||0)), backgroundColor: 'rgba(81,207,102,0.25)' },
                     { label: 'Skott träff', data: players.map(p => p.stats.skott.hit), backgroundColor: '#e8ff47' },
                     { label: 'Skott miss', data: players.map(p => p.stats.skott.total - p.stats.skott.hit), backgroundColor: 'rgba(232,255,71,0.2)' },
                 ]
@@ -2140,8 +2148,14 @@ class MatchApp {
                         borderRadius: 4
                     },
                     {
+                        label: 'Stängning',
+                        data: m.players.map(p => p.stats.lagg.stang || 0),
+                        backgroundColor: '#ff9f43',
+                        borderRadius: 4
+                    },
+                    {
                         label: 'Lägg miss',
-                        data: m.players.map(p => p.stats.lagg.total - p.stats.lagg.hit),
+                        data: m.players.map(p => p.stats.lagg.total - p.stats.lagg.hit - (p.stats.lagg.stang||0)),
                         backgroundColor: 'rgba(81,207,102,0.25)',
                         borderRadius: 4
                     },
@@ -2310,7 +2324,8 @@ class MatchApp {
                 labels,
                 datasets: [
                     { label:'Lägg poängkulor', data:m.players.map(p=>p.stats.lagg.hit), backgroundColor:'#51cf66', borderRadius:4 },
-                    { label:'Lägg miss', data:m.players.map(p=>p.stats.lagg.total-p.stats.lagg.hit), backgroundColor:'rgba(81,207,102,0.25)', borderRadius:4 },
+                    { label:'Stängning', data:m.players.map(p=>p.stats.lagg.stang||0), backgroundColor:'#ff9f43', borderRadius:4 },
+                    { label:'Lägg miss', data:m.players.map(p=>p.stats.lagg.total-p.stats.lagg.hit-(p.stats.lagg.stang||0)), backgroundColor:'rgba(81,207,102,0.25)', borderRadius:4 },
                     { label:'Skott träff', data:m.players.map(p=>p.stats.skott.hit), backgroundColor:'#e8ff47', borderRadius:4 },
                     { label:'Skott miss', data:m.players.map(p=>p.stats.skott.total-p.stats.skott.hit), backgroundColor:'rgba(232,255,71,0.2)', borderRadius:4 }
                 ]

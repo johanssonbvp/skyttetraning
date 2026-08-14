@@ -3,7 +3,61 @@
 <head>
     <link rel="icon" href="petanque-logo.png">
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js">
+// ---- VÄLKOMSTMODAL ----
+function showWelcomeIfNew(user) {
+    // Kolla Firebase — fungerar på alla enheter
+    firebase.database().ref('coaches/' + user.uid + '/welcomeSeen').once('value').then(snap => {
+        if (!snap.val()) {
+            document.getElementById('welcome-modal').classList.add('show');
+            if (typeof langMgr !== 'undefined') langMgr.apply();
+            // Markera direkt som sedd i Firebase
+            firebase.database().ref('coaches/' + user.uid + '/welcomeSeen').set(true);
+        }
+    }).catch(() => {
+        // Fallback till localStorage om Firebase inte svarar
+        const key = 'welcome_shown_' + user.uid;
+        if (!localStorage.getItem(key)) {
+            document.getElementById('welcome-modal').classList.add('show');
+            if (typeof langMgr !== 'undefined') langMgr.apply();
+            localStorage.setItem(key, '1');
+        }
+    });
+}
+
+function closeWelcome() {
+    document.getElementById('welcome-modal').classList.remove('show');
+}
+
+// ---- PWA INSTALL ----
+let pwaInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    pwaInstallPrompt = e;
+    const btn = document.getElementById('pwa-install-btn');
+    if (btn) btn.style.display = 'inline-block';
+});
+
+function triggerPWAInstall() {
+    if (pwaInstallPrompt) {
+        pwaInstallPrompt.prompt();
+        pwaInstallPrompt.userChoice.then(result => {
+            if (result.outcome === 'accepted') {
+                document.getElementById('pwa-install-btn').style.display = 'none';
+            }
+            pwaInstallPrompt = null;
+        });
+    }
+}
+
+if (window.matchMedia('(display-mode: standalone)').matches) {
+    window.addEventListener('load', () => {
+        const btn = document.getElementById('pwa-install-btn');
+        if (btn) btn.style.display = 'none';
+    });
+}
+
+</script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
   <meta charset="UTF-8">
@@ -596,9 +650,102 @@
       box-shadow: 0 6px 20px rgba(255, 33, 140, 0.4);
     }
 
+
+    /* ---- VÄLKOMSTMODAL ---- */
+    #welcome-modal {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.92);
+        z-index: 20000;
+        align-items: center;
+        justify-content: center;
+    }
+    #welcome-modal.show { display: flex; }
+    .welcome-box {
+        background: #0f1419;
+        border: 1px solid #1a2030;
+        border-radius: 20px;
+        padding: 36px 32px;
+        max-width: 440px;
+        width: 92%;
+        text-align: center;
+        animation: fadeInUp 0.3s ease;
+    }
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .welcome-emoji { font-size: 48px; margin-bottom: 12px; }
+    .welcome-title { font-size: 22px; font-weight: 800; color: #e8ff47; margin-bottom: 6px; }
+    .welcome-sub { font-size: 13px; color: #888; margin-bottom: 24px; line-height: 1.5; }
+    .welcome-btn {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+        padding: 14px 18px;
+        margin-bottom: 10px;
+        background: #11161f;
+        border: 1px solid #2a3548;
+        border-radius: 12px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        text-align: left;
+        transition: border-color 0.15s, background 0.15s;
+    }
+    .welcome-btn:hover { border-color: #e8ff47; background: #1a2030; }
+    .welcome-btn .wb-icon { font-size: 24px; flex-shrink: 0; }
+    .welcome-btn .wb-text .wb-title { font-size: 14px; font-weight: 700; color: #fff; }
+    .welcome-btn .wb-text .wb-desc { font-size: 11px; color: #888; margin-top: 2px; }
+    .welcome-skip { font-size: 12px; color: #555; cursor: pointer; margin-top: 12px; }
+    .welcome-skip:hover { color: #888; }
+
 </style>
 </head>
 <body>
+<!-- VÄLKOMSTMODAL -->
+<div id="welcome-modal">
+  <div class="welcome-box">
+    <div class="welcome-emoji">🎯</div>
+    <div class="welcome-title" data-sv="Välkommen till Petanque Träning!" data-en="Welcome to Petanque Training!" data-fr="Bienvenue sur Petanque Entraînement!">Välkommen till Petanque Träning!</div>
+    <div class="welcome-sub" data-sv="Vad vill du börja med idag?" data-en="What would you like to start with today?" data-fr="Par où voulez-vous commencer?">Vad vill du börja med idag?</div>
+
+    <a href="./skjuttraning.html" class="welcome-btn">
+      <span class="wb-icon">💥</span>
+      <span class="wb-text">
+        <div class="wb-title" data-sv="Logga ett träningspass" data-en="Log a training session" data-fr="Enregistrer une séance">Logga ett träningspass</div>
+        <div class="wb-desc" data-sv="Skjutträning, läggträning eller precisionsskytte" data-en="Shooting, pointing or precision" data-fr="Tir, pointé ou précision">Skjutträning, läggträning eller precisionsskytte</div>
+      </span>
+      <span style="margin-left:auto;color:#e8ff47;">→</span>
+    </a>
+
+    <a href="./matchstatistik.html" class="welcome-btn">
+      <span class="wb-icon">📊</span>
+      <span class="wb-text">
+        <div class="wb-title" data-sv="Starta en match" data-en="Start a match" data-fr="Démarrer un match">Starta en match</div>
+        <div class="wb-desc" data-sv="Logga varje klot live med matchstatistik" data-en="Log every ball live with match statistics" data-fr="Enregistrez chaque boule avec les statistiques">Logga varje klot live med matchstatistik</div>
+      </span>
+      <span style="margin-left:auto;color:#e8ff47;">→</span>
+    </a>
+
+    <button class="welcome-btn" onclick="closeWelcome()">
+      <span class="wb-icon">🗺️</span>
+      <span class="wb-text">
+        <div class="wb-title" data-sv="Utforska appen" data-en="Explore the app" data-fr="Explorer l'application">Utforska appen</div>
+        <div class="wb-desc" data-sv="Se alla sex moduler på startsidan" data-en="See all six modules on the home screen" data-fr="Voir tous les six modules sur l'écran d'accueil">Se alla sex moduler på startsidan</div>
+      </span>
+      <span style="margin-left:auto;color:#e8ff47;">→</span>
+    </button>
+
+    <div class="welcome-skip" onclick="closeWelcome()" data-sv="Visa inte detta igen" data-en="Don't show this again" data-fr="Ne plus afficher">Visa inte detta igen</div>
+  </div>
+</div>
+
 <!-- LOGIN MODAL -->
 <!-- ===== AUTH MODAL ===== -->
 <div id="auth-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.97);z-index:10000;align-items:center;justify-content:center;overflow-y:auto;">
@@ -683,7 +830,7 @@
 
 <!-- HEADER -->
 <header>
-  <div class="header-logo">🎪 PETANQUE</div>
+  <div class="header-logo">🎯 PETANQUE TRÄNING</div>
   <div class="lang-toggle">
     <button class="lang-btn active" data-lang="sv">🇸🇪 SV</button>
     <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
@@ -720,7 +867,20 @@
     <div style="margin-top: 16px; opacity: 0.7; transition: opacity 0.2s;" 
          onmouseover="this.style.opacity='1'" 
          onmouseout="this.style.opacity='0.7'">
-      <a href="https://ko-fi.com/petanquetraning" target="_blank" 
+      <!-- PWA Install CTA -->
+<button id="pwa-install-btn"
+    onclick="triggerPWAInstall()"
+    style="display:none;margin-bottom:12px;padding:10px 24px;
+           background:transparent;border:1px solid #e8ff47;
+           color:#e8ff47;border-radius:8px;font-size:13px;
+           font-weight:600;cursor:pointer;letter-spacing:0.5px;"
+    data-sv="📲 Installera appen på hemskärmen"
+    data-en="📲 Install app on home screen"
+    data-fr="📲 Installer l'app sur l'écran d'accueil">
+    📲 Installera appen på hemskärmen
+</button>
+
+<a href="https://ko-fi.com/petanquetraning" target="_blank" 
          style="color: #8a8a9e; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.1); padding: 7px 14px; border-radius: 20px; backdrop-filter: blur(4px); background: rgba(255,255,255,0.04);"
          data-sv="☕ Gilla appen? Bjud mig på en kaffe" data-fr="☕ Vous aimez l'appli? Offrez-moi un café"
          data-en="☕ Like the app? Buy me a coffee">
@@ -732,6 +892,28 @@
 </section>
 
 <!-- VALUE PROPS -->
+<!-- SOCIAL PROOF BAR -->
+<div style="background:#0d1117;border-top:1px solid #1a2030;border-bottom:1px solid #1a2030;padding:12px 20px;">
+  <div style="max-width:800px;margin:0 auto;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:0;">
+    <div style="text-align:center;padding:8px 24px;border-right:1px solid #1a2030;">
+      <div style="font-size:22px;font-weight:700;color:#e8ff47;">238+</div>
+      <div style="font-size:10px;color:#666;margin-top:2px;" data-sv="aktiva spelare" data-en="active players" data-fr="joueurs actifs">aktiva spelare</div>
+    </div>
+    <div style="text-align:center;padding:8px 24px;border-right:1px solid #1a2030;">
+      <div style="font-size:22px;font-weight:700;color:#e8ff47;">73</div>
+      <div style="font-size:10px;color:#666;margin-top:2px;" data-sv="städer globalt" data-en="cities globally" data-fr="villes dans le monde">städer globalt</div>
+    </div>
+    <div style="text-align:center;padding:8px 24px;border-right:1px solid #1a2030;">
+      <div style="font-size:22px;font-weight:700;color:#e8ff47;">6</div>
+      <div style="font-size:10px;color:#666;margin-top:2px;" data-sv="träningsmoduler" data-en="training modules" data-fr="modules d'entraînement">träningsmoduler</div>
+    </div>
+    <div style="text-align:center;padding:8px 24px;">
+      <div style="font-size:22px;font-weight:700;color:#4ade80;" data-sv="Gratis" data-en="Free" data-fr="Gratuit">Gratis</div>
+      <div style="font-size:10px;color:#666;margin-top:2px;" data-sv="alltid, för alltid" data-en="always, forever" data-fr="toujours, pour toujours">alltid, för alltid</div>
+    </div>
+  </div>
+</div>
+
 <section class="value-props">
   <h2 class="section-title" data-sv="Varför välja oss?" data-fr="Pourquoi nous choisir?" data-en="Why choose us?">
     Varför välja oss?
@@ -774,7 +956,7 @@
         <span class="app-icon">💥</span>
         <div class="app-info">
           <div class="app-name" data-sv="Skjutträning" data-fr="Tir" data-en="Shooting Practice">Skjutträning</div>
-          <div class="app-desc" data-sv="Träna skjutning och träffprocent" data-fr="Entraînez le tir et le taux de réussite" data-en="Train shooting accuracy">Träna skjutning och träffprocent</div>
+          <div class="app-desc" data-sv="Logga träff, miss och carreau. Se träffprocent, trender och rekord per avstånd." data-fr="Loggez réussite, raté et carreau. Précision, tendances et records par distance." data-en="Log hits, misses and carreaux. See accuracy, trends and records by distance.">Träna skjutning och träffprocent</div>
         </div>
         <span class="app-arrow">→</span>
       </a>
@@ -784,7 +966,7 @@
         <span class="app-icon">🏐</span>
         <div class="app-info">
           <div class="app-name" data-sv="Läggträning" data-fr="Jeu de boules" data-en="Pointing Practice">Läggträning</div>
-          <div class="app-desc" data-sv="Träna läggning och avstånd" data-fr="Entraînez le placement et la distance" data-en="Train pointing and distance">Träna läggning och avstånd</div>
+          <div class="app-desc" data-sv="Tre övningstyper: precisionsmål, zoner och serie. Statistik per övning och avstånd." data-fr="Trois types d'exercices. Statistiques par exercice et distance." data-en="Three exercise types: target, zones and series. Stats per exercise and distance.">Träna läggning och avstånd</div>
         </div>
         <span class="app-arrow">→</span>
       </a>
@@ -794,7 +976,7 @@
         <span class="app-icon">🏆</span>
         <div class="app-info">
           <div class="app-name" data-sv="Poängräknare" data-fr="Compteur de points" data-en="Score Counter">Poängräknare</div>
-          <div class="app-desc" data-sv="Digital match-räknare för matcher" data-fr="Compteur numérique pour les matchs" data-en="Digital match counter">Digital match-räknare för matcher</div>
+          <div class="app-desc" data-sv="Digital poängräknare för singel, dubblar och tripplar. Enkel och snabb." data-fr="Compteur pour simple, doublette et triplette. Simple et rapide." data-en="Digital counter for singles, doubles and triples. Simple and fast.">Digital match-räknare för matcher</div>
         </div>
         <span class="app-arrow">→</span>
       </a>
@@ -804,17 +986,17 @@
         <span class="app-icon">📓</span>
         <div class="app-info">
           <div class="app-name" data-sv="Träningsdagbok" data-en="Training Journal" data-fr="Journal d'entraînement">Träningsdagbok</div>
-          <div class="app-desc" data-sv="Logga dina träningspass och framsteg" data-fr="Enregistrez vos séances et vos progrès" data-en="Log your training sessions">Logga dina träningspass och framsteg</div>
+          <div class="app-desc" data-sv="Logga pass med datum, plats och betyg. Kalenderöversikt och historik." data-fr="Notez vos séances avec date, lieu et note. Vue calendrier et historique." data-en="Log sessions with date, location and rating. Calendar view and history.">Logga dina träningspass och framsteg</div>
         </div>
         <span class="app-arrow">→</span>
       </a>
 
       <!-- App 5 -->
       <a href="./precisionsskytte.html" class="app-card">
-        <span class="app-icon">🎪</span>
+        <span class="app-icon">🎯</span>
         <div class="app-info">
           <div class="app-name" data-sv="Precisionsskytte" data-fr="Tir de précision" data-en="Precision Shooting">Precisionsskytte</div>
-          <div class="app-desc" data-sv="Tävlingssimulator enligt SBF-regler" data-fr="Simulateur de compétition SBF" data-en="Competition simulator">Tävlingssimulator enligt SBF-regler</div>
+          <div class="app-desc" data-sv="Strukturerad övning enligt §1.4. 20 skott, 5 stationer, max 100 poäng." data-fr="Exercice structuré §1.4. 20 tirs, 5 stations, 100 points max." data-en="Structured drill §1.4. 20 shots, 5 stations, max 100 points.">Tävlingssimulator enligt SBF-regler</div>
         </div>
         <span class="app-arrow">→</span>
       </a>
@@ -824,7 +1006,7 @@
         <span class="app-icon">📊</span>
         <div class="app-info">
           <div class="app-name" data-sv="Matchstatistik" data-fr="Statistiques de match" data-en="Match Statistics">Matchstatistik</div>
-          <div class="app-desc" data-sv="Tränarverktyg för matchanalys" data-fr="Outil d'entraîneur pour l'analyse des matchs" data-en="Coach tool for match analysis">Tränarverktyg för matchanalys</div>
+          <div class="app-desc" data-sv="Logga varje klot live. Se grafer, spelarstatistik och jämförelse mot motståndaren." data-fr="Loggez chaque boule en direct. Graphiques, stats joueur et comparaison adversaire." data-en="Log every ball live. Charts, player stats and comparison vs opponent.">Tränarverktyg för matchanalys</div>
         </div>
         <span class="app-arrow">→</span>
       </a>
@@ -1312,6 +1494,9 @@ function onUserLoggedIn(user) {
 
   // Tagga användaren i OneSignal för segmenterade push-notiser
   tagUserInOneSignal(user);
+
+  // Visa välkomstmodal för nya användare
+  showWelcomeIfNew(user);
 
   // Auto-restore: ladda ner Firebase-data till localStorage om lokalt är tomt
   autoRestoreFromFirebase(uid);
