@@ -880,7 +880,20 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     📲 Installera appen på hemskärmen
 </button>
 
-<a href="https://ko-fi.com/petanquetraning" target="_blank" 
+<!-- Dela appen-knapp -->
+<button id="share-app-btn"
+    onclick="shareApp()"
+    style="margin-bottom:12px;padding:10px 24px;
+           background:transparent;border:1px solid #e8ff47;
+           color:#e8ff47;border-radius:8px;font-size:13px;
+           font-weight:600;cursor:pointer;letter-spacing:0.5px;"
+    data-sv="📤 Dela appen"
+    data-en="📤 Share app"
+    data-fr="📤 Partager l'app">
+    📤 Dela appen
+</button>
+
+<a href="https://ko-fi.com/petanquetraning" target="_blank"
          style="color: #8a8a9e; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.1); padding: 7px 14px; border-radius: 20px; backdrop-filter: blur(4px); background: rgba(255,255,255,0.04);"
          data-sv="☕ Gilla appen? Bjud mig på en kaffe" data-fr="☕ Vous aimez l'appli? Offrez-moi un café"
          data-en="☕ Like the app? Buy me a coffee">
@@ -913,35 +926,6 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     </div>
   </div>
 </div>
-
-<section class="value-props">
-  <h2 class="section-title" data-sv="Varför välja oss?" data-fr="Pourquoi nous choisir?" data-en="Why choose us?">
-    Varför välja oss?
-  </h2>
-  <div class="props-grid">
-    <div class="prop-card">
-      <div class="prop-icon">📊</div>
-      <h3 data-sv="Spåra framsteg" data-fr="Suivre les progrès" data-en="Track Progress">Spåra framsteg</h3>
-      <p data-sv="Se din utveckling över tid med detaljerad statistik och grafer" data-fr="Voyez votre évolution dans le temps avec des statistiques détaillées" data-en="See your development over time with detailed stats and charts">
-        Se din utveckling över tid med detaljerad statistik och grafer
-      </p>
-    </div>
-    <div class="prop-card">
-      <div class="prop-icon">⚡</div>
-      <h3 data-sv="Träna offline" data-fr="Entraînement hors ligne" data-en="Train Offline">Träna offline</h3>
-      <p data-sv="Appen fungerar utan internet – perfekt vid träningsbanan" data-fr="L'appli fonctionne sans internet – parfait sur le terrain" data-en="Works without internet – perfect at the training grounds">
-        Appen fungerar utan internet – perfekt vid träningsbanan
-      </p>
-    </div>
-    <div class="prop-card">
-      <div class="prop-icon">🎯</div>
-      <h3 data-sv="Fokuserad träning" data-fr="Entraînement ciblé" data-en="Focused Training">Fokuserad träning</h3>
-      <p data-sv="5 specialiserade appar för olika träningsmetoder och tävlingar" data-fr="5 applications spécialisées pour différentes méthodes d'entraînement" data-en="5 specialized apps for different training methods and competitions">
-        5 specialiserade appar för olika träningsmetoder och tävlingar
-      </p>
-    </div>
-  </div>
-</section>
 
 <!-- APPS SECTION -->
 <section class="apps-section">
@@ -1010,6 +994,36 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
         </div>
         <span class="app-arrow">→</span>
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- VÄRDEERBJUDANDE (flyttad hit, efter appgridden, så att träningsapparna syns direkt efter hero-sektionen) -->
+<section class="value-props">
+  <h2 class="section-title" data-sv="Varför välja oss?" data-fr="Pourquoi nous choisir?" data-en="Why choose us?">
+    Varför välja oss?
+  </h2>
+  <div class="props-grid">
+    <div class="prop-card">
+      <div class="prop-icon">📊</div>
+      <h3 data-sv="Spåra framsteg" data-fr="Suivre les progrès" data-en="Track Progress">Spåra framsteg</h3>
+      <p data-sv="Se din utveckling över tid med detaljerad statistik och grafer" data-fr="Voyez votre évolution dans le temps avec des statistiques détaillées" data-en="See your development over time with detailed stats and charts">
+        Se din utveckling över tid med detaljerad statistik och grafer
+      </p>
+    </div>
+    <div class="prop-card">
+      <div class="prop-icon">⚡</div>
+      <h3 data-sv="Träna offline" data-fr="Entraînement hors ligne" data-en="Train Offline">Träna offline</h3>
+      <p data-sv="Appen fungerar utan internet – perfekt vid träningsbanan" data-fr="L'appli fonctionne sans internet – parfait sur le terrain" data-en="Works without internet – perfect at the training grounds">
+        Appen fungerar utan internet – perfekt vid träningsbanan
+      </p>
+    </div>
+    <div class="prop-card">
+      <div class="prop-icon">🎯</div>
+      <h3 data-sv="Fokuserad träning" data-fr="Entraînement ciblé" data-en="Focused Training">Fokuserad träning</h3>
+      <p data-sv="5 specialiserade appar för olika träningsmetoder och tävlingar" data-fr="5 applications spécialisées pour différentes méthodes d'entraînement" data-en="5 specialized apps for different training methods and competitions">
+        5 specialiserade appar för olika träningsmetoder och tävlingar
+      </p>
     </div>
   </div>
 </section>
@@ -1200,6 +1214,37 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', () => setLanguage(btn.getAttribute('data-lang')));
   });
+
+  // ===== DELA APPEN TILL SOCIALA MEDIER =====
+  // Öppnar telefonens delningsmeny (Web Share API). Fungerar inte i alla
+  // webbläsare på dator, så då kopieras texten till urklipp istället.
+  function shareApp() {
+    const currentLang = localStorage.getItem('lang') || 'sv';
+    const text = currentLang === 'sv'
+      ? 'Kolla in Petanque Träning – gratis träningsapp för petanque!'
+      : currentLang === 'fr'
+      ? 'Découvrez Petanque Träning – application d\'entraînement gratuite pour la pétanque !'
+      : 'Check out Petanque Träning – a free training app for petanque!';
+    const url = 'https://petanquetraning.se';
+
+    if (navigator.share) {
+      navigator.share({ title: 'Petanque Träning', text: text, url: url }).catch(err => {
+        // AbortError = användaren ångrade delningen, inget fel att visa då
+        if (err && err.name !== 'AbortError') {
+          console.warn('Delning misslyckades:', err);
+        }
+      });
+    } else if (navigator.clipboard) {
+      const msg = currentLang === 'sv'
+        ? 'Text kopierad! Klistra in där du vill dela.'
+        : currentLang === 'fr'
+        ? 'Texte copié ! Collez-le où vous voulez le partager.'
+        : 'Text copied! Paste it wherever you want to share.';
+      navigator.clipboard.writeText(text + ' ' + url).then(() => {
+        alert(msg);
+      }).catch(e => console.warn('Kunde inte kopiera text:', e));
+    }
+  }
 
   // ===== STATISTIK =====
   function loadStatistics() {
