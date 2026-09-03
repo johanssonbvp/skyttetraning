@@ -127,6 +127,15 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
       letter-spacing: 2px;
       color: var(--accent);
       text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-logo svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
     }
 
     .lang-toggle {
@@ -186,24 +195,40 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
       margin: 0 auto;
     }
 
+    /* Rund ram kring logotypen, som i mockupen */
+    .hero-logo-circle {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      background: rgba(232, 255, 71, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      overflow: hidden;
+      padding: 14px;
+    }
+
     .hero-logo {
-      max-width: 120px;
       width: 100%;
       height: auto;
-      margin: 0 auto 20px;
       display: block;
+      margin: 0;
     }
 
     @media (min-width: 768px) {
-      .hero-logo {
-        max-width: 180px;
+      .hero-logo-circle {
+        width: 150px;
+        height: 150px;
         margin-bottom: 25px;
       }
     }
 
     @media (min-width: 1024px) {
-      .hero-logo {
-        max-width: 220px;
+      .hero-logo-circle {
+        width: 180px;
+        height: 180px;
         margin-bottom: 30px;
       }
     }
@@ -332,23 +357,27 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
       text-transform: uppercase;
     }
 
+    /* Enkolumns-lista (som i mockupen) istället för rutnät med flera kolumner */
     .app-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
       margin-bottom: 40px;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .app-card {
       background: rgba(232, 255, 71, 0.04);
       border: 1px solid rgba(232, 255, 71, 0.15);
-      border-radius: 14px;
-      padding: 20px;
+      border-radius: 16px;
+      padding: 16px 20px;
       text-decoration: none;
       color: inherit;
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 16px;
       transition: all 0.3s ease;
       cursor: pointer;
       position: relative;
@@ -379,11 +408,24 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
       right: -30%;
     }
 
+    /* Rundad ikonruta med SVG-linjeikon istället för emoji, som i mockupen */
     .app-icon {
-      font-size: 2rem;
+      width: 46px;
+      height: 46px;
       flex-shrink: 0;
+      border-radius: 12px;
+      background: rgba(232, 255, 71, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
       position: relative;
       z-index: 1;
+    }
+
+    .app-icon svg {
+      width: 22px;
+      height: 22px;
     }
 
     .app-info {
@@ -394,21 +436,19 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     }
 
     .app-name {
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
 
     .app-desc {
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
     }
 
     .app-arrow {
       color: var(--text-muted);
-      font-size: 1.2rem;
+      font-size: 1.6rem;
       flex-shrink: 0;
       transition: all 0.3s;
       position: relative;
@@ -830,7 +870,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 
 <!-- HEADER -->
 <header>
-  <div class="header-logo">🎯 PETANQUE TRÄNING</div>
+  <div class="header-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="12" r="7"/><circle cx="20" cy="17" r="2.3" fill="currentColor" stroke="none"/></svg>PETANQUE TRÄNING</div>
   <div class="lang-toggle">
     <button class="lang-btn active" data-lang="sv">🇸🇪 SV</button>
     <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
@@ -841,17 +881,19 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 <!-- HERO SECTION -->
 <section class="hero">
   <div class="hero-content">
-    <!-- Responsive logo: 192px mobile, 512px desktop -->
-    <img 
-      class="hero-logo"
-      srcset="https://raw.githubusercontent.com/johanssonbvp/skyttetraning/main/icon-192.png 192w,
-              https://raw.githubusercontent.com/johanssonbvp/skyttetraning/main/icon-512.png 512w"
-      sizes="(max-width: 768px) 120px,
-             (max-width: 1024px) 180px,
-             220px"
-      src="https://raw.githubusercontent.com/johanssonbvp/skyttetraning/main/icon-512.png"
-      alt="Petanque Träning Logo"
-    >
+    <!-- Rund ram kring logotypen, med samma responsiva bild som tidigare -->
+    <div class="hero-logo-circle">
+      <img
+        class="hero-logo"
+        srcset="https://raw.githubusercontent.com/johanssonbvp/skyttetraning/main/icon-192.png 192w,
+                https://raw.githubusercontent.com/johanssonbvp/skyttetraning/main/icon-512.png 512w"
+        sizes="(max-width: 768px) 90px,
+               (max-width: 1024px) 120px,
+               150px"
+        src="https://raw.githubusercontent.com/johanssonbvp/skyttetraning/main/icon-512.png"
+        alt="Petanque Träning Logo"
+      >
+    </div>
     <h1 data-sv="Spåra din utveckling. Träna smartare." data-fr="Suivez votre progression. Entraînez-vous mieux." data-en="Track your progress. Train smarter.">
       Spåra din utveckling. Träna smartare.
     </h1>
@@ -904,7 +946,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
   </div>
 </section>
 
-<!-- Statistikraden ("238+ aktiva spelare" osv.) flyttad till precis före footern -->
+<!-- Statistikraden flyttad till precis före footern, siffrorna rättade 3 sep 2026 -->
 
 <!-- APPS SECTION -->
 <section class="apps-section">
@@ -916,62 +958,62 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     <div class="app-grid">
       <!-- App 1 -->
       <a href="./skjuttraning.html" class="app-card">
-        <span class="app-icon">💥</span>
+        <span class="app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><line x1="12" y1="1" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="23"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/></svg></span>
         <div class="app-info">
           <div class="app-name" data-sv="Skjutträning" data-fr="Tir" data-en="Shooting Practice">Skjutträning</div>
-          <div class="app-desc" data-sv="Logga träff, miss och carreau. Se träffprocent, trender och rekord per avstånd." data-fr="Loggez réussite, raté et carreau. Précision, tendances et records par distance." data-en="Log hits, misses and carreaux. See accuracy, trends and records by distance.">Träna skjutning och träffprocent</div>
+          <div class="app-desc" data-sv="Effektivitetsindex · 6–12 m" data-fr="Indice d'efficacité · 6–12 m" data-en="Efficiency index · 6–12 m">Effektivitetsindex · 6–12 m</div>
         </div>
-        <span class="app-arrow">→</span>
+        <span class="app-arrow">›</span>
       </a>
 
       <!-- App 2 -->
       <a href="./laggtraning.html" class="app-card">
-        <span class="app-icon">🏐</span>
+        <span class="app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 16c3-9 15-9 18 0"/><circle cx="19" cy="17" r="1.8" fill="currentColor" stroke="none"/></svg></span>
         <div class="app-info">
           <div class="app-name" data-sv="Läggträning" data-fr="Jeu de boules" data-en="Pointing Practice">Läggträning</div>
-          <div class="app-desc" data-sv="Tre övningstyper: precisionsmål, zoner och serie. Statistik per övning och avstånd." data-fr="Trois types d'exercices. Statistiques par exercice et distance." data-en="Three exercise types: target, zones and series. Stats per exercise and distance.">Träna läggning och avstånd</div>
+          <div class="app-desc" data-sv="3 övningstyper" data-fr="3 types d'exercices" data-en="3 exercise types">3 övningstyper</div>
         </div>
-        <span class="app-arrow">→</span>
+        <span class="app-arrow">›</span>
       </a>
 
       <!-- App 3 -->
       <a href="./tavlingssimulator.html" class="app-card">
-        <span class="app-icon">🏆</span>
+        <span class="app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="12" y1="8" x2="12" y2="16"/></svg></span>
         <div class="app-info">
           <div class="app-name" data-sv="Poängräknare" data-fr="Compteur de points" data-en="Score Counter">Poängräknare</div>
-          <div class="app-desc" data-sv="Digital poängräknare för singel, dubblar och tripplar. Enkel och snabb." data-fr="Compteur pour simple, doublette et triplette. Simple et rapide." data-en="Digital counter for singles, doubles and triples. Simple and fast.">Digital match-räknare för matcher</div>
+          <div class="app-desc" data-sv="Singel · Dubbel · Trippel" data-fr="Simple · Doublette · Triplette" data-en="Singles · Doubles · Triples">Singel · Dubbel · Trippel</div>
         </div>
-        <span class="app-arrow">→</span>
+        <span class="app-arrow">›</span>
       </a>
 
       <!-- App 4 -->
       <a href="./dagbok.html" class="app-card">
-        <span class="app-icon">📓</span>
+        <span class="app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg></span>
         <div class="app-info">
           <div class="app-name" data-sv="Träningsdagbok" data-en="Training Journal" data-fr="Journal d'entraînement">Träningsdagbok</div>
-          <div class="app-desc" data-sv="Logga pass med datum, plats och betyg. Kalenderöversikt och historik." data-fr="Notez vos séances avec date, lieu et note. Vue calendrier et historique." data-en="Log sessions with date, location and rating. Calendar view and history.">Logga dina träningspass och framsteg</div>
+          <div class="app-desc" data-sv="Statistik & historik" data-fr="Statistiques et historique" data-en="Stats & history">Statistik & historik</div>
         </div>
-        <span class="app-arrow">→</span>
+        <span class="app-arrow">›</span>
       </a>
 
       <!-- App 5 -->
       <a href="./precisionsskytte.html" class="app-card">
-        <span class="app-icon">🎯</span>
+        <span class="app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/></svg></span>
         <div class="app-info">
           <div class="app-name" data-sv="Precisionsskytte" data-fr="Tir de précision" data-en="Precision Shooting">Precisionsskytte</div>
-          <div class="app-desc" data-sv="Strukturerad övning enligt §1.4. 20 skott, 5 stationer, max 100 poäng." data-fr="Exercice structuré §1.4. 20 tirs, 5 stations, 100 points max." data-en="Structured drill §1.4. 20 shots, 5 stations, max 100 points.">Tävlingssimulator enligt SBF-regler</div>
+          <div class="app-desc" data-sv="20 skott · 5 stationer" data-fr="20 tirs · 5 stations" data-en="20 shots · 5 stations">20 skott · 5 stationer</div>
         </div>
-        <span class="app-arrow">→</span>
+        <span class="app-arrow">›</span>
       </a>
 
       <!-- App 6 - Matchstatistik -->
       <a href="./matchstatistik.html" class="app-card">
-        <span class="app-icon">📊</span>
+        <span class="app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7-5.4-4.7 7.1-.7z"/></svg></span>
         <div class="app-info">
           <div class="app-name" data-sv="Matchstatistik" data-fr="Statistiques de match" data-en="Match Statistics">Matchstatistik</div>
-          <div class="app-desc" data-sv="Logga varje klot live. Se grafer, spelarstatistik och jämförelse mot motståndaren." data-fr="Loggez chaque boule en direct. Graphiques, stats joueur et comparaison adversaire." data-en="Log every ball live. Charts, player stats and comparison vs opponent.">Tränarverktyg för matchanalys</div>
+          <div class="app-desc" data-sv="Live-loggning · Lag" data-fr="Journal en direct · Équipe" data-en="Live logging · Team">Live-loggning · Lag</div>
         </div>
-        <span class="app-arrow">→</span>
+        <span class="app-arrow">›</span>
       </a>
     </div>
   </div>
@@ -1021,24 +1063,20 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 
 <!-- FAQ flyttad till faq.html — se länk i footern nedan -->
 
-<!-- STATISTIKRAD (flyttad hit från platsen precis efter hero-sektionen) -->
-<div style="background:#0d1117;border-top:1px solid #1a2030;border-bottom:1px solid #1a2030;padding:12px 20px;">
-  <div style="max-width:800px;margin:0 auto;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:0;">
-    <div style="text-align:center;padding:8px 24px;border-right:1px solid #1a2030;">
-      <div style="font-size:22px;font-weight:700;color:#e8ff47;">238+</div>
-      <div style="font-size:10px;color:#666;margin-top:2px;" data-sv="aktiva spelare" data-en="active players" data-fr="joueurs actifs">aktiva spelare</div>
+<!-- STATISTIKRAD som runda "pills", som i mockupen -->
+<div style="padding:20px 20px 4px;">
+  <div style="max-width:640px;margin:0 auto;display:flex;justify-content:center;flex-wrap:wrap;gap:10px;">
+    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:999px;padding:8px 18px;font-size:13px;color:#B0B0B0;white-space:nowrap;">
+      <strong style="color:#e8ff47;" data-sv="Fler och fler" data-en="Growing" data-fr="En croissance">Fler och fler</strong>
+      <span data-sv="spelare" data-en="players" data-fr="joueurs">spelare</span>
     </div>
-    <div style="text-align:center;padding:8px 24px;border-right:1px solid #1a2030;">
-      <div style="font-size:22px;font-weight:700;color:#e8ff47;">73</div>
-      <div style="font-size:10px;color:#666;margin-top:2px;" data-sv="städer globalt" data-en="cities globally" data-fr="villes dans le monde">städer globalt</div>
+    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:999px;padding:8px 18px;font-size:13px;color:#B0B0B0;white-space:nowrap;">
+      <strong style="color:#e8ff47;">6</strong>
+      <span data-sv="moduler" data-en="modules" data-fr="modules">moduler</span>
     </div>
-    <div style="text-align:center;padding:8px 24px;border-right:1px solid #1a2030;">
-      <div style="font-size:22px;font-weight:700;color:#e8ff47;">6</div>
-      <div style="font-size:10px;color:#666;margin-top:2px;" data-sv="träningsmoduler" data-en="training modules" data-fr="modules d'entraînement">träningsmoduler</div>
-    </div>
-    <div style="text-align:center;padding:8px 24px;">
-      <div style="font-size:22px;font-weight:700;color:#4ade80;" data-sv="Gratis" data-en="Free" data-fr="Gratuit">Gratis</div>
-      <div style="font-size:10px;color:#666;margin-top:2px;" data-sv="alltid, för alltid" data-en="always, forever" data-fr="toujours, pour toujours">alltid, för alltid</div>
+    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:999px;padding:8px 18px;font-size:13px;color:#B0B0B0;white-space:nowrap;">
+      <strong style="color:#4ade80;" data-sv="Gratis" data-en="Free" data-fr="Gratuit">Gratis</strong>
+      <span data-sv="för alltid" data-en="forever" data-fr="pour toujours">för alltid</span>
     </div>
   </div>
 </div>
