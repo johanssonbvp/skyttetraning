@@ -5,10 +5,10 @@
 // Made with ❤️ by Pär Johansson
 //
 // Automatisk cache-versionering + Stale-While-Revalidate strategi
-
+ 
 const CACHE_VERSION = new Date().toISOString().slice(0, 10).replace(/-/g, ''); // YYYYMMDD
 const CACHE_NAME = `petanque-v${CACHE_VERSION}`;
-
+ 
 // CORE FILES - Alla kritiska filer för offline-drift
 const CORE_FILES = [
   './',
@@ -19,6 +19,7 @@ const CORE_FILES = [
   './tavlingssimulator.html',
   './dagbok.html',
   './precisionsskytte.html',
+  './faq.html',
   './storage-manager.js',
   './lang-manager.js',
   './offline-indicator.js',
@@ -27,7 +28,7 @@ const CORE_FILES = [
   './icon-512.png',
   'https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap'
 ];
-
+ 
 // INSTALL - Cachea alla CORE_FILES
 self.addEventListener('install', event => {
   console.log(`[SW] Installing cache: ${CACHE_NAME}`);
@@ -48,7 +49,7 @@ self.addEventListener('install', event => {
       .then(() => self.skipWaiting())
   );
 });
-
+ 
 // ACTIVATE - Rensa gamla cache-versioner
 self.addEventListener('activate', event => {
   console.log(`[SW] Activating cache: ${CACHE_NAME}`);
@@ -69,7 +70,7 @@ self.addEventListener('activate', event => {
       .then(() => self.clients.claim())
   );
 });
-
+ 
 // FETCH - Stale-While-Revalidate strategi
 self.addEventListener('fetch', event => {
   const { request } = event;
@@ -78,12 +79,12 @@ self.addEventListener('fetch', event => {
   if (request.method !== 'GET') {
     return;
   }
-
+ 
   // Hoppa över Chrome-tillägg och annat
   if (request.url.startsWith('chrome-extension://')) {
     return;
   }
-
+ 
   // STRATEGI: Stale-While-Revalidate
   // 1. Returnera cached version omedelbar (om den finns)
   // 2. Samtidigt fetch uppdaterad version från nätverket
@@ -98,7 +99,7 @@ self.addEventListener('fetch', event => {
             if (!response || response.status !== 200 || response.type === 'error') {
               return response;
             }
-
+ 
             // Cachea successful responses
             if (request.method === 'GET') {
               const clone = response.clone();
@@ -111,7 +112,7 @@ self.addEventListener('fetch', event => {
             // Om nätverket misslyckas, returnera cached eller offline-sida
             return cached || null;
           });
-
+ 
         // Returnera cached omedelbar, annars vänta på nätverket
         return cached || fetchPromise;
       });
@@ -126,12 +127,13 @@ self.addEventListener('fetch', event => {
     })
   );
 });
-
+ 
 // MESSAGE - Möjliggör skip waiting från klienten
 self.addEventListener('message', event => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
 });
-
+ 
 console.log('[SW] Service Worker loaded');
+ 
