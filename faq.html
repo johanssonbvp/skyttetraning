@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0A0E27">
+  <meta name="description" content="Vanliga frågor om Petanque Träning – kostnad, konto, offline-läge, flera enheter, installation, datasäkerhet och webbläsarstöd.">
+  <title>Vanliga frågor – Petanque Träning</title>
+  <link rel="icon" href="petanque-logo.png">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Samma Google Analytics-spårning som övriga sidor, så besök på FAQ-sidan syns i statistiken -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XT4NB1HR2J"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config","G-XT4NB1HR2J");</script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0A0E27;
+      --bg2: #1a1f3a;
+      --text: #FFFFFF;
+      --text-muted: #B0B0B0;
+      --accent: #e8ff47;
+      --accent-dark: #c8dd00;
+      --border: rgba(232, 255, 71, 0.1);
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ======================== HEADER (samma stil som startsidan) ======================== */
+    header {
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10, 14, 39, 0.8);
+      backdrop-filter: blur(10px);
+    }
+
+    .header-logo {
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .lang-toggle {
+      display: flex;
+      gap: 8px;
+    }
+
+    .lang-btn {
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .lang-btn.active {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+    }
+
+    .lang-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ======================== SIDHUVUD PÅ FAQ-SIDAN ======================== */
+    .faq-hero {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 50px 20px 10px;
+      text-align: center;
+    }
+
+    .faq-hero h1 {
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .faq-hero p {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 18px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    /* ======================== FAQ (samma stil som tidigare på startsidan) ======================== */
+    .faq-section {
+      padding: 30px 20px 60px;
+    }
+
+    .faq-container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      margin-bottom: 15px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      padding: 18px;
+      background: rgba(232, 255, 71, 0.04);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+      transition: all 0.3s;
+    }
+
+    .faq-question:hover {
+      background: rgba(232, 255, 71, 0.08);
+    }
+
+    .faq-toggle {
+      color: var(--accent);
+      font-size: 1.3rem;
+      transition: transform 0.3s;
+    }
+
+    .faq-item.open .faq-toggle {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      padding: 0 18px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s, padding 0.3s;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .faq-item.open .faq-answer {
+      padding: 18px;
+      max-height: 500px;
+    }
+
+    /* ======================== FOOTER ======================== */
+    footer {
+      padding: 50px 20px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .footer-links a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-dark);
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="./index.html" class="header-logo">🎯 PETANQUE TRÄNING</a>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="sv">🇸🇪 SV</button>
+    <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+    <button class="lang-btn" data-lang="fr">🇫🇷 FR</button>
+  </div>
+</header>
+
+<!-- SIDHUVUD -->
+<div class="faq-hero">
+  <h1 data-sv="Vanliga frågor" data-en="Frequently Asked Questions" data-fr="Questions fréquentes">Vanliga frågor</h1>
+  <p data-sv="Svar på det som flest undrar över kring Petanque Träning."
+     data-en="Answers to the most common questions about Petanque Training."
+     data-fr="Réponses aux questions les plus fréquentes sur Petanque Träning.">
+    Svar på det som flest undrar över kring Petanque Träning.
+  </p>
+  <a href="./index.html" class="back-link" data-sv="← Tillbaka till startsidan" data-en="← Back to home" data-fr="← Retour à l'accueil">← Tillbaka till startsidan</a>
+</div>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="faq-container">
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+        <span data-sv="Kostar appen något?" data-fr="L'application est-elle payante?" data-en="Does the app cost anything?">Kostar appen något?</span>
+        <span class="faq-toggle">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p data-sv="Nej! Petanque Träning är helt gratis. Ingen prenumeration, inga dolda kostnader. Allt du behöver för att spåra din utveckling är inkluderat."
+           data-fr="Non ! Pétanque Entraînement est totalement gratuit. Pas d'abonnement, pas de frais cachés."
+           data-en="No! Petanque Training is completely free. No subscription, no hidden costs. Everything you need to track your progress is included.">
+          Nej! Petanque Träning är helt gratis. Ingen prenumeration, inga dolda kostnader. Allt du behöver för att spåra din utveckling är inkluderat.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+        <span data-sv="Behöver jag skapa ett konto?" data-fr="Dois-je créer un compte?" data-en="Do I need to create an account?">Behöver jag skapa ett konto?</span>
+        <span class="faq-toggle">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p data-sv="Ja, för att använda Matchstatistik behöver du ett gratis konto med email och lösenord. Det tar bara en minut och gör att din data säkerhetskopieras i molnet och finns tillgänglig på alla dina enheter."
+           data-fr="Oui, pour utiliser les Statistiques de match, vous avez besoin d'un compte gratuit. Cela prend une minute et permet de sauvegarder vos données dans le cloud."
+           data-en="Yes, to use Match Statistics you need a free account with email and password. It only takes a minute and ensures your data is backed up in the cloud and available on all your devices.">
+          Ja, för att använda Matchstatistik behöver du ett gratis konto med email och lösenord. Det tar bara en minut och gör att din data säkerhetskopieras i molnet och finns tillgänglig på alla dina enheter.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+        <span data-sv="Fungerar appen utan internet?" data-fr="L'application fonctionne-t-elle sans internet?" data-en="Does the app work without internet?">Fungerar appen utan internet?</span>
+        <span class="faq-toggle">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p data-sv="Ja! Appen fungerar offline för skjutträning, läggträning, precisionsskytte och dagbok. Data sparas lokalt och laddas upp till molnet automatiskt när du är online igen. Matchstatistik kräver internetuppkoppling."
+           data-fr="Oui ! L'application fonctionne hors ligne pour l'entraînement au tir, au pointé, la précision et le journal. Les données sont sauvegardées localement et synchronisées automatiquement. Les statistiques de match nécessitent une connexion."
+           data-en="Yes! The app works offline for shooting training, pointing, precision shooting and the diary. Data is saved locally and automatically synced to the cloud when you're back online. Match Statistics requires an internet connection.">
+          Ja! Appen fungerar offline för skjutträning, läggträning, precisionsskytte och dagbok. Data sparas lokalt och laddas upp till molnet automatiskt när du är online igen. Matchstatistik kräver internetuppkoppling.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+        <span data-sv="Kan jag använda appen på flera enheter?" data-fr="Puis-je utiliser l'application sur plusieurs appareils?" data-en="Can I use the app on multiple devices?">Kan jag använda appen på flera enheter?</span>
+        <span class="faq-toggle">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p data-sv="Ja! När du loggar in med ditt konto synkroniseras din data automatiskt mellan alla enheter. Logga in med samma email på din telefon, surfplatta eller dator så finns all statistik tillgänglig."
+           data-fr="Oui ! Lorsque vous vous connectez avec votre compte, vos données sont automatiquement synchronisées entre tous vos appareils."
+           data-en="Yes! When you log in with your account, your data is automatically synced across all your devices. Log in with the same email on your phone, tablet or computer and all your statistics will be available.">
+          Ja! När du loggar in med ditt konto synkroniseras din data automatiskt mellan alla enheter. Logga in med samma email på din telefon, surfplatta eller dator så finns all statistik tillgänglig.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+        <span data-sv="Hur installerar jag appen?" data-fr="Comment installer l'application?" data-en="How do I install the app?">Hur installerar jag appen?</span>
+        <span class="faq-toggle">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p data-sv="Du kan använda appen direkt i webbläsaren eller installera den på hemskärmen. På iPhone: tryck på dela-ikonen i Safari och välj 'Lägg till på hemskärmen'. På Android: tryck på menyn i Chrome och välj 'Lägg till på startskärmen'."
+           data-fr="Vous pouvez utiliser l'application directement dans le navigateur ou l'installer sur l'écran d'accueil. Sur iPhone : appuyez sur l'icône de partage dans Safari et choisissez 'Sur l'écran d'accueil'. Sur Android : appuyez sur le menu dans Chrome et choisissez 'Ajouter à l'écran d'accueil'."
+           data-en="You can use the app directly in your browser or install it on your home screen. On iPhone: tap the share icon in Safari and select 'Add to Home Screen'. On Android: tap the menu in Chrome and select 'Add to Home Screen'.">
+          Du kan använda appen direkt i webbläsaren eller installera den på hemskärmen. På iPhone: tryck på dela-ikonen i Safari och välj 'Lägg till på hemskärmen'. På Android: tryck på menyn i Chrome och välj 'Lägg till på startskärmen'.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+        <span data-sv="Är mina data säkra?" data-fr="Mes données sont-elles sécurisées?" data-en="Are my data safe?">Är mina data säkra?</span>
+        <span class="faq-toggle">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p data-sv="Ja. Din data lagras säkert i Firebase (Google Cloud) och är kopplad till ditt personliga konto. Vi samlar inte in personlig information, säljer inte data och visar inga annonser."
+           data-fr="Oui. Vos données sont stockées de manière sécurisée dans Firebase (Google Cloud) et liées à votre compte personnel. Nous ne collectons pas d'informations personnelles et ne vendons pas vos données."
+           data-en="Yes. Your data is securely stored in Firebase (Google Cloud) and linked to your personal account. We don't collect personal information, sell data or show ads.">
+          Ja. Din data lagras säkert i Firebase (Google Cloud) och är kopplad till ditt personliga konto. Vi samlar inte in personlig information, säljer inte data och visar inga annonser.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+        <span data-sv="Vilka webbläsare stöds?" data-fr="Quels navigateurs sont pris en charge?" data-en="Which browsers are supported?">Vilka webbläsare stöds?</span>
+        <span class="faq-toggle">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p data-sv="Appen fungerar på alla moderna webbläsare — Chrome, Safari, Firefox och Edge. Den är optimerad för mobil men fungerar även utmärkt på dator och surfplatta."
+           data-fr="L'application fonctionne sur tous les navigateurs modernes — Chrome, Safari, Firefox et Edge. Elle est optimisée pour mobile mais fonctionne aussi très bien sur ordinateur."
+           data-en="The app works on all modern browsers — Chrome, Safari, Firefox and Edge. It's optimized for mobile but also works great on desktop and tablet.">
+          Appen fungerar på alla moderna webbläsare — Chrome, Safari, Firefox och Edge. Den är optimerad för mobil men fungerar även utmärkt på dator och surfplatta.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="./index.html" data-sv="Startsida" data-en="Home" data-fr="Accueil">Startsida</a>
+    <a href="https://github.com/johanssonbvp/skyttetraning" target="_blank">GitHub</a>
+    <a href="mailto:info@petanquetraning.se">Kontakt</a>
+    <a href="/integritetspolicy.html" data-sv="Integritetspolicy" data-en="Privacy Policy" data-fr="Politique de confidentialité">Integritetspolicy</a>
+  </div>
+  <p data-sv="Gjord med ❤️ av Pär Johansson | © 2026 Petanque Träning" data-fr="Fait avec ❤️ par Pär Johansson | © 2026 Pétanque Entraînement"
+     data-en="Made with ❤️ by Pär Johansson | © 2026 Petanque Training">
+    Gjord med ❤️ av Pär Johansson | © 2026 Petanque Träning
+  </p>
+</footer>
+
+<!-- SPRÅKHANTERING (samma enkla teknik som övriga sidor: byter text via data-sv/data-en/data-fr) -->
+<script>
+  function setLanguage(lang) {
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll('[data-sv]').forEach(el => {
+      if (lang === 'fr' && el.dataset.fr) {
+        el.textContent = el.dataset.fr;
+      } else if (lang === 'en' && el.dataset.en) {
+        el.textContent = el.dataset.en;
+      } else {
+        el.textContent = el.dataset.sv;
+      }
+    });
+
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    const activeBtn = document.querySelector(`[data-lang="${lang}"]`);
+    if (activeBtn) activeBtn.classList.add('active');
+
+    localStorage.setItem('lang', lang);
+    localStorage.setItem('pt_lang', lang);
+    localStorage.setItem('petanque-lang', lang);
+  }
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+  });
+
+  // Använd samma sparade språkval som resten av appen
+  const savedLang = localStorage.getItem('petanque-lang')
+                 || localStorage.getItem('pt_lang')
+                 || localStorage.getItem('lang')
+                 || 'sv';
+  setLanguage(savedLang);
+</script>
+
+</body>
+</html>
