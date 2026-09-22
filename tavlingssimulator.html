@@ -705,7 +705,7 @@ function loadMatches() { try { return JSON.parse(localStorage.getItem('pt_matche
 function saveMatch(m) {
   const ms = loadMatches(); ms.unshift(m);
   if (ms.length>100) ms.splice(100);
-  localStorage.setItem('pt_matches_v2', JSON.stringify(ms));
+  saveToFirebase('pt_matches_v2', ms);
 }
 
 // ══════════════════════════════════════════
@@ -758,7 +758,9 @@ function fmtDate(iso) {
 }
 function confirmClear() { document.getElementById('clearOverlay').classList.add('show'); }
 function clearAll() {
-  localStorage.removeItem('pt_matches_v2');
+  // Sparar en tom lista (istället för att bara ta bort lokalt), så att
+  // rensningen även syns i databasen om du är inloggad.
+  saveToFirebase('pt_matches_v2', []);
   document.getElementById('clearOverlay').classList.remove('show');
   renderStats();
 }
@@ -778,5 +780,5 @@ function clearAll() {
     initSyncManager(firebaseConfig);
   }
 </script>
-<script>const firebaseConfig={apiKey:"AIzaSyCwzdwGEjN5LVw3RSLz2dy7f70Reafbe2c",authDomain:"databas-serie.firebaseapp.com",databaseURL:"https://databas-serie-default-rtdb.europe-west1.firebasedatabase.app",projectId:"databas-serie",storageBucket:"databas-serie.firebasestorage.app",messagingSenderId:"672666417012",appId:"1:672666417012:web:93613783fe51cd2ce81e21"};if(typeof initSyncManager==="function"){initSyncManager(firebaseConfig);}</script></body>
+</body>
 </html>

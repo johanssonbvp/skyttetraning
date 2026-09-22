@@ -418,7 +418,7 @@ function recordShot(pts){
 function finishGame(){
   const total=scores.reduce((a,b)=>a+b,0);
   history.unshift({date:Date.now(),score:total});
-  localStorage.setItem('pt_precision_v2',JSON.stringify(history.slice(0,50)));
+  saveToFirebase('pt_precision_v2', history.slice(0,50));
   document.getElementById('res-score').textContent=total;
   const g=grade(total);
   document.getElementById('res-grade').innerHTML=`<span style="color:${g.color}">${g.text}</span>`;
@@ -474,7 +474,9 @@ function renderStats(){
 function clearHistory(){
   if(!confirm('Rensa all historik för precisionsskytte?')) return;
   history=[];
-  localStorage.removeItem('pt_precision_v2');
+  // Sparar en tom lista (istället för att bara ta bort lokalt), så att
+  // rensningen även syns i databasen om du är inloggad.
+  saveToFirebase('pt_precision_v2', []);
   renderStats();
 }
 

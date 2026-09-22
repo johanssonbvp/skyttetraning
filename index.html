@@ -1486,10 +1486,10 @@ async function autoRestoreFromFirebase(uid) {
   const restoreMap = {
     'shooting/history':   { key: 'pt_h',              check: arr => Array.isArray(arr) && arr.length > 0 },
     'pointing/history':   { key: 'pt_lagg_history',   check: arr => Array.isArray(arr) && arr.length > 0 },
+    'pointing/records':   { key: 'pt_lagg_records',   check: v => v && typeof v === 'object' && Object.keys(v).length > 0 },
     'diary':              { key: 'pt_dagbok',          check: arr => Array.isArray(arr) && arr.length > 0 },
     'precision/history':  { key: 'pt_precision_v2',   check: arr => Array.isArray(arr) && arr.length > 0 },
-    'pointing/current':   { key: 'pt_lagg_session',   check: v => v !== null },
-    'precision/current':  { key: 'pt_precision_session', check: v => v !== null },
+    'matches':             { key: 'pt_matches_v2',     check: arr => Array.isArray(arr) && arr.length > 0 },
   };
 
   let restored = 0;
@@ -1533,10 +1533,10 @@ async function autoBackupToFirebase(uid) {
   const backupMap = {
     'pt_h':                { fbPath: 'shooting/history' },
     'pt_lagg_history':     { fbPath: 'pointing/history' },
+    'pt_lagg_records':     { fbPath: 'pointing/records' },
     'pt_dagbok':           { fbPath: 'diary' },
     'pt_precision_v2':     { fbPath: 'precision/history' },
-    'pt_lagg_session':     { fbPath: 'pointing/current' },
-    'pt_precision_session':{ fbPath: 'precision/current' },
+    'pt_matches_v2':       { fbPath: 'matches' },
   };
 
   let backed = 0;
@@ -1594,7 +1594,7 @@ function logout() {
     firebase.auth().signOut().then(() => {
       localStorage.removeItem('pt_trainer_code');
       localStorage.removeItem('trainer-code');
-      localStorage.removeItem('pt_matches'); // Rensa cachead match-data vid logout
+      localStorage.removeItem('pt_matches_v2'); // Rensa cachead match-data vid logout
       // Visa auth-modal direkt utan reload
       const authModal = document.getElementById('auth-modal');
       if (authModal) {
@@ -1794,12 +1794,11 @@ async function syncLocalToFirebase() {
     const mappings = {
       'pt_s': 'shooting/current',
       'pt_h': 'shooting/history',
-      'pt_lagg_session': 'pointing/current',
       'pt_lagg_history': 'pointing/history',
+      'pt_lagg_records': 'pointing/records',
       'pt_dagbok': 'diary',
-      'pt_precision_session': 'precision/current',
-      'pt_precision_history': 'precision/history',
-      'pt_matches': 'matches',
+      'pt_precision_v2': 'precision/history',
+      'pt_matches_v2': 'matches',
       'trainer-code': 'meta/trainerCode'
     };
     
@@ -1860,12 +1859,11 @@ async function syncFirebaseToLocal() {
     const reverseMappings = {
       'shooting/current': 'pt_s',
       'shooting/history': 'pt_h',
-      'pointing/current': 'pt_lagg_session',
       'pointing/history': 'pt_lagg_history',
+      'pointing/records': 'pt_lagg_records',
       'diary': 'pt_dagbok',
-      'precision/current': 'pt_precision_session',
-      'precision/history': 'pt_precision_history',
-      'matches': 'pt_matches'
+      'precision/history': 'pt_precision_v2',
+      'matches': 'pt_matches_v2'
     };
     
     let downloaded = 0;
@@ -1907,12 +1905,11 @@ async function autoSync() {
   const mappings = {
     'pt_s': 'shooting/current',
     'pt_h': 'shooting/history',
-    'pt_lagg_session': 'pointing/current',
     'pt_lagg_history': 'pointing/history',
+    'pt_lagg_records': 'pointing/records',
     'pt_dagbok': 'diary',
-    'pt_precision_session': 'precision/current',
-    'pt_precision_history': 'precision/history',
-    // pt_matches hanteras av matchstatistik.html direkt - INTE autoSync
+    'pt_precision_v2': 'precision/history',
+    // pt_matches_v2 (Poängräknaren) hanteras redan direkt av saveToFirebase() i tavlingssimulator.html - INTE autoSync
   };
   
   try {

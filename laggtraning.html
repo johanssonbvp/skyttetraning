@@ -2,21 +2,524 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script src="./sync-manager.js"></script>
-</head><body><div class="top-bar"><a class="back-btn" href="index.html">← <span data-sv="Hem" data-fr="Accueil" data-en="Home">Hem</span></a> <span class="top-title" data-sv="Läggträning" data-fr="Jeu de boules" data-en="Pointing">Läggträning</span> <div style="display:flex;gap:4px"><button class="lang-btn" id="btn-sv" onclick="setLangLagg('sv')" style="padding:4px 8px">🇸🇪 SV</button><button class="lang-btn" id="btn-en" onclick="setLangLagg('en')" style="padding:4px 8px">🇬🇧 EN</button><button class="lang-btn" id="btn-fr" onclick="setLangLagg('fr')" style="padding:4px 8px">🇫🇷 FR</button></div></div><div class="tab-bar"><button class="tab-btn active" onclick='switchTab("train")' id="tab-train" data-sv="Träning" data-fr="Entraînement" data-en="Training">Träning</button> <button class="tab-btn" onclick='switchTab("stats")' id="tab-stats" data-sv="Statistik" data-fr="Statistiques" data-en="Stats">Statistik</button></div><div class="tab-content active" id="tab-train-content"><div class="wrap"><div id="setupView"><p class="section-label" style="font-family:var(--font-display);font-size:.68rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:14px" data-sv="Välj övning" data-fr="Choisir l'exercice" data-en="Choose exercise">Välj övning</p><div class="ex-picker" id="exPicker"><div class="ex-card" data-ex="precision" onclick="selectEx(this)"><div class="ex-icon">🥏</div><div class="ex-info"><div class="ex-name" data-sv="Precisionsmål" data-fr="Objectif de précision" data-en="Precision Goal">Precisionsmål</div><div class="ex-desc" data-sv="Lägg så nära cochonneten som möjligt. Godkänd = inom 30 cm." data-fr="Placez la boule le plus près possible du cochonnet. Réussi = dans les 30 cm." data-en="Point as close to the jack as possible. Pass = within 30 cm.">Lägg så nära cochonneten som möjligt. Godkänd = inom 30 cm.</div></div><div class="ex-check"></div></div><div class="ex-card" data-ex="zones" onclick="selectEx(this)"><div class="ex-icon">📏</div><div class="ex-info"><div class="ex-name" data-sv="Avståndszoner" data-fr="Zones de distance" data-en="Distance Zones">Avståndszoner</div><div class="ex-desc" data-sv="Du får en slumpmässig zon (nära/mitt/långt). Träffa rätt zon." data-fr="Vous obtenez une zone aléatoire (proche/milieu/loin). Atteignez la bonne zone." data-en="You get a random zone (near/mid/far). Hit the correct zone.">Du får en slumpmässig zon (nära/mitt/långt). Träffa rätt zon.</div></div><div class="ex-check"></div></div><div class="ex-card" data-ex="serie" onclick="selectEx(this)"><div class="ex-icon">⚫</div><div class="ex-info"><div class="ex-name" data-sv="3-boulerserie" data-fr="Série de 3 boules" data-en="3-Boule Series">3-boulerserie</div><div class="ex-desc" data-sv="Lägg tre boules i rad. Räkna hur många av tre som godkänns." data-fr="Lancez trois boules en série. Comptez combien des trois sont réussies." data-en="Point three boules in a row. Count how many of three pass.">Lägg tre boules i rad. Räkna hur många av tre som godkänns.</div></div><div class="ex-check"></div></div></div><div class="settings-row"><div class="setting-box"><div class="setting-label" data-sv="Antal kast" data-fr="Nombre de lancers" data-en="Throws">Antal kast</div><div class="setting-ctrl"><button class="ctrl-btn" onclick="adjThrows(-3)">−</button> <span class="ctrl-val" id="throwsVal">9</span> <button class="ctrl-btn" onclick="adjThrows(3)">+</button></div></div><div class="setting-box"><div class="setting-label" data-sv="Avstånd (m)" data-fr="Distance (m)" data-en="Distance (m)">Avstånd (m)</div><div class="dist-pills"><div class="dist-pill active" data-d="6" onclick="selectDist(this)">6m</div><div class="dist-pill" data-d="7" onclick="selectDist(this)">7m</div><div class="dist-pill" data-d="8" onclick="selectDist(this)">8m</div><div class="dist-pill" data-d="9" onclick="selectDist(this)">9m</div></div></div></div><button class="start-btn" id="startBtn" onclick="startSession()" disabled="disabled" data-sv="Starta session" data-fr="Démarrer la session" data-en="Start Session">Starta session</button></div><div id="sessionView" style="display:none"><div class="session-header"><div class="session-ex-label" data-sv="Övning" data-fr="Exercice" data-en="Exercise">Övning</div><div class="session-ex-name" id="sessionExName"></div><div class="session-dist" id="sessionDistLabel"></div></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div><div class="progress-meta"><span id="progressText">0 / 0</span> <span id="progressPct">0%</span></div><div class="boule-wrap" id="bouleWrap"></div><div class="zone-display" id="zoneDisplay" style="display:none"><div class="zone-label" data-sv="Målets zon" data-fr="Zone cible" data-en="Target Zone">Målets zon</div><div class="zone-name" id="zoneName"></div><div class="zone-desc" id="zoneDesc"></div></div><div class="serie-info" id="serieInfo" style="display:none"><div class="serie-round" id="serieRoundLabel"></div><div class="serie-boules" id="serieBoules"></div><div class="serie-best" id="serieBestLabel"></div></div><div class="live-mini"><div class="mini-chip chip-ok"><span class="mini-val" id="liveOk">0</span> <span class="mini-lbl" data-sv="Godkänd" data-fr="Réussi" data-en="Pass">Godkänd</span></div><div class="mini-chip chip-fail"><span class="mini-val" id="liveFail">0</span> <span class="mini-lbl" data-sv="Underkänd" data-fr="Raté" data-en="Fail">Underkänd</span></div></div><div class="result-grid"><button class="res-btn btn-ok" onclick="registerResult(!0)"><span>✓</span><span data-sv="Godkänd" data-fr="Réussi" data-en="Pass">Godkänd</span></button> <button class="res-btn btn-fail" onclick="registerResult(!1)"><span>✗</span><span data-sv="Underkänd" data-fr="Raté" data-en="Fail">Underkänd</span></button></div><button class="undo-btn" onclick="undoLast()" data-sv="↩ Ångra senaste" data-fr="↩ Annuler le dernier" data-en="↩ Undo last">↩ Ångra senaste</button></div></div></div><div class="tab-content" id="tab-stats-content"><div class="wrap"><div class="stats-top"><h2 data-sv="Statistik" data-fr="Statistiques" data-en="Statistics">Statistik</h2><button class="clear-btn" onclick="confirmClear()" data-sv="Rensa allt" data-fr="Tout effacer" data-en="Clear all">Rensa allt</button></div><div class="stats-nav"><button class="snav-btn active" onclick='switchStatsTab("overview")' data-sv="Översikt" data-fr="Aperçu" data-en="Overview">Översikt</button> <button class="snav-btn" onclick='switchStatsTab("exercises")' data-sv="Övningar" data-fr="Exercices" data-en="Exercises">Övningar</button> <button class="snav-btn" onclick='switchStatsTab("history")' data-sv="Historik" data-fr="Historique" data-en="History">Historik</button></div><div class="stats-section active" id="stats-overview"><div class="overview-cards"><div class="ov-card"><span class="ov-val" id="ovTotalSessions" style="color:var(--accent)">0</span> <span class="ov-lbl" data-sv="Sessioner" data-fr="Sessions" data-en="Sessions">Sessioner</span></div><div class="ov-card"><span class="ov-val" id="ovTotalThrows" style="color:var(--mid)">0</span> <span class="ov-lbl" data-sv="Kast" data-fr="Lancer" data-en="Throws">Kast</span></div><div class="ov-card"><span class="ov-val" id="ovTotalPct" style="color:var(--ok)">–</span> <span class="ov-lbl" data-sv="Totalt %" data-fr="Total %" data-en="Total %">Totalt %</span></div></div><div class="records-wrap"><p class="rec-title" data-sv="Personliga rekord" data-fr="Records personnels" data-en="Personal Records">Personliga rekord</p><div class="rec-grid"><div class="rec-card rec-prec"><div class="rec-dist-lbl" data-sv="Bästa precision" data-fr="Meilleure précision" data-en="Best Precision">Bästa precision</div><div class="rec-val" id="recBestPct" style="color:var(--ok)">–</div><div class="rec-sub" id="recBestPctSub">–</div></div><div class="rec-card rec-zone"><div class="rec-dist-lbl" data-sv="Bästa zonträff" data-fr="Meilleure zone" data-en="Best Zone">Bästa zonträff</div><div class="rec-val" id="recBestZone" style="color:var(--mid)">–</div><div class="rec-sub" id="recBestZoneSub">–</div></div><div class="rec-card rec-serie"><div class="rec-dist-lbl" data-sv="Bästa serie" data-fr="Meilleure série" data-en="Best Series">Bästa serie</div><div class="rec-val" id="recBestSerie" style="color:var(--purple)">–</div><div class="rec-sub" id="recBestSerieSub">–</div></div><div class="rec-card rec-streak"><div class="rec-dist-lbl" data-sv="Längsta svit" data-fr="Plus longue série" data-en="Longest Streak">Längsta svit</div><div class="rec-val" id="recStreak" style="color:var(--accent)">–</div><div class="rec-sub" id="recStreakSub">–</div></div></div></div></div><div class="stats-section" id="stats-exercises"><div class="ex-breakdown" id="exBreakdown"></div></div><div class="stats-section" id="stats-history"><div class="history-list" id="historyList"></div></div></div></div><div class="overlay" id="resultOverlay"><div class="sheet"><h2 id="resultTitle">Session klar!</h2><p id="resultSub"></p><div class="pct-display"><div class="pct-big" id="resultPct">–</div><div class="pct-lbl" data-sv="Godkänd" data-fr="Réussi" data-en="Pass rate">Godkänd</div></div><div class="sheet-stat"><span data-sv="Godkända" data-fr="Réussis" data-en="Passed">Godkända</span><span class="sv" id="resOk">–</span></div><div class="sheet-stat"><span data-sv="Underkända" data-fr="Ratés" data-en="Failed">Underkända</span><span class="sv" id="resFail">–</span></div><div class="sheet-stat"><span data-sv="Avstånd" data-fr="Distance" data-en="Distance">Avstånd</span><span class="sv" id="resDist">–</span></div><div class="sheet-stat" id="resNewRecordRow" style="display:none"><span data-sv="🏆 Nytt rekord!" data-fr="🏆 Nouveau record!" data-en="🏆 New Record!">🏆 Nytt rekord!</span><span class="sv" id="resNewRecord">–</span></div><div class="sheet-actions"><button class="mbtn mbtn-accent" onclick="trackCompleteLaggTraining(),closeResult(!0)" data-sv="Ny session" data-fr="Nouvelle session" data-en="New Session">Ny session</button> <button class="mbtn mbtn-ghost" onclick="closeResult(!1)" data-sv="Se statistik" data-fr="Voir les statistiques" data-en="View Stats">Se statistik</button></div></div></div><div class="overlay" id="clearOverlay"><div class="sheet"><h2 data-sv="Rensa historik?" data-fr="Effacer l'historique?" data-en="Clear history?">Rensa historik?</h2><p data-sv="All träningsdata för läggträning raderas permanent." data-fr="Toutes les données d'entraînement seront définitivement supprimées." data-en="All pointing training data will be permanently deleted.">All träningsdata för läggträning raderas permanent.</p><div class="sheet-actions"><button class="mbtn mbtn-danger" onclick="clearAll()" data-sv="Ja, rensa" data-fr="Oui, effacer" data-en="Yes, clear">Ja, rensa</button> <button class="mbtn mbtn-ghost" onclick='document.getElementById("clearOverlay").classList.remove("show")' data-sv="Avbryt" data-fr="Annuler" data-en="Cancel">Avbryt</button></div></div></div><script>let lang=localStorage.getItem("petanque-lang")||localStorage.getItem("pt_lang")||localStorage.getItem("lang")||"sv";function applyLang(){document.querySelectorAll("[data-sv]").forEach(e=>{e.textContent="fr"===lang?(e.dataset.fr||e.dataset.sv):"en"===lang?(e.dataset.en||e.dataset.sv):e.dataset.sv});["sv","en","fr"].forEach(l=>{const b=document.getElementById("btn-"+l);if(b){b.style.color=l===lang?"var(--accent)":"";b.style.borderColor=l===lang?"var(--accent)":"";b.style.fontWeight=l===lang?"900":"600";}});document.documentElement.lang=lang}function setLangLagg(l){lang=l;localStorage.setItem("petanque-lang",l);localStorage.setItem("pt_lang",l);localStorage.setItem("lang",l);applyLang();state.active&&renderSession();renderStats();}function toggleLang(){lang="sv"===lang?"en":"en"===lang?"fr":"sv";setLangLagg(lang);}function switchTab(t){var e=document.querySelector(".tab-content.active");e&&e.classList.add("hidden"),["train","stats"].forEach(e=>{document.getElementById("tab-"+e).classList.toggle("active",e===t)}),setTimeout(()=>{document.querySelectorAll(".tab-content").forEach(e=>e.classList.remove("hidden")),document.getElementById("tab-"+t+"-content").classList.add("active"),"stats"===t&&renderStats()},200)}function animateNumber(a,o,r,i){if(a){let s=performance.now(),n=e=>{var e=e-s,e=Math.min(e/i,1),t=1-Math.pow(1-e,3),t=Math.round(o+(r-o)*t);a.textContent=t,a.classList.add("number-animated"),e<1?requestAnimationFrame(n):a.textContent=r};requestAnimationFrame(n)}}function animatePercentage(a,o,r,i,l=""){if(a){let s=performance.now(),n=e=>{var e=e-s,e=Math.min(e/i,1),t=1-Math.pow(1-e,3),t=Math.round(o+(r-o)*t);a.textContent=t+l,a.classList.add("number-animated"),e<1?requestAnimationFrame(n):a.textContent=r+l};requestAnimationFrame(n)}}function switchStatsTab(s){var e=document.querySelector(".stats-section.active");e&&e.classList.add("hidden"),document.querySelectorAll(".snav-btn").forEach((e,t)=>e.classList.toggle("active",["overview","exercises","history"][t]===s)),setTimeout(()=>{document.querySelectorAll(".stats-section").forEach(e=>e.classList.remove("active","hidden")),document.getElementById("stats-"+s).classList.add("active")},200)}applyLang();let ZONES=[{id:"near",sv:"Nära",en:"Near",fr:"Proche",desc_sv:"0–20 cm från målkulan",desc_en:"0–20 cm from the jack",desc_fr:"0–20 cm du cochonnet",color:"zone-near"},{id:"mid",sv:"Mitt",en:"Mid",fr:"Milieu",desc_sv:"20–40 cm från målkulan",desc_en:"20–40 cm from the jack",desc_fr:"20–40 cm du cochonnet",color:"zone-mid"},{id:"far",sv:"Långt",en:"Far",fr:"Loin",desc_sv:"40–60 cm från målkulan",desc_en:"40–60 cm from the jack",desc_fr:"40–60 cm du cochonnet",color:"zone-far"}],EX_NAMES={precision:{sv:"Precisionsmål",en:"Precision Goal",fr:"Objectif de précision"},zones:{sv:"Avståndszoner",en:"Distance Zones",fr:"Zones de distance"},serie:{sv:"3-boulerserie",en:"3-Boule Series",fr:"Série de 3 boules"}},state={active:!1,ex:null,dist:6,totalThrows:9,throws:[],currentZone:null,serieBoules:[],serieRound:0,serieBest:0},settings={throws:9,dist:6};function selectEx(e){document.querySelectorAll(".ex-card").forEach(e=>{e.classList.remove("selected"),e.querySelector(".ex-check").textContent=""}),e.classList.add("selected"),e.querySelector(".ex-check").textContent="✓",state.ex=e.dataset.ex,document.getElementById("startBtn").disabled=!1}function adjThrows(e){settings.throws=Math.max(3,Math.min(30,settings.throws+e)),document.getElementById("throwsVal").textContent=settings.throws}function selectDist(e){document.querySelectorAll(".dist-pill").forEach(e=>e.classList.remove("active")),e.classList.add("active"),settings.dist=parseInt(e.dataset.d)}function startSession(){state.active=!0,state.dist=settings.dist,state.totalThrows=settings.throws,state.throws=[],state.serieBoules=[],state.serieRound=1,state.serieBest=0,document.getElementById("setupView").style.display="none",document.getElementById("sessionView").style.display="block",renderSession()}function renderSession(){var e=EX_NAMES[state.ex],e=(document.getElementById("sessionExName").textContent="sv"===lang?e.sv:e.en,document.getElementById("sessionDistLabel").textContent=state.dist+"m",state.throws.length),t="serie"===state.ex?3*state.totalThrows:state.totalThrows,s=0<t?Math.round(e/t*100):0,e=(document.getElementById("progressFill").style.width=s+"%",document.getElementById("progressText").textContent=e+" / "+t,document.getElementById("progressPct").textContent=s+"%",renderBoules(),document.getElementById("zoneDisplay")),t=document.getElementById("serieInfo"),s=("zones"===state.ex?(e.style.display="block",t.style.display="none",state.currentZone||pickZone(),renderZone()):"serie"===state.ex?(e.style.display="none",t.style.display="block",renderSerie()):(e.style.display="none",t.style.display="none"),state.throws.filter(e=>e.ok).length),e=state.throws.filter(e=>!e.ok).length;document.getElementById("liveOk").textContent=s,document.getElementById("liveFail").textContent=e}function renderBoules(){var t=document.getElementById("bouleWrap"),s="serie"===state.ex?3*state.totalThrows:state.totalThrows;t.innerHTML="";for(let e=0;e<s;e++){var n=document.createElement("div");n.className="boule",e<state.throws.length?(n.classList.add(state.throws[e].ok?"ok":"fail"),n.textContent=state.throws[e].ok?"✓":"✗"):e===state.throws.length&&n.classList.add("current"),t.appendChild(n)}}function pickZone(){state.currentZone=ZONES[Math.floor(Math.random()*ZONES.length)]}function renderZone(){var e,t=state.currentZone;t&&((e=document.getElementById("zoneName")).textContent="fr"===lang?(t.fr||t.sv):"sv"===lang?t.sv:t.en,e.className="zone-name "+t.color,document.getElementById("zoneDesc").textContent="fr"===lang?(t.desc_fr||t.desc_sv):"sv"===lang?t.desc_sv:t.desc_en)}function renderSerie(){var e=state.serieRound,t=state.serieBoules.length,s=(document.getElementById("serieRoundLabel").textContent=("sv"===lang?"Omgång ":"Round ")+e+" · "+(lang,"Boule ")+(t+1)+"/3",document.getElementById("serieBoules"));s.innerHTML="";for(let e=0;e<3;e++){var n=document.createElement("div");n.className="serie-slot",e<t?(n.classList.add(state.serieBoules[e]?"ok":"fail"),n.textContent=state.serieBoules[e]?"✓":"✗"):e===t&&(n.classList.add("active"),n.textContent="·"),s.appendChild(n)}e=state.serieBest;document.getElementById("serieBestLabel").innerHTML=("sv"===lang?"Bäst i serie: ":"Best in series: ")+"<span>"+e+"/3</span>"}function registerResult(e){if("serie"===state.ex){if(state.serieBoules.push(e),state.throws.push({ok:e}),3===state.serieBoules.length){var t=state.serieBoules.filter(Boolean).length,t=(t>state.serieBest&&(state.serieBest=t),state.serieRound);if(t>=state.totalThrows)return void finishSession();state.serieBoules=[],state.serieRound++}}else if(state.throws.push({ok:e,zone:state.currentZone?.id}),"zones"===state.ex&&pickZone(),state.throws.length>=state.totalThrows)return void finishSession();renderSession()}function undoLast(){state.throws.length&&(state.throws.pop(),"serie"===state.ex&&0<state.serieBoules.length?state.serieBoules.pop():"serie"===state.ex&&1<state.serieRound&&(state.serieRound--,state.serieBoules=[state.throws[state.throws.length-2]?.ok,state.throws[state.throws.length-1]?.ok].filter(e=>void 0!==e)),renderSession())}function finishSession(){var e=state.throws,t=e.filter(e=>e.ok).length,s=0<e.length?Math.round(t/e.length*100):0;let n=0,a=0;e.forEach(e=>{e.ok?++a>n&&(n=a):a=0});var o={date:(new Date).toISOString(),ex:state.ex,dist:state.dist,throws:e.length,ok:t,fail:e.length-t,pct:s,streak:n,serieBest:state.serieBest},r=(saveSession(o),getRecords());let i=null;"precision"===state.ex&&s>(r.precision?.pct||0)&&(r.precision={pct:s,dist:state.dist,date:o.date},i=s+"%"),"zones"===state.ex&&s>(r.zones?.pct||0)&&(r.zones={pct:s,dist:state.dist,date:o.date},i=s+"%"),"serie"===state.ex&&state.serieBest>(r.serieBest?.val||0)&&(r.serieBest={val:state.serieBest,dist:state.dist,date:o.date},i=state.serieBest+"/3"),n>(r.streak?.val||0)&&(r.streak={val:n,dist:state.dist,date:o.date}),saveRecords(r);o=EX_NAMES[state.ex],document.getElementById("resultTitle").textContent="sv"===lang?"Session klar! 🎯":"Session done! 🎯",document.getElementById("resultSub").textContent="fr"===lang?(o.fr||o.sv):"sv"===lang?o.sv:o.en,document.getElementById("resultPct").textContent=s+"%",document.getElementById("resultPct").style.color=70<=s?"var(--ok)":40<=s?"var(--mid)":"var(--fail)",document.getElementById("resOk").textContent=t,document.getElementById("resFail").textContent=e.length-t,document.getElementById("resDist").textContent=state.dist+"m",r=document.getElementById("resNewRecordRow");i?(r.style.display="flex",document.getElementById("resNewRecord").textContent=i):r.style.display="none",document.getElementById("resultOverlay").classList.add("show")}function closeResult(e){document.getElementById("resultOverlay").classList.remove("show"),state.active=!1,state.throws=[],state.serieBoules=[],state.serieRound=1,state.serieBest=0,e||switchTab("stats"),document.getElementById("sessionView").style.display="none",document.getElementById("setupView").style.display="block"}function loadHistory(){try{return JSON.parse(localStorage.getItem("pt_lagg_history")||"[]")}catch(e){return[]}}function saveSession(e){var t=loadHistory();t.unshift(e),localStorage.setItem("pt_lagg_history",JSON.stringify(t))}function getRecords(){try{return JSON.parse(localStorage.getItem("pt_lagg_records")||"{}")}catch(e){return{}}}function saveRecords(e){localStorage.setItem("pt_lagg_records",JSON.stringify(e))}function renderStats(){let i=loadHistory();var e=getRecords(),t=i.length,s=i.reduce((e,t)=>e+t.throws,0),n=i.reduce((e,t)=>e+t.ok,0),n=0<s?Math.round(n/s*100):null,t=(animateNumber(document.getElementById("ovTotalSessions"),0,t,600),animateNumber(document.getElementById("ovTotalThrows"),0,s,600),null!==n?animatePercentage(document.getElementById("ovTotalPct"),0,n,600,"%"):document.getElementById("ovTotalPct").textContent="–",setTimeout(()=>{document.querySelectorAll(".ov-card").forEach(e=>{e.classList.add("card-pulse"),setTimeout(()=>e.classList.remove("card-pulse"),500)})},600),e.precision),s=(document.getElementById("recBestPct").textContent=t?t.pct+"%":"–",document.getElementById("recBestPctSub").textContent=t?t.dist+"m · "+fmtDate(t.date):"sv"===lang?"Ingen ännu":"None yet",e.zones),n=(document.getElementById("recBestZone").textContent=s?s.pct+"%":"–",document.getElementById("recBestZoneSub").textContent=s?s.dist+"m · "+fmtDate(s.date):"sv"===lang?"Ingen ännu":"None yet",e.serieBest),t=(document.getElementById("recBestSerie").textContent=n?n.val+"/3":"–",document.getElementById("recBestSerieSub").textContent=n?n.dist+"m · "+fmtDate(n.date):"sv"===lang?"Ingen ännu":"None yet",e.streak);document.getElementById("recStreak").textContent=t?t.val:"–",document.getElementById("recStreakSub").textContent=t?("sv"===lang?"i rad · ":"in a row · ")+fmtDate(t.date):"sv"===lang?"Ingen ännu":"None yet";let l=document.getElementById("exBreakdown");l.innerHTML="",["precision","zones","serie"].forEach(t=>{var e,s,n,a,o,r=i.filter(e=>e.ex===t);r.length&&(e=r.reduce((e,t)=>e+t.throws,0),s=r.reduce((e,t)=>e+t.ok,0),s=Math.round(s/e*100),n=EX_NAMES[t],a={precision:"var(--ok)",zones:"var(--mid)",serie:"var(--purple)"},(o=document.createElement("div")).className="ex-stat-row",o.innerHTML=`
+</head><body><div class="top-bar"><a class="back-btn" href="index.html">← <span data-sv="Hem" data-fr="Accueil" data-en="Home">Hem</span></a> <span class="top-title" data-sv="Läggträning" data-fr="Jeu de boules" data-en="Pointing">Läggträning</span> <div style="display:flex;gap:4px"><button class="lang-btn" id="btn-sv" onclick="setLangLagg('sv')" style="padding:4px 8px">🇸🇪 SV</button><button class="lang-btn" id="btn-en" onclick="setLangLagg('en')" style="padding:4px 8px">🇬🇧 EN</button><button class="lang-btn" id="btn-fr" onclick="setLangLagg('fr')" style="padding:4px 8px">🇫🇷 FR</button></div></div><div class="tab-bar"><button class="tab-btn active" onclick='switchTab("train")' id="tab-train" data-sv="Träning" data-fr="Entraînement" data-en="Training">Träning</button> <button class="tab-btn" onclick='switchTab("stats")' id="tab-stats" data-sv="Statistik" data-fr="Statistiques" data-en="Stats">Statistik</button></div><div class="tab-content active" id="tab-train-content"><div class="wrap"><div id="setupView"><p class="section-label" style="font-family:var(--font-display);font-size:.68rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:14px" data-sv="Välj övning" data-fr="Choisir l'exercice" data-en="Choose exercise">Välj övning</p><div class="ex-picker" id="exPicker"><div class="ex-card" data-ex="precision" onclick="selectEx(this)"><div class="ex-icon">🥏</div><div class="ex-info"><div class="ex-name" data-sv="Precisionsmål" data-fr="Objectif de précision" data-en="Precision Goal">Precisionsmål</div><div class="ex-desc" data-sv="Lägg boulen så nära cochonneten som möjligt. Mät avståndet efter kastet och markera Godkänd om det är inom 30 cm, annars Underkänd." data-fr="Lancez la boule le plus près possible du cochonnet. Mesurez la distance après le lancer et marquez Réussi si elle est à moins de 30 cm, sinon Raté." data-en="Point the boule as close to the jack as possible. Measure the distance after the throw and mark Pass if it's within 30 cm, otherwise Fail.">Lägg boulen så nära cochonneten som möjligt. Mät avståndet efter kastet och markera Godkänd om det är inom 30 cm, annars Underkänd.</div></div><div class="ex-check"></div></div><div class="ex-card" data-ex="zones" onclick="selectEx(this)"><div class="ex-icon">📏</div><div class="ex-info"><div class="ex-name" data-sv="Avståndszoner" data-fr="Zones de distance" data-en="Distance Zones">Avståndszoner</div><div class="ex-desc" data-sv="Appen slumpar en zon (nära/mitt/långt) innan varje kast. Försök lägga boulen i den zonen och markera om du lyckades." data-fr="L'application tire au sort une zone (proche/milieu/loin) avant chaque lancer. Essayez de placer la boule dans cette zone et indiquez si vous avez réussi." data-en="The app picks a random zone (near/mid/far) before each throw. Try to land the boule in that zone and mark whether you succeeded.">Appen slumpar en zon (nära/mitt/långt) innan varje kast. Försök lägga boulen i den zonen och markera om du lyckades.</div></div><div class="ex-check"></div></div><div class="ex-card" data-ex="serie" onclick="selectEx(this)"><div class="ex-icon">⚫</div><div class="ex-info"><div class="ex-name" data-sv="3-boulerserie" data-fr="Série de 3 boules" data-en="3-Boule Series">3-boulerserie</div><div class="ex-desc" data-sv="Lägg tre boules i rad mot samma cochonnet. Markera varje kast som godkänt eller underkänt och se hur många av tre som blev godkända." data-fr="Lancez trois boules d'affilée vers le même cochonnet. Marquez chaque lancer comme réussi ou raté, et voyez combien des trois ont réussi." data-en="Point three boules in a row at the same jack. Mark each throw as pass or fail, and see how many of the three succeeded.">Lägg tre boules i rad mot samma cochonnet. Markera varje kast som godkänt eller underkänt och se hur många av tre som blev godkända.</div></div><div class="ex-check"></div></div><div class="ex-card" data-ex="corridor" onclick="selectEx(this)"><div class="ex-icon">↔️</div><div class="ex-info"><div class="ex-name" data-sv="Riktningskorridor" data-fr="Couloir de direction" data-en="Direction Corridor">Riktningskorridor</div><div class="ex-desc" data-sv="Markera en korridor rakt framför dig, ca 40 cm bred, t.ex. med två pinnar eller linjer. Godkänd = boulen landar inom korridoren, oavsett avstånd till cochonneten." data-fr="Marquez un couloir droit devant vous, d'environ 40 cm de large, par exemple avec deux piquets ou des lignes. Réussi = la boule atterrit dans le couloir, quelle que soit la distance au cochonnet." data-en="Mark a straight corridor in front of you, about 40 cm wide, e.g. with two sticks or lines. Pass = the boule lands inside the corridor, regardless of the distance to the jack.">Markera en korridor rakt framför dig, ca 40 cm bred, t.ex. med två pinnar eller linjer. Godkänd = boulen landar inom korridoren, oavsett avstånd till cochonneten.</div></div><div class="ex-check"></div></div><div class="ex-card" data-ex="ladder" onclick="selectEx(this)"><div class="ex-icon">🪜</div><div class="ex-info"><div class="ex-name" data-sv="Avståndsstegen" data-fr="Échelle des distances" data-en="Distance Ladder">Avståndsstegen</div><div class="ex-desc" data-sv="Appen kör automatiskt igenom 6, 7, 8, 9 och 10 meter, tre kast på varje avstånd. Godkänd = inom 30 cm från cochonneten. Bra för att se vilka avstånd du behöver träna mer på." data-fr="L'application enchaîne automatiquement 6, 7, 8, 9 et 10 mètres, trois lancers par distance. Réussi = à moins de 30 cm du cochonnet. Utile pour voir quelles distances demandent plus d'entraînement." data-en="The app automatically runs through 6, 7, 8, 9 and 10 metres, three throws per distance. Pass = within 30 cm of the jack. Great for seeing which distances need more practice.">Appen kör automatiskt igenom 6, 7, 8, 9 och 10 meter, tre kast på varje avstånd. Godkänd = inom 30 cm från cochonneten. Bra för att se vilka avstånd du behöver träna mer på.</div></div><div class="ex-check"></div></div><div class="ex-card" data-ex="landingzone" onclick="selectEx(this)"><div class="ex-icon">⭕</div><div class="ex-info"><div class="ex-name" data-sv="Landningszon" data-fr="Zone d'atterrissage" data-en="Landing Zone">Landningszon</div><div class="ex-desc" data-sv="Markera en zon på planen, t.ex. med en ring eller pinnar, på valfritt avstånd. Lägg tre boules mot zonen (inte mot cochonneten) och räkna hur många som landar innanför." data-fr="Marquez une zone sur le terrain, par exemple avec un cercle ou des piquets, à la distance de votre choix. Lancez trois boules vers cette zone (pas vers le cochonnet) et comptez combien atterrissent à l'intérieur." data-en="Mark a zone on the court, e.g. with a ring or sticks, at any distance you like. Point three boules at the zone (not the jack) and count how many land inside it.">Markera en zon på planen, t.ex. med en ring eller pinnar, på valfritt avstånd. Lägg tre boules mot zonen (inte mot cochonneten) och räkna hur många som landar innanför.</div></div><div class="ex-check"></div></div></div><div class="settings-row" id="settingsRow"><div class="setting-box"><div class="setting-label" data-sv="Antal kast" data-fr="Nombre de lancers" data-en="Throws">Antal kast</div><div class="setting-ctrl"><button class="ctrl-btn" onclick="adjThrows(-3)">−</button> <span class="ctrl-val" id="throwsVal">9</span> <button class="ctrl-btn" onclick="adjThrows(3)">+</button></div></div><div class="setting-box"><div class="setting-label" data-sv="Avstånd (m)" data-fr="Distance (m)" data-en="Distance (m)">Avstånd (m)</div><div class="dist-pills"><div class="dist-pill active" data-d="6" onclick="selectDist(this)">6m</div><div class="dist-pill" data-d="7" onclick="selectDist(this)">7m</div><div class="dist-pill" data-d="8" onclick="selectDist(this)">8m</div><div class="dist-pill" data-d="9" onclick="selectDist(this)">9m</div><div class="dist-pill" data-d="10" onclick="selectDist(this)">10m</div></div></div></div><div class="setting-box" id="ladderInfo" style="display:none;margin-bottom:24px"><div class="setting-label" data-sv="Avståndsstegen körs automatiskt" data-fr="L'échelle des distances est automatique" data-en="Distance ladder runs automatically">Avståndsstegen körs automatiskt</div><div style="font-size:.82rem;color:var(--muted2)" data-sv="6–10 m, tre kast per avstånd (15 kast totalt)." data-fr="6–10 m, trois lancers par distance (15 lancers au total)." data-en="6–10 m, three throws per distance (15 throws total).">6–10 m, tre kast per avstånd (15 kast totalt).</div></div><button class="start-btn" id="startBtn" onclick="startSession()" disabled="disabled" data-sv="Starta session" data-fr="Démarrer la session" data-en="Start Session">Starta session</button></div><div id="sessionView" style="display:none"><div class="session-header"><div class="session-ex-label" data-sv="Övning" data-fr="Exercice" data-en="Exercise">Övning</div><div class="session-ex-name" id="sessionExName"></div><div class="session-dist" id="sessionDistLabel"></div></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div><div class="progress-meta"><span id="progressText">0 / 0</span> <span id="progressPct">0%</span></div><div class="boule-wrap" id="bouleWrap"></div><div class="zone-display" id="zoneDisplay" style="display:none"><div class="zone-label" data-sv="Målets zon" data-fr="Zone cible" data-en="Target Zone">Målets zon</div><div class="zone-name" id="zoneName"></div><div class="zone-desc" id="zoneDesc"></div></div><div class="serie-info" id="serieInfo" style="display:none"><div class="serie-round" id="serieRoundLabel"></div><div class="serie-boules" id="serieBoules"></div><div class="serie-best" id="serieBestLabel"></div></div><div class="zone-display" id="rungDisplay" style="display:none"><div class="zone-label" data-sv="Aktuellt avstånd" data-fr="Distance actuelle" data-en="Current distance">Aktuellt avstånd</div><div class="zone-name" id="rungDist"></div><div class="zone-desc" id="rungProgress"></div></div><div class="live-mini"><div class="mini-chip chip-ok"><span class="mini-val" id="liveOk">0</span> <span class="mini-lbl" data-sv="Godkänd" data-fr="Réussi" data-en="Pass">Godkänd</span></div><div class="mini-chip chip-fail"><span class="mini-val" id="liveFail">0</span> <span class="mini-lbl" data-sv="Underkänd" data-fr="Raté" data-en="Fail">Underkänd</span></div></div><div class="result-grid"><button class="res-btn btn-ok" onclick="registerResult(!0)"><span>✓</span><span data-sv="Godkänd" data-fr="Réussi" data-en="Pass">Godkänd</span></button> <button class="res-btn btn-fail" onclick="registerResult(!1)"><span>✗</span><span data-sv="Underkänd" data-fr="Raté" data-en="Fail">Underkänd</span></button></div><button class="undo-btn" onclick="undoLast()" data-sv="↩ Ångra senaste" data-fr="↩ Annuler le dernier" data-en="↩ Undo last">↩ Ångra senaste</button></div></div></div><div class="tab-content" id="tab-stats-content"><div class="wrap"><div class="stats-top"><h2 data-sv="Statistik" data-fr="Statistiques" data-en="Statistics">Statistik</h2><button class="clear-btn" onclick="confirmClear()" data-sv="Rensa allt" data-fr="Tout effacer" data-en="Clear all">Rensa allt</button></div><div class="stats-nav"><button class="snav-btn active" onclick='switchStatsTab("overview")' data-sv="Översikt" data-fr="Aperçu" data-en="Overview">Översikt</button> <button class="snav-btn" onclick='switchStatsTab("exercises")' data-sv="Övningar" data-fr="Exercices" data-en="Exercises">Övningar</button> <button class="snav-btn" onclick='switchStatsTab("history")' data-sv="Historik" data-fr="Historique" data-en="History">Historik</button></div><div class="stats-section active" id="stats-overview"><div class="overview-cards"><div class="ov-card"><span class="ov-val" id="ovTotalSessions" style="color:var(--accent)">0</span> <span class="ov-lbl" data-sv="Sessioner" data-fr="Sessions" data-en="Sessions">Sessioner</span></div><div class="ov-card"><span class="ov-val" id="ovTotalThrows" style="color:var(--mid)">0</span> <span class="ov-lbl" data-sv="Kast" data-fr="Lancer" data-en="Throws">Kast</span></div><div class="ov-card"><span class="ov-val" id="ovTotalPct" style="color:var(--ok)">–</span> <span class="ov-lbl" data-sv="Totalt %" data-fr="Total %" data-en="Total %">Totalt %</span></div></div><div class="records-wrap"><p class="rec-title" data-sv="Personliga rekord" data-fr="Records personnels" data-en="Personal Records">Personliga rekord</p><div class="rec-grid"><div class="rec-card rec-prec"><div class="rec-dist-lbl" data-sv="Bästa precision" data-fr="Meilleure précision" data-en="Best Precision">Bästa precision</div><div class="rec-val" id="recBestPct" style="color:var(--ok)">–</div><div class="rec-sub" id="recBestPctSub">–</div></div><div class="rec-card rec-zone"><div class="rec-dist-lbl" data-sv="Bästa zonträff" data-fr="Meilleure zone" data-en="Best Zone">Bästa zonträff</div><div class="rec-val" id="recBestZone" style="color:var(--mid)">–</div><div class="rec-sub" id="recBestZoneSub">–</div></div><div class="rec-card rec-serie"><div class="rec-dist-lbl" data-sv="Bästa serie" data-fr="Meilleure série" data-en="Best Series">Bästa serie</div><div class="rec-val" id="recBestSerie" style="color:var(--purple)">–</div><div class="rec-sub" id="recBestSerieSub">–</div></div><div class="rec-card rec-streak"><div class="rec-dist-lbl" data-sv="Längsta svit" data-fr="Plus longue série" data-en="Longest Streak">Längsta svit</div><div class="rec-val" id="recStreak" style="color:var(--accent)">–</div><div class="rec-sub" id="recStreakSub">–</div></div></div></div></div><div class="stats-section" id="stats-exercises"><div class="ex-breakdown" id="exBreakdown"></div></div><div class="stats-section" id="stats-history"><div class="history-list" id="historyList"></div></div></div></div><div class="overlay" id="resultOverlay"><div class="sheet"><h2 id="resultTitle">Session klar!</h2><p id="resultSub"></p><div class="pct-display"><div class="pct-big" id="resultPct">–</div><div class="pct-lbl" data-sv="Godkänd" data-fr="Réussi" data-en="Pass rate">Godkänd</div></div><div class="sheet-stat"><span data-sv="Godkända" data-fr="Réussis" data-en="Passed">Godkända</span><span class="sv" id="resOk">–</span></div><div class="sheet-stat"><span data-sv="Underkända" data-fr="Ratés" data-en="Failed">Underkända</span><span class="sv" id="resFail">–</span></div><div class="sheet-stat"><span data-sv="Avstånd" data-fr="Distance" data-en="Distance">Avstånd</span><span class="sv" id="resDist">–</span></div><div class="sheet-stat" id="resNewRecordRow" style="display:none"><span data-sv="🏆 Nytt rekord!" data-fr="🏆 Nouveau record!" data-en="🏆 New Record!">🏆 Nytt rekord!</span><span class="sv" id="resNewRecord">–</span></div><div class="sheet-actions"><button class="mbtn mbtn-ghost" onclick="shareLaggResult()">📤 <span data-sv="Dela resultat" data-fr="Partager le résultat" data-en="Share result">Dela resultat</span></button> <button class="mbtn mbtn-accent" onclick="trackCompleteLaggTraining(),closeResult(!0)" data-sv="Ny session" data-fr="Nouvelle session" data-en="New Session">Ny session</button> <button class="mbtn mbtn-ghost" onclick="closeResult(!1)" data-sv="Se statistik" data-fr="Voir les statistiques" data-en="View Stats">Se statistik</button></div></div></div><div class="overlay" id="clearOverlay"><div class="sheet"><h2 data-sv="Rensa historik?" data-fr="Effacer l'historique?" data-en="Clear history?">Rensa historik?</h2><p data-sv="All träningsdata för läggträning raderas permanent." data-fr="Toutes les données d'entraînement seront définitivement supprimées." data-en="All pointing training data will be permanently deleted.">All träningsdata för läggträning raderas permanent.</p><div class="sheet-actions"><button class="mbtn mbtn-danger" onclick="clearAll()" data-sv="Ja, rensa" data-fr="Oui, effacer" data-en="Yes, clear">Ja, rensa</button> <button class="mbtn mbtn-ghost" onclick='document.getElementById("clearOverlay").classList.remove("show")' data-sv="Avbryt" data-fr="Annuler" data-en="Cancel">Avbryt</button></div></div></div><script>let lang=localStorage.getItem("petanque-lang")||localStorage.getItem("pt_lang")||localStorage.getItem("lang")||"sv";function applyLang(){document.querySelectorAll("[data-sv]").forEach(e=>{e.textContent="fr"===lang?(e.dataset.fr||e.dataset.sv):"en"===lang?(e.dataset.en||e.dataset.sv):e.dataset.sv});["sv","en","fr"].forEach(l=>{const b=document.getElementById("btn-"+l);if(b){b.style.color=l===lang?"var(--accent)":"";b.style.borderColor=l===lang?"var(--accent)":"";b.style.fontWeight=l===lang?"900":"600";}});document.documentElement.lang=lang}function setLangLagg(l){lang=l;localStorage.setItem("petanque-lang",l);localStorage.setItem("pt_lang",l);localStorage.setItem("lang",l);applyLang();state.active&&renderSession();renderStats();}function toggleLang(){lang="sv"===lang?"en":"en"===lang?"fr":"sv";setLangLagg(lang);}function switchTab(t){var e=document.querySelector(".tab-content.active");e&&e.classList.add("hidden"),["train","stats"].forEach(e=>{document.getElementById("tab-"+e).classList.toggle("active",e===t)}),setTimeout(()=>{document.querySelectorAll(".tab-content").forEach(e=>e.classList.remove("hidden")),document.getElementById("tab-"+t+"-content").classList.add("active"),"stats"===t&&renderStats()},200)}function animateNumber(a,o,r,i){if(a){let s=performance.now(),n=e=>{var e=e-s,e=Math.min(e/i,1),t=1-Math.pow(1-e,3),t=Math.round(o+(r-o)*t);a.textContent=t,a.classList.add("number-animated"),e<1?requestAnimationFrame(n):a.textContent=r};requestAnimationFrame(n)}}function animatePercentage(a,o,r,i,l=""){if(a){let s=performance.now(),n=e=>{var e=e-s,e=Math.min(e/i,1),t=1-Math.pow(1-e,3),t=Math.round(o+(r-o)*t);a.textContent=t+l,a.classList.add("number-animated"),e<1?requestAnimationFrame(n):a.textContent=r+l};requestAnimationFrame(n)}}function switchStatsTab(s){var e=document.querySelector(".stats-section.active");e&&e.classList.add("hidden"),document.querySelectorAll(".snav-btn").forEach((e,t)=>e.classList.toggle("active",["overview","exercises","history"][t]===s)),setTimeout(()=>{document.querySelectorAll(".stats-section").forEach(e=>e.classList.remove("active","hidden")),document.getElementById("stats-"+s).classList.add("active")},200)}applyLang();
+
+// ══════════════════════════════════════════
+// AVSTÅNDSZONER (för övningen "Avståndszoner")
+// ══════════════════════════════════════════
+let ZONES = [
+  {id:"near",sv:"Nära",en:"Near",fr:"Proche",desc_sv:"0–20 cm från målkulan",desc_en:"0–20 cm from the jack",desc_fr:"0–20 cm du cochonnet",color:"zone-near"},
+  {id:"mid",sv:"Mitt",en:"Mid",fr:"Milieu",desc_sv:"20–40 cm från målkulan",desc_en:"20–40 cm from the jack",desc_fr:"20–40 cm du cochonnet",color:"zone-mid"},
+  {id:"far",sv:"Långt",en:"Far",fr:"Loin",desc_sv:"40–60 cm från målkulan",desc_en:"40–60 cm from the jack",desc_fr:"40–60 cm du cochonnet",color:"zone-far"}
+];
+
+// ══════════════════════════════════════════
+// AVSTÅNDSSTEGEN (för övningen "Avståndsstegen")
+// Övningen kör automatiskt igenom dessa avstånd i tur och ordning,
+// med ett bestämt antal kast på varje avstånd.
+// ══════════════════════════════════════════
+let LADDER_RUNGS = [6, 7, 8, 9, 10];
+let LADDER_THROWS_PER_RUNG = 3;
+
+// Namn på alla övningar, på svenska/engelska/franska
+let EX_NAMES = {
+  precision:   {sv:"Precisionsmål",     en:"Precision Goal",     fr:"Objectif de précision"},
+  zones:       {sv:"Avståndszoner",     en:"Distance Zones",     fr:"Zones de distance"},
+  serie:       {sv:"3-boulerserie",     en:"3-Boule Series",     fr:"Série de 3 boules"},
+  corridor:    {sv:"Riktningskorridor", en:"Direction Corridor", fr:"Couloir de direction"},
+  ladder:      {sv:"Avståndsstegen",    en:"Distance Ladder",    fr:"Échelle des distances"},
+  landingzone: {sv:"Landningszon",      en:"Landing Zone",       fr:"Zone d'atterrissage"}
+};
+
+// state = allt som gäller just nu, under en pågående session
+let state = {
+  active: false, ex: null, dist: 6, totalThrows: 9, throws: [],
+  currentZone: null, serieBoules: [], serieRound: 0, serieBest: 0
+};
+
+// settings = det spelaren har valt i inställningarna innan sessionen startar
+let settings = { throws: 9, dist: 6 };
+
+// Väljer vilken övning som ska tränas, och visar/döljer rätt inställningar.
+// Avståndsstegen har fasta, inbyggda avstånd - då behövs inte knapparna
+// för "Antal kast" och "Avstånd" som vanligt, så de döljs och en
+// informationsruta visas istället.
+function selectEx(el) {
+  document.querySelectorAll(".ex-card").forEach(c => {
+    c.classList.remove("selected");
+    c.querySelector(".ex-check").textContent = "";
+  });
+  el.classList.add("selected");
+  el.querySelector(".ex-check").textContent = "✓";
+  state.ex = el.dataset.ex;
+  document.getElementById("startBtn").disabled = false;
+
+  var settingsRow = document.getElementById("settingsRow");
+  var ladderInfo = document.getElementById("ladderInfo");
+  if (state.ex === "ladder") {
+    settingsRow.style.display = "none";
+    ladderInfo.style.display = "block";
+  } else {
+    settingsRow.style.display = "grid";
+    ladderInfo.style.display = "none";
+  }
+}
+
+function adjThrows(n) {
+  settings.throws = Math.max(3, Math.min(30, settings.throws + n));
+  document.getElementById("throwsVal").textContent = settings.throws;
+}
+
+function selectDist(el) {
+  document.querySelectorAll(".dist-pill").forEach(p => p.classList.remove("active"));
+  el.classList.add("active");
+  settings.dist = parseInt(el.dataset.d);
+}
+
+function startSession() {
+  state.active = true;
+  state.throws = [];
+  state.serieBoules = [];
+  state.serieRound = 1;
+  state.serieBest = 0;
+
+  if (state.ex === "ladder") {
+    // Avståndsstegen: fast antal kast totalt, avståndet ändras under sessionen
+    state.totalThrows = LADDER_RUNGS.length * LADDER_THROWS_PER_RUNG;
+    state.dist = LADDER_RUNGS[0] + "–" + LADDER_RUNGS[LADDER_RUNGS.length - 1];
+  } else {
+    state.dist = settings.dist;
+    state.totalThrows = settings.throws;
+  }
+
+  document.getElementById("setupView").style.display = "none";
+  document.getElementById("sessionView").style.display = "block";
+  renderSession();
+}
+
+// Hjälpfunktioner för Avståndsstegen: vilket steg (avstånd) är vi på just nu?
+function getCurrentRungIndex() {
+  var idx = Math.floor(state.throws.length / LADDER_THROWS_PER_RUNG);
+  return Math.min(idx, LADDER_RUNGS.length - 1);
+}
+function getCurrentRungDist() {
+  return LADDER_RUNGS[getCurrentRungIndex()];
+}
+
+function renderSession() {
+  var exInfo = EX_NAMES[state.ex];
+  document.getElementById("sessionExName").textContent = "sv" === lang ? exInfo.sv : exInfo.en;
+  document.getElementById("sessionDistLabel").textContent = state.dist + "m";
+
+  var done = state.throws.length;
+  var total = (state.ex === "serie" || state.ex === "landingzone") ? 3 * state.totalThrows : state.totalThrows;
+  var pct = total > 0 ? Math.round(done / total * 100) : 0;
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressText").textContent = done + " / " + total;
+  document.getElementById("progressPct").textContent = pct + "%";
+  renderBoules();
+
+  // Visa rätt extra-panel beroende på övning: zon, avståndssteg eller serie
+  var zoneDisplay = document.getElementById("zoneDisplay");
+  var serieInfo = document.getElementById("serieInfo");
+  var rungDisplay = document.getElementById("rungDisplay");
+  zoneDisplay.style.display = "none";
+  serieInfo.style.display = "none";
+  rungDisplay.style.display = "none";
+
+  if (state.ex === "zones") {
+    zoneDisplay.style.display = "block";
+    if (!state.currentZone) pickZone();
+    renderZone();
+  } else if (state.ex === "ladder") {
+    rungDisplay.style.display = "block";
+    renderRung();
+  } else if (state.ex === "serie" || state.ex === "landingzone") {
+    serieInfo.style.display = "block";
+    renderSerie();
+  }
+
+  var okCount = state.throws.filter(t => t.ok).length;
+  var failCount = state.throws.filter(t => !t.ok).length;
+  document.getElementById("liveOk").textContent = okCount;
+  document.getElementById("liveFail").textContent = failCount;
+}
+
+function renderBoules() {
+  var wrap = document.getElementById("bouleWrap");
+  var total = (state.ex === "serie" || state.ex === "landingzone") ? 3 * state.totalThrows : state.totalThrows;
+  wrap.innerHTML = "";
+  for (var i = 0; i < total; i++) {
+    var b = document.createElement("div");
+    b.className = "boule";
+    if (i < state.throws.length) {
+      b.classList.add(state.throws[i].ok ? "ok" : "fail");
+      b.textContent = state.throws[i].ok ? "✓" : "✗";
+    } else if (i === state.throws.length) {
+      b.classList.add("current");
+    }
+    wrap.appendChild(b);
+  }
+}
+
+function pickZone() {
+  state.currentZone = ZONES[Math.floor(Math.random() * ZONES.length)];
+}
+
+function renderZone() {
+  var z = state.currentZone;
+  if (!z) return;
+  var nameEl = document.getElementById("zoneName");
+  nameEl.textContent = "fr" === lang ? (z.fr || z.sv) : "sv" === lang ? z.sv : z.en;
+  nameEl.className = "zone-name " + z.color;
+  document.getElementById("zoneDesc").textContent = "fr" === lang ? (z.desc_fr || z.desc_sv) : "sv" === lang ? z.desc_sv : z.desc_en;
+}
+
+// Visar vilket avstånd som gäller just nu i Avståndsstegen
+function renderRung() {
+  var dist = getCurrentRungDist();
+  var throwInRung = state.throws.length % LADDER_THROWS_PER_RUNG;
+  document.getElementById("rungDist").textContent = dist + "m";
+  document.getElementById("rungProgress").textContent =
+    ("sv" === lang ? "Kast " : "Throw ") + (throwInRung + 1) + " / " + LADDER_THROWS_PER_RUNG;
+}
+
+function renderSerie() {
+  var round = state.serieRound;
+  var count = state.serieBoules.length;
+  document.getElementById("serieRoundLabel").textContent =
+    ("sv" === lang ? "Omgång " : "Round ") + round + " · Boule " + (count + 1) + "/3";
+  var wrap = document.getElementById("serieBoules");
+  wrap.innerHTML = "";
+  for (var i = 0; i < 3; i++) {
+    var s = document.createElement("div");
+    s.className = "serie-slot";
+    if (i < count) {
+      s.classList.add(state.serieBoules[i] ? "ok" : "fail");
+      s.textContent = state.serieBoules[i] ? "✓" : "✗";
+    } else if (i === count) {
+      s.classList.add("active");
+      s.textContent = "·";
+    }
+    wrap.appendChild(s);
+  }
+  document.getElementById("serieBestLabel").innerHTML =
+    ("sv" === lang ? "Bäst i serie: " : "Best in series: ") + "<span>" + state.serieBest + "/3</span>";
+}
+
+function registerResult(ok) {
+  if (state.ex === "serie" || state.ex === "landingzone") {
+    // Övningar med tre kast per omgång
+    state.serieBoules.push(ok);
+    state.throws.push({ok: ok});
+    if (state.serieBoules.length === 3) {
+      var passedInRound = state.serieBoules.filter(Boolean).length;
+      if (passedInRound > state.serieBest) state.serieBest = passedInRound;
+      if (state.serieRound >= state.totalThrows) {
+        finishSession();
+        return;
+      }
+      state.serieBoules = [];
+      state.serieRound++;
+    }
+  } else {
+    var throwData = {ok: ok};
+    if (state.ex === "zones") {
+      throwData.zone = state.currentZone ? state.currentZone.id : undefined;
+    }
+    if (state.ex === "ladder") {
+      throwData.dist = getCurrentRungDist();
+    }
+    state.throws.push(throwData);
+    if (state.ex === "zones") pickZone();
+    if (state.throws.length >= state.totalThrows) {
+      finishSession();
+      return;
+    }
+  }
+  renderSession();
+}
+
+function undoLast() {
+  if (!state.throws.length) return;
+  state.throws.pop();
+  var isGrouped = (state.ex === "serie" || state.ex === "landingzone");
+  if (isGrouped && state.serieBoules.length > 0) {
+    state.serieBoules.pop();
+  } else if (isGrouped && state.serieRound > 1) {
+    state.serieRound--;
+    state.serieBoules = [state.throws[state.throws.length - 2]?.ok, state.throws[state.throws.length - 1]?.ok].filter(v => v !== undefined);
+  }
+  renderSession();
+}
+
+function finishSession() {
+  var throws = state.throws;
+  var okCount = throws.filter(t => t.ok).length;
+  var pct = throws.length > 0 ? Math.round(okCount / throws.length * 100) : 0;
+
+  var streak = 0, currentStreak = 0;
+  throws.forEach(t => {
+    if (t.ok) { currentStreak++; if (currentStreak > streak) streak = currentStreak; }
+    else { currentStreak = 0; }
+  });
+
+  var session = {
+    date: new Date().toISOString(),
+    ex: state.ex,
+    dist: state.dist,
+    throws: throws.length,
+    ok: okCount,
+    fail: throws.length - okCount,
+    pct: pct,
+    streak: streak,
+    serieBest: state.serieBest
+  };
+
+  // För Avståndsstegen: räkna ut hur många kast som godkändes på varje
+  // enskilt avstånd, så vi kan visa det i statistiken senare.
+  if (state.ex === "ladder") {
+    session.rungBreakdown = LADDER_RUNGS.map(function (d) {
+      var atDist = throws.filter(t => t.dist === d);
+      return {dist: d, ok: atDist.filter(t => t.ok).length, total: atDist.length};
+    });
+  }
+
+  saveSession(session);
+
+  var records = getRecords();
+  var newRecordText = null;
+  if (state.ex === "precision" && pct > (records.precision?.pct || 0)) {
+    records.precision = {pct: pct, dist: state.dist, date: session.date};
+    newRecordText = pct + "%";
+  }
+  if (state.ex === "zones" && pct > (records.zones?.pct || 0)) {
+    records.zones = {pct: pct, dist: state.dist, date: session.date};
+    newRecordText = pct + "%";
+  }
+  if (state.ex === "serie" && state.serieBest > (records.serieBest?.val || 0)) {
+    records.serieBest = {val: state.serieBest, dist: state.dist, date: session.date};
+    newRecordText = state.serieBest + "/3";
+  }
+  if (streak > (records.streak?.val || 0)) {
+    records.streak = {val: streak, dist: state.dist, date: session.date};
+  }
+  saveRecords(records);
+
+  var exInfo = EX_NAMES[state.ex];
+  document.getElementById("resultTitle").textContent = "sv" === lang ? "Session klar! 🎯" : "Session done! 🎯";
+  document.getElementById("resultSub").textContent = "fr" === lang ? (exInfo.fr || exInfo.sv) : "sv" === lang ? exInfo.sv : exInfo.en;
+  document.getElementById("resultPct").textContent = pct + "%";
+  document.getElementById("resultPct").style.color = pct >= 70 ? "var(--ok)" : pct >= 40 ? "var(--mid)" : "var(--fail)";
+  document.getElementById("resOk").textContent = okCount;
+  document.getElementById("resFail").textContent = throws.length - okCount;
+  document.getElementById("resDist").textContent = state.dist + "m";
+
+  var recordRow = document.getElementById("resNewRecordRow");
+  if (newRecordText) {
+    recordRow.style.display = "flex";
+    document.getElementById("resNewRecord").textContent = newRecordText;
+  } else {
+    recordRow.style.display = "none";
+  }
+  document.getElementById("resultOverlay").classList.add("show");
+}
+
+function closeResult(startNew) {
+  document.getElementById("resultOverlay").classList.remove("show");
+  state.active = false;
+  state.throws = [];
+  state.serieBoules = [];
+  state.serieRound = 1;
+  state.serieBest = 0;
+  if (!startNew) switchTab("stats");
+  document.getElementById("sessionView").style.display = "none";
+  document.getElementById("setupView").style.display = "block";
+}
+
+function loadHistory() {
+  try { return JSON.parse(localStorage.getItem("pt_lagg_history") || "[]"); }
+  catch (e) { return []; }
+}
+function saveSession(session) {
+  var history = loadHistory();
+  history.unshift(session);
+  saveToFirebase("pt_lagg_history", history);
+}
+function getRecords() {
+  try { return JSON.parse(localStorage.getItem("pt_lagg_records") || "{}"); }
+  catch (e) { return {}; }
+}
+function saveRecords(records) {
+  saveToFirebase("pt_lagg_records", records);
+}
+
+function renderStats() {
+  var history = loadHistory();
+  var records = getRecords();
+
+  var totalSessions = history.length;
+  var totalThrows = history.reduce((sum, s) => sum + s.throws, 0);
+  var totalOk = history.reduce((sum, s) => sum + s.ok, 0);
+  var totalPct = totalThrows > 0 ? Math.round(totalOk / totalThrows * 100) : null;
+
+  animateNumber(document.getElementById("ovTotalSessions"), 0, totalSessions, 600);
+  animateNumber(document.getElementById("ovTotalThrows"), 0, totalThrows, 600);
+  if (totalPct !== null) {
+    animatePercentage(document.getElementById("ovTotalPct"), 0, totalPct, 600, "%");
+  } else {
+    document.getElementById("ovTotalPct").textContent = "–";
+  }
+  setTimeout(() => {
+    document.querySelectorAll(".ov-card").forEach(c => {
+      c.classList.add("card-pulse");
+      setTimeout(() => c.classList.remove("card-pulse"), 500);
+    });
+  }, 600);
+
+  var prec = records.precision;
+  document.getElementById("recBestPct").textContent = prec ? prec.pct + "%" : "–";
+  document.getElementById("recBestPctSub").textContent = prec ? prec.dist + "m · " + fmtDate(prec.date) : ("sv" === lang ? "Ingen ännu" : "None yet");
+
+  var zone = records.zones;
+  document.getElementById("recBestZone").textContent = zone ? zone.pct + "%" : "–";
+  document.getElementById("recBestZoneSub").textContent = zone ? zone.dist + "m · " + fmtDate(zone.date) : ("sv" === lang ? "Ingen ännu" : "None yet");
+
+  var serie = records.serieBest;
+  document.getElementById("recBestSerie").textContent = serie ? serie.val + "/3" : "–";
+  document.getElementById("recBestSerieSub").textContent = serie ? serie.dist + "m · " + fmtDate(serie.date) : ("sv" === lang ? "Ingen ännu" : "None yet");
+
+  var streak = records.streak;
+  document.getElementById("recStreak").textContent = streak ? streak.val : "–";
+  document.getElementById("recStreakSub").textContent = streak ? (("sv" === lang ? "i rad · " : "in a row · ") + fmtDate(streak.date)) : ("sv" === lang ? "Ingen ännu" : "None yet");
+
+  // Statistik per övning (fliken "Övningar")
+  var breakdown = document.getElementById("exBreakdown");
+  breakdown.innerHTML = "";
+  var exColors = {
+    precision: "var(--ok)",
+    zones: "var(--mid)",
+    serie: "var(--purple)",
+    corridor: "#5dd9ff",
+    ladder: "#ff9f45",
+    landingzone: "#ff6fd8"
+  };
+  ["precision", "zones", "serie", "corridor", "ladder", "landingzone"].forEach(function (exKey) {
+    var rows = history.filter(s => s.ex === exKey);
+    if (!rows.length) return;
+    var throwsSum = rows.reduce((sum, s) => sum + s.throws, 0);
+    var okSum = rows.reduce((sum, s) => sum + s.ok, 0);
+    var pct = Math.round(okSum / throwsSum * 100);
+    var name = EX_NAMES[exKey];
+    var color = exColors[exKey];
+
+    var extraLine = "";
+    if (exKey === "ladder") {
+      // Slå ihop alla omgångars resultat per avstånd, till en liten sammanfattning
+      var perDist = {};
+      LADDER_RUNGS.forEach(d => perDist[d] = {ok: 0, total: 0});
+      rows.forEach(s => {
+        (s.rungBreakdown || []).forEach(r => {
+          if (perDist[r.dist]) {
+            perDist[r.dist].ok += r.ok;
+            perDist[r.dist].total += r.total;
+          }
+        });
+      });
+      var parts = LADDER_RUNGS.filter(d => perDist[d].total > 0).map(d => {
+        var p = Math.round(perDist[d].ok / perDist[d].total * 100);
+        return d + "m: " + p + "%";
+      });
+      if (parts.length) {
+        extraLine = `<div style="font-size:0.75rem;color:var(--muted2);margin-top:6px;">${parts.join(" · ")}</div>`;
+      }
+    }
+
+    var row = document.createElement("div");
+    row.className = "ex-stat-row";
+    row.innerHTML = `
       <div class="ex-stat-top">
-        <span class="ex-stat-name">${"sv"===lang?n.sv:n.en}</span>
-        <span class="ex-stat-pct" style="color:${a[t]}">${s}%</span>
+        <span class="ex-stat-name">${"sv" === lang ? name.sv : name.en}</span>
+        <span class="ex-stat-pct" style="color:${color}">${pct}%</span>
       </div>
-      <div class="ex-bar-track"><div class="ex-bar-fill" style="width:${s}%;background:${a[t]}"></div></div>
-      <div style="font-size:0.75rem;color:var(--muted2);margin-top:8px;">${r.length} ${"sv"===lang?"sessioner · ":"sessions · "}${e} ${"sv"===lang?"kast":"throws"}</div>
-    `,l.appendChild(o))}),l.children.length||(l.innerHTML=`<div class="empty-state"><div class="empty-icon">🪃</div><div class="empty-text">${"sv"===lang?"Ingen data":"No data"}</div><div class="empty-sub">${"sv"===lang?"Starta en session för att se statistik.":"Start a session to see stats."}</div></div>`);let a=document.getElementById("historyList");a.innerHTML="",i.length?i.forEach(s=>{var e=Array.from({length:Math.min(s.throws,12)},(e,t)=>t<s.ok?'<span style="color:var(--ok)">●</span>':'<span style="color:var(--fail)">●</span>').join(""),t=EX_NAMES[s.ex],n=document.createElement("div");n.className="hist-item",n.innerHTML=`
-      <div class="hist-left">
-        <span class="hist-ex">${"sv"===lang?t.sv:t.en} · ${s.dist}m</span>
-        <span class="hist-meta">${fmtDate(s.date)}</span>
-        <span class="hist-dots">${e}</span>
-      </div>
-      <span class="hist-pct" style="color:${70<=s.pct?"var(--ok)":40<=s.pct?"var(--mid)":"var(--fail)"}">${s.pct}%</span>
-    `,a.appendChild(n)}):a.innerHTML=`<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">${"sv"===lang?"Ingen historik":"No history"}</div><div class="empty-sub">${"sv"===lang?"Dina sessioner sparas här.":"Your sessions will be saved here."}</div></div>`}function fmtDate(e){return new Date(e).toLocaleDateString("sv"===lang?"sv-SE":"en-GB",{day:"numeric",month:"short"})}function confirmClear(){document.getElementById("clearOverlay").classList.add("show")}function clearAll(){localStorage.removeItem("pt_lagg_history"),localStorage.removeItem("pt_lagg_records"),document.getElementById("clearOverlay").classList.remove("show"),renderStats()}function trackCompleteLaggTraining(){var e=localStorage.getItem("pt_lagg_history");e&&0!==(e=JSON.parse(e)).length&&(e=e[e.length-1].pct||0,gtag("event","complete_training",{training_type:"throw_training",duration_minutes:30,score:e,difficulty:"medium",timestamp:(new Date).toISOString(),session_id:getSessionId()}),console.log("📊 Event spårat: complete_training (throw_training, Score: "+e+"%)"))}function getSessionId(){let e=sessionStorage.getItem("ga_session_id");return e||(e="session_"+Date.now()+"_"+Math.random().toString(36).substr(2,9),sessionStorage.setItem("ga_session_id",e)),e}</script><!-- Firebase Config -->
+      <div class="ex-bar-track"><div class="ex-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+      <div style="font-size:0.75rem;color:var(--muted2);margin-top:8px;">${rows.length} ${"sv" === lang ? "sessioner · " : "sessions · "}${throwsSum} ${"sv" === lang ? "kast" : "throws"}</div>
+      ${extraLine}
+    `;
+    breakdown.appendChild(row);
+  });
+  if (!breakdown.children.length) {
+    breakdown.innerHTML = `<div class="empty-state"><div class="empty-icon">🪃</div><div class="empty-text">${"sv" === lang ? "Ingen data" : "No data"}</div><div class="empty-sub">${"sv" === lang ? "Starta en session för att se statistik." : "Start a session to see stats."}</div></div>`;
+  }
+
+  // Historik-listan
+  var historyList = document.getElementById("historyList");
+  historyList.innerHTML = "";
+  if (history.length) {
+    history.forEach(s => {
+      var dots = Array.from({length: Math.min(s.throws, 12)}, (_, i) =>
+        i < s.ok ? '<span style="color:var(--ok)">●</span>' : '<span style="color:var(--fail)">●</span>'
+      ).join("");
+      var name = EX_NAMES[s.ex];
+      var item = document.createElement("div");
+      item.className = "hist-item";
+      item.innerHTML = `
+        <div class="hist-left">
+          <span class="hist-ex">${"sv" === lang ? name.sv : name.en} · ${s.dist}m</span>
+          <span class="hist-meta">${fmtDate(s.date)}</span>
+          <span class="hist-dots">${dots}</span>
+        </div>
+        <span class="hist-pct" style="color:${s.pct >= 70 ? "var(--ok)" : s.pct >= 40 ? "var(--mid)" : "var(--fail)"}">${s.pct}%</span>
+      `;
+      historyList.appendChild(item);
+    });
+  } else {
+    historyList.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">${"sv" === lang ? "Ingen historik" : "No history"}</div><div class="empty-sub">${"sv" === lang ? "Dina sessioner sparas här." : "Your sessions will be saved here."}</div></div>`;
+  }
+}
+
+function fmtDate(d) {
+  return new Date(d).toLocaleDateString("sv" === lang ? "sv-SE" : "en-GB", {day: "numeric", month: "short"});
+}
+
+function confirmClear() {
+  document.getElementById("clearOverlay").classList.add("show");
+}
+function clearAll() {
+  // Sparar tomma listor (istället för att bara ta bort lokalt), så att
+  // rensningen även syns i databasen om du är inloggad.
+  saveToFirebase("pt_lagg_history", []);
+  saveToFirebase("pt_lagg_records", {});
+  document.getElementById("clearOverlay").classList.remove("show");
+  renderStats();
+}
+
+function trackCompleteLaggTraining() {
+  var raw = localStorage.getItem("pt_lagg_history");
+  if (!raw) return;
+  var history = JSON.parse(raw);
+  if (history.length === 0) return;
+  var score = history[history.length - 1].pct || 0;
+  gtag("event", "complete_training", {
+    training_type: "throw_training",
+    duration_minutes: 30,
+    score: score,
+    difficulty: "medium",
+    timestamp: new Date().toISOString(),
+    session_id: getSessionId()
+  });
+  console.log("📊 Event spårat: complete_training (throw_training, Score: " + score + "%)");
+}
+
+function getSessionId() {
+  var id = sessionStorage.getItem("ga_session_id");
+  if (!id) {
+    id = "session_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9);
+    sessionStorage.setItem("ga_session_id", id);
+  }
+  return id;
+}
+</script><!-- Firebase Config -->
 <script>
   const firebaseConfig = {
     apiKey: "AIzaSyCwzdwGEjN5LVw3RSLz2dy7f70Reafbe2c",
@@ -30,5 +533,47 @@
   if (typeof initSyncManager === 'function') {
     initSyncManager(firebaseConfig);
   }
+</script>
+<script>
+// ══════════════════════════════════════════
+// DELA RESULTAT TILL SOCIALA MEDIER
+// ══════════════════════════════════════════
+
+// Delar via telefonens delningsmeny (Web Share API). Fungerar inte i alla
+// webbläsare på dator, så då kopieras texten till urklipp istället.
+function shareOrCopy(text, url) {
+  if (navigator.share) {
+    navigator.share({ title: 'Petanque Träning', text: text, url: url }).catch(function (err) {
+      // AbortError = användaren ångrade delningen, inget fel att visa då
+      if (err && err.name !== 'AbortError') {
+        console.warn('Delning misslyckades:', err);
+      }
+    });
+  } else if (navigator.clipboard) {
+    var msg = lang === 'sv'
+      ? 'Text kopierad! Klistra in där du vill dela.'
+      : lang === 'fr'
+      ? 'Texte copié ! Collez-le où vous voulez le partager.'
+      : 'Text copied! Paste it wherever you want to share.';
+    navigator.clipboard.writeText(text + ' ' + url).then(function () {
+      alert(msg);
+    }).catch(function (e) {
+      console.warn('Kunde inte kopiera text:', e);
+    });
+  }
+}
+
+function shareLaggResult() {
+  var pct = document.getElementById('resultPct').textContent;
+  var ok = document.getElementById('resOk').textContent;
+  var fail = document.getElementById('resFail').textContent;
+  var dist = document.getElementById('resDist').textContent;
+  var text = lang === 'sv'
+    ? 'Jag tränade läggträning i Petanque Träning: ' + pct + ' godkända på ' + dist + ' (' + ok + ' godkända, ' + fail + ' underkända)! 🪃'
+    : lang === 'fr'
+    ? "J'ai fait un entraînement de pointage dans Petanque Training : " + pct + ' de réussite à ' + dist + ' (' + ok + ' réussis, ' + fail + ' ratés) ! 🪃'
+    : 'I trained pointing in Petanque Training: ' + pct + ' pass rate at ' + dist + ' (' + ok + ' passed, ' + fail + ' failed)! 🪃';
+  shareOrCopy(text, 'https://petanquetraning.se');
+}
 </script>
 </body></html>
