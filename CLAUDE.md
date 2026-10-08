@@ -15,7 +15,7 @@
 - Analys: Google Analytics
 
 ## Nuvarande status
-- Språk: Svenska (SV), Engelska (EN), Spanska (ES)
+- Språk: Svenska (SV), Engelska (EN), Franska (FR)
 - Språkväljare finns ENDAST på index.html
 - Offline-läge ska alltid fungera
 
@@ -28,13 +28,13 @@
 
 ## Viktiga arbetsflöden
 1. Höj versionsnumret i `sw.js` vid varje ändring → tvingar fram ny cache hos användarna
-2. Lägg till `data-sv` / `data-en` / `data-es` på ALLA nya textelement
+2. Lägg till `data-sv` / `data-en` / `data-fr` på ALLA nya textelement
 3. Testa lokalt innan ändringar laddas upp till GitHub
 4. Avinstallera/installera om appen på mobilen för att se en ny version där
 
 ## Prioriteringar (i ordning)
 1. Håll appen fungerande – inga trasiga filer!
-2. Alla tre språk (SV/EN/ES) ska fungera överallt
+2. Alla tre språk (SV/EN/FR) ska fungera överallt
 3. Smidig PWA-installation
 4. Offline-funktionen ska bevaras
 5. Analysspårningen ska fungera
@@ -57,9 +57,9 @@
 - "Förklara vad `storage-manager.js` gör, steg för steg, utan att anta att jag kan JavaScript sen innan."
 - "Gå igenom `sync-manager.js` och berätta i vanlig text vad den synkar och när."
 
-**Språk (SV/EN/ES):**
-- "Hitta alla textelement i [filnamn] som saknar `data-en` eller `data-es`, och lista dem åt mig. Ändra inget än."
-- "Lägg till svenska, engelska och spanska översättningar för de textrader du precis listade, enligt samma mönster som i `laggtraning.html`."
+**Språk (SV/EN/FR):**
+- "Hitta alla textelement i [filnamn] som saknar `data-en` eller `data-fr`, och lista dem åt mig. Ändra inget än."
+- "Lägg till svenska, engelska och franska översättningar för de textrader du precis listade, enligt samma mönster som i `laggtraning.html`."
 
 **Buggar och underhåll:**
 - "Jag får [beskriv felet] när jag gör X i appen. Hitta orsaken och föreslå en lösning innan du ändrar något."
