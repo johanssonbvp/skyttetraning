@@ -19,6 +19,7 @@ const CORE_FILES = [
   './tavlingssimulator.html',
   './dagbok.html',
   './precisionsskytte.html',
+  './uppvarmning.html',
   './faq.html',
   './storage-manager.js',
   './lang-manager.js',
