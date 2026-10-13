@@ -1513,21 +1513,65 @@ document.addEventListener('keypress', function(e) {
 });
 
 
-function logout() {
-  if (confirm({sv:'Är du säker på att du vill logga ut?', en:'Are you sure you want to log out?', fr:'Voulez-vous vraiment vous déconnecter?'}[localStorage.getItem('petanque-lang')||'sv']||'Är du säker på att du vill logga ut?')) {
-    firebase.auth().signOut().then(() => {
-      localStorage.removeItem('pt_trainer_code');
-      localStorage.removeItem('trainer-code');
-      localStorage.removeItem('pt_matches_v2'); // Rensa cachead match-data vid logout
-      // Visa auth-modal direkt utan reload
-      const authModal = document.getElementById('auth-modal');
-      if (authModal) {
-        authModal.style.display = 'flex';
-        showTab('login');
-      }
-    }).catch((e) => {
-      console.error('Logout error:', e);
-    });
+// Text på rätt språk (sv/en/fr) för meddelanden som skapas i koden
+function logoutText(sv, en, fr) {
+  const lang = localStorage.getItem('petanque-lang') || 'sv';
+  return ({ sv: sv, en: en, fr: fr })[lang] || sv;
+}
+
+async function logout() {
+  if (!confirm(logoutText('Är du säker på att du vill logga ut?', 'Are you sure you want to log out?', 'Voulez-vous vraiment vous déconnecter?'))) return;
+
+  // 1. Skicka upp allt som väntar på att sparas i molnet
+  let failed = [];
+  try {
+    if (typeof flushSync === 'function') failed = (await flushSync()).failed;
+  } catch (e) {
+    console.error('Synk vid utloggning misslyckades:', e);
+    failed = ['okänt'];
+  }
+
+  // 2. Hann inte allt sparas: varna. Då rensas INGENTING från telefonen.
+  let rensaTelefonen = true;
+  if (failed.length > 0) {
+    const fortsatt = confirm(logoutText(
+      'Vissa pass hann inte sparas i molnet (kanske är du offline). Om du loggar ut nu ligger de kvar på den här telefonen. Logga in på samma konto igen för att spara dem. Loggar någon annan in på telefonen innan dess kan de hamna på fel konto. Logga ut ändå?',
+      'Some sessions could not be saved to the cloud (maybe you are offline). If you log out now they stay on this phone. Log in to the same account again to save them. If someone else logs in on this phone first, they may end up on the wrong account. Log out anyway?',
+      'Certaines séances n\'ont pas pu être enregistrées dans le cloud (vous êtes peut-être hors ligne). Si vous vous déconnectez, elles restent sur ce téléphone. Reconnectez-vous au même compte pour les enregistrer. Si quelqu\'un d\'autre se connecte avant, elles peuvent se retrouver sur le mauvais compte. Se déconnecter quand même ?'));
+    if (!fortsatt) return;
+    rensaTelefonen = false;
+  } else {
+    // 3. Dagbokens foton finns bara på telefonen och försvinner när den rensas
+    let foton = 0;
+    try { foton = JSON.parse(localStorage.getItem('pt_dagbok') || '[]').filter(e => e && e.photo).length; } catch (e) {}
+    if (foton > 0) {
+      const fortsatt = confirm(logoutText(
+        'Du har ' + foton + ' foto i dagboken som bara finns på den här telefonen. De tas bort när du loggar ut. Logga ut ändå?',
+        'You have ' + foton + ' photo(s) in your diary that only exist on this phone. They will be removed when you log out. Log out anyway?',
+        'Vous avez ' + foton + ' photo(s) dans votre journal qui n\'existent que sur ce téléphone. Elles seront supprimées à la déconnexion. Se déconnecter quand même ?'));
+      if (!fortsatt) return;
+    }
+  }
+
+  // 4. Logga ut och rensa
+  try {
+    await firebase.auth().signOut();
+  } catch (e) {
+    console.error('Logout error:', e);
+    return;
+  }
+  localStorage.removeItem('pt_trainer_code');
+  localStorage.removeItem('trainer-code');
+  // Allt är sparat i molnet: ta bort användarens pass från telefonen, så att
+  // nästa person som loggar in inte får dem
+  if (rensaTelefonen && typeof clearLocalUserData === 'function') clearLocalUserData();
+  else localStorage.removeItem('pt_matches_v2');   // som förut
+
+  // Visa auth-modal direkt utan reload
+  const authModal = document.getElementById('auth-modal');
+  if (authModal) {
+    authModal.style.display = 'flex';
+    showTab('login');
   }
 }
 

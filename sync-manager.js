@@ -258,14 +258,16 @@ function syncKey(key) {
     .catch(function(error) {
       console.warn('Synk misslyckades (försöker igen senare):', key, error.message);
       updateSyncBadge(false);
+      return false;
     });
   return syncChains[key];
 }
 
+// Ger true när nyckeln är helt synkad, annars false
 async function doSync(key) {
-  if (!database || !trainerCode) return;   // inte inloggad: bara lokalt
+  if (!database || !trainerCode) return false;   // inte inloggad: bara lokalt
   const cfg = SYNC_KEYS[key];
-  if (!cfg) return;
+  if (!cfg) return false;
 
   const base = 'coaches/' + trainerCode + '/';
   const read = function(p) {
@@ -324,6 +326,36 @@ async function doSync(key) {
   delete after.dirty[key];
   saveMeta(after);
   updateSyncBadge(true);
+  return true;
+}
+
+// ===== UTLOGGNING =====
+// Skickar upp allt som väntar och talar om vilka nycklar som INTE hann synkas.
+// Har telefonen inget nät vet vi att bara det som är markerat "väntar" saknas i molnet.
+async function flushSync() {
+  const keys = Object.keys(SYNC_KEYS);
+  const hasData = function(key) { return !isEmptyData(readJSON(key, null)); };
+
+  if (navigator.onLine === false) {
+    const dirty = loadMeta().dirty;
+    return { failed: keys.filter(function(k) { return dirty[k] && hasData(k); }), offline: true };
+  }
+
+  const results = await Promise.all(keys.map(function(k) {
+    return syncKey(k).then(function(ok) { return { key: k, ok: ok === true }; });
+  }));
+  const failed = results.filter(function(r) { return !r.ok && hasData(r.key); })
+    .map(function(r) { return r.key; });
+  return { failed: failed, offline: false };
+}
+
+// Tar bort all användardata från telefonen (efter att den synkats till molnet).
+// Används vid utloggning så att nästa person som loggar in inte får dina pass.
+function clearLocalUserData() {
+  Object.keys(SYNC_KEYS).forEach(function(key) { localStorage.removeItem(key); });
+  localStorage.removeItem(SYNC_META_KEY);
+  localStorage.removeItem('pt_s');   // pågående skjutpass (synkas inte)
+  Object.keys(knownKeys).forEach(function(key) { delete knownKeys[key]; });
 }
 
 function readFromFirebase(path, callback) {
