@@ -1,0 +1,10 @@
+{
+  "rules": {
+    "coaches": {
+      "$uid": {
+        ".read": "$uid.length > 20",
+        ".write": "$uid.length > 20"
+      }
+    }
+  }
+}

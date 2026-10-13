@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="sv"><script src="./auth-gate.js"></script>
 <script src="./storage-manager.js"></script> <script
 src="./lang-manager.js"></script> <script src="./offline-indicator.js"></script>
 <head>  
@@ -209,7 +209,7 @@ body::before {
 .bump{animation:bump 0.2s cubic-bezier(.4,0,.2,1);}
 </style>
 <!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script src="./sync-manager.js"></script>
 </head>
@@ -479,6 +479,14 @@ function clearHistory(){
   saveToFirebase('pt_precision_v2', []);
   renderStats();
 }
+
+// När synken hämtat nya serier från molnet (t.ex. från en annan telefon)
+// läser vi om listan, så att statistiken stämmer och inget skrivs över.
+window.addEventListener('pt-sync-updated',function(e){
+  if(e.detail.key!=='pt_precision_v2') return;
+  try{ history=JSON.parse(localStorage.getItem('pt_precision_v2')||'[]'); }catch(err){ history=[]; }
+  renderStats();
+});
 
 showGameView('start');
 </script>

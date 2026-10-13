@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="sv"><script src="./auth-gate.js"></script>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -227,7 +227,7 @@ body {
 .empty p { font-size: 0.9rem; line-height: 1.7; }
 </style>
 <!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script src="./sync-manager.js"></script>
 </head>
@@ -674,6 +674,14 @@ function clearHistory() {
   save();
   renderStats();
 }
+
+// När synken hämtat nya pass från molnet (t.ex. från en annan telefon)
+// läser vi om listan, så att statistiken stämmer och inget skrivs över.
+window.addEventListener('pt-sync-updated', e => {
+  if (e.detail.key !== STORAGE_KEY) return;
+  try { history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch (err) { history = []; }
+  renderStats();
+});
 
 renderStart();
 showView('start');

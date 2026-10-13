@@ -24,6 +24,8 @@ const CORE_FILES = [
   './storage-manager.js',
   './lang-manager.js',
   './offline-indicator.js',
+  './sync-manager.js',
+  './auth-gate.js',
   './sw.js',
   './icon-192.png',
   './icon-512.png',

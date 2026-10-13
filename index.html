@@ -3,24 +3,37 @@
 <head>
     <link rel="icon" href="petanque-logo.png">
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js">
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script>
 // ---- VÄLKOMSTMODAL ----
+// Konton som skapades innan välkomstrutan fungerade (den var trasig från 14 aug 2026)
+// räknas som redan "sedda", så att bara nya användare får se rutan.
+const WELCOME_START = new Date('2026-10-13T00:00:00Z');
+
+function isExistingAccount(user) {
+    const created = user && user.metadata && user.metadata.creationTime;
+    return !!created && new Date(created) < WELCOME_START;
+}
+
 function showWelcomeIfNew(user) {
     // Kolla Firebase — fungerar på alla enheter
     firebase.database().ref('coaches/' + user.uid + '/welcomeSeen').once('value').then(snap => {
         if (!snap.val()) {
-            document.getElementById('welcome-modal').classList.add('show');
-            if (typeof langMgr !== 'undefined') langMgr.apply();
             // Markera direkt som sedd i Firebase
             firebase.database().ref('coaches/' + user.uid + '/welcomeSeen').set(true);
+            // Gamla konton behöver inte se rutan
+            if (isExistingAccount(user)) return;
+            document.getElementById('welcome-modal').classList.add('show');
+            if (typeof langMgr !== 'undefined') langMgr.apply();
         }
     }).catch(() => {
         // Fallback till localStorage om Firebase inte svarar
         const key = 'welcome_shown_' + user.uid;
         if (!localStorage.getItem(key)) {
+            localStorage.setItem(key, '1');
+            if (isExistingAccount(user)) return;
             document.getElementById('welcome-modal').classList.add('show');
             if (typeof langMgr !== 'undefined') langMgr.apply();
-            localStorage.setItem(key, '1');
         }
     });
 }
@@ -60,6 +73,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 </script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <script src="./sync-manager.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1466,17 +1480,13 @@ function onUserLoggedIn(user) {
     syncBadge.style.color = '#4ade80';
   }
   
-  // Starta auto-sync
-  waitForFirebaseAndSync();
+  // Synken startas av sync-manager.js (initSyncManager ovan): slår ihop telefonen och molnet
 
   // Tagga användaren i OneSignal för segmenterade push-notiser
   tagUserInOneSignal(user);
 
   // Visa välkomstmodal för nya användare
   showWelcomeIfNew(user);
-
-  // Auto-restore: ladda ner Firebase-data till localStorage om lokalt är tomt
-  autoRestoreFromFirebase(uid);
 }
 
 // Uppdatera OneSignal-taggen has_match när en match sparas
@@ -1490,104 +1500,6 @@ function updateOneSignalMatchTag() {
     });
   } catch(e) {}
 }
-
-async function autoRestoreFromFirebase(uid) {
-  // Mappning Firebase-sökväg → localStorage-nyckel
-  const restoreMap = {
-    'shooting/history':   { key: 'pt_h',              check: arr => Array.isArray(arr) && arr.length > 0 },
-    'pointing/history':   { key: 'pt_lagg_history',   check: arr => Array.isArray(arr) && arr.length > 0 },
-    'pointing/records':   { key: 'pt_lagg_records',   check: v => v && typeof v === 'object' && Object.keys(v).length > 0 },
-    'diary':              { key: 'pt_dagbok',          check: arr => Array.isArray(arr) && arr.length > 0 },
-    'precision/history':  { key: 'pt_precision_v2',   check: arr => Array.isArray(arr) && arr.length > 0 },
-    'warmup/history':     { key: 'pt_warmup_v1',       check: arr => Array.isArray(arr) && arr.length > 0 },
-    'matches':             { key: 'pt_matches_v2',     check: arr => Array.isArray(arr) && arr.length > 0 },
-  };
-
-  let restored = 0;
-
-  for (const [fbPath, { key, check }] of Object.entries(restoreMap)) {
-    try {
-      // Kolla om det redan finns lokal data — skippa i så fall
-      const local = localStorage.getItem(key);
-      if (local) {
-        try {
-          const parsed = JSON.parse(local);
-          if (check(parsed)) continue; // Lokal data finns — inget att göra
-        } catch(e) {}
-      }
-
-      // Lokal data saknas — hämta från Firebase
-      const snap = await firebase.database()
-        .ref('coaches/' + uid + '/' + fbPath)
-        .once('value');
-      const fbData = snap.val();
-
-      if (fbData && check(fbData)) {
-        localStorage.setItem(key, JSON.stringify(fbData));
-        restored++;
-        console.log('[AutoRestore] Återställde', key, 'från Firebase');
-      }
-    } catch(e) {
-      console.warn('[AutoRestore] Kunde inte hämta', fbPath, e);
-    }
-  }
-
-  if (restored > 0) {
-    console.log('[AutoRestore] Återställde', restored, 'datatyper från Firebase');
-  }
-
-  // Efter restore — kolla om det finns lokal data som saknas i Firebase och ladda upp den
-  await autoBackupToFirebase(uid);
-}
-
-async function autoBackupToFirebase(uid) {
-  const backupMap = {
-    'pt_h':                { fbPath: 'shooting/history' },
-    'pt_lagg_history':     { fbPath: 'pointing/history' },
-    'pt_lagg_records':     { fbPath: 'pointing/records' },
-    'pt_dagbok':           { fbPath: 'diary' },
-    'pt_precision_v2':     { fbPath: 'precision/history' },
-    'pt_warmup_v1':        { fbPath: 'warmup/history' },
-    'pt_matches_v2':       { fbPath: 'matches' },
-  };
-
-  let backed = 0;
-
-  for (const [lsKey, { fbPath }] of Object.entries(backupMap)) {
-    try {
-      const local = localStorage.getItem(lsKey);
-      if (!local) continue;
-
-      const localData = JSON.parse(local);
-      const localCount = Array.isArray(localData) ? localData.length : Object.keys(localData).length;
-      if (localCount === 0) continue;
-
-      // Kolla vad som finns i Firebase
-      const snap = await firebase.database()
-        .ref('coaches/' + uid + '/' + fbPath)
-        .once('value');
-      const fbData = snap.val();
-      const fbCount = fbData ? (Array.isArray(fbData) ? fbData.length : Object.keys(fbData).length) : 0;
-
-      // Ladda upp om lokalt har mer data
-      if (localCount > fbCount) {
-        await firebase.database()
-          .ref('coaches/' + uid + '/' + fbPath)
-          .set(localData);
-        backed++;
-        console.log('[AutoBackup] Laddade upp', lsKey, '(' + localCount + ' poster) till Firebase');
-      }
-    } catch(e) {
-      console.warn('[AutoBackup] Kunde inte ladda upp', lsKey, e);
-    }
-  }
-
-  if (backed > 0) {
-    console.log('[AutoBackup] Säkerhetskopierade', backed, 'datatyper till Firebase');
-  }
-}
-
-
 
 // Enter-tangent support
 document.addEventListener('keypress', function(e) {
@@ -1780,217 +1692,6 @@ async function importAllData(event) {
 
 
 <script>
-async function syncLocalToFirebase() {
-  const code = localStorage.getItem('pt_trainer_code');
-  if (!code) {
-    alert({sv:'Du måste logga in först!', en:'You must be logged in first!', fr:'Vous devez être connecté d\'abord!'}[localStorage.getItem('petanque-lang')||'sv']||'Du måste logga in först!');
-    return;
-  }
-  
-  if (typeof firebase === 'undefined' || !firebase.database) {
-    alert({sv:'Firebase är inte tillgänglig!', en:'Firebase is not available!', fr:'Firebase n\'est pas disponible!'}[localStorage.getItem('petanque-lang')||'sv']||'Firebase är inte tillgänglig!');
-    return;
-  }
-  
-  if (!confirm({sv:'Detta laddar upp ALL lokal data till Firebase. Befintlig Firebase-data kan skrivas över. Fortsätt?', en:'This will upload ALL local data to Firebase. Existing Firebase data may be overwritten. Continue?', fr:'Cela téléchargera TOUTES les données locales vers Firebase. Les données existantes peuvent être écrasées. Continuer?'}[localStorage.getItem('petanque-lang')||'sv']||'Fortsätt?')) {
-    return;
-  }
-  
-  const btn = document.getElementById('sync-up-btn');
-  if (btn) btn.textContent = '⏳ Synkar...';
-  
-  try {
-    let uploaded = 0;
-    
-    // Mappa localStorage keys till Firebase paths
-    const mappings = {
-      'pt_s': 'shooting/current',
-      'pt_h': 'shooting/history',
-      'pt_lagg_history': 'pointing/history',
-      'pt_lagg_records': 'pointing/records',
-      'pt_dagbok': 'diary',
-      'pt_precision_v2': 'precision/history',
-      'pt_warmup_v1': 'warmup/history',
-      'pt_matches_v2': 'matches',
-      'trainer-code': 'meta/trainerCode'
-    };
-    
-    for (const [localKey, firebasePath] of Object.entries(mappings)) {
-      const data = localStorage.getItem(localKey);
-      if (data) {
-        try {
-          const parsed = JSON.parse(data);
-          await firebase.database().ref('coaches/' + code + '/' + firebasePath).set(parsed);
-          uploaded++;
-          console.log('✅ Synced:', localKey, '→', firebasePath);
-        } catch (e) {
-          console.error('Fel för', localKey, e);
-        }
-      }
-    }
-    
-    if (btn) btn.textContent = '☁️ Synka till Firebase';
-    alert('✅ ' + uploaded + ' datasets synkade till Firebase!');
-    
-  } catch (error) {
-    console.error('Sync error:', error);
-    alert('❌ Fel: ' + error.message);
-    if (btn) btn.textContent = '☁️ Synka till Firebase';
-  }
-}
-
-async function syncFirebaseToLocal() {
-  const code = localStorage.getItem('pt_trainer_code');
-  if (!code) {
-    alert({sv:'Du måste logga in först!', en:'You must be logged in first!', fr:'Vous devez être connecté d\'abord!'}[localStorage.getItem('petanque-lang')||'sv']||'Du måste logga in först!');
-    return;
-  }
-  
-  if (typeof firebase === 'undefined') {
-    alert({sv:'Firebase är inte tillgänglig!', en:'Firebase is not available!', fr:'Firebase n\'est pas disponible!'}[localStorage.getItem('petanque-lang')||'sv']||'Firebase är inte tillgänglig!');
-    return;
-  }
-  
-  if (!confirm({sv:'Detta hämtar all data från Firebase till denna enhet. Lokal data kan skrivas över. Fortsätt?', en:'This will fetch all data from Firebase to this device. Local data may be overwritten. Continue?', fr:'Cela récupérera toutes les données depuis Firebase. Les données locales peuvent être écrasées. Continuer?'}[localStorage.getItem('petanque-lang')||'sv']||'Fortsätt?')) {
-    return;
-  }
-  
-  const btn = document.getElementById('sync-down-btn');
-  if (btn) btn.textContent = '⏳ Hämtar...';
-  
-  try {
-    const snapshot = await firebase.database().ref('coaches/' + code).once('value');
-    const data = snapshot.val();
-    
-    if (!data) {
-      alert({sv:'Ingen data hittades i Firebase för denna kod.', en:'No data found in Firebase for this code.', fr:'Aucune donnée trouvée dans Firebase pour ce code.'}[localStorage.getItem('petanque-lang')||'sv']||'Ingen data hittades.');
-      if (btn) btn.textContent = '⬇️ Hämta från Firebase';
-      return;
-    }
-    
-    // Mappa tillbaka
-    const reverseMappings = {
-      'shooting/current': 'pt_s',
-      'shooting/history': 'pt_h',
-      'pointing/history': 'pt_lagg_history',
-      'pointing/records': 'pt_lagg_records',
-      'diary': 'pt_dagbok',
-      'precision/history': 'pt_precision_v2',
-      'warmup/history': 'pt_warmup_v1',
-      'matches': 'pt_matches_v2'
-    };
-    
-    let downloaded = 0;
-    
-    function processData(obj, path = '') {
-      for (const key in obj) {
-        const fullPath = path ? path + '/' + key : key;
-        if (reverseMappings[fullPath]) {
-          localStorage.setItem(reverseMappings[fullPath], JSON.stringify(obj[key]));
-          downloaded++;
-          console.log('⬇️ Downloaded:', fullPath, '→', reverseMappings[fullPath]);
-        } else if (typeof obj[key] === 'object' && obj[key] !== null) {
-          processData(obj[key], fullPath);
-        }
-      }
-    }
-    
-    processData(data);
-    
-    alert('✅ ' + downloaded + ' datasets hämtade! Sidan laddas om.');
-    location.reload();
-    
-  } catch (error) {
-    console.error('Sync error:', error);
-    alert('❌ Fel: ' + error.message);
-    if (btn) btn.textContent = '⬇️ Hämta från Firebase';
-  }
-}
-</script>
-
-<script>
-// AUTO-SYNC: Körs när Firebase är redo och användaren är inloggad
-async function autoSync() {
-  const code = localStorage.getItem('pt_trainer_code');
-  if (!code || typeof firebase === 'undefined' || !firebase.database) return;
-  
-  console.log('🔄 Auto-sync startar...');
-  
-  const mappings = {
-    'pt_s': 'shooting/current',
-    'pt_h': 'shooting/history',
-    'pt_lagg_history': 'pointing/history',
-    'pt_lagg_records': 'pointing/records',
-    'pt_dagbok': 'diary',
-    'pt_precision_v2': 'precision/history',
-    'pt_warmup_v1': 'warmup/history',
-    // pt_matches_v2 (Poängräknaren) hanteras redan direkt av saveToFirebase() i tavlingssimulator.html - INTE autoSync
-  };
-  
-  try {
-    // 1. Hämta Firebase data
-    const snapshot = await firebase.database().ref('coaches/' + code).once('value');
-    const fbData = snapshot.val();
-    
-    let synced = 0;
-    
-    for (const [localKey, fbPath] of Object.entries(mappings)) {
-      const localData = localStorage.getItem(localKey);
-      const pathParts = fbPath.split('/');
-      let fbValue = fbData;
-      for (const part of pathParts) {
-        fbValue = fbValue?.[part];
-      }
-      
-      const localParsed = localData ? JSON.parse(localData) : null;
-      
-      // Bestäm vilken som är "större"/nyare
-      const localSize = localData ? localData.length : 0;
-      const fbSize = fbValue ? JSON.stringify(fbValue).length : 0;
-      
-      if (localSize > 0 && (!fbValue || localSize > fbSize)) {
-        // Lokal data är större → pusha upp
-        await firebase.database().ref('coaches/' + code + '/' + fbPath).set(localParsed);
-        synced++;
-        console.log('⬆️ Synced UP:', localKey);
-      } else if (fbValue && (!localData || fbSize > localSize)) {
-        // Firebase data är större → hämta ner
-        localStorage.setItem(localKey, JSON.stringify(fbValue));
-        synced++;
-        console.log('⬇️ Synced DOWN:', fbPath);
-      }
-    }
-    
-    if (synced > 0) {
-      console.log('✅ Auto-sync klar:', synced, 'datasets');
-      const badge = document.getElementById('sync-status-badge');
-      if (badge) {
-        badge.textContent = '✅ Synkat ' + synced + ' set';
-        setTimeout(() => {
-          badge.textContent = '☁️ Synkat';
-        }, 3000);
-      }
-    } else {
-      console.log('✅ Allt redan synkat');
-    }
-    
-  } catch (error) {
-    console.error('Auto-sync fel:', error);
-  }
-}
-
-// Kör auto-sync när Firebase är redo
-function waitForFirebaseAndSync() {
-  if (typeof firebase !== 'undefined' && firebase.database) {
-    setTimeout(autoSync, 1500); // Vänta lite för Firebase init
-  } else {
-    setTimeout(waitForFirebaseAndSync, 500);
-  }
-}
-
-// OBS: auto-sync startas från onAuthStateChanged vid login, inte här
-// window.addEventListener('load') tas bort för att undvika dubbel-sync
-
 // Backup/Restore via menu
 function openBackupMenu() {
   document.getElementById('backup-menu').style.display = 'flex';

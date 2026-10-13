@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="sv"><script src="./auth-gate.js"></script>
 <script src="./storage-manager.js"></script> <script
 src="./lang-manager.js"></script> <script src="./offline-indicator.js"></script>
 <head>
@@ -208,7 +208,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .clear-btn:hover{border-color:var(--fail);color:var(--fail);}
 </style>
 <!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script src="./sync-manager.js"></script>
 </head>
@@ -453,7 +453,10 @@ function applyLang() {
   document.querySelectorAll('[data-placeholder-sv]').forEach(el => {
     el.placeholder = lang==='sv' ? el.dataset.placeholderSv : el.dataset.placeholderEn;
   });
-  document.getElementById('langBtn').textContent = lang==='sv' ? '🌐 EN' : '🌐 SV';
+  // Språkknappen finns inte längre på sidan (språkval görs på startsidan).
+  // Utan den här kontrollen kraschar skriptet och matchen går inte att starta.
+  const langBtn = document.getElementById('langBtn');
+  if (langBtn) langBtn.textContent = lang==='sv' ? '🌐 EN' : '🌐 SV';
   document.documentElement.lang = lang;
 }
 function setLangApp(l) {
