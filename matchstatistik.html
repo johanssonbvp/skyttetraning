@@ -664,29 +664,29 @@
 <div class="container">
 
     <header style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px 0;">
-        <a href="./index.html" style="color:#ccc;text-decoration:none;font-size:0.85rem;padding:4px 8px;border-radius:8px;border:1px solid #333;">← <span data-sv="Hem" data-en="Home" data-fr="Accueil">Hem</span></a>
-        <h1 data-sv="Matchstatistik" data-fr="Statistiques de match" data-en="Match Statistics" style="margin:0;font-size:1.1rem;">Matchstatistik</h1>
+        <a href="./index.html" style="color:#ccc;text-decoration:none;font-size:0.85rem;padding:4px 8px;border-radius:8px;border:1px solid #333;">← <span data-sv="Hem" data-en="Home" data-fr="Accueil" data-de="Start">Hem</span></a>
+        <h1 data-sv="Matchstatistik" data-fr="Statistiques de match" data-en="Match Statistics" style="margin:0;font-size:1.1rem;" data-de="Matchstatistik">Matchstatistik</h1>
         <div style="width:60px;"></div>
     </header>
         <div class="match-meta">
             <div class="meta-item">
-                <div class="meta-label">MATCH-ID</div>
+                <div class="meta-label" data-sv="MATCH-ID" data-en="MATCH ID" data-fr="ID DU MATCH" data-de="SPIEL-ID">MATCH-ID</div>
                 <div class="meta-value" id="hdr-id">---</div>
             </div>
             <div class="meta-item">
-                <div class="meta-label" data-sv="STARTTID" data-en="START TIME" data-fr="DÉBUT">STARTTID</div>
+                <div class="meta-label" data-sv="STARTTID" data-en="START TIME" data-fr="DÉBUT" data-de="STARTZEIT">STARTTID</div>
                 <div class="meta-value" id="hdr-time">---</div>
             </div>
             <div class="meta-item">
-                <div class="meta-label" data-sv="VARAKTIGHET" data-en="DURATION" data-fr="DURÉE">VARAKTIGHET</div>
+                <div class="meta-label" data-sv="VARAKTIGHET" data-en="DURATION" data-fr="DURÉE" data-de="DAUER">VARAKTIGHET</div>
                 <div class="meta-value" id="hdr-dur">0 min</div>
             </div>
             <div class="meta-item">
-                <div class="meta-label" data-sv="OMGÅNG" data-fr="MANCHE" data-en="ROUND">OMGÅNG</div>
+                <div class="meta-label" data-sv="OMGÅNG" data-fr="MANCHE" data-en="ROUND" data-de="RUNDE">OMGÅNG</div>
                 <div class="meta-value" id="hdr-round" style="font-size: 24px; font-weight: 700; color: #e8ff47;">1</div>
             </div>
             <div class="meta-item">
-                <div class="meta-label" data-sv="RESULTAT" data-fr="SCORE" data-en="SCORE">RESULTAT</div>
+                <div class="meta-label" data-sv="RESULTAT" data-fr="SCORE" data-en="SCORE" data-de="ERGEBNIS">RESULTAT</div>
                 <div class="meta-value" id="hdr-score" style="font-size: 24px; font-weight: 700; color: #fff;">0 - 0</div>
             </div>
         </div>
@@ -699,72 +699,72 @@
         <!-- Trainer badge -->
         <div class="trainer-display">
             <div>
-                <span style="color:#999; font-size:12px;" data-sv="Inloggad som: " data-fr="Connecté en tant que: " data-en="Logged in as: ">Inloggad som: </span>
+                <span style="color:#999; font-size:12px;" data-sv="Inloggad som: " data-fr="Connecté en tant que: " data-en="Logged in as: " data-de="Angemeldet als:">Inloggad som: </span>
                 <span class="trainer-code-badge" id="trainer-badge"></span>
             </div>
-            <button class="btn-logout" id="btn-logout" data-sv="Logga ut" data-fr="Se déconnecter" data-en="Log out">Logga ut</button>
+            <button class="btn-logout" id="btn-logout" data-sv="Logga ut" data-fr="Se déconnecter" data-en="Log out" data-de="Abmelden">Logga ut</button>
         </div>
 
         <div class="card">
             <div class="card-title" style="display:flex;align-items:center;justify-content:space-between;">
-                <span data-sv="Ny match" data-fr="Nouveau match" data-en="New match">Ny match</span>
-                <button onclick="app.openManagePlayers()" style="background:none;border:1px solid #2a3548;color:#999;border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;" onmouseover="this.style.color='#e8ff47';this.style.borderColor='#e8ff47'" onmouseout="this.style.color='#999';this.style.borderColor='#2a3548'" data-sv="⚙️ Spelare" data-en="⚙️ Players" data-fr="⚙️ Joueurs">⚙️ Spelare</button>
+                <span data-sv="Ny match" data-fr="Nouveau match" data-en="New match" data-de="Neues Spiel">Ny match</span>
+                <button onclick="app.openManagePlayers()" style="background:none;border:1px solid #2a3548;color:#999;border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;" onmouseover="this.style.color='#e8ff47';this.style.borderColor='#e8ff47'" onmouseout="this.style.color='#999';this.style.borderColor='#2a3548'" data-sv="⚙️ Spelare" data-en="⚙️ Players" data-fr="⚙️ Joueurs" data-de="⚙️ Spieler">⚙️ Spelare</button>
             </div>
 
             <!-- Format: Tripplar/Dubblar -->
             <div class="input-group">
-                <label data-sv="Format" data-en="Format" data-fr="Format">Format</label>
+                <label data-sv="Format" data-en="Format" data-fr="Format" data-de="Format">Format</label>
                 <div class="format-selector">
                     <button class="format-btn active" id="fmt-triple" onclick="app.setFormat('triple')"
-                        data-sv="🎯 Tripplar (3v3)" data-en="🎯 Triples (3v3)" data-fr="🎯 Triplettes (3v3)">
+                        data-sv="🎯 Tripplar (3v3)" data-en="🎯 Triples (3v3)" data-fr="🎯 Triplettes (3v3)" data-de="🎯 Triplette (3v3)">
                         🎯 Tripplar (3v3)
                     </button>
                     <button class="format-btn" id="fmt-double" onclick="app.setFormat('double')"
-                        data-sv="⚡ Dubblar (2v2)" data-en="⚡ Doubles (2v2)" data-fr="⚡ Doublettes (2v2)">
+                        data-sv="⚡ Dubblar (2v2)" data-en="⚡ Doubles (2v2)" data-fr="⚡ Doublettes (2v2)" data-de="⚡ Doublette (2v2)">
                         ⚡ Dubblar (2v2)
                     </button>
                 </div>
             </div>
 
             <div class="input-group">
-                <label data-sv="Matchnamn" data-fr="Nom du match" data-en="Match name">Matchnamn</label>
-                <input type="text" id="inp-matchname" placeholder="T.ex. Träning mot Västra" data-sv-placeholder="T.ex. Träning mot Västra" data-en-placeholder="E.g. Practice vs West" data-fr-placeholder="Ex. Entraînement vs Ouest">
+                <label data-sv="Matchnamn" data-fr="Nom du match" data-en="Match name" data-de="Spielname">Matchnamn</label>
+                <input type="text" id="inp-matchname" placeholder="T.ex. Träning mot Västra" data-sv-placeholder="T.ex. Träning mot Västra" data-en-placeholder="E.g. Practice vs West" data-fr-placeholder="Ex. Entraînement vs Ouest" data-de-placeholder="z. B. Training gegen West">
             </div>
             <div class="input-group">
-                <label data-sv="Ditt lagnamn" data-fr="Nom de votre équipe" data-en="Your team name">Ditt lagnamn</label>
-                <input type="text" id="inp-teamname" placeholder="T.ex. Stockholm A">
+                <label data-sv="Ditt lagnamn" data-fr="Nom de votre équipe" data-en="Your team name" data-de="Dein Mannschaftsname">Ditt lagnamn</label>
+                <input type="text" id="inp-teamname" placeholder="T.ex. Stockholm A" data-sv-placeholder="T.ex. Stockholm A" data-en-placeholder="E.g. Stockholm A" data-fr-placeholder="Ex. Stockholm A" data-de-placeholder="z. B. Stockholm A">
             </div>
             <div class="input-group">
-                <label data-sv="Motståndarlag" data-fr="Équipe adverse" data-en="Opponent team">Motståndarlag</label>
-                <input type="text" id="inp-opponent" placeholder="T.ex. IK Boule">
+                <label data-sv="Motståndarlag" data-fr="Équipe adverse" data-en="Opponent team" data-de="Gegnerische Mannschaft">Motståndarlag</label>
+                <input type="text" id="inp-opponent" placeholder="T.ex. IK Boule" data-sv-placeholder="T.ex. IK Boule" data-en-placeholder="E.g. IK Boule" data-fr-placeholder="Ex. IK Boule" data-de-placeholder="z. B. IK Boule">
             </div>
 
             <!-- Spelare 1: Läggare (alltid synlig) -->
             <div class="input-group">
-                <label data-sv="Läggare" data-fr="Pointeur" data-en="Pointer">Läggare</label>
+                <label data-sv="Läggare" data-fr="Pointeur" data-en="Pointer" data-de="Leger">Läggare</label>
                 <div class="player-select-wrap">
                     <select id="inp-p1" onchange="app.onPlayerSelect(this)">
-                        <option value="">– Välj spelare –</option>
+                        <option value="" data-sv="– Välj spelare –" data-en="– Select player –" data-fr="– Choisir un joueur –" data-de="– Spieler wählen –">– Välj spelare –</option>
                     </select>
                 </div>
             </div>
 
             <!-- Spelare 2: Mittspelare (dold vid Dubblar) -->
             <div class="input-group" id="inp-p2-wrap">
-                <label data-sv="Mittspelare" data-fr="Milieu" data-en="Middle player">Mittspelare</label>
+                <label data-sv="Mittspelare" data-fr="Milieu" data-en="Middle player" data-de="Mittelspieler">Mittspelare</label>
                 <div class="player-select-wrap">
                     <select id="inp-p2" onchange="app.onPlayerSelect(this)">
-                        <option value="">– Välj spelare –</option>
+                        <option value="" data-sv="– Välj spelare –" data-en="– Select player –" data-fr="– Choisir un joueur –" data-de="– Spieler wählen –">– Välj spelare –</option>
                     </select>
                 </div>
             </div>
 
             <!-- Spelare 3: Skytt (alltid synlig, men sist) -->
             <div class="input-group">
-                <label id="inp-p3-label" data-sv="Skytt" data-fr="Tireur" data-en="Shooter">Skytt</label>
+                <label id="inp-p3-label" data-sv="Skytt" data-fr="Tireur" data-en="Shooter" data-de="Schießer">Skytt</label>
                 <div class="player-select-wrap">
                     <select id="inp-p3" onchange="app.onPlayerSelect(this)">
-                        <option value="">– Välj spelare –</option>
+                        <option value="" data-sv="– Välj spelare –" data-en="– Select player –" data-fr="– Choisir un joueur –" data-de="– Spieler wählen –">– Välj spelare –</option>
                     </select>
                 </div>
             </div>
@@ -772,47 +772,47 @@
             <div id="offline-setup-warning" style="display:none;background:rgba(232,255,71,0.1);border:1px solid rgba(232,255,71,0.3);border-radius:8px;padding:0.75rem;margin-top:0.75rem;font-size:13px;color:#e8ff47;text-align:center;"
                 data-sv="⚡ Offline-läge — matcher sparas lokalt och synkas när du får internet"
                 data-en="⚡ Offline mode — matches saved locally and synced when online"
-                data-fr="⚡ Mode hors ligne — matchs sauvegardés localement">
+                data-fr="⚡ Mode hors ligne — matchs sauvegardés localement" data-de="⚡ Offline-Modus — Spiele werden lokal gespeichert und synchronisiert, sobald du online bist">
                 ⚡ Offline-läge — matcher sparas lokalt och synkas när du får internet
             </div>
             <button class="btn btn-primary" id="btn-start" style="margin-top:1rem;"
-                data-sv="STARTA MATCH" data-fr="DÉMARRER LE MATCH" data-en="START MATCH">STARTA MATCH</button>
+                data-sv="STARTA MATCH" data-fr="DÉMARRER LE MATCH" data-en="START MATCH" data-de="SPIEL STARTEN">STARTA MATCH</button>
         </div>
 
         <!-- HOME HISTORY -->
         <div class="card" id="home-history-card">
             <div class="card-title">
-                <span data-sv="Tidigare matcher" data-fr="Matchs précédents" data-en="Previous matches">Tidigare matcher</span>
+                <span data-sv="Tidigare matcher" data-fr="Matchs précédents" data-en="Previous matches" data-de="Frühere Spiele">Tidigare matcher</span>
                 <span class="sync-badge sync-ok" id="sync-status-home">☁️ Firebase</span>
             </div>
-            <div id="home-history-list"><div class="empty" data-sv="Ingen matchhistorik än" data-fr="Aucun historique de match" data-en="No match history yet">Ingen matchhistorik än</div></div>
+            <div id="home-history-list"><div class="empty" data-sv="Ingen matchhistorik än" data-fr="Aucun historique de match" data-en="No match history yet" data-de="Noch kein Spielverlauf">Ingen matchhistorik än</div></div>
         </div>
 
         <!-- HOME DETAIL VIEW -->
         <div id="home-detail-view" style="display:none;">
-            <button class="detail-back" id="btn-back-home-detail">← <span>Tillbaka</span></button>
+            <button class="detail-back" id="btn-back-home-detail">← <span data-sv="Tillbaka" data-en="Back" data-fr="Retour" data-de="Zurück">Tillbaka</span></button>
             <div class="detail-title" id="home-detail-title"></div>
             <div class="detail-meta" id="home-detail-meta"></div>
 
             <div class="chart-wrap" style="height:280px;">
-                <div class="chart-title">📊 Träffprocent per spelare</div>
+                <div class="chart-title" data-sv="📊 Träffprocent per spelare" data-en="📊 Accuracy per player" data-fr="📊 Précision par joueur" data-de="📊 Trefferquote pro Spieler">📊 Träffprocent per spelare</div>
                 <canvas id="home-detail-chart-accuracy"></canvas>
             </div>
             <div class="chart-wrap" style="height:280px;">
-                <div class="chart-title">🔢 Antal försök per spelare</div>
+                <div class="chart-title" data-sv="🔢 Antal försök per spelare" data-en="🔢 Attempts per player" data-fr="🔢 Nombre d'essais par joueur" data-de="🔢 Versuche pro Spieler">🔢 Antal försök per spelare</div>
                 <canvas id="home-detail-chart-attempts"></canvas>
             </div>
             <div class="chart-wrap" style="height:280px;">
-                <div class="chart-title">📈 Denna match vs historiskt genomsnitt</div>
+                <div class="chart-title" data-sv="📈 Denna match vs historiskt genomsnitt" data-en="📈 This match vs historical average" data-fr="📈 Ce match vs moyenne historique" data-de="📈 Dieses Spiel vs. historischer Durchschnitt">📈 Denna match vs historiskt genomsnitt</div>
                 <canvas id="home-detail-chart-compare"></canvas>
             </div>
 
             <div class="card">
-                <div class="card-title">Laginsnitt</div>
+                <div class="card-title" data-sv="Laginsnitt" data-en="Team Average" data-fr="Moyenne d'équipe" data-de="Mannschaftsschnitt">Laginsnitt</div>
                 <div id="home-detail-team"></div>
             </div>
             <div class="card">
-                <div class="card-title">Tidslinje</div>
+                <div class="card-title" data-sv="Tidslinje" data-en="Timeline" data-fr="Chronologie" data-de="Zeitleiste">Tidslinje</div>
                 <div id="home-detail-timeline"></div>
             </div>
 
@@ -820,7 +820,7 @@
                 <button class="btn btn-outline" id="btn-export-pdf-home">📄 PDF</button>
                 <button class="btn btn-outline" id="btn-export-csv-home">📊 CSV</button>
             </div>
-            <button class="btn btn-danger" id="btn-delete-home-detail" style="width:100%;margin-top:0.5rem;">🗑 Radera match</button>
+            <button class="btn btn-danger" id="btn-delete-home-detail" style="width:100%;margin-top:0.5rem;" data-sv="🗑 Radera match" data-en="🗑 Delete match" data-fr="🗑 Supprimer le match" data-de="🗑 Spiel löschen">🗑 Radera match</button>
         </div>
     </div>
 
@@ -828,10 +828,10 @@
     <div id="screen-match" style="display:none;">
 
         <div class="tabs">
-            <button class="tab-btn active" data-tab="live" data-sv="LIVE LOGGNING" data-fr="ENREGISTREMENT EN DIRECT" data-en="LIVE LOGGING">LIVE LOGGNING</button>
-            <button class="tab-btn" data-tab="analys" data-sv="ANALYS & GRAFER" data-fr="ANALYSE & GRAPHIQUES" data-en="ANALYSIS & CHARTS">ANALYS & GRAFER</button>
-            <button class="tab-btn" data-tab="historik" data-sv="HISTORIK" data-fr="HISTORIQUE" data-en="HISTORY">HISTORIK</button>
-            <button class="tab-btn" data-tab="spelare" data-sv="SPELARE" data-fr="JOUEURS" data-en="PLAYERS">SPELARE</button>
+            <button class="tab-btn active" data-tab="live" data-sv="LIVE LOGGNING" data-fr="ENREGISTREMENT EN DIRECT" data-en="LIVE LOGGING" data-de="LIVE-ERFASSUNG">LIVE LOGGNING</button>
+            <button class="tab-btn" data-tab="analys" data-sv="ANALYS & GRAFER" data-fr="ANALYSE & GRAPHIQUES" data-en="ANALYSIS & CHARTS" data-de="ANALYSE &amp; DIAGRAMME">ANALYS & GRAFER</button>
+            <button class="tab-btn" data-tab="historik" data-sv="HISTORIK" data-fr="HISTORIQUE" data-en="HISTORY" data-de="VERLAUF">HISTORIK</button>
+            <button class="tab-btn" data-tab="spelare" data-sv="SPELARE" data-fr="JOUEURS" data-en="PLAYERS" data-de="SPIELER">SPELARE</button>
         </div>
 
         <!-- TAB: LIVE -->
@@ -840,32 +840,32 @@
             <table class="live-table">
                 <thead>
                     <tr>
-                        <th data-sv="Spelare" data-en="Player" data-fr="Joueur">Spelare</th>
-                        <th data-sv="Lägg P/S/Tot" data-en="Lägg H/B/Tot" data-fr="Pointé P/B/Tot">Lägg P/S/Tot</th>
-                        <th class="tc">Lägg %</th>
-                        <th data-sv="Skott Träff/Tot" data-en="Shot Hit/Tot" data-fr="Tir Réussi/Tot">Skott Träff/Tot</th>
-                        <th class="tc">Skott %</th>
+                        <th data-sv="Spelare" data-en="Player" data-fr="Joueur" data-de="Spieler">Spelare</th>
+                        <th data-sv="Lägg P/S/Tot" data-en="Pointer P/B/Tot" data-fr="Pointé P/B/Tot" data-de="Legen P/B/Ges">Lägg P/S/Tot</th>
+                        <th class="tc" data-sv="Lägg %" data-en="Pointer %" data-fr="Pointé %" data-de="Legen %">Lägg %</th>
+                        <th data-sv="Skott Träff/Tot" data-en="Shot Hit/Tot" data-fr="Tir Réussi/Tot" data-de="Schießen Treffer/Ges">Skott Träff/Tot</th>
+                        <th class="tc" data-sv="Skott %" data-en="Shot %" data-fr="Tir %" data-de="Schießen %">Skott %</th>
                     </tr>
                 </thead>
                 <tbody id="live-table-body"></tbody>
             </table>
             <div class="match-actions">
-                <button class="btn btn-outline" id="btn-undo" data-sv="↩ ÅNGRA" data-fr="↩ ANNULER" data-en="↩ UNDO" style="border-color:#ff9f43;color:#ff9f43;">↩ ÅNGRA</button>
-                <button class="btn btn-danger" id="btn-reset" data-sv="ÅTERSTÄLL" data-fr="RÉINITIALISER" data-en="RESET">ÅTERSTÄLL</button>
-                <button class="btn btn-outline" id="btn-next-round" data-sv="NÄSTA OMGÅNG ▶" data-fr="MANCHE SUIVANTE ▶" data-en="NEXT ROUND ▶" style="border-color:#e8ff47;color:#e8ff47;">NÄSTA OMGÅNG ▶</button>
-                <button class="btn btn-primary" id="btn-finish" data-sv="AVSLUTA MATCH" data-fr="TERMINER LE MATCH" data-en="FINISH MATCH">AVSLUTA MATCH</button>
+                <button class="btn btn-outline" id="btn-undo" data-sv="↩ ÅNGRA" data-fr="↩ ANNULER" data-en="↩ UNDO" style="border-color:#ff9f43;color:#ff9f43;" data-de="↩ RÜCKGÄNGIG">↩ ÅNGRA</button>
+                <button class="btn btn-danger" id="btn-reset" data-sv="ÅTERSTÄLL" data-fr="RÉINITIALISER" data-en="RESET" data-de="ZURÜCKSETZEN">ÅTERSTÄLL</button>
+                <button class="btn btn-outline" id="btn-next-round" data-sv="NÄSTA OMGÅNG ▶" data-fr="MANCHE SUIVANTE ▶" data-en="NEXT ROUND ▶" style="border-color:#e8ff47;color:#e8ff47;" data-de="NÄCHSTE RUNDE ▶">NÄSTA OMGÅNG ▶</button>
+                <button class="btn btn-primary" id="btn-finish" data-sv="AVSLUTA MATCH" data-fr="TERMINER LE MATCH" data-en="FINISH MATCH" data-de="SPIEL BEENDEN">AVSLUTA MATCH</button>
             </div>
         </div>
 
         <!-- TAB: ANALYS -->
         <div class="tab-content" id="tab-analys">
-            <div class="live-badge"><div class="live-dot"></div> <span data-sv="Uppdateras var 10:e sekund" data-en="Updates every 10 seconds" data-fr="Mis à jour toutes les 10 secondes">Uppdateras var 10:e sekund</span></div>
+            <div class="live-badge"><div class="live-dot"></div> <span data-sv="Uppdateras var 10:e sekund" data-en="Updates every 10 seconds" data-fr="Mis à jour toutes les 10 secondes" data-de="Wird alle 10 Sekunden aktualisiert">Uppdateras var 10:e sekund</span></div>
             <div class="chart-wrap">
-                <div class="chart-title" data-sv="Träffprocent — Pågående match" data-en="Accuracy — Current match" data-fr="Précision — Match en cours">Träffprocent — Pågående match</div>
+                <div class="chart-title" data-sv="Träffprocent — Pågående match" data-en="Accuracy — Current match" data-fr="Précision — Match en cours" data-de="Trefferquote — Laufendes Spiel">Träffprocent — Pågående match</div>
                 <canvas id="chart-live"></canvas>
             </div>
             <div class="chart-wrap">
-                <div class="chart-title" data-sv="Träffar vs Missar" data-en="Hits vs Misses" data-fr="Réussites vs Ratés">Träffar vs Missar</div>
+                <div class="chart-title" data-sv="Träffar vs Missar" data-en="Hits vs Misses" data-fr="Réussites vs Ratés" data-de="Treffer vs. Fehlschüsse">Träffar vs Missar</div>
                 <canvas id="chart-compare"></canvas>
             </div>
             <div class="export-row">
@@ -877,40 +877,40 @@
         <!-- TAB: HISTORIK -->
         <div class="tab-content" id="tab-historik">
             <div id="hist-list-view">
-                <div id="match-history-list"><div class="empty">Ingen matchhistorik än</div></div>
+                <div id="match-history-list"><div class="empty" data-sv="Ingen matchhistorik än" data-en="No match history yet" data-fr="Aucun historique de match" data-de="Noch kein Spielverlauf">Ingen matchhistorik än</div></div>
             </div>
             <div id="detail-view" style="display:none;">
-                <button class="detail-back" id="btn-back-detail">← <span data-sv="Tillbaka" data-en="Back" data-fr="Retour">Tillbaka</span></button>
+                <button class="detail-back" id="btn-back-detail">← <span data-sv="Tillbaka" data-en="Back" data-fr="Retour" data-de="Zurück">Tillbaka</span></button>
                 <div class="detail-title" id="detail-title"></div>
                 <div class="detail-meta" id="detail-meta"></div>
 
                 <!-- Chart 1: Lägg % och Skott % per spelare -->
                 <div class="chart-wrap" style="height:280px;">
-                    <div class="chart-title">📊 Träffprocent per spelare</div>
+                    <div class="chart-title" data-sv="📊 Träffprocent per spelare" data-en="📊 Accuracy per player" data-fr="📊 Précision par joueur" data-de="📊 Trefferquote pro Spieler">📊 Träffprocent per spelare</div>
                     <canvas id="detail-chart-accuracy"></canvas>
                 </div>
 
                 <!-- Chart 2: Försök totalt per spelare -->
                 <div class="chart-wrap" style="height:280px;">
-                    <div class="chart-title">🔢 Antal försök per spelare</div>
+                    <div class="chart-title" data-sv="🔢 Antal försök per spelare" data-en="🔢 Attempts per player" data-fr="🔢 Nombre d'essais par joueur" data-de="🔢 Versuche pro Spieler">🔢 Antal försök per spelare</div>
                     <canvas id="detail-chart-attempts"></canvas>
                 </div>
 
                 <!-- Chart 3: Denna match vs historiskt genomsnitt -->
                 <div class="chart-wrap" style="height:280px;">
-                    <div class="chart-title">📈 Denna match vs historiskt genomsnitt</div>
+                    <div class="chart-title" data-sv="📈 Denna match vs historiskt genomsnitt" data-en="📈 This match vs historical average" data-fr="📈 Ce match vs moyenne historique" data-de="📈 Dieses Spiel vs. historischer Durchschnitt">📈 Denna match vs historiskt genomsnitt</div>
                     <canvas id="detail-chart-compare"></canvas>
                 </div>
 
                 <!-- Laginsnitt -->
                 <div class="card">
-                    <div class="card-title" data-sv="Laginsnitt" data-en="Team Average" data-fr="Moyenne d'équipe">Laginsnitt</div>
+                    <div class="card-title" data-sv="Laginsnitt" data-en="Team Average" data-fr="Moyenne d'équipe" data-de="Mannschaftsschnitt">Laginsnitt</div>
                     <div id="detail-team"></div>
                 </div>
 
                 <!-- Tidslinje -->
                 <div class="card">
-                    <div class="card-title" data-sv="Tidslinje" data-en="Timeline" data-fr="Chronologie">Tidslinje</div>
+                    <div class="card-title" data-sv="Tidslinje" data-en="Timeline" data-fr="Chronologie" data-de="Zeitleiste">Tidslinje</div>
                     <div id="detail-timeline"></div>
                 </div>
 
@@ -918,7 +918,7 @@
                     <button class="btn btn-outline" id="btn-export-pdf-detail">📄 PDF</button>
                     <button class="btn btn-outline" id="btn-export-csv-detail">📊 CSV</button>
                 </div>
-                <button class="btn btn-danger" id="btn-delete-detail" style="width:100%;margin-top:0.5rem;" data-sv="Radera match" data-en="Delete match" data-fr="Supprimer le match">Radera match</button>
+                <button class="btn btn-danger" id="btn-delete-detail" style="width:100%;margin-top:0.5rem;" data-sv="Radera match" data-en="Delete match" data-fr="Supprimer le match" data-de="Spiel löschen">Radera match</button>
             </div>
         </div>
 
@@ -929,7 +929,7 @@
                 <div id="player-stats-list"></div>
             </div>
             <div id="player-stats-detail-view" style="display:none;">
-                <button class="detail-back" id="btn-back-player-detail">← <span data-sv="Tillbaka" data-en="Back" data-fr="Retour" data-fr="Retour">Tillbaka</span></button>
+                <button class="detail-back" id="btn-back-player-detail">← <span data-sv="Tillbaka" data-en="Back" data-fr="Retour" data-fr="Retour" data-de="Zurück">Tillbaka</span></button>
                 <div class="player-detail-header">
                     <div class="player-detail-avatar" id="pdet-avatar"></div>
                     <div>
@@ -940,27 +940,27 @@
                 <div class="player-stat-grid">
                     <div class="player-stat-box">
                         <div class="psb-val" id="pdet-lagg-pct">—</div>
-                        <div class="psb-lbl" data-sv="Lägg snitt" data-en="Avg Pointer" data-fr="Moy. Pointé">Lägg snitt</div>
+                        <div class="psb-lbl" data-sv="Lägg snitt" data-en="Avg Pointer" data-fr="Moy. Pointé" data-de="Legen Ø">Lägg snitt</div>
                     </div>
                     <div class="player-stat-box">
                         <div class="psb-val" id="pdet-skott-pct">—</div>
-                        <div class="psb-lbl" data-sv="Skott snitt" data-en="Avg Shooter" data-fr="Moy. Tireur">Skott snitt</div>
+                        <div class="psb-lbl" data-sv="Skott snitt" data-en="Avg Shooter" data-fr="Moy. Tireur" data-de="Schießen Ø">Skott snitt</div>
                     </div>
                     <div class="player-stat-box">
                         <div class="psb-val" id="pdet-matcher">0</div>
-                        <div class="psb-lbl" data-sv="Matcher" data-en="Matches" data-fr="Matchs">Matcher</div>
+                        <div class="psb-lbl" data-sv="Matcher" data-en="Matches" data-fr="Matchs" data-de="Spiele">Matcher</div>
                     </div>
                     <div class="player-stat-box">
                         <div class="psb-val" id="pdet-trend">—</div>
-                        <div class="psb-lbl" data-sv="Trend (3 sen.)" data-en="Trend (last 3)" data-fr="Tendance (3 dern.)">Trend (3 sen.)</div>
+                        <div class="psb-lbl" data-sv="Trend (3 sen.)" data-en="Trend (last 3)" data-fr="Tendance (3 dern.)" data-de="Trend (letzte 3)">Trend (3 sen.)</div>
                     </div>
                 </div>
                 <div class="chart-wrap" id="pdet-chart-wrap" style="display:none;">
-                    <div class="chart-title" data-sv="Lägg % per match" data-en="Pointer % per match" data-fr="Pointé % par match">Lägg % per match</div>
+                    <div class="chart-title" data-sv="Lägg % per match" data-en="Pointer % per match" data-fr="Pointé % par match" data-de="Legen % pro Spiel">Lägg % per match</div>
                     <canvas id="pdet-chart" height="120"></canvas>
                 </div>
                 <div style="font-size:13px;font-weight:700;color:#e8ff47;margin:1rem 0 0.5rem;"
-                    data-sv="Matchhistorik" data-en="Match history" data-fr="Historique des matchs">Matchhistorik</div>
+                    data-sv="Matchhistorik" data-en="Match history" data-fr="Historique des matchs" data-de="Spielverlauf">Matchhistorik</div>
                 <div id="pdet-match-list"></div>
             </div>
         </div>
@@ -969,7 +969,7 @@
 
 </div>
 
-<div class="offline-badge" id="offline-badge" data-sv="Offline — sparar lokalt" data-en="Offline — saving locally" data-fr="Hors ligne — sauvegarde locale">Offline — sparar lokalt</div>
+<div class="offline-badge" id="offline-badge" data-sv="Offline — sparar lokalt" data-en="Offline — saving locally" data-fr="Hors ligne — sauvegarde locale" data-de="Offline — lokal gespeichert">Offline — sparar lokalt</div>
 
 <script>
 // ============================================================
@@ -993,6 +993,114 @@ const db = firebase.database();
 // ============================================================
 // MAIN APP
 // ============================================================
+// ============================================================
+// TEXTER PÅ VALT SPRÅK (sv, en, fr, de). Används av meddelanden, diagram och exporter.
+// mt('nyckel', {n: 3}) ersätter {n} i texten.
+// ============================================================
+const MS = {
+  codeMin3: {sv:"Koden måste vara minst 3 tecken",en:"The code must be at least 3 characters",fr:"Le code doit contenir au moins 3 caractères",de:"Der Code muss mindestens 3 Zeichen lang sein"},
+  deleteMatchQ: {sv:"Radera denna match?",en:"Delete this match?",fr:"Supprimer ce match ?",de:"Dieses Spiel löschen?"},
+  opponentDefault: {sv:"Motståndare",en:"Opponent",fr:"Adversaire",de:"Gegner"},
+  ballsAlready: {sv:"⚠️ Spelaren har redan lagt {n} klot",en:"⚠️ The player has already thrown {n} balls",fr:"⚠️ Le joueur a déjà lancé {n} boules",de:"⚠️ Der Spieler hat bereits {n} Kugeln gespielt"},
+  roundDoneSwitch: {sv:"✅ Omgång {n} klar - byter...",en:"✅ Round {n} done - switching...",fr:"✅ Manche {n} terminée - changement...",de:"✅ Runde {n} fertig - Wechsel..."},
+  onlyBalls: {sv:"⚠️ Bara {n}/6 klot. Fortsätt?",en:"⚠️ Only {n}/6 balls. Continue?",fr:"⚠️ Seulement {n}/6 boules. Continuer ?",de:"⚠️ Nur {n}/6 Kugeln. Fortfahren?"},
+  nothingToUndo: {sv:"Inget att ångra",en:"Nothing to undo",fr:"Rien à annuler",de:"Nichts rückgängig zu machen"},
+  undid: {sv:"↩ Ångrade: ",en:"↩ Undid: ",fr:"↩ Annulé : ",de:"↩ Rückgängig: "},
+  roundWord: {sv:"Omgång",en:"Round",fr:"Manche",de:"Runde"},
+  roundModalTitle: {sv:"Omgång {n} klar — vem vann?",en:"Round {n} done — who won?",fr:"Manche {n} terminée — qui a gagné ?",de:"Runde {n} fertig — wer hat gewonnen?"},
+  ourTeam: {sv:"VÅRT LAG",en:"OUR TEAM",fr:"NOTRE ÉQUIPE",de:"UNSERE MANNSCHAFT"},
+  theOpponents: {sv:"MOTSTÅNDARNA",en:"THE OPPONENTS",fr:"LES ADVERSAIRES",de:"DIE GEGNER"},
+  resetAllQ: {sv:"Återställ all statistik?",en:"Reset all statistics?",fr:"Réinitialiser toutes les statistiques?",de:"Gesamte Statistik zurücksetzen?"},
+  finishQ: {sv:"Avsluta och spara matchen?",en:"Finish and save the match?",fr:"Terminer et enregistrer le match ?",de:"Spiel beenden und speichern?"},
+  noMatchHistory: {sv:"Ingen matchhistorik än",en:"No match history yet",fr:"Aucun historique de match",de:"Noch kein Spielverlauf"},
+  noTimeline: {sv:"Ingen tidslinje registrerad",en:"No timeline recorded",fr:"Aucune chronologie enregistrée",de:"Keine Zeitleiste aufgezeichnet"},
+  noHistoryShort: {sv:"Ingen historik",en:"No history",fr:"Aucun historique",de:"Kein Verlauf"},
+  lagg: {sv:"Lägg",en:"Pointer",fr:"Pointé",de:"Legen"},
+  skott: {sv:"Skott",en:"Shot",fr:"Tir",de:"Schießen"},
+  poangkula: {sv:"Poängkula",en:"Hit",fr:"Pointé",de:"Punktkugel"},
+  stangning: {sv:"Stängning",en:"Block",fr:"Blocage",de:"Blockade"},
+  laggMiss: {sv:"Lägg miss",en:"Pointer miss",fr:"Pointé manqué",de:"Lege-Fehlschuss"},
+  skottHit: {sv:"Skott träff",en:"Shot hit",fr:"Tir réussi",de:"Schuss-Treffer"},
+  skottMiss: {sv:"Skott miss",en:"Shot miss",fr:"Tir manqué",de:"Schuss-Fehlschuss"},
+  laggPoangkulor: {sv:"Lägg poängkulor",en:"Pointer hits",fr:"Pointés réussis",de:"Legen Punktkugeln"},
+  thisMatch: {sv:"denna match",en:"this match",fr:"ce match",de:"dieses Spiel"},
+  histAvg: {sv:"historiskt snitt",en:"historical average",fr:"moyenne historique",de:"historischer Schnitt"},
+  matchesWord: {sv:"matcher",en:"matches",fr:"matchs",de:"Spiele"},
+  matchWord: {sv:"match",en:"match",fr:"match",de:"Spiel"},
+  myTeam: {sv:"Mitt lag",en:"My team",fr:"Mon équipe",de:"Meine Mannschaft"},
+  blocksWord: {sv:"stängn.",en:"blocks",fr:"blocages",de:"Blockaden"},
+  syncedToast: {sv:"☁️ {n} match{pl} synkad{pl2} till molnet!",en:"☁️ {n} match{pl} synced to cloud!",fr:"☁️ {n} match{pl} synchronisé{pl} !",de:"☁️ {n} Spiel{pl} mit der Cloud synchronisiert!"},
+  offlinePending: {sv:"Offline — {n} match{pl} väntar på synk",en:"Offline — {n} match{pl} pending sync",fr:"Hors ligne — {n} match{pl} en attente",de:"Offline — {n} Spiel{pl} warten auf Synchronisierung"},
+  offlineLocal: {sv:"Offline — sparar lokalt",en:"Offline — saving locally",fr:"Hors ligne — sauvegarde locale",de:"Offline — lokal gespeichert"},
+  enterName: {sv:"⚠️ Ange ett namn",en:"⚠️ Enter a name",fr:"⚠️ Entrez un nom",de:"⚠️ Gib einen Namen ein"},
+  alreadyExists: {sv:"finns redan",en:"already exists",fr:"existe déjà",de:"existiert bereits"},
+  added: {sv:"tillagd",en:"added",fr:"ajouté(e)",de:"hinzugefügt"},
+  removePlayerQ: {sv:"Ta bort spelaren?",en:"Remove player?",fr:"Supprimer le joueur?",de:"Spieler entfernen?"},
+  noPlayersYet: {sv:"Inga spelare sparade än",en:"No players saved yet",fr:"Aucun joueur enregistré",de:"Noch keine Spieler gespeichert"},
+  selectPlayer: {sv:"– Välj spelare –",en:"– Select player –",fr:"– Choisir un joueur –",de:"– Spieler wählen –"},
+  newPlayerOpt: {sv:"+ Skriv nytt namn...",en:"+ Type new name...",fr:"+ Saisir un nouveau nom...",de:"+ Neuen Namen eingeben..."},
+  enterPlayerName: {sv:"Ange spelarens namn:",en:"Enter the player's name:",fr:"Saisissez le nom du joueur :",de:"Gib den Namen des Spielers ein:"},
+  we: {sv:"Vi",en:"We",fr:"Nous",de:"Wir"},
+  oppShort: {sv:"Motst.",en:"Opp.",fr:"Adv.",de:"Geg."},
+  noMatchData: {sv:"Ingen matchdata att exportera",en:"No match data to export",fr:"Aucune donnée de match à exporter",de:"Keine Spieldaten zum Exportieren"},
+  unnamed: {sv:"Ej namnsatt",en:"Unnamed",fr:"Sans nom",de:"Ohne Namen"},
+  xTitle: {sv:"Petanque Matchstatistik",en:"Petanque Match Statistics",fr:"Petanque Statistiques de match",de:"Petanque Matchstatistik"},
+  xCoachCode: {sv:"Tränarkod",en:"Coach code",fr:"Code entraîneur",de:"Trainercode"},
+  xTeam: {sv:"Lag",en:"Team",fr:"Équipe",de:"Mannschaft"},
+  xPlayerStats: {sv:"SPELARE STATISTIK",en:"PLAYER STATISTICS",fr:"STATISTIQUES DES JOUEURS",de:"SPIELERSTATISTIK"},
+  xStreaks: {sv:"Streaks - Lägg: {lh}h/{lm}m | Skott: {sh}h/{sm}m",en:"Streaks - Pointer: {lh}H/{lm}M | Shot: {sh}H/{sm}M",fr:"Séries - Pointé : {lh}R/{lm}M | Tir : {sh}R/{sm}M",de:"Serien - Legen: {lh}T/{lm}F | Schießen: {sh}T/{sm}F"},
+  xVsAvg: {sv:"Vs snitt ({n} {mw}): Lägg {la}% ({lad}%) | Skott {sa}% ({sad}%)",en:"Vs average ({n} {mw}): Pointer {la}% ({lad}%) | Shot {sa}% ({sad}%)",fr:"Vs moyenne ({n} {mw}) : Pointé {la}% ({lad}%) | Tir {sa}% ({sad}%)",de:"Vs. Schnitt ({n} {mw}): Legen {la}% ({lad}%) | Schießen {sa}% ({sad}%)"},
+  xPosAnalysis: {sv:"POSITION-ANALYS",en:"POSITION ANALYSIS",fr:"ANALYSE DES POSTES",de:"POSITIONSANALYSE"},
+  xMatch: {sv:"Match",en:"Match",fr:"Match",de:"Spiel"},
+  xDate: {sv:"Datum",en:"Date",fr:"Date",de:"Datum"},
+  xTime: {sv:"Tid",en:"Time",fr:"Heure",de:"Zeit"},
+  xDuration: {sv:"Varaktighet",en:"Duration",fr:"Durée",de:"Dauer"},
+  xResult: {sv:"Resultat",en:"Result",fr:"Résultat",de:"Ergebnis"},
+  xRoundResults: {sv:"OMGÅNGSRESULTAT",en:"ROUND RESULTS",fr:"RÉSULTATS DES MANCHES",de:"RUNDENERGEBNISSE"},
+  xRoundHdr: {sv:"Omgång,Vinnare,Poäng",en:"Round,Winner,Points",fr:"Manche,Gagnant,Points",de:"Runde,Gewinner,Punkte"},
+  xPlayerHdrFull: {sv:"Spelare,Position,Lägg träffar,Lägg stängningar,Lägg totalt,Lägg %,Skott träffar,Skott totalt,Skott %,Längsta träffsekvens Lägg,Längsta misssekvens Lägg,Längsta träffsekvens Skott,Längsta misssekvens Skott,Lägg vs snitt,Skott vs snitt",en:"Player,Position,Pointer hits,Pointer blocks,Pointer total,Pointer %,Shot hits,Shot total,Shot %,Longest hit streak Pointer,Longest miss streak Pointer,Longest hit streak Shot,Longest miss streak Shot,Pointer vs avg,Shot vs avg",fr:"Joueur,Poste,Pointé réussis,Pointé blocages,Pointé total,Pointé %,Tir réussis,Tir total,Tir %,Plus longue série de réussites Pointé,Plus longue série de ratés Pointé,Plus longue série de réussites Tir,Plus longue série de ratés Tir,Pointé vs moy.,Tir vs moy.",de:"Spieler,Position,Legen Treffer,Legen Blockaden,Legen gesamt,Legen %,Schießen Treffer,Schießen gesamt,Schießen %,Längste Trefferserie Legen,Längste Fehlschussserie Legen,Längste Trefferserie Schießen,Längste Fehlschussserie Schießen,Legen vs. Schnitt,Schießen vs. Schnitt"},
+  xPlayerHdrOpp: {sv:"Spelare,Position,Lägg träffar,Lägg totalt,Lägg %,Skott träffar,Skott totalt,Skott %,Längsta träffsekvens Lägg,Längsta misssekvens Lägg,Längsta träffsekvens Skott,Längsta misssekvens Skott",en:"Player,Position,Pointer hits,Pointer total,Pointer %,Shot hits,Shot total,Shot %,Longest hit streak Pointer,Longest miss streak Pointer,Longest hit streak Shot,Longest miss streak Shot",fr:"Joueur,Poste,Pointé réussis,Pointé total,Pointé %,Tir réussis,Tir total,Tir %,Plus longue série de réussites Pointé,Plus longue série de ratés Pointé,Plus longue série de réussites Tir,Plus longue série de ratés Tir",de:"Spieler,Position,Legen Treffer,Legen gesamt,Legen %,Schießen Treffer,Schießen gesamt,Schießen %,Längste Trefferserie Legen,Längste Fehlschussserie Legen,Längste Trefferserie Schießen,Längste Fehlschussserie Schießen"},
+  xPosHdr: {sv:"Position,Lägg träffar,Lägg totalt,Lägg %,Skott träffar,Skott totalt,Skott %",en:"Position,Pointer hits,Pointer total,Pointer %,Shot hits,Shot total,Shot %",fr:"Poste,Pointé réussis,Pointé total,Pointé %,Tir réussis,Tir total,Tir %",de:"Position,Legen Treffer,Legen gesamt,Legen %,Schießen Treffer,Schießen gesamt,Schießen %"},
+  xOppStatsSuffix: {sv:" - STATISTIK",en:" - STATISTICS",fr:" - STATISTIQUES",de:" - STATISTIK"},
+  xAllTitle: {sv:"MATCHSTATISTIK",en:"MATCH STATISTICS",fr:"STATISTIQUES DE MATCH",de:"MATCHSTATISTIK"},
+  xDateTimeLine: {sv:"Datum: {d} | Tid: {t}",en:"Date: {d} | Time: {t}",fr:"Date : {d} | Heure : {t}",de:"Datum: {d} | Zeit: {t}"},
+  xRoundsPlayed: {sv:"Omgångar spelade: {n}",en:"Rounds played: {n}",fr:"Manches jouées : {n}",de:"Gespielte Runden: {n}"},
+  xPerRound: {sv:"PER OMGÅNG",en:"PER ROUND",fr:"PAR MANCHE",de:"PRO RUNDE"},
+  xRoundN: {sv:"Omgång {n}:",en:"Round {n}:",fr:"Manche {n} :",de:"Runde {n}:"},
+  xTotal: {sv:"TOTALT",en:"TOTAL",fr:"TOTAL",de:"GESAMT"},
+  xResultBanner: {sv:"=== RESULTAT: {a} {x} - {y} {b} ===",en:"=== RESULT: {a} {x} - {y} {b} ===",fr:"=== RÉSULTAT : {a} {x} - {y} {b} ===",de:"=== ERGEBNIS: {a} {x} - {y} {b} ==="},
+  xTotalBanner: {sv:"=== TOTALT ===",en:"=== TOTAL ===",fr:"=== TOTAL ===",de:"=== GESAMT ==="},
+  xOppTotalSuffix: {sv:" - TOTALT ===",en:" - TOTAL ===",fr:" - TOTAL ===",de:" - GESAMT ==="},
+  xOppUpper: {sv:"MOTSTÅNDARE",en:"OPPONENT",fr:"ADVERSAIRE",de:"GEGNER"},
+  xMatchLine: {sv:"Match: {name}",en:"Match: {name}",fr:"Match : {name}",de:"Spiel: {name}"},
+  xLaggTotal: {sv:"Lägg: {h}/{t} ({a}%)",en:"Pointer: {h}/{t} ({a}%)",fr:"Pointé : {h}/{t} ({a}%)",de:"Legen: {h}/{t} ({a}%)"},
+  xSkottTotal: {sv:"Skott: {h}/{t} ({a}%)",en:"Shot: {h}/{t} ({a}%)",fr:"Tir : {h}/{t} ({a}%)",de:"Schießen: {h}/{t} ({a}%)"}
+};
+function mt(key, vars) {
+    let s = langMgr.t(MS[key]);
+    if (vars) Object.keys(vars).forEach(k => { s = s.split('{' + k + '}').join(vars[k]); });
+    return s;
+}
+// Ordet för antal matcher: 1 match / 2 matcher
+function matchesLabel(n) { return mt(n === 1 ? 'matchWord' : 'matchesWord'); }
+// Positionerna sparas på svenska i matchdatan. Här visas de på valt språk.
+const POS_LABELS = {
+  "Läggare": {sv:"Läggare",en:"Pointer",fr:"Pointeur",de:"Leger"},
+  "Mittspelare": {sv:"Mittspelare",en:"Middle player",fr:"Milieu",de:"Mittelspieler"},
+  "Skytt": {sv:"Skytt",en:"Shooter",fr:"Tireur",de:"Schießer"}
+};
+function posLabel(pos) { return POS_LABELS[pos] ? langMgr.t(POS_LABELS[pos]) : pos; }
+// Tidslinjens etiketter sparas på det språk som gällde under matchen.
+// Här översätts de till valt språk, oavsett vilket språk de sparades på.
+const TIMELINE_KEYS = [['poangkula', ' ✓'], ['stangning', ' ⊙'], ['laggMiss', ' ✗'], ['skottHit', ' ✓'], ['skottMiss', ' ✗']];
+function relabel(label) {
+    for (const [key, sym] of TIMELINE_KEYS) {
+        const variants = Object.values(MS[key]).map(v => v + sym);
+        if (variants.includes(label) || label === 'Hit' + sym && key === 'poangkula') return mt(key) + sym;
+    }
+    return label;
+}
+
 class MatchApp {
     constructor() {
         this.trainerCode = null;
@@ -1088,7 +1196,7 @@ class MatchApp {
         });
         document.getElementById('btn-login').addEventListener('click', () => {
             if (this.codeBuffer.length < 3) {
-                document.getElementById('login-error').textContent = 'Koden måste vara minst 3 tecken';
+                document.getElementById('login-error').textContent = mt('codeMin3');
                 return;
             }
             this.login(this.codeBuffer);
@@ -1282,13 +1390,13 @@ class MatchApp {
         if (synced > 0) {
             localStorage.removeItem(pendingKey);
             console.log(`[Firebase] Synced ${synced} offline matches`);
-            const lang = typeof langMgr !== 'undefined' ? langMgr.lang : 'sv';
-            const msg = {
-                sv: `☁️ ${synced} match${synced > 1 ? 'er' : ''} synkad${synced > 1 ? 'e' : ''} till molnet!`,
-                en: `☁️ ${synced} match${synced > 1 ? 'es' : ''} synced to cloud!`,
-                fr: `☁️ ${synced} match${synced > 1 ? 's' : ''} synchronisé${synced > 1 ? 's' : ''} !`,
-            };
-            this.showToast(msg[lang] || msg.sv);
+            const plSv = synced > 1 ? ['er', 'e'] : ['', ''];
+            const plEn = synced > 1 ? 'es' : '';
+            const plFr = synced > 1 ? 's' : '';
+            const plDe = synced > 1 ? 'e' : '';
+            const msgs = { sv: MS.syncedToast.sv, en: MS.syncedToast.en, fr: MS.syncedToast.fr, de: MS.syncedToast.de };
+            const pl = { sv: plSv[0], en: plEn, fr: plFr, de: plDe }[langMgr.lang] ?? '';
+            this.showToast(mt('syncedToast', { n: synced, pl: pl, pl2: plSv[1] }));
             this.checkOnline();
             this.loadHistory();
         }
@@ -1316,13 +1424,13 @@ class MatchApp {
         on('btn-back-home-detail', 'click', () => this.showHomeList());
         on('btn-back-detail', 'click', () => this.showHistList());
         on('btn-delete-home-detail', 'click', () => {
-            if (this.currentHomeDetailIdx !== null && confirm('Radera denna match?')) {
+            if (this.currentHomeDetailIdx !== null && confirm(mt('deleteMatchQ'))) {
                 this.deleteMatch(this.currentHomeDetailIdx);
                 this.showHomeList();
             }
         });
         on('btn-delete-detail', 'click', () => {
-            if (this.currentDetailIdx !== null && confirm('Radera denna match?')) {
+            if (this.currentDetailIdx !== null && confirm(mt('deleteMatchQ'))) {
                 this.deleteMatch(this.currentDetailIdx);
             }
         });
@@ -1344,26 +1452,26 @@ class MatchApp {
     // ---- START MATCH ----
     startMatch() {
         const name = document.getElementById('inp-matchname').value.trim() || 'Utan namn';
-        const team = document.getElementById('inp-teamname').value.trim() || 'Mitt lag';
+        const team = document.getElementById('inp-teamname').value.trim() || mt('myTeam');
         const fmt = this.matchFormat || 'triple';
 
         let names, positions;
         if (fmt === 'double') {
             names = [
-                document.getElementById('inp-p1').value.trim() || 'Läggare',
-                document.getElementById('inp-p3').value.trim() || 'Skytt'
+                document.getElementById('inp-p1').value.trim() || posLabel('Läggare'),
+                document.getElementById('inp-p3').value.trim() || posLabel('Skytt')
             ];
             positions = ['Läggare', 'Skytt'];
         } else {
             names = [
-                document.getElementById('inp-p1').value.trim() || 'Läggare',
-                document.getElementById('inp-p2').value.trim() || 'Mittspelare',
-                document.getElementById('inp-p3').value.trim() || 'Skytt'
+                document.getElementById('inp-p1').value.trim() || posLabel('Läggare'),
+                document.getElementById('inp-p2').value.trim() || posLabel('Mittspelare'),
+                document.getElementById('inp-p3').value.trim() || posLabel('Skytt')
             ];
             positions = ['Läggare', 'Mittspelare', 'Skytt'];
         }
 
-        const opponent = document.getElementById('inp-opponent').value.trim() || 'Motståndare';
+        const opponent = document.getElementById('inp-opponent').value.trim() || mt('opponentDefault');
         this.matchStart = new Date();
         this.match = {
             id: Date.now().toString(),
@@ -1424,7 +1532,7 @@ class MatchApp {
         const grid = document.getElementById('player-grid');
         grid.innerHTML = '';
         
-        const opponentName = this.match.opponent || 'Motståndare';
+        const opponentName = this.match.opponent || mt('opponentDefault');
         const teamName = this.match.team || 'Ditt lag';
         
         // Skapa sida-vid-sida grid
@@ -1471,7 +1579,7 @@ class MatchApp {
         
         card.innerHTML = `
             <div class="player-header">
-                <span class="player-role">${p.position}</span>
+                <span class="player-role">${posLabel(p.position)}</span>
                 <span class="player-name">${p.name}</span>
                 <span class="player-ball-count" id="${isOpponent ? 'opp' : 'own'}-ball-count-${idx}">0/${this.match.ballsPerPlayer || 2}</span>
             </div>
@@ -1482,7 +1590,7 @@ class MatchApp {
                         onclick="app.${isOpponent ? 'logOpponent' : 'log'}(${idx},'lagg',true)">✓ Poäng</button>
                     <button class="action-btn action-btn-stang" data-${isOpponent ? 'opp' : 'player'}="${idx}"
                         data-sv="⊙ Stängn." data-en="⊙ Block" data-fr="⊙ Blocage"
-                        onclick="app.${isOpponent ? 'logOpponent' : 'log'}(${idx},'lagg',false,true)">⊙ Stängn.</button>
+                        onclick="app.${isOpponent ? 'logOpponent' : 'log'}(${idx},'lagg',false,true)" data-de="⊙ Blockade">⊙ Stängn.</button>
                     <button class="action-btn action-btn-miss" data-${isOpponent ? 'opp' : 'player'}="${idx}"
                         onclick="app.${isOpponent ? 'logOpponent' : 'log'}(${idx},'lagg',false)">✗ Miss</button>
                 </div>
@@ -1567,7 +1675,7 @@ class MatchApp {
         // Kolla om max klot redan loggats
         const bppOpp = this.match.ballsPerPlayer || 2;
         if (this.match.roundActions[currentRound][oppKey].length >= bppOpp) {
-            this.showToast('⚠️ Spelaren har redan lagt ' + bppOpp + ' klot');
+            this.showToast(mt('ballsAlready', {n: bppOpp}));
             return;
         }
         
@@ -1622,7 +1730,7 @@ class MatchApp {
         const playerBalls = this.match.roundActions[this.match.currentRound][playerIdx];
         const bppLog = this.match.ballsPerPlayer || 2;
         if (playerBalls.length >= bppLog) {
-            this.showToast('⚠️ Spelaren har redan lagt ' + bppLog + ' klot');
+            this.showToast(mt('ballsAlready', {n: bppLog}));
             return;
         }
         
@@ -1630,18 +1738,8 @@ class MatchApp {
         playerBalls.push({ type, hit, stang: stang && !hit });
 
         const elapsed = Math.floor((new Date() - this.matchStart) / 60000);
-        const _lang = typeof langMgr !== 'undefined' ? langMgr.lang : 'sv';
-        const _laggLabels = {
-            hit:  { sv: 'Poängkula ✓', en: 'Hit ✓', fr: 'Pointé ✓' },
-            stang:{ sv: 'Stängning ⊙', en: 'Block ⊙', fr: 'Blocage ⊙' },
-            miss: { sv: 'Lägg miss ✗', en: 'Pointer miss ✗', fr: 'Pointé manqué ✗' },
-        };
-        const _skottLabels = {
-            hit:  { sv: 'Skott träff ✓', en: 'Shot hit ✓', fr: 'Tir réussi ✓' },
-            miss: { sv: 'Skott miss ✗', en: 'Shot miss ✗', fr: 'Tir manqué ✗' },
-        };
-        const laggLabel = hit ? _laggLabels.hit[_lang] : (stang ? _laggLabels.stang[_lang] : _laggLabels.miss[_lang]);
-        const label = type === 'lagg' ? laggLabel : (hit ? _skottLabels.hit[_lang] : _skottLabels.miss[_lang]);
+        const laggLabel = mt(hit ? 'poangkula' : (stang ? 'stangning' : 'laggMiss')) + (hit ? ' ✓' : (stang ? ' ⊙' : ' ✗'));
+        const label = type === 'lagg' ? laggLabel : (hit ? mt('skottHit') + ' ✓' : mt('skottMiss') + ' ✗');
         this.match.timeline.push({ time: elapsed, player: p.name, type, hit, label });
 
         // Spara i ångra-historik
@@ -1661,7 +1759,7 @@ class MatchApp {
     // ---- ÅNGRA SENASTE ----
     undoLast() {
         if (!this.match.actionHistory || this.match.actionHistory.length === 0) {
-            this.showToast({sv:'Inget att ångra', en:'Nothing to undo', fr:'Rien à annuler'}[langMgr.lang]||'Inget att ångra');
+            this.showToast(mt('nothingToUndo'));
             return;
         }
 
@@ -1715,7 +1813,7 @@ class MatchApp {
 
         this.renderLiveTable();
         this.updateBallCounts();
-        this.showToast(({sv:'↩ Ångrade: ', en:'↩ Undid: ', fr:'↩ Annulé : '}[langMgr.lang]||'↩ Ångrade: ') + pName + ' (' + last.type + ')');
+        this.showToast(mt('undid') + pName + ' (' + (last.type === 'lagg' ? mt('lagg') : mt('skott')) + ')');
     }
 
     // ---- CHECK AUTO NEXT ROUND ----
@@ -1735,7 +1833,7 @@ class MatchApp {
         const oppFull = oppBalls >= ((this.match.opponents || []).length * bppCheck);
 
         if (ownFull && oppFull) {
-            this.showToast('✅ Omgång ' + this.match.currentRound + ' klar - byter...');
+            this.showToast(mt('roundDoneSwitch', {n: this.match.currentRound}));
             setTimeout(() => this.nextRound(true), 1500);
         }
     }
@@ -1748,7 +1846,7 @@ class MatchApp {
             const roundActions = (this.match.roundActions || {})[this.match.currentRound] || {};
             const total = Object.values(roundActions).reduce((s, a) => s + a.length, 0);
             if (total < 6 && total > 0) {
-                if (!confirm('⚠️ Bara ' + total + '/6 klot. Fortsätt?')) return;
+                if (!confirm(mt('onlyBalls', {n: total}))) return;
             }
         }
 
@@ -1757,7 +1855,7 @@ class MatchApp {
             this.match.currentRound = finishedRound + 1;
             this.updateBallCounts();
             if (!isAuto) {
-                this.showToast('🎯 '+({sv:'Omgång', en:'Round', fr:'Manche'}[langMgr.lang]||'Omgång')+' '+this.match.currentRound);
+                this.showToast('🎯 '+mt('roundWord')+' '+this.match.currentRound);
             }
         });
     }
@@ -1771,15 +1869,10 @@ class MatchApp {
         const oppLabel = document.getElementById('round-modal-opp-label');
 
         if (title) {
-            const titles = {
-                sv: `Omgång ${roundNum} klar \u2014 vem vann?`,
-                en: `Round ${roundNum} done \u2014 who won?`,
-                fr: `Manche ${roundNum} termin\u00e9e \u2014 qui a gagn\u00e9?`
-            };
-            title.textContent = titles[langMgr.lang] || titles.sv;
+            title.textContent = mt('roundModalTitle', {n: roundNum});
         }
-        if (ownLabel) ownLabel.textContent = (this.match.team || 'VÅRT LAG').toUpperCase();
-        if (oppLabel) oppLabel.textContent = (this.match.opponent || 'MOTSTÅNDARNA').toUpperCase();
+        if (ownLabel) ownLabel.textContent = (this.match.team || mt('ourTeam')).toUpperCase();
+        if (oppLabel) oppLabel.textContent = (this.match.opponent || mt('theOpponents')).toUpperCase();
 
         if (modal) modal.style.display = 'flex';
     }
@@ -1850,7 +1943,7 @@ class MatchApp {
         // Separator rad
         if (this.match.opponents && this.match.opponents.length > 0) {
             const sepRow = document.createElement('tr');
-            sepRow.innerHTML = `<td colspan="5" style="padding:4px 8px;font-size:10px;color:#ff8080;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-top:1px solid rgba(255,100,100,0.2)">${this.match.opponent || 'Motståndare'}</td>`;
+            sepRow.innerHTML = `<td colspan="5" style="padding:4px 8px;font-size:10px;color:#ff8080;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-top:1px solid rgba(255,100,100,0.2)">${this.match.opponent || mt('opponentDefault')}</td>`;
             tbody.appendChild(sepRow);
             
             this.match.opponents.forEach(p => {
@@ -1889,8 +1982,8 @@ class MatchApp {
             data: {
                 labels,
                 datasets: [
-                    { label: 'Lägg %', data: players.map(p => this.acc(p.stats.lagg)), backgroundColor: '#51cf66' },
-                    { label: 'Skott %', data: players.map(p => this.acc(p.stats.skott)), backgroundColor: '#e8ff47' }
+                    { label: mt('lagg') + ' %', data: players.map(p => this.acc(p.stats.lagg)), backgroundColor: '#51cf66' },
+                    { label: mt('skott') + ' %', data: players.map(p => this.acc(p.stats.skott)), backgroundColor: '#e8ff47' }
                 ]
             },
             options: chartOpts
@@ -1902,11 +1995,11 @@ class MatchApp {
             data: {
                 labels,
                 datasets: [
-                    { label: 'Poängkula', data: players.map(p => p.stats.lagg.hit), backgroundColor: '#51cf66' },
-                    { label: 'Stängning', data: players.map(p => p.stats.lagg.stang || 0), backgroundColor: '#ff9f43' },
-                    { label: 'Lägg miss', data: players.map(p => p.stats.lagg.total - p.stats.lagg.hit - (p.stats.lagg.stang||0)), backgroundColor: 'rgba(81,207,102,0.25)' },
-                    { label: 'Skott träff', data: players.map(p => p.stats.skott.hit), backgroundColor: '#e8ff47' },
-                    { label: 'Skott miss', data: players.map(p => p.stats.skott.total - p.stats.skott.hit), backgroundColor: 'rgba(232,255,71,0.2)' },
+                    { label: mt('poangkula'), data: players.map(p => p.stats.lagg.hit), backgroundColor: '#51cf66' },
+                    { label: mt('stangning'), data: players.map(p => p.stats.lagg.stang || 0), backgroundColor: '#ff9f43' },
+                    { label: mt('laggMiss'), data: players.map(p => p.stats.lagg.total - p.stats.lagg.hit - (p.stats.lagg.stang||0)), backgroundColor: 'rgba(81,207,102,0.25)' },
+                    { label: mt('skottHit'), data: players.map(p => p.stats.skott.hit), backgroundColor: '#e8ff47' },
+                    { label: mt('skottMiss'), data: players.map(p => p.stats.skott.total - p.stats.skott.hit), backgroundColor: 'rgba(232,255,71,0.2)' },
                 ]
             },
             options: { ...chartOpts, scales: { x: { ticks:{color:'#999'}, grid:{color:'rgba(232,255,71,0.05)'} }, y: { ticks:{color:'#999'}, grid:{color:'rgba(232,255,71,0.05)'}, min:0 } } }
@@ -1915,7 +2008,7 @@ class MatchApp {
 
     // ---- RESET ----
     resetStats() {
-        if (!confirm({sv:'Återställ all statistik?', en:'Reset all statistics?', fr:'Réinitialiser toutes les statistiques?'}[langMgr.lang]||'Återställ all statistik?')) return;
+        if (!confirm(mt('resetAllQ'))) return;
         this.match.players.forEach(p => { p.stats = { lagg:{hit:0,total:0}, skott:{hit:0,total:0} }; });
         if (this.match.opponents) {
             this.match.opponents.forEach(p => { p.stats = { lagg:{hit:0,total:0}, skott:{hit:0,total:0} }; });
@@ -1933,7 +2026,7 @@ class MatchApp {
 
     // ---- FINISH MATCH ----
     async finishMatch() {
-        if (!confirm('Avsluta och spara matchen?')) return;
+        if (!confirm(mt('finishQ'))) return;
         clearInterval(this.timerInterval);
         clearInterval(this.chartInterval);
 
@@ -1973,7 +2066,7 @@ class MatchApp {
         const matchEl = document.getElementById('match-history-list');
 
         if (!this.history.length) {
-            const empty = '<div class="empty">Ingen matchhistorik än</div>';
+            const empty = '<div class="empty">' + mt('noMatchHistory') + '</div>';
             if (homeEl) homeEl.innerHTML = empty;
             if (matchEl) matchEl.innerHTML = empty;
             return;
@@ -2060,13 +2153,13 @@ class MatchApp {
                 labels,
                 datasets: [
                     {
-                        label: 'Lägg % (poängkula)',
+                        label: mt('lagg') + ' % (' + mt('poangkula') + ')',
                         data: m.players.map(p => this.acc(p.stats.lagg)),
                         backgroundColor: '#51cf66',
                         borderRadius: 4
                     },
                     {
-                        label: 'Skott %',
+                        label: mt('skott') + ' %',
                         data: m.players.map(p => this.acc(p.stats.skott)),
                         backgroundColor: '#e8ff47',
                         borderRadius: 4
@@ -2094,31 +2187,31 @@ class MatchApp {
                 labels,
                 datasets: [
                     {
-                        label: 'Lägg poängkulor',
+                        label: mt('laggPoangkulor'),
                         data: m.players.map(p => p.stats.lagg.hit),
                         backgroundColor: '#51cf66',
                         borderRadius: 4
                     },
                     {
-                        label: 'Stängning',
+                        label: mt('stangning'),
                         data: m.players.map(p => p.stats.lagg.stang || 0),
                         backgroundColor: '#ff9f43',
                         borderRadius: 4
                     },
                     {
-                        label: 'Lägg miss',
+                        label: mt('laggMiss'),
                         data: m.players.map(p => p.stats.lagg.total - p.stats.lagg.hit - (p.stats.lagg.stang||0)),
                         backgroundColor: 'rgba(81,207,102,0.25)',
                         borderRadius: 4
                     },
                     {
-                        label: 'Skott träff',
+                        label: mt('skottHit'),
                         data: m.players.map(p => p.stats.skott.hit),
                         backgroundColor: '#e8ff47',
                         borderRadius: 4
                     },
                     {
-                        label: 'Skott miss',
+                        label: mt('skottMiss'),
                         data: m.players.map(p => p.stats.skott.total - p.stats.skott.hit),
                         backgroundColor: 'rgba(232,255,71,0.2)',
                         borderRadius: 4
@@ -2173,10 +2266,10 @@ class MatchApp {
             data: {
                 labels,
                 datasets: [
-                    { label: 'Lägg % (denna match)', data: thisLagg, backgroundColor: '#51cf66', borderRadius: 4 },
-                    { label: 'Lägg % (historiskt snitt)', data: histLagg, backgroundColor: 'rgba(81,207,102,0.3)', borderRadius: 4, borderWidth: 2, borderColor: '#51cf66' },
-                    { label: 'Skott % (denna match)', data: thisSkott, backgroundColor: '#e8ff47', borderRadius: 4 },
-                    { label: 'Skott % (historiskt snitt)', data: histSkott, backgroundColor: 'rgba(232,255,71,0.25)', borderRadius: 4, borderWidth: 2, borderColor: '#e8ff47' }
+                    { label: mt('lagg') + ' % (' + mt('thisMatch') + ')', data: thisLagg, backgroundColor: '#51cf66', borderRadius: 4 },
+                    { label: mt('lagg') + ' % (' + mt('histAvg') + ')', data: histLagg, backgroundColor: 'rgba(81,207,102,0.3)', borderRadius: 4, borderWidth: 2, borderColor: '#51cf66' },
+                    { label: mt('skott') + ' % (' + mt('thisMatch') + ')', data: thisSkott, backgroundColor: '#e8ff47', borderRadius: 4 },
+                    { label: mt('skott') + ' % (' + mt('histAvg') + ')', data: histSkott, backgroundColor: 'rgba(232,255,71,0.25)', borderRadius: 4, borderWidth: 2, borderColor: '#e8ff47' }
                 ]
             },
             options: {
@@ -2187,7 +2280,7 @@ class MatchApp {
                         callbacks: {
                             label: ctx => {
                                 const v = ctx.parsed.y;
-                                return v !== null ? ` ${ctx.dataset.label}: ${v}%` : ' Ingen historik';
+                                return v !== null ? ` ${ctx.dataset.label}: ${v}%` : ' ' + mt('noHistoryShort');
                             }
                         }
                     }
@@ -2209,11 +2302,11 @@ class MatchApp {
         // ---- TIDSLINJE ----
         const tl = document.getElementById('detail-timeline');
         if (!m.timeline || !m.timeline.length) {
-            tl.innerHTML = '<div style="color:#666;font-size:13px;padding:1rem;text-align:center;">Ingen tidslinje registrerad</div>';
+            tl.innerHTML = '<div style="color:#666;font-size:13px;padding:1rem;text-align:center;">' + mt('noTimeline') + '</div>';
         } else {
             tl.innerHTML = m.timeline.map(t => {
                 const dc = t.type==='lagg'?(t.hit?'dot-lagg-hit':'dot-lagg-miss'):(t.hit?'dot-skott-hit':'dot-skott-miss');
-                return `<div class="timeline-item"><div class="timeline-time">${t.time}m</div><div class="timeline-dot ${dc}"></div><div class="timeline-text"><strong>${t.player}</strong> — ${t.label}</div></div>`;
+                return `<div class="timeline-item"><div class="timeline-time">${t.time}m</div><div class="timeline-dot ${dc}"></div><div class="timeline-text"><strong>${t.player}</strong> — ${relabel(t.label)}</div></div>`;
             }).join('');
         }
 
@@ -2261,8 +2354,8 @@ class MatchApp {
             data: {
                 labels,
                 datasets: [
-                    { label:'Lägg % (poängkula)', data:m.players.map(p=>this.acc(p.stats.lagg)), backgroundColor:'#51cf66', borderRadius:4 },
-                    { label:'Skott %', data:m.players.map(p=>this.acc(p.stats.skott)), backgroundColor:'#e8ff47', borderRadius:4 }
+                    { label: mt('lagg') + ' % (' + mt('poangkula') + ')', data:m.players.map(p=>this.acc(p.stats.lagg)), backgroundColor:'#51cf66', borderRadius:4 },
+                    { label: mt('skott') + ' %', data:m.players.map(p=>this.acc(p.stats.skott)), backgroundColor:'#e8ff47', borderRadius:4 }
                 ]
             },
             options: chartBase
@@ -2275,11 +2368,11 @@ class MatchApp {
             data: {
                 labels,
                 datasets: [
-                    { label:'Lägg poängkulor', data:m.players.map(p=>p.stats.lagg.hit), backgroundColor:'#51cf66', borderRadius:4 },
-                    { label:'Stängning', data:m.players.map(p=>p.stats.lagg.stang||0), backgroundColor:'#ff9f43', borderRadius:4 },
-                    { label:'Lägg miss', data:m.players.map(p=>p.stats.lagg.total-p.stats.lagg.hit-(p.stats.lagg.stang||0)), backgroundColor:'rgba(81,207,102,0.25)', borderRadius:4 },
-                    { label:'Skott träff', data:m.players.map(p=>p.stats.skott.hit), backgroundColor:'#e8ff47', borderRadius:4 },
-                    { label:'Skott miss', data:m.players.map(p=>p.stats.skott.total-p.stats.skott.hit), backgroundColor:'rgba(232,255,71,0.2)', borderRadius:4 }
+                    { label: mt('laggPoangkulor'), data:m.players.map(p=>p.stats.lagg.hit), backgroundColor:'#51cf66', borderRadius:4 },
+                    { label: mt('stangning'), data:m.players.map(p=>p.stats.lagg.stang||0), backgroundColor:'#ff9f43', borderRadius:4 },
+                    { label: mt('laggMiss'), data:m.players.map(p=>p.stats.lagg.total-p.stats.lagg.hit-(p.stats.lagg.stang||0)), backgroundColor:'rgba(81,207,102,0.25)', borderRadius:4 },
+                    { label: mt('skottHit'), data:m.players.map(p=>p.stats.skott.hit), backgroundColor:'#e8ff47', borderRadius:4 },
+                    { label: mt('skottMiss'), data:m.players.map(p=>p.stats.skott.total-p.stats.skott.hit), backgroundColor:'rgba(232,255,71,0.2)', borderRadius:4 }
                 ]
             },
             options: { ...chartBase, scales: { x:{ticks:{color:'#999'},grid:{color:'rgba(232,255,71,0.05)'}}, y:{ticks:{color:'#999',stepSize:1},grid:{color:'rgba(232,255,71,0.05)'},min:0,beginAtZero:true} } }
@@ -2304,10 +2397,10 @@ class MatchApp {
             data: {
                 labels,
                 datasets: [
-                    { label:'Lägg % (denna match)', data:m.players.map(p=>this.acc(p.stats.lagg)), backgroundColor:'#51cf66', borderRadius:4 },
-                    { label:'Lägg % (historiskt snitt)', data:histLagg, backgroundColor:'rgba(81,207,102,0.3)', borderRadius:4, borderWidth:2, borderColor:'#51cf66' },
-                    { label:'Skott % (denna match)', data:m.players.map(p=>this.acc(p.stats.skott)), backgroundColor:'#e8ff47', borderRadius:4 },
-                    { label:'Skott % (historiskt snitt)', data:histSkott, backgroundColor:'rgba(232,255,71,0.25)', borderRadius:4, borderWidth:2, borderColor:'#e8ff47' }
+                    { label: mt('lagg') + ' % (' + mt('thisMatch') + ')', data:m.players.map(p=>this.acc(p.stats.lagg)), backgroundColor:'#51cf66', borderRadius:4 },
+                    { label: mt('lagg') + ' % (' + mt('histAvg') + ')', data:histLagg, backgroundColor:'rgba(81,207,102,0.3)', borderRadius:4, borderWidth:2, borderColor:'#51cf66' },
+                    { label: mt('skott') + ' % (' + mt('thisMatch') + ')', data:m.players.map(p=>this.acc(p.stats.skott)), backgroundColor:'#e8ff47', borderRadius:4 },
+                    { label: mt('skott') + ' % (' + mt('histAvg') + ')', data:histSkott, backgroundColor:'rgba(232,255,71,0.25)', borderRadius:4, borderWidth:2, borderColor:'#e8ff47' }
                 ]
             },
             options: chartBase
@@ -2327,11 +2420,11 @@ class MatchApp {
         // Tidslinje
         const tl = document.getElementById('home-detail-timeline');
         if (!m.timeline || !m.timeline.length) {
-            tl.innerHTML = '<div style="color:#666;font-size:13px;padding:1rem;text-align:center;">Ingen tidslinje registrerad</div>';
+            tl.innerHTML = '<div style="color:#666;font-size:13px;padding:1rem;text-align:center;">' + mt('noTimeline') + '</div>';
         } else {
             tl.innerHTML = m.timeline.map(t => {
                 const dc = t.type==='lagg'?(t.hit?'dot-lagg-hit':'dot-lagg-miss'):(t.hit?'dot-skott-hit':'dot-skott-miss');
-                return `<div class="timeline-item"><div class="timeline-time">${t.time}m</div><div class="timeline-dot ${dc}"></div><div class="timeline-text"><strong>${t.player}</strong> — ${t.label}</div></div>`;
+                return `<div class="timeline-item"><div class="timeline-time">${t.time}m</div><div class="timeline-dot ${dc}"></div><div class="timeline-text"><strong>${t.player}</strong> — ${relabel(t.label)}</div></div>`;
             }).join('');
         }
 
@@ -2358,22 +2451,22 @@ class MatchApp {
         
         // HEADER
         doc.setFont(undefined,'bold'); doc.setFontSize(16);
-        doc.text('Petanque Matchstatistik', 15, y); y+=8;
+        doc.text(mt('xTitle'), 15, y); y+=8;
         doc.setFont(undefined,'normal'); doc.setFontSize(9);
         const date = new Date(m.startTime).toLocaleDateString(langMgr.locale());
         const time = new Date(m.startTime).toLocaleTimeString(langMgr.locale(), {hour:'2-digit',minute:'2-digit'});
-        doc.text(`Tränarkod: ${this.trainerCode} | ${date} ${time} | ${m.duration??0} min`, 15, y); y+=6;
+        doc.text(`${mt('xCoachCode')}: ${this.trainerCode} | ${date} ${time} | ${m.duration??0} min`, 15, y); y+=6;
         
         // MATCH INFO
         doc.setFont(undefined,'bold'); doc.setFontSize(11);
         doc.text(m.name, 15, y); y+=5;
         doc.setFont(undefined,'normal'); doc.setFontSize(9);
-        doc.text(`Lag: ${m.team}`, 15, y); y+=5;
+        doc.text(`${mt('xTeam')}: ${m.team}`, 15, y); y+=5;
         
         // SPELARE STATS
         y+=2;
         doc.setFont(undefined,'bold'); doc.setFontSize(10);
-        doc.text('SPELARE STATISTIK', 15, y); y+=5;
+        doc.text(mt('xPlayerStats'), 15, y); y+=5;
         doc.setFont(undefined,'normal'); doc.setFontSize(8);
         
         const streaks = this.calcStreaks(m);
@@ -2383,20 +2476,20 @@ class MatchApp {
         m.players.forEach((p,idx) => {
             if (y > 250) { doc.addPage(); y = 15; }
             doc.setFont(undefined,'bold'); doc.setFontSize(9);
-            doc.text(`${p.name} (${p.position})`, 15, y); y+=4;
+            doc.text(`${p.name} (${posLabel(p.position)})`, 15, y); y+=4;
             doc.setFont(undefined,'normal'); doc.setFontSize(8);
             
             const laggAcc = this.acc(p.stats.lagg);
             const skottAcc = this.acc(p.stats.skott);
-            doc.text(`Lägg: ${p.stats.lagg.hit}/${p.stats.lagg.total} (${laggAcc}%) | Skott: ${p.stats.skott.hit}/${p.stats.skott.total} (${skottAcc}%)`, 15, y); y+=3;
+            doc.text(`${mt('lagg')}: ${p.stats.lagg.hit}/${p.stats.lagg.total} (${laggAcc}%) | ${mt('skott')}: ${p.stats.skott.hit}/${p.stats.skott.total} (${skottAcc}%)`, 15, y); y+=3;
             
             const lagStreaks = streaks[p.name];
-            doc.text(`Streaks - Lägg: ${lagStreaks.lagg.maxHit}h/${lagStreaks.lagg.maxMiss}m | Skott: ${lagStreaks.skott.maxHit}h/${lagStreaks.skott.maxMiss}m`, 15, y); y+=3;
+            doc.text(mt('xStreaks', {lh: lagStreaks.lagg.maxHit, lm: lagStreaks.lagg.maxMiss, sh: lagStreaks.skott.maxHit, sm: lagStreaks.skott.maxMiss}), 15, y); y+=3;
             
             const ha = hist[p.name];
             const laggDiff = laggAcc - ha.laggAvg;
             const skottDiff = skottAcc - ha.skottAvg;
-            doc.text(`Vs snitt (${ha.totalMatches} matcher): Lägg ${laggAcc}% (${laggDiff>0?'+':''}${laggDiff}%) | Skott ${skottAcc}% (${skottDiff>0?'+':''}${skottDiff}%)`, 15, y); y+=3;
+            doc.text(mt('xVsAvg', {n: ha.totalMatches, mw: matchesLabel(ha.totalMatches), la: laggAcc, lad: (laggDiff>0?'+':'')+laggDiff, sa: skottAcc, sad: (skottDiff>0?'+':'')+skottDiff}), 15, y); y+=3;
             y+=2;
         });
         
@@ -2404,7 +2497,7 @@ class MatchApp {
         if (y > 240) { doc.addPage(); y = 15; }
         y+=3;
         doc.setFont(undefined,'bold'); doc.setFontSize(10);
-        doc.text('POSITION-ANALYS', 15, y); y+=5;
+        doc.text(mt('xPosAnalysis'), 15, y); y+=5;
         doc.setFont(undefined,'normal'); doc.setFontSize(8);
         
         const posStats = this.getPositionStats(m);
@@ -2412,7 +2505,7 @@ class MatchApp {
             if (stats) {
                 const laggAcc = stats.lagg.t ? Math.round((stats.lagg.h/stats.lagg.t)*100) : 0;
                 const skottAcc = stats.skott.t ? Math.round((stats.skott.h/stats.skott.t)*100) : 0;
-                doc.text(`${pos}: Lägg ${stats.lagg.h}/${stats.lagg.t} (${laggAcc}%) | Skott ${stats.skott.h}/${stats.skott.t} (${skottAcc}%)`, 15, y); y+=4;
+                doc.text(`${posLabel(pos)}: ${mt('lagg')} ${stats.lagg.h}/${stats.lagg.t} (${laggAcc}%) | ${mt('skott')} ${stats.skott.h}/${stats.skott.t} (${skottAcc}%)`, 15, y); y+=4;
             }
         });
         
@@ -2426,25 +2519,25 @@ class MatchApp {
         const date = new Date(m.startTime).toLocaleDateString(langMgr.locale());
         const time = new Date(m.startTime).toLocaleTimeString(langMgr.locale(), {hour:'2-digit',minute:'2-digit'});
         
-        let csv = `Match: ${m.name}\nLag: ${m.team}\nDatum: ${date}\nTid: ${time}\nVaraktighet: ${m.duration??0} min\nTränarkod: ${this.trainerCode}\n`;
+        let csv = `${mt('xMatch')}: ${m.name}\n${mt('xTeam')}: ${m.team}\n${mt('xDate')}: ${date}\n${mt('xTime')}: ${time}\n${mt('xDuration')}: ${m.duration??0} min\n${mt('xCoachCode')}: ${this.trainerCode}\n`;
         if (m.score) {
-            csv += `Resultat: ${m.team || 'Vi'} ${m.score.own} - ${m.score.opp} ${m.opponent || 'Motst.'}\n`;
+            csv += `${mt('xResult')}: ${m.team || mt('we')} ${m.score.own} - ${m.score.opp} ${m.opponent || mt('oppShort')}\n`;
         }
         csv += `\n`;
 
         if (m.roundScores && Object.keys(m.roundScores).length > 0) {
-            csv += `OMGÅNGSRESULTAT\n`;
-            csv += `Omgång,Vinnare,Poäng\n`;
+            csv += mt('xRoundResults') + `\n`;
+            csv += mt('xRoundHdr') + `\n`;
             Object.keys(m.roundScores).sort((a,b) => +a - +b).forEach(r => {
                 const res = m.roundScores[r];
-                const winnerName = res.winner === 'own' ? (m.team || 'Vi') : (m.opponent || 'Motst.');
+                const winnerName = res.winner === 'own' ? (m.team || mt('we')) : (m.opponent || mt('oppShort'));
                 csv += `${r},"${winnerName}",${res.points}\n`;
             });
             csv += `\n`;
         }
 
-        csv += `SPELARE STATISTIK\n`;
-        csv += `Spelare,Position,Lägg träffar,Lägg stängningar,Lägg totalt,Lägg %,Skott träffar,Skott totalt,Skott %,Längsta träffsekvens Lägg,Längsta misssekvens Lägg,Längsta träffsekvens Skott,Längsta misssekvens Skott,Lägg vs snitt,Skott vs snitt\n`;
+        csv += mt('xPlayerStats') + `\n`;
+        csv += mt('xPlayerHdrFull') + `\n`;
         
         const streaks = this.calcStreaks(m);
         const hist = {};
@@ -2458,29 +2551,29 @@ class MatchApp {
             const skottDiff = skottAcc - ha.skottAvg;
             const lagStreaks = streaks[p.name];
             
-            csv += `"${p.name}","${p.position}",${p.stats.lagg.hit},${p.stats.lagg.stang||0},${p.stats.lagg.total},${laggAcc},${p.stats.skott.hit},${p.stats.skott.total},${skottAcc},${lagStreaks.lagg.maxHit},${lagStreaks.lagg.maxMiss},${lagStreaks.skott.maxHit},${lagStreaks.skott.maxMiss},"${laggAcc}% (${laggDiff>0?'+':''}${laggDiff}%)","${skottAcc}% (${skottDiff>0?'+':''}${skottDiff}%)"\n`;
+            csv += `"${p.name}","${posLabel(p.position)}",${p.stats.lagg.hit},${p.stats.lagg.stang||0},${p.stats.lagg.total},${laggAcc},${p.stats.skott.hit},${p.stats.skott.total},${skottAcc},${lagStreaks.lagg.maxHit},${lagStreaks.lagg.maxMiss},${lagStreaks.skott.maxHit},${lagStreaks.skott.maxMiss},"${laggAcc}% (${laggDiff>0?'+':''}${laggDiff}%)","${skottAcc}% (${skottDiff>0?'+':''}${skottDiff}%)"\n`;
         });
 
         // ---- MOTSTÅNDARE STATISTIK ----
         if (m.opponents && m.opponents.length > 0) {
-            csv += `\n${(m.opponent || 'MOTSTÅNDARE').toUpperCase()} - STATISTIK\n`;
-            csv += `Spelare,Position,Lägg träffar,Lägg totalt,Lägg %,Skott träffar,Skott totalt,Skott %,Längsta träffsekvens Lägg,Längsta misssekvens Lägg,Längsta träffsekvens Skott,Längsta misssekvens Skott\n`;
+            csv += `\n${(m.opponent || mt('xOppUpper')).toUpperCase()}${mt('xOppStatsSuffix')}\n`;
+            csv += mt('xPlayerHdrOpp') + `\n`;
             const oppStreaks = this.calcOpponentStreaks(m);
             m.opponents.forEach((p, idx) => {
                 const laggAcc = this.acc(p.stats.lagg);
                 const skottAcc = this.acc(p.stats.skott);
                 const s = oppStreaks[idx] || {lagg:{maxHit:0,maxMiss:0},skott:{maxHit:0,maxMiss:0}};
-                csv += `"${p.name}","${p.position}",${p.stats.lagg.hit},${p.stats.lagg.total},${laggAcc},${p.stats.skott.hit},${p.stats.skott.total},${skottAcc},${s.lagg.maxHit},${s.lagg.maxMiss},${s.skott.maxHit},${s.skott.maxMiss}\n`;
+                csv += `"${p.name}","${posLabel(p.position)}",${p.stats.lagg.hit},${p.stats.lagg.total},${laggAcc},${p.stats.skott.hit},${p.stats.skott.total},${skottAcc},${s.lagg.maxHit},${s.lagg.maxMiss},${s.skott.maxHit},${s.skott.maxMiss}\n`;
             });
         }
 
-        csv += `\nPOSITION-ANALYS\nPosition,Lägg träffar,Lägg totalt,Lägg %,Skott träffar,Skott totalt,Skott %\n`;
+        csv += `\n` + mt('xPosAnalysis') + `\n` + mt('xPosHdr') + `\n`;
         const posStats = this.getPositionStats(m);
         Object.entries(posStats).forEach(([pos, stats]) => {
             if (stats) {
                 const laggAcc = stats.lagg.t ? Math.round((stats.lagg.h/stats.lagg.t)*100) : 0;
                 const skottAcc = stats.skott.t ? Math.round((stats.skott.h/stats.skott.t)*100) : 0;
-                csv += `"${pos}",${stats.lagg.h},${stats.lagg.t},${laggAcc},${stats.skott.h},${stats.skott.t},${skottAcc}\n`;
+                csv += `"${posLabel(pos)}",${stats.lagg.h},${stats.lagg.t},${laggAcc},${stats.skott.h},${stats.skott.t},${skottAcc}\n`;
             }
         });
         
@@ -2501,22 +2594,22 @@ class MatchApp {
         
         // HEADER
         doc.setFont(undefined,'bold'); doc.setFontSize(16);
-        doc.text('Petanque Matchstatistik', 15, y); y+=8;
+        doc.text(mt('xTitle'), 15, y); y+=8;
         doc.setFont(undefined,'normal'); doc.setFontSize(9);
         const date = new Date(m.startTime).toLocaleDateString(langMgr.locale());
         const time = new Date(m.startTime).toLocaleTimeString(langMgr.locale(), {hour:'2-digit',minute:'2-digit'});
-        doc.text(`Tränarkod: ${this.trainerCode} | ${date} ${time} | ${m.duration??0} min`, 15, y); y+=6;
+        doc.text(`${mt('xCoachCode')}: ${this.trainerCode} | ${date} ${time} | ${m.duration??0} min`, 15, y); y+=6;
         
         // MATCH INFO
         doc.setFont(undefined,'bold'); doc.setFontSize(11);
         doc.text(m.name, 15, y); y+=5;
         doc.setFont(undefined,'normal'); doc.setFontSize(9);
-        doc.text(`Lag: ${m.team}`, 15, y); y+=5;
+        doc.text(`${mt('xTeam')}: ${m.team}`, 15, y); y+=5;
         
         // SPELARE STATS
         y+=2;
         doc.setFont(undefined,'bold'); doc.setFontSize(10);
-        doc.text('SPELARE STATISTIK', 15, y); y+=5;
+        doc.text(mt('xPlayerStats'), 15, y); y+=5;
         doc.setFont(undefined,'normal'); doc.setFontSize(8);
         
         const streaks = this.calcStreaks(m);
@@ -2526,20 +2619,20 @@ class MatchApp {
         m.players.forEach((p,idx) => {
             if (y > 250) { doc.addPage(); y = 15; }
             doc.setFont(undefined,'bold'); doc.setFontSize(9);
-            doc.text(`${p.name} (${p.position})`, 15, y); y+=4;
+            doc.text(`${p.name} (${posLabel(p.position)})`, 15, y); y+=4;
             doc.setFont(undefined,'normal'); doc.setFontSize(8);
             
             const laggAcc = this.acc(p.stats.lagg);
             const skottAcc = this.acc(p.stats.skott);
-            doc.text(`Lägg: ${p.stats.lagg.hit}/${p.stats.lagg.total} (${laggAcc}%) | Skott: ${p.stats.skott.hit}/${p.stats.skott.total} (${skottAcc}%)`, 15, y); y+=3;
+            doc.text(`${mt('lagg')}: ${p.stats.lagg.hit}/${p.stats.lagg.total} (${laggAcc}%) | ${mt('skott')}: ${p.stats.skott.hit}/${p.stats.skott.total} (${skottAcc}%)`, 15, y); y+=3;
             
             const lagStreaks = streaks[p.name];
-            doc.text(`Streaks - Lägg: ${lagStreaks.lagg.maxHit}h/${lagStreaks.lagg.maxMiss}m | Skott: ${lagStreaks.skott.maxHit}h/${lagStreaks.skott.maxMiss}m`, 15, y); y+=3;
+            doc.text(mt('xStreaks', {lh: lagStreaks.lagg.maxHit, lm: lagStreaks.lagg.maxMiss, sh: lagStreaks.skott.maxHit, sm: lagStreaks.skott.maxMiss}), 15, y); y+=3;
             
             const ha = hist[p.name];
             const laggDiff = laggAcc - ha.laggAvg;
             const skottDiff = skottAcc - ha.skottAvg;
-            doc.text(`Vs snitt (${ha.totalMatches} matcher): Lägg ${laggAcc}% (${laggDiff>0?'+':''}${laggDiff}%) | Skott ${skottAcc}% (${skottDiff>0?'+':''}${skottDiff}%)`, 15, y); y+=3;
+            doc.text(mt('xVsAvg', {n: ha.totalMatches, mw: matchesLabel(ha.totalMatches), la: laggAcc, lad: (laggDiff>0?'+':'')+laggDiff, sa: skottAcc, sad: (skottDiff>0?'+':'')+skottDiff}), 15, y); y+=3;
             y+=2;
         });
         
@@ -2547,7 +2640,7 @@ class MatchApp {
         if (y > 240) { doc.addPage(); y = 15; }
         y+=3;
         doc.setFont(undefined,'bold'); doc.setFontSize(10);
-        doc.text('POSITION-ANALYS', 15, y); y+=5;
+        doc.text(mt('xPosAnalysis'), 15, y); y+=5;
         doc.setFont(undefined,'normal'); doc.setFontSize(8);
         
         const posStats = this.getPositionStats(m);
@@ -2555,7 +2648,7 @@ class MatchApp {
             if (stats) {
                 const laggAcc = stats.lagg.t ? Math.round((stats.lagg.h/stats.lagg.t)*100) : 0;
                 const skottAcc = stats.skott.t ? Math.round((stats.skott.h/stats.skott.t)*100) : 0;
-                doc.text(`${pos}: Lägg ${stats.lagg.h}/${stats.lagg.t} (${laggAcc}%) | Skott ${stats.skott.h}/${stats.skott.t} (${skottAcc}%)`, 15, y); y+=4;
+                doc.text(`${posLabel(pos)}: ${mt('lagg')} ${stats.lagg.h}/${stats.lagg.t} (${laggAcc}%) | ${mt('skott')} ${stats.skott.h}/${stats.skott.t} (${skottAcc}%)`, 15, y); y+=4;
             }
         });
         
@@ -2569,25 +2662,25 @@ class MatchApp {
         const date = new Date(m.startTime).toLocaleDateString(langMgr.locale());
         const time = new Date(m.startTime).toLocaleTimeString(langMgr.locale(), {hour:'2-digit',minute:'2-digit'});
         
-        let csv = `Match: ${m.name}\nLag: ${m.team}\nDatum: ${date}\nTid: ${time}\nVaraktighet: ${m.duration??0} min\nTränarkod: ${this.trainerCode}\n`;
+        let csv = `${mt('xMatch')}: ${m.name}\n${mt('xTeam')}: ${m.team}\n${mt('xDate')}: ${date}\n${mt('xTime')}: ${time}\n${mt('xDuration')}: ${m.duration??0} min\n${mt('xCoachCode')}: ${this.trainerCode}\n`;
         if (m.score) {
-            csv += `Resultat: ${m.team || 'Vi'} ${m.score.own} - ${m.score.opp} ${m.opponent || 'Motst.'}\n`;
+            csv += `${mt('xResult')}: ${m.team || mt('we')} ${m.score.own} - ${m.score.opp} ${m.opponent || mt('oppShort')}\n`;
         }
         csv += `\n`;
 
         if (m.roundScores && Object.keys(m.roundScores).length > 0) {
-            csv += `OMGÅNGSRESULTAT\n`;
-            csv += `Omgång,Vinnare,Poäng\n`;
+            csv += mt('xRoundResults') + `\n`;
+            csv += mt('xRoundHdr') + `\n`;
             Object.keys(m.roundScores).sort((a,b) => +a - +b).forEach(r => {
                 const res = m.roundScores[r];
-                const winnerName = res.winner === 'own' ? (m.team || 'Vi') : (m.opponent || 'Motst.');
+                const winnerName = res.winner === 'own' ? (m.team || mt('we')) : (m.opponent || mt('oppShort'));
                 csv += `${r},"${winnerName}",${res.points}\n`;
             });
             csv += `\n`;
         }
 
-        csv += `SPELARE STATISTIK\n`;
-        csv += `Spelare,Position,Lägg träffar,Lägg stängningar,Lägg totalt,Lägg %,Skott träffar,Skott totalt,Skott %,Längsta träffsekvens Lägg,Längsta misssekvens Lägg,Längsta träffsekvens Skott,Längsta misssekvens Skott,Lägg vs snitt,Skott vs snitt\n`;
+        csv += mt('xPlayerStats') + `\n`;
+        csv += mt('xPlayerHdrFull') + `\n`;
         
         const streaks = this.calcStreaks(m);
         const hist = {};
@@ -2601,29 +2694,29 @@ class MatchApp {
             const skottDiff = skottAcc - ha.skottAvg;
             const lagStreaks = streaks[p.name];
             
-            csv += `"${p.name}","${p.position}",${p.stats.lagg.hit},${p.stats.lagg.stang||0},${p.stats.lagg.total},${laggAcc},${p.stats.skott.hit},${p.stats.skott.total},${skottAcc},${lagStreaks.lagg.maxHit},${lagStreaks.lagg.maxMiss},${lagStreaks.skott.maxHit},${lagStreaks.skott.maxMiss},"${laggAcc}% (${laggDiff>0?'+':''}${laggDiff}%)","${skottAcc}% (${skottDiff>0?'+':''}${skottDiff}%)"\n`;
+            csv += `"${p.name}","${posLabel(p.position)}",${p.stats.lagg.hit},${p.stats.lagg.stang||0},${p.stats.lagg.total},${laggAcc},${p.stats.skott.hit},${p.stats.skott.total},${skottAcc},${lagStreaks.lagg.maxHit},${lagStreaks.lagg.maxMiss},${lagStreaks.skott.maxHit},${lagStreaks.skott.maxMiss},"${laggAcc}% (${laggDiff>0?'+':''}${laggDiff}%)","${skottAcc}% (${skottDiff>0?'+':''}${skottDiff}%)"\n`;
         });
 
         // ---- MOTSTÅNDARE STATISTIK ----
         if (m.opponents && m.opponents.length > 0) {
-            csv += `\n${(m.opponent || 'MOTSTÅNDARE').toUpperCase()} - STATISTIK\n`;
-            csv += `Spelare,Position,Lägg träffar,Lägg totalt,Lägg %,Skott träffar,Skott totalt,Skott %,Längsta träffsekvens Lägg,Längsta misssekvens Lägg,Längsta träffsekvens Skott,Längsta misssekvens Skott\n`;
+            csv += `\n${(m.opponent || mt('xOppUpper')).toUpperCase()}${mt('xOppStatsSuffix')}\n`;
+            csv += mt('xPlayerHdrOpp') + `\n`;
             const oppStreaks = this.calcOpponentStreaks(m);
             m.opponents.forEach((p, idx) => {
                 const laggAcc = this.acc(p.stats.lagg);
                 const skottAcc = this.acc(p.stats.skott);
                 const s = oppStreaks[idx] || {lagg:{maxHit:0,maxMiss:0},skott:{maxHit:0,maxMiss:0}};
-                csv += `"${p.name}","${p.position}",${p.stats.lagg.hit},${p.stats.lagg.total},${laggAcc},${p.stats.skott.hit},${p.stats.skott.total},${skottAcc},${s.lagg.maxHit},${s.lagg.maxMiss},${s.skott.maxHit},${s.skott.maxMiss}\n`;
+                csv += `"${p.name}","${posLabel(p.position)}",${p.stats.lagg.hit},${p.stats.lagg.total},${laggAcc},${p.stats.skott.hit},${p.stats.skott.total},${skottAcc},${s.lagg.maxHit},${s.lagg.maxMiss},${s.skott.maxHit},${s.skott.maxMiss}\n`;
             });
         }
 
-        csv += `\nPOSITION-ANALYS\nPosition,Lägg träffar,Lägg totalt,Lägg %,Skott träffar,Skott totalt,Skott %\n`;
+        csv += `\n` + mt('xPosAnalysis') + `\n` + mt('xPosHdr') + `\n`;
         const posStats = this.getPositionStats(m);
         Object.entries(posStats).forEach(([pos, stats]) => {
             if (stats) {
                 const laggAcc = stats.lagg.t ? Math.round((stats.lagg.h/stats.lagg.t)*100) : 0;
                 const skottAcc = stats.skott.t ? Math.round((stats.skott.h/stats.skott.t)*100) : 0;
-                csv += `"${pos}",${stats.lagg.h},${stats.lagg.t},${laggAcc},${stats.skott.h},${stats.skott.t},${skottAcc}\n`;
+                csv += `"${posLabel(pos)}",${stats.lagg.h},${stats.lagg.t},${laggAcc},${stats.skott.h},${stats.skott.t},${skottAcc}\n`;
             }
         });
         
@@ -2637,7 +2730,7 @@ class MatchApp {
     // ---- EXPORT ALL MATCHES PDF ----
     exportPDF() {
         const m = this.match || (this.history.length ? this.history[this.history.length-1] : null);
-        if (!m) { alert('Ingen matchdata att exportera'); return; }
+        if (!m) { alert(mt('noMatchData')); return; }
         
         const {jsPDF} = window.jspdf;
         const doc = new jsPDF();
@@ -2645,19 +2738,19 @@ class MatchApp {
         
         // Header
         doc.setFont(undefined,'bold'); doc.setFontSize(18);
-        doc.text('MATCHSTATISTIK', 15, y); y+=8;
+        doc.text(mt('xAllTitle'), 15, y); y+=8;
         
         doc.setFont(undefined,'normal'); doc.setFontSize(10);
-        doc.text(`Match: ${m.name || 'Ej namnsatt'}`, 15, y); y+=5;
-        doc.text(`Lag: ${m.team || '-'}`, 15, y); y+=5;
+        doc.text(mt('xMatchLine', {name: m.name || mt('unnamed')}), 15, y); y+=5;
+        doc.text(`${mt('xTeam')}: ${m.team || '-'}`, 15, y); y+=5;
         const startDate = new Date(m.startTime || Date.now()).toLocaleDateString(langMgr.locale());
         const startTime = new Date(m.startTime || Date.now()).toLocaleTimeString(langMgr.locale(), {hour:'2-digit',minute:'2-digit'});
-        doc.text(`Datum: ${startDate} | Tid: ${startTime}`, 15, y); y+=5;
-        doc.text(`Omgångar spelade: ${m.currentRound || 1}`, 15, y); y+=8;
+        doc.text(mt('xDateTimeLine', {d: startDate, t: startTime}), 15, y); y+=5;
+        doc.text(mt('xRoundsPlayed', {n: m.currentRound || 1}), 15, y); y+=8;
         
         // Per-omgång statistik
         doc.setFont(undefined,'bold'); doc.setFontSize(11);
-        doc.text('PER OMGÅNG', 15, y); y+=6;
+        doc.text(mt('xPerRound'), 15, y); y+=6;
         
         doc.setFont(undefined,'normal'); doc.setFontSize(8);
         if (m.roundActions) {
@@ -2665,7 +2758,7 @@ class MatchApp {
                 if (y > 270) { doc.addPage(); y = 15; }
                 
                 doc.setFont(undefined,'bold');
-                doc.text(`Omgång ${roundNum}:`, 15, y); y+=4;
+                doc.text(mt('xRoundN', {n: roundNum}), 15, y); y+=4;
                 doc.setFont(undefined,'normal');
                 
                 const roundAct = m.roundActions[roundNum];
@@ -2691,16 +2784,16 @@ class MatchApp {
         
         // Totals
         doc.setFont(undefined,'bold'); doc.setFontSize(11);
-        doc.text('TOTALT', 15, y); y+=6;
+        doc.text(mt('xTotal'), 15, y); y+=6;
         
         doc.setFont(undefined,'normal'); doc.setFontSize(9);
         m.players.forEach(p => {
             const la = this.acc(p.stats.lagg);
             const sa = this.acc(p.stats.skott);
-            const laggStr = `Lägg: ${p.stats.lagg.hit}/${p.stats.lagg.total} (${la}%)`;
-            const skottStr = `Skott: ${p.stats.skott.hit}/${p.stats.skott.total} (${sa}%)`;
+            const laggStr = mt('xLaggTotal', {h: p.stats.lagg.hit, t: p.stats.lagg.total, a: la});
+            const skottStr = mt('xSkottTotal', {h: p.stats.skott.hit, t: p.stats.skott.total, a: sa});
             
-            doc.text(`${p.name} (${p.position})`, 15, y); y+=4;
+            doc.text(`${p.name} (${posLabel(p.position)})`, 15, y); y+=4;
             doc.text(`  ${laggStr}`, 18, y); y+=4;
             doc.text(`  ${skottStr}`, 18, y); y+=5;
         });
@@ -2712,17 +2805,17 @@ class MatchApp {
     // ---- EXPORT CSV ----
     exportCSV() {
         const m = this.match || (this.history.length ? this.history[this.history.length-1] : null);
-        if (!m) { alert('Ingen matchdata att exportera'); return; }
+        if (!m) { alert(mt('noMatchData')); return; }
 
         let csv = '';
         if (m.score) {
-            csv += `=== RESULTAT: ${m.team || 'Vi'} ${m.score.own} - ${m.score.opp} ${m.opponent || 'Motst.'} ===\n`;
+            csv += mt('xResultBanner', {a: m.team || mt('we'), x: m.score.own, y: m.score.opp, b: m.opponent || mt('oppShort')}) + `\n`;
         }
         if (m.roundScores && Object.keys(m.roundScores).length > 0) {
-            csv += `OMGÅNGSRESULTAT\nOmgång,Vinnare,Poäng\n`;
+            csv += mt('xRoundResults') + `\n` + mt('xRoundHdr') + `\n`;
             Object.keys(m.roundScores).sort((a,b) => +a - +b).forEach(r => {
                 const res = m.roundScores[r];
-                const winnerName = res.winner === 'own' ? (m.team || 'Vi') : (m.opponent || 'Motst.');
+                const winnerName = res.winner === 'own' ? (m.team || mt('we')) : (m.opponent || mt('oppShort'));
                 csv += `${r},"${winnerName}",${res.points}\n`;
             });
             csv += `\n`;
@@ -2733,7 +2826,7 @@ class MatchApp {
         // Per-omgång data
         if (m.roundActions) {
             const date = new Date(m.startTime || Date.now()).toLocaleDateString(langMgr.locale());
-            const oppLabel = m.opponent || 'Motståndare';
+            const oppLabel = m.opponent || mt('opponentDefault');
             Object.keys(m.roundActions).sort((a,b) => +a - +b).forEach(roundNum => {
                 const roundAct = m.roundActions[roundNum];
                 m.players.forEach((p, idx) => {
@@ -2765,7 +2858,7 @@ class MatchApp {
         }
         
         // Totals
-        csv += '\n=== TOTALT ===\n';
+        csv += '\n' + mt('xTotalBanner') + '\n';
         csv += 'Spelare,Position,Lagg_Poang,Lagg_Total,Lagg_Procent,Skott_Troff,Skott_Total,Skott_Procent\n';
         m.players.forEach(p => {
             const lp = this.acc(p.stats.lagg);
@@ -2775,7 +2868,7 @@ class MatchApp {
 
         // Motståndare - totaler
         if (m.opponents && m.opponents.length > 0) {
-            csv += `\n=== ${(m.opponent || 'MOTSTÅNDARE').toUpperCase()} - TOTALT ===\n`;
+            csv += `\n=== ${(m.opponent || mt('xOppUpper')).toUpperCase()}${mt('xOppTotalSuffix')}\n`;
             csv += 'Spelare,Position,Lagg_Poang,Lagg_Total,Lagg_Procent,Skott_Troff,Skott_Total,Skott_Procent\n';
             m.opponents.forEach(p => {
                 const lp = this.acc(p.stats.lagg);
@@ -2796,8 +2889,8 @@ class MatchApp {
     // ---- SCORE TEXT (för historik/detalj) ----
     scoreText(m) {
         if (!m.score || (m.score.own === 0 && m.score.opp === 0)) return '';
-        const teamName = m.team || 'Vi';
-        const oppName = m.opponent || 'Motst.';
+        const teamName = m.team || mt('we');
+        const oppName = m.opponent || mt('oppShort');
         return ` • ${teamName} ${m.score.own} - ${m.score.opp} ${oppName}`;
     }
 
@@ -2827,9 +2920,9 @@ class MatchApp {
     async addPlayer() {
         const nameEl = document.getElementById('new-player-name');
         const name = nameEl.value.trim();
-        if (!name) { this.showToast({ sv:'⚠️ Ange ett namn', en:'⚠️ Enter a name', fr:'⚠️ Entrez un nom' }[langMgr.lang] || '⚠️ Ange ett namn'); return; }
+        if (!name) { this.showToast(mt('enterName')); return; }
         if (this.players.find(p => p.name.toLowerCase() === name.toLowerCase())) {
-            this.showToast('⚠️ ' + name + ' ' + ({ sv:'finns redan', en:'already exists', fr:'existe déjà' }[langMgr.lang] || 'finns redan')); return;
+            this.showToast('⚠️ ' + name + ' ' + mt('alreadyExists')); return;
         }
         const player = { name };
         try {
@@ -2846,11 +2939,11 @@ class MatchApp {
         nameEl.focus();
         this.renderPlayerList();
         this.buildPlayerDropdowns();
-        this.showToast('✅ ' + name + ' ' + ({ sv:'tillagd', en:'added', fr:'ajouté(e)' }[langMgr.lang] || 'tillagd'));
+        this.showToast('✅ ' + name + ' ' + mt('added'));
     }
 
     async deletePlayer(id) {
-        if (!confirm({ sv:'Ta bort spelaren?', en:'Remove player?', fr:'Supprimer le joueur?' }[langMgr.lang] || 'Ta bort spelaren?')) return;
+        if (!confirm(mt('removePlayerQ'))) return;
         this.players = this.players.filter(p => p.id !== id);
         try {
             await firebase.database()
@@ -2866,8 +2959,7 @@ class MatchApp {
         const el = document.getElementById('player-db-list');
         if (!el) return;
         if (!this.players || this.players.length === 0) {
-            const emptyTxt = { sv: 'Inga spelare sparade än', en: 'No players saved yet', fr: 'Aucun joueur enregistré' };
-            el.innerHTML = `<div style="color:#999;font-size:13px;text-align:center;padding:1rem;">${emptyTxt[langMgr.lang] || emptyTxt.sv}</div>`;
+            el.innerHTML = `<div style="color:#999;font-size:13px;text-align:center;padding:1rem;">${mt('noPlayersYet')}</div>`;
             return;
         }
         el.innerHTML = this.players
@@ -2876,30 +2968,28 @@ class MatchApp {
             <div class="player-list-item">
                 <span class="pli-name">${p.name}</span>
                 <button class="pli-del" onclick="app.deletePlayer('${p.id}')"
-                    data-sv="Ta bort" data-en="Remove" data-fr="Supprimer">Ta bort</button>
+                    data-sv="Ta bort" data-en="Remove" data-fr="Supprimer" data-de="Entfernen">Ta bort</button>
             </div>`).join('');
     }
 
     buildPlayerDropdowns() {
         const format = this.matchFormat || 'triple';
         const slots = format === 'double'
-            ? [{ id: 'inp-p1', label: 'Läggare' }, { id: 'inp-p3', label: 'Skytt' }]
-            : [{ id: 'inp-p1', label: 'Läggare' }, { id: 'inp-p2', label: 'Mittspelare' }, { id: 'inp-p3', label: 'Skytt' }];
+            ? [{ id: 'inp-p1', label: posLabel('Läggare') }, { id: 'inp-p3', label: posLabel('Skytt') }]
+            : [{ id: 'inp-p1', label: posLabel('Läggare') }, { id: 'inp-p2', label: posLabel('Mittspelare') }, { id: 'inp-p3', label: posLabel('Skytt') }];
 
         slots.forEach(slot => {
             const sel = document.getElementById(slot.id);
             if (!sel) return;
             const current = sel.value;
-            const sel_placeholder = { sv: '– Välj spelare –', en: '– Select player –', fr: '– Choisir un joueur –' };
-        const sel_newplayer = { sv: '+ Skriv nytt namn...', en: '+ Type new name...', fr: '+ Saisir un nouveau nom...' };
-        const opts = [`<option value="">${sel_placeholder[langMgr.lang] || sel_placeholder.sv}</option>`];
+            const opts = [`<option value="">${mt('selectPlayer')}</option>`];
             (this.players || [])
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .forEach(p => {
                     const sel_flag = p.name === current ? ' selected' : '';
                     opts.push(`<option value="${p.name}"${sel_flag}>${p.name}</option>`);
                 });
-            opts.push(`<option value="__new__">${sel_newplayer[langMgr.lang] || sel_newplayer.sv}</option>`);
+            opts.push(`<option value="__new__">${mt('newPlayerOpt')}</option>`);
             sel.innerHTML = opts.join('');
             if (current) sel.value = current;
         });
@@ -2907,7 +2997,7 @@ class MatchApp {
 
     onPlayerSelect(sel) {
         if (sel.value === '__new__') {
-            const name = prompt('Ange spelarens namn:');
+            const name = prompt(mt('enterPlayerName'));
             if (name && name.trim()) {
                 const opt = document.createElement('option');
                 opt.value = name.trim();
@@ -3043,16 +3133,16 @@ class MatchApp {
                 <div class="player-stat-avatar">${initials}</div>
                 <div class="player-stat-info">
                     <div class="player-stat-name">${ps.name}</div>
-                    <div class="player-stat-sub">${ps.matches.length} ${langMgr&&langMgr.lang==='en'?'matches':langMgr&&langMgr.lang==='fr'?'matchs':'matcher'}${ps.laggStang>0?' • '+ps.laggStang+' '+(langMgr&&langMgr.lang==='en'?'blocks':langMgr&&langMgr.lang==='fr'?'blocages':'stängn.')+'.':''}</div>
+                    <div class="player-stat-sub">${ps.matches.length} ${matchesLabel(ps.matches.length)}${ps.laggStang>0?' • '+ps.laggStang+' '+mt('blocksWord')+'.':''}</div>
                 </div>
                 <div class="player-stat-numbers">
                     <div class="player-stat-num-item">
                         <div class="psn-val">${laggPct !== null ? laggPct + '%' : '—'}</div>
-                        <div class="psn-lbl">Lägg</div>
+                        <div class="psn-lbl">${mt('lagg')}</div>
                     </div>
                     <div class="player-stat-num-item">
                         <div class="psn-val">${skottPct !== null ? skottPct + '%' : '—'}</div>
-                        <div class="psn-lbl">Skott</div>
+                        <div class="psn-lbl">${mt('skott')}</div>
                     </div>
                     <div class="player-stat-num-item">
                         <div class="psn-val ${trendClass}">${trendIcon}</div>
@@ -3076,11 +3166,8 @@ class MatchApp {
         document.getElementById('pdet-avatar').textContent = initials;
         document.getElementById('pdet-name').textContent = name;
         const stangTotDet = ps.laggStang || 0;
-        const _stangWord = { sv: 'stängn.', en: 'blocks', fr: 'blocages' };
-        const _matchWord = { sv: 'matcher', en: 'matches', fr: 'matchs' };
-        const _l = typeof langMgr !== 'undefined' ? langMgr.lang : 'sv';
-        const stangStrDet = stangTotDet > 0 ? ` • ${stangTotDet} ${_stangWord[_l] || _stangWord.sv}` : '';
-        document.getElementById('pdet-sub').textContent = ps.matches.length + ' ' + (_matchWord[_l] || _matchWord.sv) + stangStrDet + ' • ' + (ps.matches[0] ? ps.matches[0].date.toLocaleDateString(langMgr.locale()) : '') + ' – ' + (ps.matches[ps.matches.length-1] ? ps.matches[ps.matches.length-1].date.toLocaleDateString(langMgr.locale()) : '');
+                const stangStrDet = stangTotDet > 0 ? ` • ${stangTotDet} ${mt('blocksWord')}` : '';
+        document.getElementById('pdet-sub').textContent = ps.matches.length + ' ' + matchesLabel(ps.matches.length) + stangStrDet + ' • ' + (ps.matches[0] ? ps.matches[0].date.toLocaleDateString(langMgr.locale()) : '') + ' – ' + (ps.matches[ps.matches.length-1] ? ps.matches[ps.matches.length-1].date.toLocaleDateString(langMgr.locale()) : '');
 
         const laggPct  = ps.laggTotal  ? Math.round(ps.laggHit  / ps.laggTotal  * 100) : null;
         const skottPct = ps.skottTotal ? Math.round(ps.skottHit / ps.skottTotal * 100) : null;
@@ -3110,7 +3197,7 @@ class MatchApp {
                 data: {
                     labels: laggMatches.map(m => m.date.toLocaleDateString(langMgr.locale(), { month: 'short', day: 'numeric' })),
                     datasets: [{
-                        label: 'Lägg %',
+                        label: mt('lagg') + ' %',
                         data: laggMatches.map(m => m.laggPct),
                         borderColor: '#e8ff47',
                         backgroundColor: 'rgba(232,255,71,0.08)',
@@ -3276,19 +3363,10 @@ class MatchApp {
 
         if (offline && this.trainerCode) {
             const pending = JSON.parse(localStorage.getItem(`pending-sync-${this.trainerCode}`) || '[]');
-            const lang = typeof langMgr !== 'undefined' ? langMgr.lang : 'sv';
-            const labels = {
-                sv: pending.length > 0
-                    ? `Offline — ${pending.length} match${pending.length > 1 ? 'er' : ''} väntar på synk`
-                    : 'Offline — sparar lokalt',
-                en: pending.length > 0
-                    ? `Offline — ${pending.length} match${pending.length > 1 ? 'es' : ''} pending sync`
-                    : 'Offline — saving locally',
-                fr: pending.length > 0
-                    ? `Hors ligne — ${pending.length} match${pending.length > 1 ? 's' : ''} en attente`
-                    : 'Hors ligne — sauvegarde locale',
-            };
-            badge.textContent = labels[lang] || labels.sv;
+            const plO = { sv: pending.length > 1 ? 'er' : '', en: pending.length > 1 ? 'es' : '', fr: pending.length > 1 ? 's' : '', de: pending.length > 1 ? 'e' : '' }[langMgr.lang] ?? '';
+            badge.textContent = pending.length > 0
+                ? mt('offlinePending', { n: pending.length, pl: plO })
+                : mt('offlineLocal');
         }
     }
 }
@@ -3300,27 +3378,27 @@ document.addEventListener('DOMContentLoaded', () => app.init());
 <!-- MANAGE PLAYERS MODAL -->
 <div id="manage-players-modal" class="manage-modal-overlay" style="display:none;">
     <div class="manage-modal-card">
-        <div class="manage-modal-title" data-sv="⚙️ Hantera spelare" data-en="⚙️ Manage players" data-fr="⚙️ Gérer les joueurs">⚙️ Hantera spelare</div>
+        <div class="manage-modal-title" data-sv="⚙️ Hantera spelare" data-en="⚙️ Manage players" data-fr="⚙️ Gérer les joueurs" data-de="⚙️ Spieler verwalten">⚙️ Hantera spelare</div>
         <div id="player-db-list">
-            <div style="color:#999;font-size:13px;text-align:center;padding:1rem;" data-sv="Inga spelare sparade än" data-en="No players saved yet" data-fr="Aucun joueur enregistré">Inga spelare sparade än</div>
+            <div style="color:#999;font-size:13px;text-align:center;padding:1rem;" data-sv="Inga spelare sparade än" data-en="No players saved yet" data-fr="Aucun joueur enregistré" data-de="Noch keine Spieler gespeichert">Inga spelare sparade än</div>
         </div>
         <div class="add-player-row">
             <input type="text" id="new-player-name" placeholder="Spelarens namn"
-                data-sv-placeholder="Spelarens namn" data-en-placeholder="Player name" data-fr-placeholder="Nom du joueur"
+                data-sv-placeholder="Spelarens namn" data-en-placeholder="Player name" data-fr-placeholder="Nom du joueur" data-de-placeholder="Name des Spielers"
                 maxlength="30" onkeydown="if(event.key==='Enter') app.addPlayer()">
-            <button onclick="app.addPlayer()" data-sv="+ Lägg till" data-en="+ Add" data-fr="+ Ajouter">+ Lägg till</button>
+            <button onclick="app.addPlayer()" data-sv="+ Lägg till" data-en="+ Add" data-fr="+ Ajouter" data-de="+ Hinzufügen">+ Lägg till</button>
         </div>
-        <button class="manage-close-btn" onclick="app.closeManagePlayers()" data-sv="Stäng" data-en="Close" data-fr="Fermer">Stäng</button>
+        <button class="manage-close-btn" onclick="app.closeManagePlayers()" data-sv="Stäng" data-en="Close" data-fr="Fermer" data-de="Schließen">Stäng</button>
     </div>
 </div>
 
 <!-- ROUND SCORE MODAL -->
 <div id="round-score-modal" class="round-modal-overlay" style="display:none;">
     <div class="round-modal-card">
-        <div class="round-modal-title" id="round-modal-title">Vem vann omgången?</div>
-        <div class="round-modal-sub" data-sv="Tryck på antal poäng för vinnande lag" data-en="Tap the number of points for the winning team" data-fr="Appuyez sur le nombre de points de l'équipe gagnante">Tryck på antal poäng för vinnande lag</div>
+        <div class="round-modal-title" id="round-modal-title" data-sv="Vem vann omgången?" data-en="Who won the round?" data-fr="Qui a gagné la manche ?" data-de="Wer hat die Runde gewonnen?">Vem vann omgången?</div>
+        <div class="round-modal-sub" data-sv="Tryck på antal poäng för vinnande lag" data-en="Tap the number of points for the winning team" data-fr="Appuyez sur le nombre de points de l'équipe gagnante" data-de="Tippe auf die Punktzahl der siegreichen Mannschaft">Tryck på antal poäng för vinnande lag</div>
 
-        <div class="round-modal-team-label own" id="round-modal-own-label">VÅRT LAG</div>
+        <div class="round-modal-team-label own" id="round-modal-own-label" data-sv="VÅRT LAG" data-en="OUR TEAM" data-fr="NOTRE ÉQUIPE" data-de="UNSERE MANNSCHAFT">VÅRT LAG</div>
         <div class="round-modal-points own">
             <button onclick="app.selectRoundResult('own',1)">1</button>
             <button onclick="app.selectRoundResult('own',2)">2</button>
@@ -3330,7 +3408,7 @@ document.addEventListener('DOMContentLoaded', () => app.init());
             <button onclick="app.selectRoundResult('own',6)">6</button>
         </div>
 
-        <div class="round-modal-team-label opp" id="round-modal-opp-label">MOTSTÅNDARNA</div>
+        <div class="round-modal-team-label opp" id="round-modal-opp-label" data-sv="MOTSTÅNDARNA" data-en="THE OPPONENTS" data-fr="LES ADVERSAIRES" data-de="DIE GEGNER">MOTSTÅNDARNA</div>
         <div class="round-modal-points opp">
             <button onclick="app.selectRoundResult('opp',1)">1</button>
             <button onclick="app.selectRoundResult('opp',2)">2</button>
@@ -3340,7 +3418,7 @@ document.addEventListener('DOMContentLoaded', () => app.init());
             <button onclick="app.selectRoundResult('opp',6)">6</button>
         </div>
 
-        <button class="round-modal-skip" onclick="app.skipRoundScore()" data-sv="Hoppa över" data-en="Skip" data-fr="Passer">Hoppa över</button>
+        <button class="round-modal-skip" onclick="app.skipRoundScore()" data-sv="Hoppa över" data-en="Skip" data-fr="Passer" data-de="Überspringen">Hoppa över</button>
     </div>
 </div>
 </body>
