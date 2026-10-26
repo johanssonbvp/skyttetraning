@@ -38,9 +38,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .back-btn{background:none;border:1px solid var(--border2);border-radius:10px;padding:7px 14px;color:var(--muted2);font-family:var(--font-display);font-size:0.82rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 0.2s;}
 .back-btn:hover{border-color:var(--accent);color:var(--accent);}
 .top-title{font-family:var(--font-display);font-size:1rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;}
-.lang-btn{background:none;border:1px solid var(--border2);border-radius:8px;padding:5px 10px;font-family:var(--font-body);font-size:0.75rem;font-weight:600;color:var(--muted2);cursor:pointer;transition:all 0.2s;}
-.lang-btn:hover{border-color:var(--accent);color:var(--accent);}
-
 /* TABS */
 .tab-bar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:57px;z-index:19;}
 .tab-btn{flex:1;padding:15px 8px;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:var(--font-display);font-size:0.85rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:color 0.2s,border-color 0.2s;-webkit-tap-highlight-color:transparent;}
@@ -190,7 +187,7 @@ input[type="date"].text-input{color-scheme:dark;}
 <div class="top-bar">
   <a class="back-btn" href="index.html">← <span data-sv="Hem" data-fr="Accueil" data-en="Home">Hem</span></a>
   <span class="top-title" data-sv="Träningsdagbok" data-en="Training Journal" data-fr="Journal d'entraînement">Träningsdagbok</span>
-  <div style="display:flex;gap:4px"><button class="lang-btn" id="btn-sv" onclick="setLangApp('sv')" style="padding:4px 8px">🇸🇪 SV</button><button class="lang-btn" id="btn-en" onclick="setLangApp('en')" style="padding:4px 8px">🇬🇧 EN</button><button class="lang-btn" id="btn-fr" onclick="setLangApp('fr')" style="padding:4px 8px">🇫🇷 FR</button></div>
+  <div style="width:70px"></div>
 </div>
 
 <div class="tab-bar">

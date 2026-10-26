@@ -21,6 +21,7 @@ const CORE_FILES = [
   './precisionsskytte.html',
   './uppvarmning.html',
   './faq.html',
+  './lathund.html',
   './storage-manager.js',
   './lang-manager.js',
   './offline-indicator.js',

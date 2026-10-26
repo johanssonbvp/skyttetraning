@@ -188,6 +188,13 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
       color: #f0f0f8;
     }
 
+    /* Kort för lathunden ovanför övningarna */
+    .guide-card {
+      border-color: rgba(232, 255, 71, 0.45);
+      background: rgba(232, 255, 71, 0.08);
+      margin-bottom: 28px;
+    }
+
     /* ======================== HERO SECTION ======================== */
     .hero {
       padding: 50px 20px 60px;
@@ -777,6 +784,15 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     <div class="welcome-title" data-sv="Välkommen till Petanque Träning!" data-en="Welcome to Petanque Training!" data-fr="Bienvenue sur Petanque Entraînement!">Välkommen till Petanque Träning!</div>
     <div class="welcome-sub" data-sv="Vad vill du börja med idag?" data-en="What would you like to start with today?" data-fr="Par où voulez-vous commencer?">Vad vill du börja med idag?</div>
 
+    <a href="./lathund.html" class="welcome-btn">
+      <span class="wb-icon">📖</span>
+      <span class="wb-text">
+        <div class="wb-title" data-sv="Så fungerar appen" data-en="How the app works" data-fr="Comment fonctionne l'application" data-de="So funktioniert die App">Så fungerar appen</div>
+        <div class="wb-desc" data-sv="Läs lathunden, det tar två minuter" data-en="Read the quick guide, it takes two minutes" data-fr="Lisez le guide rapide, cela prend deux minutes" data-de="Lies die Kurzanleitung, das dauert zwei Minuten">Läs lathunden, det tar två minuter</div>
+      </span>
+      <span style="margin-left:auto;color:#e8ff47;">→</span>
+    </a>
+
     <a href="./skjuttraning.html" class="welcome-btn">
       <span class="wb-icon">💥</span>
       <span class="wb-text">
@@ -799,7 +815,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
       <span class="wb-icon">🗺️</span>
       <span class="wb-text">
         <div class="wb-title" data-sv="Utforska appen" data-en="Explore the app" data-fr="Explorer l'application">Utforska appen</div>
-        <div class="wb-desc" data-sv="Se alla sex moduler på startsidan" data-en="See all six modules on the home screen" data-fr="Voir tous les six modules sur l'écran d'accueil">Se alla sex moduler på startsidan</div>
+        <div class="wb-desc" data-sv="Se alla moduler på startsidan" data-en="See all modules on the home screen" data-fr="Voir tous les modules sur l'écran d'accueil" data-de="Alle Module auf der Startseite ansehen">Se alla moduler på startsidan</div>
       </span>
       <span style="margin-left:auto;color:#e8ff47;">→</span>
     </button>
@@ -966,6 +982,16 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 <!-- APPS SECTION -->
 <section class="apps-section">
   <div class="apps-container">
+    <!-- Lathund för nya användare -->
+    <a href="./lathund.html" class="app-card guide-card">
+      <span class="app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg></span>
+      <div class="app-info">
+        <div class="app-name" data-sv="Ny här? Läs lathunden" data-en="New here? Read the quick guide" data-fr="Nouveau ici ? Lisez le guide rapide" data-de="Neu hier? Lies die Kurzanleitung">Ny här? Läs lathunden</div>
+        <div class="app-desc" data-sv="Så fungerar appen, på två minuter" data-en="How the app works, in two minutes" data-fr="Comment fonctionne l'application, en deux minutes" data-de="So funktioniert die App – in zwei Minuten">Så fungerar appen, på två minuter</div>
+      </div>
+      <span class="app-arrow">›</span>
+    </a>
+
     <h2 class="section-title" data-sv="Träningsappar" data-fr="Applications d'entraînement" data-en="Training Apps">
       Träningsappar
     </h2>
@@ -1111,6 +1137,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
   <div class="footer-links">
     <a href="https://github.com/johanssonbvp/skyttetraning" target="_blank">GitHub</a>
     <a href="mailto:info@petanquetraning.se">Kontakt</a>
+    <a href="./lathund.html" data-sv="Lathund" data-en="Quick guide" data-fr="Guide rapide" data-de="Kurzanleitung">Lathund</a>
     <a href="./faq.html" data-sv="Vanliga frågor" data-en="FAQ" data-fr="Questions fréquentes">Vanliga frågor</a>
     <a href="/integritetspolicy.html" data-sv="Integritetspolicy" data-en="Privacy Policy" data-fr="Politique de confidentialité">Integritetspolicy</a>
   </div>

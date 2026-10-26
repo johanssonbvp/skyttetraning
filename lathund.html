@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0A0E27">
+  <meta name="description" content="Lathund för Petanque Träning – kom igång på två minuter: konto, språk, övningar, installation och offline-läge.">
+  <title>Lathund – Petanque Träning</title>
+  <link rel="icon" href="petanque-logo.png">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Samma Google Analytics-spårning som övriga sidor -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XT4NB1HR2J"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config","G-XT4NB1HR2J");</script>
+  <script src="./lang-manager.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0A0E27;
+      --bg2: #1a1f3a;
+      --text: #FFFFFF;
+      --text-muted: #B0B0B0;
+      --accent: #e8ff47;
+      --accent-dark: #c8dd00;
+      --border: rgba(232, 255, 71, 0.1);
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ======================== HEADER (samma stil som startsidan) ======================== */
+    header {
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10, 14, 39, 0.8);
+      backdrop-filter: blur(10px);
+    }
+
+    .header-logo {
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    /* Språkväljare: rullgardinsmeny */
+    .lang-toggle {
+      display: flex;
+    }
+
+    .lang-select {
+      padding: 6px 28px 6px 12px;
+      border: 1px solid var(--border);
+      background-color: transparent;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238a8a9e' stroke-width='1.5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      color: var(--text-muted);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      -webkit-appearance: none;
+      appearance: none;
+      transition: all 0.3s;
+    }
+
+    .lang-select:hover,
+    .lang-select:focus {
+      border-color: var(--accent);
+      color: var(--accent);
+      outline: none;
+    }
+
+    .lang-select option {
+      background: #0A0E27;
+      color: #f0f0f8;
+    }
+
+    /* ======================== SIDHUVUD PÅ FAQ-SIDAN ======================== */
+    .faq-hero {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 50px 20px 10px;
+      text-align: center;
+    }
+
+    .faq-hero h1 {
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .faq-hero p {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 18px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+
+    /* ======================== LATHUND ======================== */
+    .guide {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px 20px 60px;
+    }
+
+    .step {
+      display: flex;
+      gap: 16px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .step:last-of-type {
+      border-bottom: none;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 900;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .step-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .step-text {
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .module-list {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .module {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(232, 255, 71, 0.04);
+    }
+
+    .module-icon {
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(232, 255, 71, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .module-name {
+      font-weight: 800;
+      font-size: 0.95rem;
+      margin-bottom: 2px;
+    }
+
+    .module-desc {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    .guide-end {
+      margin-top: 30px;
+      padding: 22px;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(232, 255, 71, 0.04);
+    }
+
+    .guide-end p {
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+
+    .guide-btn {
+      display: inline-block;
+      padding: 12px 22px;
+      margin: 4px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      border: 1px solid var(--accent);
+    }
+
+    .guide-btn.primary {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .guide-btn.secondary {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    /* ======================== FOOTER ======================== */
+    footer {
+      padding: 50px 20px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .footer-links a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-dark);
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="./index.html" class="header-logo">🎯 PETANQUE TRÄNING</a>
+  <div class="lang-toggle">
+    <select id="lang-select" class="lang-select" aria-label="Språk / Language"></select>
+  </div>
+</header>
+
+<!-- SIDHUVUD -->
+<div class="faq-hero">
+  <h1 data-sv="Lathund" data-en="Quick guide" data-fr="Guide rapide" data-de="Kurzanleitung">Lathund</h1>
+  <p data-sv="Allt du behöver veta för att komma igång med Petanque Träning, på två minuter." data-en="Everything you need to know to get started with Petanque Träning, in two minutes." data-fr="Tout ce qu'il faut savoir pour démarrer avec Petanque Träning, en deux minutes." data-de="Alles, was du wissen musst, um mit Petanque Träning zu starten – in zwei Minuten.">Allt du behöver veta för att komma igång med Petanque Träning, på två minuter.</p>
+  <a class="back-link" data-sv="← Tillbaka till startsidan" data-en="← Back to home" data-fr="← Retour à l'accueil" data-de="← Zurück zur Startseite" href="./index.html">← Tillbaka till startsidan</a>
+</div>
+
+<!-- STEG -->
+<section class="guide">
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title" data-sv="Skapa konto och logga in" data-en="Create an account and log in" data-fr="Créez un compte et connectez-vous" data-de="Konto erstellen und anmelden">Skapa konto och logga in</div>
+        <div class="step-text" data-sv="Det är gratis och tar en minut: e-postadress och lösenord. Kontot gör att din träning sparas säkert i molnet och finns på alla dina enheter." data-en="It is free and takes a minute: email address and password. Your account keeps your training safely in the cloud and available on all your devices." data-fr="C'est gratuit et cela prend une minute : adresse e-mail et mot de passe. Le compte garde votre entraînement en sécurité dans le cloud, disponible sur tous vos appareils." data-de="Das ist kostenlos und dauert eine Minute: E-Mail-Adresse und Passwort. Mit dem Konto wird dein Training sicher in der Cloud gespeichert und ist auf allen deinen Geräten verfügbar.">Det är gratis och tar en minut: e-postadress och lösenord. Kontot gör att din träning sparas säkert i molnet och finns på alla dina enheter.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title" data-sv="Välj språk" data-en="Choose your language" data-fr="Choisissez votre langue" data-de="Sprache wählen">Välj språk</div>
+        <div class="step-text" data-sv="Använd språkmenyn uppe till höger på startsidan. Valet gäller i hela appen och följer med ditt konto." data-en="Use the language menu at the top right of the home page. Your choice applies throughout the app and follows your account." data-fr="Utilisez le menu de langue en haut à droite de la page d'accueil. Votre choix s'applique partout dans l'application et suit votre compte." data-de="Nutze das Sprachmenü oben rechts auf der Startseite. Deine Wahl gilt in der ganzen App und folgt deinem Konto.">Använd språkmenyn uppe till höger på startsidan. Valet gäller i hela appen och följer med ditt konto.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title" data-sv="Välj en övning" data-en="Pick an exercise" data-fr="Choisissez un exercice" data-de="Übung wählen">Välj en övning</div>
+        <div class="step-text" data-sv="Börja gärna med Uppvärmningen och fortsätt sedan med den övning du vill träna. Här är allt som finns:" data-en="Start with the warm-up if you like, then continue with the exercise you want to train. Here is everything in the app:" data-fr="Commencez par l'échauffement si vous le souhaitez, puis passez à l'exercice que vous voulez travailler. Voici tout ce que contient l'application :" data-de="Beginne gern mit dem Aufwärmen und mach dann mit der Übung weiter, die du trainieren möchtest. Das alles gibt es in der App:">Börja gärna med Uppvärmningen och fortsätt sedan med den övning du vill träna. Här är allt som finns:</div>
+        <div class="module-list">
+          <div class="module">
+            <div class="module-icon">🔥</div>
+            <div>
+              <div class="module-name" data-sv="Uppvärmning" data-en="Warm-up" data-fr="Échauffement" data-de="Aufwärmen">Uppvärmning</div>
+              <div class="module-desc" data-sv="Guidad rutin på cirka 9 minuter med timer, från axlar och handleder till kast med klot." data-en="Guided routine of about 9 minutes with a timer, from shoulders and wrists to throwing boules." data-fr="Routine guidée d'environ 9 minutes avec minuteur, des épaules et poignets jusqu'aux lancers de boules." data-de="Geführte Routine von etwa 9 Minuten mit Timer, von Schultern und Handgelenken bis zu Würfen mit Kugeln.">Guidad rutin på cirka 9 minuter med timer, från axlar och handleder till kast med klot.</div>
+            </div>
+          </div>
+          <div class="module">
+            <div class="module-icon">💥</div>
+            <div>
+              <div class="module-name" data-sv="Skjutträning" data-en="Shooting Practice" data-fr="Tir" data-de="Schießtraining">Skjutträning</div>
+              <div class="module-desc" data-sv="Skjut på 6 till 12 meter, logga träff, miss och carreau och följ ditt effektivitetsindex per avstånd." data-en="Shoot from 6 to 12 metres, log hit, miss and carreau and follow your efficiency index per distance." data-fr="Tirez de 6 à 12 mètres, notez touche, raté et carreau et suivez votre indice d'efficacité par distance." data-de="Schieße aus 6 bis 12 Metern, erfasse Treffer, Fehlschuss und Carreau und verfolge deinen Effizienzindex pro Entfernung.">Skjut på 6 till 12 meter, logga träff, miss och carreau och följ ditt effektivitetsindex per avstånd.</div>
+            </div>
+          </div>
+          <div class="module">
+            <div class="module-icon">🟡</div>
+            <div>
+              <div class="module-name" data-sv="Läggträning" data-en="Pointing Practice" data-fr="Jeu de boules" data-de="Legetraining">Läggträning</div>
+              <div class="module-desc" data-sv="Sex övningstyper för att träna läggning, med statistik och rekord." data-en="Six exercise types for practising pointing, with statistics and records." data-fr="Six types d'exercices pour travailler le pointé, avec statistiques et records." data-de="Sechs Übungsarten zum Legen mit Statistik und Rekorden.">Sex övningstyper för att träna läggning, med statistik och rekord.</div>
+            </div>
+          </div>
+          <div class="module">
+            <div class="module-icon">🎯</div>
+            <div>
+              <div class="module-name" data-sv="Precisionsskytte" data-en="Precision Shooting" data-fr="Tir de précision" data-de="Präzisionsschießen">Precisionsskytte</div>
+              <div class="module-desc" data-sv="20 skott på 5 stationer enligt förbundets regler, med poäng upp till 100." data-en="20 shots at 5 stations following the federation's rules, scoring up to 100 points." data-fr="20 tirs sur 5 stations selon les règles de la fédération, jusqu'à 100 points." data-de="20 Schüsse an 5 Stationen nach den Regeln des Verbands, bis zu 100 Punkte.">20 skott på 5 stationer enligt förbundets regler, med poäng upp till 100.</div>
+            </div>
+          </div>
+          <div class="module">
+            <div class="module-icon">🔢</div>
+            <div>
+              <div class="module-name" data-sv="Poängräknare" data-en="Scoreboard" data-fr="Compteur de points" data-de="Punktezähler">Poängräknare</div>
+              <div class="module-desc" data-sv="Räkna poäng i singel, dubbel och trippel, med ångra-knapp." data-en="Keep score in singles, doubles and triples, with an undo button." data-fr="Comptez les points en tête-à-tête, doublette et triplette, avec bouton d'annulation." data-de="Zähle Punkte im Einzel, Doublette und Triplette, mit Rückgängig-Taste.">Räkna poäng i singel, dubbel och trippel, med ångra-knapp.</div>
+            </div>
+          </div>
+          <div class="module">
+            <div class="module-icon">📊</div>
+            <div>
+              <div class="module-name" data-sv="Matchstatistik" data-en="Match Statistics" data-fr="Statistiques de match" data-de="Matchstatistik">Matchstatistik</div>
+              <div class="module-desc" data-sv="Logga varje klot live under en lagmatch och få statistik efteråt. Kräver internet." data-en="Log every ball live during a team match and get statistics afterwards. Requires internet." data-fr="Enregistrez chaque boule en direct pendant un match par équipes et obtenez des statistiques ensuite. Nécessite internet." data-de="Erfasse jede Kugel live während eines Mannschaftsspiels und erhalte danach Statistiken. Benötigt Internet.">Logga varje klot live under en lagmatch och få statistik efteråt. Kräver internet.</div>
+            </div>
+          </div>
+          <div class="module">
+            <div class="module-icon">📔</div>
+            <div>
+              <div class="module-name" data-sv="Träningsdagbok" data-en="Training Journal" data-fr="Journal d'entraînement" data-de="Trainingstagebuch">Träningsdagbok</div>
+              <div class="module-desc" data-sv="Skriv ner datum, plats, känsla och anteckningar efter varje pass, med kalender och foton." data-en="Note date, place, feeling and notes after every session, with calendar and photos." data-fr="Notez la date, le lieu, le ressenti et vos remarques après chaque séance, avec calendrier et photos." data-de="Halte Datum, Ort, Gefühl und Notizen nach jeder Einheit fest, mit Kalender und Fotos.">Skriv ner datum, plats, känsla och anteckningar efter varje pass, med kalender och foton.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title" data-sv="Följ din utveckling" data-en="Follow your progress" data-fr="Suivez vos progrès" data-de="Fortschritte verfolgen">Följ din utveckling</div>
+        <div class="step-text" data-sv="Varje övning har en Statistik-flik med historik och rekord. Ju oftare du tränar, desto tydligare ser du framstegen." data-en="Every exercise has a Statistics tab with history and records. The more often you train, the clearer your progress becomes." data-fr="Chaque exercice a un onglet Statistiques avec historique et records. Plus vous vous entraînez souvent, plus vos progrès sont visibles." data-de="Jede Übung hat einen Statistik-Reiter mit Verlauf und Rekorden. Je öfter du trainierst, desto deutlicher siehst du deine Fortschritte.">Varje övning har en Statistik-flik med historik och rekord. Ju oftare du tränar, desto tydligare ser du framstegen.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title" data-sv="Installera appen" data-en="Install the app" data-fr="Installez l'application" data-de="App installieren">Installera appen</div>
+        <div class="step-text" data-sv="Du kan använda appen direkt i webbläsaren eller lägga den på hemskärmen. iPhone: tryck på dela-ikonen i Safari och välj 'Lägg till på hemskärmen'. Android: tryck på menyn i Chrome och välj 'Lägg till på startskärmen'." data-en="You can use the app directly in your browser or put it on your home screen. iPhone: tap the share icon in Safari and select 'Add to Home Screen'. Android: tap the menu in Chrome and select 'Add to Home Screen'." data-fr="Vous pouvez utiliser l'application directement dans le navigateur ou la mettre sur l'écran d'accueil. iPhone : appuyez sur l'icône de partage dans Safari et choisissez 'Sur l'écran d'accueil'. Android : appuyez sur le menu dans Chrome et choisissez 'Ajouter à l'écran d'accueil'." data-de="Du kannst die App direkt im Browser nutzen oder auf den Startbildschirm legen. iPhone: Tippe in Safari auf das Teilen-Symbol und wähle „Zum Home-Bildschirm“. Android: Tippe in Chrome auf das Menü und wähle „Zum Startbildschirm hinzufügen“.">Du kan använda appen direkt i webbläsaren eller lägga den på hemskärmen. iPhone: tryck på dela-ikonen i Safari och välj 'Lägg till på hemskärmen'. Android: tryck på menyn i Chrome och välj 'Lägg till på startskärmen'.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <div class="step-title" data-sv="Fungerar utan internet" data-en="Works without internet" data-fr="Fonctionne sans internet" data-de="Funktioniert ohne Internet">Fungerar utan internet</div>
+        <div class="step-text" data-sv="När du loggat in fungerar träningsdelarna även utan nät. Det du gör sparas på telefonen och skickas automatiskt till molnet när du är online igen." data-en="Once you have logged in, the training sections also work without a connection. What you do is saved on the phone and sent to the cloud automatically when you are back online." data-fr="Une fois connecté, les parties entraînement fonctionnent aussi sans réseau. Ce que vous faites est enregistré sur le téléphone et envoyé automatiquement au cloud dès que vous êtes de nouveau en ligne." data-de="Sobald du angemeldet bist, funktionieren die Trainingsbereiche auch ohne Netz. Was du tust, wird auf dem Handy gespeichert und automatisch in die Cloud gesendet, sobald du wieder online bist.">När du loggat in fungerar träningsdelarna även utan nät. Det du gör sparas på telefonen och skickas automatiskt till molnet när du är online igen.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-body">
+        <div class="step-title" data-sv="Logga ut" data-en="Logging out" data-fr="Se déconnecter" data-de="Abmelden">Logga ut</div>
+        <div class="step-text" data-sv="Appen sparar dina pass i molnet innan du loggas ut och tar sedan bort dem från telefonen. Foton i dagboken finns bara på telefonen och försvinner vid utloggning, så du får en varning först." data-en="The app saves your sessions to the cloud before you are logged out and then removes them from the phone. Photos in the diary only exist on the phone and disappear when you log out, so you get a warning first." data-fr="L'application enregistre vos séances dans le cloud avant la déconnexion, puis les supprime du téléphone. Les photos du journal n'existent que sur le téléphone et disparaissent à la déconnexion ; vous recevez donc d'abord un avertissement." data-de="Die App speichert deine Einheiten in der Cloud, bevor du abgemeldet wirst, und entfernt sie dann vom Handy. Fotos im Tagebuch gibt es nur auf dem Handy und sie verschwinden beim Abmelden, du bekommst deshalb zuerst eine Warnung.">Appen sparar dina pass i molnet innan du loggas ut och tar sedan bort dem från telefonen. Foton i dagboken finns bara på telefonen och försvinner vid utloggning, så du får en varning först.</div>
+      </div>
+    </div>
+
+  <div class="guide-end">
+    <p data-sv="Fler frågor? Titta i Vanliga frågor eller mejla oss på info@petanquetraning.se." data-en="More questions? Have a look at the FAQ or email us at info@petanquetraning.se." data-fr="D'autres questions ? Consultez la FAQ ou écrivez-nous à info@petanquetraning.se." data-de="Noch Fragen? Schau in die häufigen Fragen oder schreib uns an info@petanquetraning.se.">Fler frågor? Titta i Vanliga frågor eller mejla oss på info@petanquetraning.se.</p>
+    <a class="guide-btn primary" data-sv="Till startsidan" data-en="Go to home" data-fr="Page d'accueil" data-de="Zur Startseite" href="./index.html">Till startsidan</a>
+    <a class="guide-btn secondary" data-sv="Vanliga frågor" data-en="FAQ" data-fr="Questions fréquentes" data-de="Häufige Fragen" href="./faq.html">Vanliga frågor</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a data-sv="Startsida" data-en="Home" data-fr="Accueil" data-de="Startseite" href="./index.html">Startsida</a>
+    <a data-sv="Vanliga frågor" data-en="FAQ" data-fr="Questions fréquentes" data-de="Häufige Fragen" href="./faq.html">Vanliga frågor</a>
+    <a data-sv="Kontakt" data-en="Contact" data-fr="Contact" data-de="Kontakt" href="mailto:info@petanquetraning.se">Kontakt</a>
+    <a data-sv="Integritetspolicy" data-en="Privacy Policy" data-fr="Politique de confidentialité" data-de="Datenschutzerklärung" href="/integritetspolicy.html">Integritetspolicy</a>
+  </div>
+  <p data-sv="Gjord med ❤️ av Pär Johansson | © 2026 Petanque Träning" data-en="Made with ❤️ by Pär Johansson | © 2026 Petanque Training" data-fr="Fait avec ❤️ par Pär Johansson | © 2026 Petanque Träning" data-de="Mit ❤️ gemacht von Pär Johansson | © 2026 Petanque Träning">Gjord med ❤️ av Pär Johansson | © 2026 Petanque Träning</p>
+</footer>
+
+<!-- SPRÅKHANTERING: själva bytet sköts av lang-manager.js (samma system som övriga sidor) -->
+<script>
+  // Fyll menyn med de språk som är tillåtna just nu
+  const select = document.getElementById('lang-select');
+  langMgr.enabled.forEach(code => {
+    const opt = document.createElement('option');
+    opt.value = code;
+    opt.textContent = langMgr.names[code];
+    select.appendChild(opt);
+  });
+  select.value = langMgr.lang;
+
+  select.addEventListener('change', () => {
+    langMgr.set(select.value);
+    // Är du inloggad skickar startsidan valet till kontot nästa gång den öppnas
+    localStorage.setItem('pt_lang_pending', '1');
+  });
+
+  langMgr.apply();
+</script>
+
+</body>
+</html>

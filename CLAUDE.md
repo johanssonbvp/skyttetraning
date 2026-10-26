@@ -15,26 +15,29 @@
 - Analys: Google Analytics
 
 ## Nuvarande status
-- Språk: Svenska (SV), Engelska (EN), Franska (FR)
-- Språkväljare finns ENDAST på index.html
+- Språk: Svenska (SV), Engelska (EN), Franska (FR). Tyska (DE) är förberett men dolt tills alla sidor är översatta (aktiveras i `lang-manager.js`)
+- Språkväljare (rullgardinsmeny) finns på index.html, faq.html och lathund.html. Valet gäller hela appen och sparas på kontot
+- Alla träningssidor kräver inloggning (`auth-gate.js`)
 - Offline-läge ska alltid fungera
 
 ## Viktiga filer att känna till
-- `lang-manager.js` – logik för språkbyte
-- `sw.js` – Service Worker. Höj versionsnumret i filen vid ändringar, annars cachas den gamla versionen hos användarna!
-- `index.html` – enda sidan med språkväljare
+- `lang-manager.js` – gemensamt språksystem för alla sidor (språk, texter, datumformat)
+- `auth-gate.js` – kräver inloggning på träningssidorna
+- `lathund.html` – lathund för nya användare, `faq.html` – vanliga frågor
+- `sw.js` – Service Worker. Cache-namnet byts automatiskt per dag. Nya filer måste läggas till i listan `CORE_FILES`, annars fungerar de inte offline
+- `index.html` – startsida med språkmeny och inloggning
 - Appfiler: `skjuttraning.html`, `laggtraning.html`, `dagbok.html`, `precisionsskytte.html`, `tavlingssimulator.html`, `matchstatistik.html`
 - `storage-manager.js`, `sync-manager.js` – datalagring och synk
 
 ## Viktiga arbetsflöden
-1. Höj versionsnumret i `sw.js` vid varje ändring → tvingar fram ny cache hos användarna
-2. Lägg till `data-sv` / `data-en` / `data-fr` på ALLA nya textelement
+1. Lägg nya filer i `CORE_FILES` i `sw.js` (cache-namnet byts automatiskt per dag, ingen manuell höjning behövs)
+2. Lägg till `data-sv` / `data-en` / `data-fr` / `data-de` på ALLA nya textelement
 3. Testa lokalt innan ändringar laddas upp till GitHub
 4. Avinstallera/installera om appen på mobilen för att se en ny version där
 
 ## Prioriteringar (i ordning)
 1. Håll appen fungerande – inga trasiga filer!
-2. Alla tre språk (SV/EN/FR) ska fungera överallt
+2. Alla språk (SV/EN/FR, och DE när det slås på) ska fungera överallt
 3. Smidig PWA-installation
 4. Offline-funktionen ska bevaras
 5. Analysspårningen ska fungera

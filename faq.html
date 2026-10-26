@@ -60,32 +60,39 @@
       text-decoration: none;
     }
 
+    /* Språkväljare: rullgardinsmeny */
     .lang-toggle {
       display: flex;
-      gap: 8px;
     }
 
-    .lang-btn {
-      padding: 6px 12px;
+    .lang-select {
+      padding: 6px 28px 6px 12px;
       border: 1px solid var(--border);
-      background: transparent;
+      background-color: transparent;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238a8a9e' stroke-width='1.5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
       color: var(--text-muted);
       border-radius: 6px;
       cursor: pointer;
       font-size: 12px;
       font-weight: 600;
+      font-family: inherit;
+      -webkit-appearance: none;
+      appearance: none;
       transition: all 0.3s;
     }
 
-    .lang-btn.active {
-      background: var(--accent);
-      color: var(--bg);
-      border-color: var(--accent);
-    }
-
-    .lang-btn:hover {
+    .lang-select:hover,
+    .lang-select:focus {
       border-color: var(--accent);
       color: var(--accent);
+      outline: none;
+    }
+
+    .lang-select option {
+      background: #0A0E27;
+      color: #f0f0f8;
     }
 
     /* ======================== SIDHUVUD PÅ FAQ-SIDAN ======================== */
@@ -210,6 +217,7 @@
       text-decoration: underline;
     }
   </style>
+  <script src="./lang-manager.js"></script>
 </head>
 <body>
 
@@ -217,21 +225,19 @@
 <header>
   <a href="./index.html" class="header-logo">🎯 PETANQUE TRÄNING</a>
   <div class="lang-toggle">
-    <button class="lang-btn active" data-lang="sv">🇸🇪 SV</button>
-    <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
-    <button class="lang-btn" data-lang="fr">🇫🇷 FR</button>
+    <select id="lang-select" class="lang-select" aria-label="Språk / Language"></select>
   </div>
 </header>
 
 <!-- SIDHUVUD -->
 <div class="faq-hero">
-  <h1 data-sv="Vanliga frågor" data-en="Frequently Asked Questions" data-fr="Questions fréquentes">Vanliga frågor</h1>
-  <p data-sv="Svar på det som flest undrar över kring Petanque Träning."
+  <h1 data-sv="Vanliga frågor" data-de="Häufige Fragen" data-en="Frequently Asked Questions" data-fr="Questions fréquentes">Vanliga frågor</h1>
+  <p data-sv="Svar på det som flest undrar över kring Petanque Träning." data-de="Antworten auf die häufigsten Fragen zu Petanque Träning."
      data-en="Answers to the most common questions about Petanque Training."
      data-fr="Réponses aux questions les plus fréquentes sur Petanque Träning.">
     Svar på det som flest undrar över kring Petanque Träning.
   </p>
-  <a href="./index.html" class="back-link" data-sv="← Tillbaka till startsidan" data-en="← Back to home" data-fr="← Retour à l'accueil">← Tillbaka till startsidan</a>
+  <a href="./index.html" class="back-link" data-sv="← Tillbaka till startsidan" data-de="← Zurück zur Startseite" data-en="← Back to home" data-fr="← Retour à l'accueil">← Tillbaka till startsidan</a>
 </div>
 
 <!-- FAQ -->
@@ -240,12 +246,12 @@
 
     <div class="faq-item">
       <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
-        <span data-sv="Kostar appen något?" data-fr="L'application est-elle payante?" data-en="Does the app cost anything?">Kostar appen något?</span>
+        <span data-sv="Kostar appen något?" data-de="Kostet die App etwas?" data-fr="L'application est-elle payante?" data-en="Does the app cost anything?">Kostar appen något?</span>
         <span class="faq-toggle">▼</span>
       </div>
       <div class="faq-answer">
-        <p data-sv="Nej! Petanque Träning är helt gratis. Ingen prenumeration, inga dolda kostnader. Allt du behöver för att spåra din utveckling är inkluderat."
-           data-fr="Non ! Pétanque Entraînement est totalement gratuit. Pas d'abonnement, pas de frais cachés."
+        <p data-sv="Nej! Petanque Träning är helt gratis. Ingen prenumeration, inga dolda kostnader. Allt du behöver för att spåra din utveckling är inkluderat." data-de="Nein! Petanque Träning ist völlig kostenlos. Kein Abo, keine versteckten Kosten. Alles, was du brauchst, um deine Entwicklung zu verfolgen, ist enthalten."
+           data-fr="Non ! Petanque Träning est totalement gratuit. Pas d'abonnement, pas de frais cachés. Tout ce dont vous avez besoin pour suivre votre progression est inclus."
            data-en="No! Petanque Training is completely free. No subscription, no hidden costs. Everything you need to track your progress is included.">
           Nej! Petanque Träning är helt gratis. Ingen prenumeration, inga dolda kostnader. Allt du behöver för att spåra din utveckling är inkluderat.
         </p>
@@ -254,40 +260,42 @@
 
     <div class="faq-item">
       <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
-        <span data-sv="Behöver jag skapa ett konto?" data-fr="Dois-je créer un compte?" data-en="Do I need to create an account?">Behöver jag skapa ett konto?</span>
+        <span data-sv="Behöver jag skapa ett konto?" data-de="Muss ich ein Konto erstellen?" data-fr="Dois-je créer un compte?" data-en="Do I need to create an account?">Behöver jag skapa ett konto?</span>
         <span class="faq-toggle">▼</span>
       </div>
       <div class="faq-answer">
-        <p data-sv="Ja, för att använda Matchstatistik behöver du ett gratis konto med email och lösenord. Det tar bara en minut och gör att din data säkerhetskopieras i molnet och finns tillgänglig på alla dina enheter."
-           data-fr="Oui, pour utiliser les Statistiques de match, vous avez besoin d'un compte gratuit. Cela prend une minute et permet de sauvegarder vos données dans le cloud."
-           data-en="Yes, to use Match Statistics you need a free account with email and password. It only takes a minute and ensures your data is backed up in the cloud and available on all your devices.">
-          Ja, för att använda Matchstatistik behöver du ett gratis konto med email och lösenord. Det tar bara en minut och gör att din data säkerhetskopieras i molnet och finns tillgänglig på alla dina enheter.
+        <p data-sv="Ja. Du behöver ett gratis konto (e-post och lösenord) för att använda appen. Det tar en minut, och då sparas din träningsdata säkert i molnet och finns på alla dina enheter."
+           data-fr="Oui. Vous avez besoin d'un compte gratuit (e-mail et mot de passe) pour utiliser l'application. Cela prend une minute, et vos données d'entraînement sont alors sauvegardées en sécurité dans le cloud et disponibles sur tous vos appareils."
+           data-en="Yes. You need a free account (email and password) to use the app. It takes a minute, and your training data is then safely saved in the cloud and available on all your devices."
+           data-de="Ja. Du brauchst ein kostenloses Konto (E-Mail-Adresse und Passwort), um die App zu nutzen. Es dauert eine Minute, und deine Trainingsdaten werden dann sicher in der Cloud gespeichert und sind auf allen deinen Geräten verfügbar.">
+          Ja. Du behöver ett gratis konto (e-post och lösenord) för att använda appen. Det tar en minut, och då sparas din träningsdata säkert i molnet och finns på alla dina enheter.
         </p>
       </div>
     </div>
 
     <div class="faq-item">
       <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
-        <span data-sv="Fungerar appen utan internet?" data-fr="L'application fonctionne-t-elle sans internet?" data-en="Does the app work without internet?">Fungerar appen utan internet?</span>
+        <span data-sv="Fungerar appen utan internet?" data-de="Funktioniert die App ohne Internet?" data-fr="L'application fonctionne-t-elle sans internet?" data-en="Does the app work without internet?">Fungerar appen utan internet?</span>
         <span class="faq-toggle">▼</span>
       </div>
       <div class="faq-answer">
-        <p data-sv="Ja! Appen fungerar offline för skjutträning, läggträning, precisionsskytte och dagbok. Data sparas lokalt och laddas upp till molnet automatiskt när du är online igen. Matchstatistik kräver internetuppkoppling."
-           data-fr="Oui ! L'application fonctionne hors ligne pour l'entraînement au tir, au pointé, la précision et le journal. Les données sont sauvegardées localement et synchronisées automatiquement. Les statistiques de match nécessitent une connexion."
-           data-en="Yes! The app works offline for shooting training, pointing, precision shooting and the diary. Data is saved locally and automatically synced to the cloud when you're back online. Match Statistics requires an internet connection.">
-          Ja! Appen fungerar offline för skjutträning, läggträning, precisionsskytte och dagbok. Data sparas lokalt och laddas upp till molnet automatiskt när du är online igen. Matchstatistik kräver internetuppkoppling.
+        <p data-sv="Ja. När du loggat in fungerar träningsdelarna även utan internet. Data sparas på telefonen och skickas automatiskt till molnet när du är online igen. Matchstatistik kräver internet."
+           data-fr="Oui. Une fois connecté, les parties entraînement fonctionnent aussi sans internet. Les données sont enregistrées sur votre téléphone et envoyées automatiquement au cloud dès que vous êtes de nouveau en ligne. Les statistiques de match nécessitent une connexion internet."
+           data-en="Yes. Once you have logged in, the training sections also work without internet. Data is saved on your phone and sent to the cloud automatically when you are back online. Match Statistics requires internet."
+           data-de="Ja. Sobald du angemeldet bist, funktionieren die Trainingsbereiche auch ohne Internet. Die Daten werden auf deinem Handy gespeichert und automatisch in die Cloud gesendet, sobald du wieder online bist. Die Matchstatistik benötigt Internet.">
+          Ja. När du loggat in fungerar träningsdelarna även utan internet. Data sparas på telefonen och skickas automatiskt till molnet när du är online igen. Matchstatistik kräver internet.
         </p>
       </div>
     </div>
 
     <div class="faq-item">
       <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
-        <span data-sv="Kan jag använda appen på flera enheter?" data-fr="Puis-je utiliser l'application sur plusieurs appareils?" data-en="Can I use the app on multiple devices?">Kan jag använda appen på flera enheter?</span>
+        <span data-sv="Kan jag använda appen på flera enheter?" data-de="Kann ich die App auf mehreren Geräten nutzen?" data-fr="Puis-je utiliser l'application sur plusieurs appareils?" data-en="Can I use the app on multiple devices?">Kan jag använda appen på flera enheter?</span>
         <span class="faq-toggle">▼</span>
       </div>
       <div class="faq-answer">
-        <p data-sv="Ja! När du loggar in med ditt konto synkroniseras din data automatiskt mellan alla enheter. Logga in med samma email på din telefon, surfplatta eller dator så finns all statistik tillgänglig."
-           data-fr="Oui ! Lorsque vous vous connectez avec votre compte, vos données sont automatiquement synchronisées entre tous vos appareils."
+        <p data-sv="Ja! När du loggar in med ditt konto synkroniseras din data automatiskt mellan alla enheter. Logga in med samma email på din telefon, surfplatta eller dator så finns all statistik tillgänglig." data-de="Ja! Wenn du dich mit deinem Konto anmeldest, werden deine Daten automatisch zwischen allen Geräten synchronisiert. Melde dich mit derselben E-Mail-Adresse auf deinem Handy, Tablet oder Computer an, und alle Statistiken stehen dir zur Verfügung."
+           data-fr="Oui ! Lorsque vous vous connectez avec votre compte, vos données sont automatiquement synchronisées entre tous vos appareils. Connectez-vous avec la même adresse e-mail sur votre téléphone, votre tablette ou votre ordinateur et toutes vos statistiques seront disponibles."
            data-en="Yes! When you log in with your account, your data is automatically synced across all your devices. Log in with the same email on your phone, tablet or computer and all your statistics will be available.">
           Ja! När du loggar in med ditt konto synkroniseras din data automatiskt mellan alla enheter. Logga in med samma email på din telefon, surfplatta eller dator så finns all statistik tillgänglig.
         </p>
@@ -296,11 +304,26 @@
 
     <div class="faq-item">
       <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
-        <span data-sv="Hur installerar jag appen?" data-fr="Comment installer l'application?" data-en="How do I install the app?">Hur installerar jag appen?</span>
+        <span data-sv="Vad händer med mina pass när jag loggar ut?" data-fr="Que deviennent mes séances quand je me déconnecte ?" data-en="What happens to my sessions when I log out?" data-de="Was passiert mit meinen Einheiten, wenn ich mich abmelde?">Vad händer med mina pass när jag loggar ut?</span>
         <span class="faq-toggle">▼</span>
       </div>
       <div class="faq-answer">
-        <p data-sv="Du kan använda appen direkt i webbläsaren eller installera den på hemskärmen. På iPhone: tryck på dela-ikonen i Safari och välj 'Lägg till på hemskärmen'. På Android: tryck på menyn i Chrome och välj 'Lägg till på startskärmen'."
+        <p data-sv="Appen skickar först upp dina pass till molnet och tar sedan bort dem från telefonen, så att nästa person som loggar in inte ser dem. När du loggar in igen kommer allt tillbaka. Foton i dagboken sparas bara på telefonen och tas bort vid utloggning, så appen varnar dig innan."
+           data-fr="L'application envoie d'abord vos séances dans le cloud, puis les supprime du téléphone afin que la personne suivante qui se connecte ne les voie pas. Quand vous vous reconnectez, tout revient. Les photos du journal ne sont conservées que sur le téléphone et sont supprimées à la déconnexion ; l'application vous prévient donc avant."
+           data-en="The app first sends your sessions to the cloud and then removes them from the phone, so the next person who logs in does not see them. When you log in again, everything comes back. Photos in the diary are only stored on the phone and are removed when you log out, so the app warns you first."
+           data-de="Die App sendet deine Einheiten zuerst in die Cloud und entfernt sie dann vom Handy, damit die nächste Person, die sich anmeldet, sie nicht sieht. Wenn du dich wieder anmeldest, ist alles wieder da. Fotos im Tagebuch werden nur auf dem Handy gespeichert und beim Abmelden entfernt – die App warnt dich deshalb vorher.">
+          Appen skickar först upp dina pass till molnet och tar sedan bort dem från telefonen, så att nästa person som loggar in inte ser dem. När du loggar in igen kommer allt tillbaka. Foton i dagboken sparas bara på telefonen och tas bort vid utloggning, så appen varnar dig innan.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+        <span data-sv="Hur installerar jag appen?" data-de="Wie installiere ich die App?" data-fr="Comment installer l'application?" data-en="How do I install the app?">Hur installerar jag appen?</span>
+        <span class="faq-toggle">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p data-sv="Du kan använda appen direkt i webbläsaren eller installera den på hemskärmen. På iPhone: tryck på dela-ikonen i Safari och välj 'Lägg till på hemskärmen'. På Android: tryck på menyn i Chrome och välj 'Lägg till på startskärmen'." data-de="Du kannst die App direkt im Browser nutzen oder auf dem Startbildschirm installieren. Auf dem iPhone: Tippe in Safari auf das Teilen-Symbol und wähle „Zum Home-Bildschirm“. Auf Android: Tippe in Chrome auf das Menü und wähle „Zum Startbildschirm hinzufügen“."
            data-fr="Vous pouvez utiliser l'application directement dans le navigateur ou l'installer sur l'écran d'accueil. Sur iPhone : appuyez sur l'icône de partage dans Safari et choisissez 'Sur l'écran d'accueil'. Sur Android : appuyez sur le menu dans Chrome et choisissez 'Ajouter à l'écran d'accueil'."
            data-en="You can use the app directly in your browser or install it on your home screen. On iPhone: tap the share icon in Safari and select 'Add to Home Screen'. On Android: tap the menu in Chrome and select 'Add to Home Screen'.">
           Du kan använda appen direkt i webbläsaren eller installera den på hemskärmen. På iPhone: tryck på dela-ikonen i Safari och välj 'Lägg till på hemskärmen'. På Android: tryck på menyn i Chrome och välj 'Lägg till på startskärmen'.
@@ -310,25 +333,41 @@
 
     <div class="faq-item">
       <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
-        <span data-sv="Är mina data säkra?" data-fr="Mes données sont-elles sécurisées?" data-en="Are my data safe?">Är mina data säkra?</span>
+        <span data-sv="Hur byter jag språk?" data-fr="Comment changer de langue ?" data-en="How do I change language?" data-de="Wie wechsle ich die Sprache?">Hur byter jag språk?</span>
         <span class="faq-toggle">▼</span>
       </div>
       <div class="faq-answer">
-        <p data-sv="Ja. Din data lagras säkert i Firebase (Google Cloud) och är kopplad till ditt personliga konto. Vi samlar inte in personlig information, säljer inte data och visar inga annonser."
-           data-fr="Oui. Vos données sont stockées de manière sécurisée dans Firebase (Google Cloud) et liées à votre compte personnel. Nous ne collectons pas d'informations personnelles et ne vendons pas vos données."
-           data-en="Yes. Your data is securely stored in Firebase (Google Cloud) and linked to your personal account. We don't collect personal information, sell data or show ads.">
-          Ja. Din data lagras säkert i Firebase (Google Cloud) och är kopplad till ditt personliga konto. Vi samlar inte in personlig information, säljer inte data och visar inga annonser.
+        <p data-sv="Använd språkmenyn uppe till höger på startsidan (eller på den här sidan). Ditt val gäller i hela appen och sparas på ditt konto, så det följer med om du byter telefon."
+           data-fr="Utilisez le menu de langue en haut à droite de la page d'accueil (ou de cette page). Votre choix s'applique dans toute l'application et est enregistré sur votre compte : il vous suit si vous changez de téléphone."
+           data-en="Use the language menu at the top right of the home page (or on this page). Your choice applies throughout the app and is saved to your account, so it follows you if you change phone."
+           data-de="Nutze das Sprachmenü oben rechts auf der Startseite (oder auf dieser Seite). Deine Wahl gilt in der ganzen App und wird in deinem Konto gespeichert, sie folgt dir also auch auf ein neues Handy.">
+          Använd språkmenyn uppe till höger på startsidan (eller på den här sidan). Ditt val gäller i hela appen och sparas på ditt konto, så det följer med om du byter telefon.
         </p>
       </div>
     </div>
 
     <div class="faq-item">
       <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
-        <span data-sv="Vilka webbläsare stöds?" data-fr="Quels navigateurs sont pris en charge?" data-en="Which browsers are supported?">Vilka webbläsare stöds?</span>
+        <span data-sv="Är mina data säkra?" data-de="Sind meine Daten sicher?" data-fr="Mes données sont-elles sécurisées?" data-en="Are my data safe?">Är mina data säkra?</span>
         <span class="faq-toggle">▼</span>
       </div>
       <div class="faq-answer">
-        <p data-sv="Appen fungerar på alla moderna webbläsare — Chrome, Safari, Firefox och Edge. Den är optimerad för mobil men fungerar även utmärkt på dator och surfplatta."
+        <p data-sv="Din data lagras i Firebase (Google Cloud) och är kopplad till ditt konto. Vi samlar bara in det appen behöver (din e-postadress och dina träningsdata), säljer ingen data och visar inga annonser. Läs mer i integritetspolicyn."
+           data-fr="Vos données sont stockées dans Firebase (Google Cloud) et liées à votre compte. Nous ne collectons que ce dont l'application a besoin (votre adresse e-mail et vos données d'entraînement), ne vendons aucune donnée et n'affichons aucune publicité. Pour en savoir plus, consultez la politique de confidentialité."
+           data-en="Your data is stored in Firebase (Google Cloud) and linked to your account. We only collect what the app needs (your email address and your training data), do not sell any data and show no ads. Read more in the privacy policy."
+           data-de="Deine Daten werden in Firebase (Google Cloud) gespeichert und sind mit deinem Konto verknüpft. Wir erheben nur das, was die App braucht (deine E-Mail-Adresse und deine Trainingsdaten), verkaufen keine Daten und zeigen keine Werbung. Mehr dazu in der Datenschutzerklärung.">
+          Din data lagras i Firebase (Google Cloud) och är kopplad till ditt konto. Vi samlar bara in det appen behöver (din e-postadress och dina träningsdata), säljer ingen data och visar inga annonser. Läs mer i integritetspolicyn.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+        <span data-sv="Vilka webbläsare stöds?" data-de="Welche Browser werden unterstützt?" data-fr="Quels navigateurs sont pris en charge?" data-en="Which browsers are supported?">Vilka webbläsare stöds?</span>
+        <span class="faq-toggle">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p data-sv="Appen fungerar på alla moderna webbläsare — Chrome, Safari, Firefox och Edge. Den är optimerad för mobil men fungerar även utmärkt på dator och surfplatta." data-de="Die App funktioniert in allen modernen Browsern – Chrome, Safari, Firefox und Edge. Sie ist für Mobilgeräte optimiert, funktioniert aber auch hervorragend auf Computer und Tablet."
            data-fr="L'application fonctionne sur tous les navigateurs modernes — Chrome, Safari, Firefox et Edge. Elle est optimisée pour mobile mais fonctionne aussi très bien sur ordinateur."
            data-en="The app works on all modern browsers — Chrome, Safari, Firefox and Edge. It's optimized for mobile but also works great on desktop and tablet.">
           Appen fungerar på alla moderna webbläsare — Chrome, Safari, Firefox och Edge. Den är optimerad för mobil men fungerar även utmärkt på dator och surfplatta.
@@ -342,51 +381,36 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-links">
-    <a href="./index.html" data-sv="Startsida" data-en="Home" data-fr="Accueil">Startsida</a>
+    <a href="./index.html" data-sv="Startsida" data-de="Startseite" data-en="Home" data-fr="Accueil">Startsida</a>
     <a href="https://github.com/johanssonbvp/skyttetraning" target="_blank">GitHub</a>
-    <a href="mailto:info@petanquetraning.se">Kontakt</a>
-    <a href="/integritetspolicy.html" data-sv="Integritetspolicy" data-en="Privacy Policy" data-fr="Politique de confidentialité">Integritetspolicy</a>
+    <a href="mailto:info@petanquetraning.se" data-sv="Kontakt" data-en="Contact" data-fr="Contact" data-de="Kontakt">Kontakt</a>
+    <a href="/integritetspolicy.html" data-sv="Integritetspolicy" data-de="Datenschutzerklärung" data-en="Privacy Policy" data-fr="Politique de confidentialité">Integritetspolicy</a>
   </div>
-  <p data-sv="Gjord med ❤️ av Pär Johansson | © 2026 Petanque Träning" data-fr="Fait avec ❤️ par Pär Johansson | © 2026 Pétanque Entraînement"
+  <p data-sv="Gjord med ❤️ av Pär Johansson | © 2026 Petanque Träning" data-de="Mit ❤️ gemacht von Pär Johansson | © 2026 Petanque Träning" data-fr="Fait avec ❤️ par Pär Johansson | © 2026 Petanque Träning"
      data-en="Made with ❤️ by Pär Johansson | © 2026 Petanque Training">
     Gjord med ❤️ av Pär Johansson | © 2026 Petanque Träning
   </p>
 </footer>
 
-<!-- SPRÅKHANTERING (samma enkla teknik som övriga sidor: byter text via data-sv/data-en/data-fr) -->
+<!-- SPRÅKHANTERING: själva bytet sköts av lang-manager.js (samma system som övriga sidor) -->
 <script>
-  function setLanguage(lang) {
-    document.documentElement.lang = lang;
+  // Fyll menyn med de språk som är tillåtna just nu
+  const select = document.getElementById('lang-select');
+  langMgr.enabled.forEach(code => {
+    const opt = document.createElement('option');
+    opt.value = code;
+    opt.textContent = langMgr.names[code];
+    select.appendChild(opt);
+  });
+  select.value = langMgr.lang;
 
-    document.querySelectorAll('[data-sv]').forEach(el => {
-      if (lang === 'fr' && el.dataset.fr) {
-        el.textContent = el.dataset.fr;
-      } else if (lang === 'en' && el.dataset.en) {
-        el.textContent = el.dataset.en;
-      } else {
-        el.textContent = el.dataset.sv;
-      }
-    });
-
-    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-    const activeBtn = document.querySelector(`[data-lang="${lang}"]`);
-    if (activeBtn) activeBtn.classList.add('active');
-
-    localStorage.setItem('lang', lang);
-    localStorage.setItem('pt_lang', lang);
-    localStorage.setItem('petanque-lang', lang);
-  }
-
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+  select.addEventListener('change', () => {
+    langMgr.set(select.value);
+    // Är du inloggad skickar startsidan valet till kontot nästa gång den öppnas
+    localStorage.setItem('pt_lang_pending', '1');
   });
 
-  // Använd samma sparade språkval som resten av appen
-  const savedLang = localStorage.getItem('petanque-lang')
-                 || localStorage.getItem('pt_lang')
-                 || localStorage.getItem('lang')
-                 || 'sv';
-  setLanguage(savedLang);
+  langMgr.apply();
 </script>
 
 </body>
