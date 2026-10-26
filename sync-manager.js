@@ -370,16 +370,24 @@ function readFromFirebase(path, callback) {
   });
 }
 
+// Statusmärket (finns på startsidan). Texten följer valt språk.
+var lastBadgeState = null;
+
 function updateSyncBadge(synced) {
+  lastBadgeState = synced;
   var badge = document.getElementById('sync-status-badge');
   if (!badge) return;
 
-  if (synced) {
-    badge.textContent = '☁️ Synkat';
-  } else {
-    badge.textContent = '📱 Offline';
-  }
+  var texts = synced
+    ? { sv: '☁️ Synkat', en: '☁️ Synced', fr: '☁️ Synchronisé', de: '☁️ Synchronisiert' }
+    : { sv: '📱 Offline', en: '📱 Offline', fr: '📱 Hors ligne', de: '📱 Offline' };
+  badge.textContent = (typeof langMgr !== 'undefined') ? langMgr.t(texts) : texts.sv;
 }
+
+// Byts språk uppdateras märket direkt
+window.addEventListener('pt-lang-changed', function() {
+  if (lastBadgeState !== null) updateSyncBadge(lastBadgeState);
+});
 
 // När nätet kommer tillbaka skickas allt som väntat
 window.addEventListener('online', function() {

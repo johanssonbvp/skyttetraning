@@ -182,17 +182,17 @@ input[type="date"].text-input{color-scheme:dark;}
 </head>
 <body>
 
-<div class="save-flash" id="saveFlash">✓ <span data-sv="Sparat!" data-en="Saved!" data-fr="Sauvegardé!">Sparat!</span></div>
+<div class="save-flash" id="saveFlash">✓ <span data-sv="Sparat!" data-en="Saved!" data-fr="Sauvegardé!" data-de="Gespeichert!">Sparat!</span></div>
 
 <div class="top-bar">
-  <a class="back-btn" href="index.html">← <span data-sv="Hem" data-fr="Accueil" data-en="Home">Hem</span></a>
-  <span class="top-title" data-sv="Träningsdagbok" data-en="Training Journal" data-fr="Journal d'entraînement">Träningsdagbok</span>
+  <a class="back-btn" href="index.html">← <span data-sv="Hem" data-fr="Accueil" data-en="Home" data-de="Start">Hem</span></a>
+  <span class="top-title" data-sv="Träningsdagbok" data-en="Training Journal" data-fr="Journal d'entraînement" data-de="Trainingstagebuch">Träningsdagbok</span>
   <div style="width:70px"></div>
 </div>
 
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('new')" id="tab-new" data-sv="Nytt inlägg" data-en="New Entry" data-fr="Nouvelle entrée">Nytt inlägg</button>
-  <button class="tab-btn" onclick="switchTab('cal')" id="tab-cal" data-sv="Kalender" data-en="Calendar" data-fr="Calendrier">Kalender</button>
+  <button class="tab-btn active" onclick="switchTab('new')" id="tab-new" data-sv="Nytt inlägg" data-en="New Entry" data-fr="Nouvelle entrée" data-de="Neuer Eintrag">Nytt inlägg</button>
+  <button class="tab-btn" onclick="switchTab('cal')" id="tab-cal" data-sv="Kalender" data-en="Calendar" data-fr="Calendrier" data-de="Kalender">Kalender</button>
 </div>
 
 <!-- ═══ NEW ENTRY TAB ═══ -->
@@ -204,38 +204,38 @@ input[type="date"].text-input{color-scheme:dark;}
     <!-- DATUM + PLATS -->
     <div class="date-place-row">
       <div>
-        <label class="form-label" data-sv="Datum" data-en="Date" data-fr="Date">Datum</label>
+        <label class="form-label" data-sv="Datum" data-en="Date" data-fr="Date" data-de="Datum">Datum</label>
         <input class="text-input" type="date" id="entryDate">
       </div>
       <div>
-        <label class="form-label" data-sv="Plats" data-en="Location" data-fr="Lieu">Plats</label>
+        <label class="form-label" data-sv="Plats" data-en="Location" data-fr="Lieu" data-de="Ort">Plats</label>
         <input class="text-input" type="text" id="entryPlace" maxlength="40"
-          data-placeholder-sv="T.ex. Hagaparken" data-placeholder-en="e.g. Hagaparken" placeholder="T.ex. Hagaparken">
+          data-placeholder-sv="T.ex. Hagaparken" data-placeholder-en="e.g. Hagaparken" data-placeholder-fr="Ex. : Hagaparken" data-placeholder-de="z. B. Hagaparken" placeholder="T.ex. Hagaparken">
       </div>
     </div>
 
     <!-- TYP AV PASS -->
     <div class="form-row">
-      <label class="form-label" data-sv="Typ av träning" data-en="Training type" data-fr="Type d'entraînement">Typ av träning</label>
+      <label class="form-label" data-sv="Typ av träning" data-en="Training type" data-fr="Type d'entraînement" data-de="Trainingsart">Typ av träning</label>
       <div class="type-pills">
         <div class="type-pill" data-type="shoot" onclick="selectType(this)">
-          🎯 <span data-sv="Skjutträning" data-fr="Tir" data-en="Shooting">Skjutträning</span>
+          🎯 <span data-sv="Skjutträning" data-fr="Tir" data-en="Shooting" data-de="Schießtraining">Skjutträning</span>
         </div>
         <div class="type-pill" data-type="lagg" onclick="selectType(this)">
-          🪃 <span data-sv="Läggträning" data-fr="Jeu de boules" data-en="Pointing">Läggträning</span>
+          🪃 <span data-sv="Läggträning" data-fr="Jeu de boules" data-en="Pointing" data-de="Legetraining">Läggträning</span>
         </div>
         <div class="type-pill" data-type="match" onclick="selectType(this)">
-          🏆 <span data-sv="Match" data-en="Match" data-fr="Match">Match</span>
+          🏆 <span data-sv="Match" data-en="Match" data-fr="Match" data-de="Spiel">Match</span>
         </div>
         <div class="type-pill" data-type="annan" onclick="selectType(this)">
-          ✨ <span data-sv="Annat" data-en="Other" data-fr="Autre">Annat</span>
+          ✨ <span data-sv="Annat" data-en="Other" data-fr="Autre" data-de="Sonstiges">Annat</span>
         </div>
       </div>
     </div>
 
     <!-- KÄNSLA -->
     <div class="form-row">
-      <label class="form-label" data-sv="Hur kändes det?" data-en="How did it feel?" data-fr="Comment ça s'est passé?">Hur kändes det?</label>
+      <label class="form-label" data-sv="Hur kändes det?" data-en="How did it feel?" data-fr="Comment ça s'est passé?" data-de="Wie hat es sich angefühlt?">Hur kändes det?</label>
       <div class="stars-row" id="starsRow">
         <button class="star-btn" data-val="1" onclick="setMood(1)">⭐</button>
         <button class="star-btn" data-val="2" onclick="setMood(2)">⭐</button>
@@ -247,20 +247,22 @@ input[type="date"].text-input{color-scheme:dark;}
 
     <!-- ANTECKNINGAR -->
     <div class="form-row">
-      <label class="form-label" data-sv="Anteckningar" data-en="Notes" data-fr="Notes">Anteckningar</label>
+      <label class="form-label" data-sv="Anteckningar" data-en="Notes" data-fr="Notes" data-de="Notizen">Anteckningar</label>
       <textarea class="note-area" id="entryNote" rows="4"
         data-placeholder-sv="Vad tränade du på? Hur gick det? Vad vill du förbättra?"
         data-placeholder-en="What did you train? How did it go? What do you want to improve?"
+        data-placeholder-fr="Qu'avez-vous travaillé ? Comment cela s'est-il passé ? Que voulez-vous améliorer ?"
+        data-placeholder-de="Was hast du trainiert? Wie lief es? Was möchtest du verbessern?"
         placeholder="Vad tränade du på? Hur gick det? Vad vill du förbättra?"></textarea>
     </div>
 
     <!-- FOTO -->
     <div class="form-row" style="margin-bottom:20px;">
-      <label class="form-label" data-sv="Foto (valfritt)" data-en="Photo (optional)" data-fr="Photo (facultatif)">Foto (valfritt)</label>
+      <label class="form-label" data-sv="Foto (valfritt)" data-en="Photo (optional)" data-fr="Photo (facultatif)" data-de="Foto (optional)">Foto (valfritt)</label>
       <!-- Dolt filfält som öppnar telefonens kamera. accept="image/*" + capture="environment" gör att kameran öppnas direkt på mobil. -->
       <input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none" onchange="handlePhotoSelected(event)">
       <button type="button" class="photo-btn" id="photoBtn" onclick="document.getElementById('photoInput').click()">
-        📷 <span data-sv="Ta foto" data-en="Take photo" data-fr="Prendre une photo">Ta foto</span>
+        📷 <span data-sv="Ta foto" data-en="Take photo" data-fr="Prendre une photo" data-de="Foto aufnehmen">Ta foto</span>
       </button>
       <div class="photo-preview-wrap" id="photoPreviewWrap">
         <img class="photo-preview" id="photoPreview" src="" alt="Förhandsgranskning av foto">
@@ -268,7 +270,7 @@ input[type="date"].text-input{color-scheme:dark;}
       </div>
     </div>
 
-    <button class="save-btn" onclick="trackDagbokEntry(); saveEntry()" data-sv="Spara inlägg" data-en="Save Entry" data-fr="Sauvegarder">Spara inlägg</button>
+    <button class="save-btn" onclick="trackDagbokEntry(); saveEntry()" data-sv="Spara inlägg" data-en="Save Entry" data-fr="Sauvegarder" data-de="Eintrag speichern">Spara inlägg</button>
   </div>
 
 </div>
@@ -288,9 +290,9 @@ input[type="date"].text-input{color-scheme:dark;}
   <div class="cal-grid" id="calGrid"></div>
 
   <div class="cal-legend">
-    <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--ok)"></div><span data-sv="Mycket bra" data-en="Great" data-fr="Très bien">Mycket bra</span></div>
-    <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--mid)"></div><span data-sv="Okej" data-en="Okay" data-fr="Correct">Okej</span></div>
-    <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--fail)"></div><span data-sv="Svårt" data-en="Tough" data-fr="Difficile">Svårt</span></div>
+    <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--ok)"></div><span data-sv="Mycket bra" data-en="Great" data-fr="Très bien" data-de="Sehr gut">Mycket bra</span></div>
+    <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--mid)"></div><span data-sv="Okej" data-en="Okay" data-fr="Correct" data-de="Okay">Okej</span></div>
+    <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--fail)"></div><span data-sv="Svårt" data-en="Tough" data-fr="Difficile" data-de="Schwer">Svårt</span></div>
   </div>
 
   <!-- ENTRIES LIST for current month -->
@@ -307,7 +309,7 @@ input[type="date"].text-input{color-scheme:dark;}
     <div id="dayEntries"></div>
     <div class="sheet-actions">
       <button class="mbtn mbtn-ghost" onclick="document.getElementById('dayOverlay').classList.remove('show')"
-        data-sv="Stäng" data-en="Close" data-fr="Fermer">Stäng</button>
+        data-sv="Stäng" data-en="Close" data-fr="Fermer" data-de="Schließen">Stäng</button>
     </div>
   </div>
 </div>
@@ -315,11 +317,11 @@ input[type="date"].text-input{color-scheme:dark;}
 <!-- DELETE CONFIRM MODAL -->
 <div class="overlay" id="deleteOverlay">
   <div class="sheet">
-    <h2 data-sv="Ta bort inlägg?" data-en="Delete entry?" data-fr="Supprimer l'entrée?">Ta bort inlägg?</h2>
+    <h2 data-sv="Ta bort inlägg?" data-en="Delete entry?" data-fr="Supprimer l'entrée?" data-de="Eintrag löschen?">Ta bort inlägg?</h2>
     <div class="sheet-actions">
-      <button class="mbtn mbtn-danger" onclick="confirmDelete()" data-sv="Ja, ta bort" data-en="Yes, delete" data-fr="Oui, supprimer">Ja, ta bort</button>
+      <button class="mbtn mbtn-danger" onclick="confirmDelete()" data-sv="Ja, ta bort" data-en="Yes, delete" data-fr="Oui, supprimer" data-de="Ja, löschen">Ja, ta bort</button>
       <button class="mbtn mbtn-ghost" onclick="document.getElementById('deleteOverlay').classList.remove('show')"
-        data-sv="Avbryt" data-fr="Annuler" data-en="Cancel">Avbryt</button>
+        data-sv="Avbryt" data-fr="Annuler" data-en="Cancel" data-de="Abbrechen">Avbryt</button>
     </div>
   </div>
 </div>
@@ -334,32 +336,8 @@ input[type="date"].text-input{color-scheme:dark;}
 // ══════════════════════════════════════════
 // LANGUAGE
 // ══════════════════════════════════════════
-let lang = localStorage.getItem('petanque-lang') || localStorage.getItem('pt_lang') || localStorage.getItem('lang') || 'sv';
-function applyLang() {
-  document.querySelectorAll('[data-sv]').forEach(el => {
-    el.textContent = lang==='fr' ? (el.dataset.fr||el.dataset.sv) : lang==='en' ? (el.dataset.en||el.dataset.sv) : el.dataset.sv;
-  });
-  document.querySelectorAll('[data-placeholder-sv]').forEach(el => {
-    el.placeholder = lang==='fr' ? (el.dataset.placeholderFr||el.dataset.placeholderSv) : lang==='en' ? (el.dataset.placeholderEn||el.dataset.placeholderSv) : el.dataset.placeholderSv;
-  });
-  ['sv','en','fr'].forEach(l => {
-    const b = document.getElementById('btn-'+l);
-    if (b) { b.style.color = l===lang ? 'var(--accent)' : ''; b.style.borderColor = l===lang ? 'var(--accent)' : ''; b.style.fontWeight = l===lang ? '900' : ''; }
-  });
-  document.documentElement.lang = lang;
-}
-function setLangApp(l) {
-  lang = l;
-  localStorage.setItem('petanque-lang', l);
-  localStorage.setItem('pt_lang', l);
-  localStorage.setItem('lang', l);
-  applyLang();
-  renderCalendar();
-}
-function toggleLang() {
-  lang = lang==='sv' ? 'en' : lang==='en' ? 'fr' : 'sv';
-  setLangApp(lang);
-}
+// Själva språkbytet sköts av lang-manager.js (samma system på alla sidor)
+function applyLang() { langMgr.apply(); }
 applyLang();
 
 // ══════════════════════════════════════════
@@ -430,7 +408,7 @@ function handlePhotoSelected(event) {
     document.getElementById('photoBtn').style.display = 'none';
   }).catch(err => {
     console.error('Kunde inte läsa in fotot:', err);
-    alert(lang==='sv' ? 'Kunde inte läsa in fotot. Försök igen.' : lang==='fr' ? "Impossible de charger la photo. Réessayez." : 'Could not load the photo. Please try again.');
+    alert(langMgr.t({"sv": "Kunde inte läsa in fotot. Försök igen.", "en": "Could not load the photo. Please try again.", "fr": "Impossible de charger la photo. Réessayez.", "de": "Das Foto konnte nicht geladen werden. Bitte versuche es erneut."}));
   });
 
   // Töm filfältet så att samma bild kan väljas igen senare om man vill
@@ -492,11 +470,7 @@ function storeEntries(entries) {
   } catch (e) {
     // Om lagringsutrymmet är fullt (kan hända om många foton sparats)
     // informerar vi användaren istället för att appen bara skulle sluta fungera tyst.
-    alert(lang==='sv'
-      ? 'Kunde inte spara – telefonens lagringsutrymme för appen är fullt. Prova att ta bort ett gammalt foto från ett tidigare inlägg.'
-      : lang==='fr'
-      ? "Impossible d'enregistrer – l'espace de stockage de l'application est plein. Essayez de supprimer une ancienne photo."
-      : 'Could not save – the app storage on your phone is full. Try removing an old photo from a previous entry.');
+    alert(langMgr.t({"sv": "Kunde inte spara – telefonens lagringsutrymme för appen är fullt. Prova att ta bort ett gammalt foto från ett tidigare inlägg.", "en": "Could not save – the app storage on your phone is full. Try removing an old photo from a previous entry.", "fr": "Impossible d'enregistrer – l'espace de stockage de l'application est plein. Essayez de supprimer une ancienne photo.", "de": "Speichern nicht möglich – der App-Speicher auf deinem Handy ist voll. Versuche, ein altes Foto aus einem früheren Eintrag zu entfernen."}));
     throw e;
   }
 }
@@ -535,18 +509,26 @@ function saveEntry() {
 let calYear  = new Date().getFullYear();
 let calMonth = new Date().getMonth(); // 0-indexed
 
-const MONTH_NAMES_SV = ['Januari','Februari','Mars','April','Maj','Juni','Juli','Augusti','September','Oktober','November','December'];
-const MONTH_NAMES_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-const DAY_LABELS_SV  = ['Mån','Tis','Ons','Tor','Fre','Lör','Sön'];
-const DAY_LABELS_EN  = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const MONTH_NAMES = {
+  sv: ['Januari','Februari','Mars','April','Maj','Juni','Juli','Augusti','September','Oktober','November','December'],
+  en: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+  fr: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+  de: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']
+};
+const DAY_LABELS = {
+  sv: ['Mån','Tis','Ons','Tor','Fre','Lör','Sön'],
+  en: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+  fr: ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],
+  de: ['Mo','Di','Mi','Do','Fr','Sa','So']
+};
 
 function calPrev() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar(); }
 function calNext() { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar(); }
 
 function renderCalendar() {
   const entries = loadEntries();
-  const monthNames = lang==='sv' ? MONTH_NAMES_SV : MONTH_NAMES_EN;
-  const dayLabels  = lang==='sv' ? DAY_LABELS_SV : DAY_LABELS_EN;
+  const monthNames = MONTH_NAMES[langMgr.lang] || MONTH_NAMES.sv;
+  const dayLabels  = DAY_LABELS[langMgr.lang] || DAY_LABELS.sv;
 
   document.getElementById('calMonthLabel').textContent = monthNames[calMonth] + ' ' + calYear;
 
@@ -612,8 +594,8 @@ function renderCalendar() {
   list.innerHTML = '';
   if (!monthEntries.length) {
     list.innerHTML = `<div class="empty-state"><div class="empty-icon">📖</div>
-      <div class="empty-text">${lang==='sv'?'Inga inlägg denna månad':'No entries this month'}</div>
-      <div class="empty-sub">${lang==='sv'?'Växla till fliken Nytt inlägg för att logga ett pass.':'Switch to New Entry to log a session.'}</div></div>`;
+      <div class="empty-text">${langMgr.t({"sv": "Inga inlägg denna månad", "en": "No entries this month", "fr": "Aucune entrée ce mois-ci", "de": "Keine Einträge in diesem Monat"})}</div>
+      <div class="empty-sub">${langMgr.t({"sv": "Växla till fliken Nytt inlägg för att logga ett pass.", "en": "Switch to New Entry to log a session.", "fr": "Passez à l'onglet Nouvelle entrée pour enregistrer une séance.", "de": "Wechsle zum Reiter Neuer Eintrag, um eine Einheit zu erfassen."})}</div></div>`;
     return;
   }
   monthEntries.forEach(e => list.appendChild(buildEntryCard(e)));
@@ -623,17 +605,17 @@ function renderCalendar() {
 // ENTRY CARD
 // ══════════════════════════════════════════
 const TYPE_LABELS = {
-  shoot:{sv:'Skjutträning',en:'Shooting'},
-  lagg:{sv:'Läggträning',en:'Pointing'},
-  match:{sv:'Match',en:'Match'},
-  annan:{sv:'Annat',en:'Other'}
+  shoot:{sv:'Skjutträning',en:'Shooting',fr:'Tir',de:'Schießtraining'},
+  lagg:{sv:'Läggträning',en:'Pointing',fr:'Jeu de boules',de:'Legetraining'},
+  match:{sv:'Match',en:'Match',fr:'Match',de:'Spiel'},
+  annan:{sv:'Annat',en:'Other',fr:'Autre',de:'Sonstiges'}
 };
 
 function buildEntryCard(e) {
   const div = document.createElement('div');
   const typeClass = e.type ? 'entry-'+e.type : 'entry-annan';
   const badgeClass = e.type ? 'badge-'+e.type : 'badge-annan';
-  const typeLbl = e.type ? (lang==='sv' ? TYPE_LABELS[e.type].sv : TYPE_LABELS[e.type].en) : (lang==='sv'?'Annat':'Other');
+  const typeLbl = langMgr.t(TYPE_LABELS[e.type || 'annan']);
   const stars = e.mood ? '⭐'.repeat(e.mood) + '☆'.repeat(5-e.mood) : '';
   const dateFormatted = e.date ? new Date(e.date+'T12:00:00').toLocaleDateString(langMgr.locale(),{weekday:'long',day:'numeric',month:'long'}) : '';
 
@@ -646,8 +628,8 @@ function buildEntryCard(e) {
     ${e.place ? `<div class="entry-place">📍 ${e.place}</div>` : ''}
     ${stars ? `<div class="entry-stars">${stars}</div>` : ''}
     ${e.note ? `<div class="entry-note">${escHtml(e.note)}</div>` : ''}
-    ${e.photo ? `<img class="entry-photo" src="${e.photo}" alt="Foto från träningspasset" onclick="openPhotoOverlay('${e.photo}')">` : ''}
-    <button class="entry-delete" onclick="askDelete(${e.id},event)" title="${lang==='sv'?'Ta bort':'Delete'}">✕</button>
+    ${e.photo ? `<img class="entry-photo" src="${e.photo}" alt="${langMgr.t({"sv": "Foto från träningspasset", "en": "Photo from the training session", "fr": "Photo de la séance d'entraînement", "de": "Foto von der Trainingseinheit"})}" onclick="openPhotoOverlay('${e.photo}')">` : ''}
+    <button class="entry-delete" onclick="askDelete(${e.id},event)" title="${langMgr.t({"sv": "Ta bort", "en": "Delete", "fr": "Supprimer", "de": "Löschen"})}">✕</button>
   `;
   return div;
 }
@@ -665,7 +647,7 @@ function showDayDetail(dateStr, dayEntries) {
   const container = document.getElementById('dayEntries');
   container.innerHTML = '';
   dayEntries.forEach(e => {
-    const typeLbl = e.type ? (lang==='sv' ? TYPE_LABELS[e.type].sv : TYPE_LABELS[e.type].en) : '';
+    const typeLbl = e.type ? langMgr.t(TYPE_LABELS[e.type]) : '';
     const stars = e.mood ? '⭐'.repeat(e.mood)+'☆'.repeat(5-e.mood) : '';
     const div = document.createElement('div');
     div.className = 'day-entry-preview';
@@ -676,7 +658,7 @@ function showDayDetail(dateStr, dayEntries) {
       </div>
       ${e.place ? `<div class="dep-place">📍 ${e.place}</div>` : ''}
       ${e.note ? `<div class="dep-note">${escHtml(e.note)}</div>` : ''}
-      ${e.photo ? `<img class="entry-photo" src="${e.photo}" alt="Foto från träningspasset" onclick="openPhotoOverlay('${e.photo}')">` : ''}
+      ${e.photo ? `<img class="entry-photo" src="${e.photo}" alt="${langMgr.t({"sv": "Foto från träningspasset", "en": "Photo from the training session", "fr": "Photo de la séance d'entraînement", "de": "Foto von der Trainingseinheit"})}" onclick="openPhotoOverlay('${e.photo}')">` : ''}
     `;
     container.appendChild(div);
   });

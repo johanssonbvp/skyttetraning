@@ -781,8 +781,8 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 <div id="welcome-modal">
   <div class="welcome-box">
     <div class="welcome-emoji">🎯</div>
-    <div class="welcome-title" data-sv="Välkommen till Petanque Träning!" data-en="Welcome to Petanque Training!" data-fr="Bienvenue sur Petanque Entraînement!">Välkommen till Petanque Träning!</div>
-    <div class="welcome-sub" data-sv="Vad vill du börja med idag?" data-en="What would you like to start with today?" data-fr="Par où voulez-vous commencer?">Vad vill du börja med idag?</div>
+    <div class="welcome-title" data-sv="Välkommen till Petanque Träning!" data-en="Welcome to Petanque Training!" data-fr="Bienvenue sur Petanque Träning!" data-de="Willkommen bei Petanque Träning!">Välkommen till Petanque Träning!</div>
+    <div class="welcome-sub" data-sv="Vad vill du börja med idag?" data-en="What would you like to start with today?" data-fr="Par où voulez-vous commencer?" data-de="Womit möchtest du heute beginnen?">Vad vill du börja med idag?</div>
 
     <a href="./lathund.html" class="welcome-btn">
       <span class="wb-icon">📖</span>
@@ -796,8 +796,8 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     <a href="./skjuttraning.html" class="welcome-btn">
       <span class="wb-icon">💥</span>
       <span class="wb-text">
-        <div class="wb-title" data-sv="Logga ett träningspass" data-en="Log a training session" data-fr="Enregistrer une séance">Logga ett träningspass</div>
-        <div class="wb-desc" data-sv="Skjutträning, läggträning eller precisionsskytte" data-en="Shooting, pointing or precision" data-fr="Tir, pointé ou précision">Skjutträning, läggträning eller precisionsskytte</div>
+        <div class="wb-title" data-sv="Logga ett träningspass" data-en="Log a training session" data-fr="Enregistrer une séance" data-de="Eine Trainingseinheit erfassen">Logga ett träningspass</div>
+        <div class="wb-desc" data-sv="Skjutträning, läggträning eller precisionsskytte" data-en="Shooting, pointing or precision" data-fr="Tir, pointé ou précision" data-de="Schießtraining, Legetraining oder Präzisionsschießen">Skjutträning, läggträning eller precisionsskytte</div>
       </span>
       <span style="margin-left:auto;color:#e8ff47;">→</span>
     </a>
@@ -805,8 +805,8 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     <a href="./matchstatistik.html" class="welcome-btn">
       <span class="wb-icon">📊</span>
       <span class="wb-text">
-        <div class="wb-title" data-sv="Starta en match" data-en="Start a match" data-fr="Démarrer un match">Starta en match</div>
-        <div class="wb-desc" data-sv="Logga varje klot live med matchstatistik" data-en="Log every ball live with match statistics" data-fr="Enregistrez chaque boule avec les statistiques">Logga varje klot live med matchstatistik</div>
+        <div class="wb-title" data-sv="Starta en match" data-en="Start a match" data-fr="Démarrer un match" data-de="Ein Spiel starten">Starta en match</div>
+        <div class="wb-desc" data-sv="Logga varje klot live med matchstatistik" data-en="Log every ball live with match statistics" data-fr="Enregistrez chaque boule avec les statistiques" data-de="Erfasse jede Kugel live mit der Matchstatistik">Logga varje klot live med matchstatistik</div>
       </span>
       <span style="margin-left:auto;color:#e8ff47;">→</span>
     </a>
@@ -814,13 +814,13 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     <button class="welcome-btn" onclick="closeWelcome()">
       <span class="wb-icon">🗺️</span>
       <span class="wb-text">
-        <div class="wb-title" data-sv="Utforska appen" data-en="Explore the app" data-fr="Explorer l'application">Utforska appen</div>
+        <div class="wb-title" data-sv="Utforska appen" data-en="Explore the app" data-fr="Explorer l'application" data-de="App entdecken">Utforska appen</div>
         <div class="wb-desc" data-sv="Se alla moduler på startsidan" data-en="See all modules on the home screen" data-fr="Voir tous les modules sur l'écran d'accueil" data-de="Alle Module auf der Startseite ansehen">Se alla moduler på startsidan</div>
       </span>
       <span style="margin-left:auto;color:#e8ff47;">→</span>
     </button>
 
-    <div class="welcome-skip" onclick="closeWelcome()" data-sv="Visa inte detta igen" data-en="Don't show this again" data-fr="Ne plus afficher">Visa inte detta igen</div>
+    <div class="welcome-skip" onclick="closeWelcome()" data-sv="Visa inte detta igen" data-en="Don't show this again" data-fr="Ne plus afficher" data-de="Nicht mehr anzeigen">Visa inte detta igen</div>
   </div>
 </div>
 
@@ -832,44 +832,44 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     <!-- Logo -->
     <div style="font-size:36px;margin-bottom:8px;">🎯</div>
     <h2 style="color:#e8ff47;font-size:26px;margin-bottom:4px;font-weight:800;">Petanque Träning</h2>
-    <p style="color:#8a8a9e;font-size:13px;margin-bottom:28px;">Logga in eller skapa konto</p>
+    <p style="color:#8a8a9e;font-size:13px;margin-bottom:28px;" data-sv="Logga in eller skapa konto" data-en="Log in or create an account" data-fr="Connectez-vous ou créez un compte" data-de="Anmelden oder Konto erstellen">Logga in eller skapa konto</p>
 
     <!-- TAB SWITCHER -->
     <div style="display:flex;background:#080810;border-radius:8px;padding:4px;margin-bottom:24px;gap:4px;">
-      <button id="tab-login" onclick="showTab('login')" style="flex:1;padding:10px;border:none;border-radius:6px;background:#e8ff47;color:#080810;font-weight:700;font-size:14px;cursor:pointer;">Logga in</button>
-      <button id="tab-register" onclick="showTab('register')" style="flex:1;padding:10px;border:none;border-radius:6px;background:transparent;color:#8a8a9e;font-weight:700;font-size:14px;cursor:pointer;">Skapa konto</button>
+      <button id="tab-login" onclick="showTab('login')" style="flex:1;padding:10px;border:none;border-radius:6px;background:#e8ff47;color:#080810;font-weight:700;font-size:14px;cursor:pointer;" data-sv="Logga in" data-en="Log in" data-fr="Se connecter" data-de="Anmelden">Logga in</button>
+      <button id="tab-register" onclick="showTab('register')" style="flex:1;padding:10px;border:none;border-radius:6px;background:transparent;color:#8a8a9e;font-weight:700;font-size:14px;cursor:pointer;" data-sv="Skapa konto" data-en="Create account" data-fr="Créer un compte" data-de="Konto erstellen">Skapa konto</button>
     </div>
 
     <!-- LOGIN FORM -->
     <div id="form-login">
       <input type="email" id="login-email" placeholder="E-postadress" autocomplete="email"
-        style="width:100%;padding:13px;margin-bottom:12px;background:#080810;border:1px solid #1a1f2e;color:#fff;border-radius:8px;font-size:15px;box-sizing:border-box;">
-      <input type="password" id="login-password" placeholder="Lösenord" data-sv-placeholder="Lösenord" data-en-placeholder="Password" data-fr-placeholder="Mot de passe" autocomplete="current-password"
+        style="width:100%;padding:13px;margin-bottom:12px;background:#080810;border:1px solid #1a1f2e;color:#fff;border-radius:8px;font-size:15px;box-sizing:border-box;" data-sv-placeholder="E-postadress" data-en-placeholder="Email address" data-fr-placeholder="Adresse e-mail" data-de-placeholder="E-Mail-Adresse">
+      <input type="password" id="login-password" placeholder="Lösenord" data-sv-placeholder="Lösenord" data-en-placeholder="Password" data-fr-placeholder="Mot de passe" data-de-placeholder="Passwort" autocomplete="current-password"
         style="width:100%;padding:13px;margin-bottom:8px;background:#080810;border:1px solid #1a1f2e;color:#fff;border-radius:8px;font-size:15px;box-sizing:border-box;">
       <div style="text-align:right;margin-bottom:16px;">
-        <a href="#" onclick="showForgotPassword()" style="color:#8a8a9e;font-size:12px;text-decoration:none;">Glömt lösenord?</a>
+        <a href="#" onclick="showForgotPassword()" style="color:#8a8a9e;font-size:12px;text-decoration:none;" data-sv="Glömt lösenord?" data-en="Forgot password?" data-fr="Mot de passe oublié ?" data-de="Passwort vergessen?">Glömt lösenord?</a>
       </div>
-      <button onclick="doLogin()" style="width:100%;padding:14px;background:#e8ff47;color:#080810;border:none;border-radius:8px;font-weight:800;font-size:16px;cursor:pointer;margin-bottom:12px;">LOGGA IN</button>
+      <button onclick="doLogin()" style="width:100%;padding:14px;background:#e8ff47;color:#080810;border:none;border-radius:8px;font-weight:800;font-size:16px;cursor:pointer;margin-bottom:12px;" data-sv="LOGGA IN" data-en="LOG IN" data-fr="SE CONNECTER" data-de="ANMELDEN">LOGGA IN</button>
     </div>
 
     <!-- REGISTER FORM -->
     <div id="form-register" style="display:none;">
       <input type="email" id="reg-email" placeholder="E-postadress" autocomplete="email"
+        style="width:100%;padding:13px;margin-bottom:12px;background:#080810;border:1px solid #1a1f2e;color:#fff;border-radius:8px;font-size:15px;box-sizing:border-box;" data-sv-placeholder="E-postadress" data-en-placeholder="Email address" data-fr-placeholder="Adresse e-mail" data-de-placeholder="E-Mail-Adresse">
+      <input type="password" id="reg-password" placeholder="Lösenord (minst 6 tecken)" data-sv-placeholder="Lösenord (minst 6 tecken)" data-en-placeholder="Password (min. 6 characters)" data-fr-placeholder="Mot de passe (min. 6 caractères)" data-de-placeholder="Passwort (mindestens 6 Zeichen)" autocomplete="new-password"
         style="width:100%;padding:13px;margin-bottom:12px;background:#080810;border:1px solid #1a1f2e;color:#fff;border-radius:8px;font-size:15px;box-sizing:border-box;">
-      <input type="password" id="reg-password" placeholder="Lösenord (minst 6 tecken)" data-sv-placeholder="Lösenord (minst 6 tecken)" data-en-placeholder="Password (min. 6 characters)" data-fr-placeholder="Mot de passe (min. 6 caractères)" autocomplete="new-password"
-        style="width:100%;padding:13px;margin-bottom:12px;background:#080810;border:1px solid #1a1f2e;color:#fff;border-radius:8px;font-size:15px;box-sizing:border-box;">
-      <input type="password" id="reg-password2" placeholder="Upprepa lösenord" data-sv-placeholder="Upprepa lösenord" data-en-placeholder="Repeat password" data-fr-placeholder="Répétez le mot de passe" autocomplete="new-password"
+      <input type="password" id="reg-password2" placeholder="Upprepa lösenord" data-sv-placeholder="Upprepa lösenord" data-en-placeholder="Repeat password" data-fr-placeholder="Répétez le mot de passe" data-de-placeholder="Passwort wiederholen" autocomplete="new-password"
         style="width:100%;padding:13px;margin-bottom:16px;background:#080810;border:1px solid #1a1f2e;color:#fff;border-radius:8px;font-size:15px;box-sizing:border-box;">
-      <button onclick="doRegister()" style="width:100%;padding:14px;background:#e8ff47;color:#080810;border:none;border-radius:8px;font-weight:800;font-size:16px;cursor:pointer;margin-bottom:12px;">SKAPA KONTO</button>
+      <button onclick="doRegister()" style="width:100%;padding:14px;background:#e8ff47;color:#080810;border:none;border-radius:8px;font-weight:800;font-size:16px;cursor:pointer;margin-bottom:12px;" data-sv="SKAPA KONTO" data-en="CREATE ACCOUNT" data-fr="CRÉER UN COMPTE" data-de="KONTO ERSTELLEN">SKAPA KONTO</button>
     </div>
 
     <!-- FORGOT PASSWORD FORM -->
     <div id="form-forgot" style="display:none;">
-      <p style="color:#8a8a9e;font-size:13px;margin-bottom:16px;">Ange din e-post så skickar vi en återställningslänk.</p>
+      <p style="color:#8a8a9e;font-size:13px;margin-bottom:16px;" data-sv="Ange din e-post så skickar vi en återställningslänk." data-en="Enter your email and we will send you a reset link." data-fr="Saisissez votre e-mail et nous vous enverrons un lien de réinitialisation." data-de="Gib deine E-Mail-Adresse ein, dann senden wir dir einen Link zum Zurücksetzen.">Ange din e-post så skickar vi en återställningslänk.</p>
       <input type="email" id="forgot-email" placeholder="E-postadress" autocomplete="email"
-        style="width:100%;padding:13px;margin-bottom:16px;background:#080810;border:1px solid #1a1f2e;color:#fff;border-radius:8px;font-size:15px;box-sizing:border-box;">
-      <button onclick="doForgotPassword()" style="width:100%;padding:14px;background:#e8ff47;color:#080810;border:none;border-radius:8px;font-weight:800;font-size:16px;cursor:pointer;margin-bottom:12px;">SKICKA LÄNK</button>
-      <button onclick="showTab('login')" style="width:100%;padding:10px;background:transparent;border:1px solid #1a1f2e;color:#8a8a9e;border-radius:8px;font-size:14px;cursor:pointer;">Tillbaka</button>
+        style="width:100%;padding:13px;margin-bottom:16px;background:#080810;border:1px solid #1a1f2e;color:#fff;border-radius:8px;font-size:15px;box-sizing:border-box;" data-sv-placeholder="E-postadress" data-en-placeholder="Email address" data-fr-placeholder="Adresse e-mail" data-de-placeholder="E-Mail-Adresse">
+      <button onclick="doForgotPassword()" style="width:100%;padding:14px;background:#e8ff47;color:#080810;border:none;border-radius:8px;font-weight:800;font-size:16px;cursor:pointer;margin-bottom:12px;" data-sv="SKICKA LÄNK" data-en="SEND LINK" data-fr="ENVOYER LE LIEN" data-de="LINK SENDEN">SKICKA LÄNK</button>
+      <button onclick="showTab('login')" style="width:100%;padding:10px;background:transparent;border:1px solid #1a1f2e;color:#8a8a9e;border-radius:8px;font-size:14px;cursor:pointer;" data-sv="Tillbaka" data-en="Back" data-fr="Retour" data-de="Zurück">Tillbaka</button>
     </div>
 
     <!-- STATUS -->
@@ -882,14 +882,14 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 <div id="migration-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.97);z-index:10001;align-items:center;justify-content:center;">
   <div style="background:#0f1419;padding:40px 32px;border-radius:16px;border:1px solid #1a1f2e;text-align:center;max-width:420px;width:90%;margin:20px auto;">
     <div style="font-size:32px;margin-bottom:12px;">📦</div>
-    <h2 style="color:#e8ff47;font-size:22px;margin-bottom:8px;">Flytta din data</h2>
-    <p style="color:#8a8a9e;font-size:13px;margin-bottom:24px;line-height:1.6;">Har du en befintlig tränarkod med sparad statistik? Ange den nedan så flyttar vi din data till ditt nya konto automatiskt.</p>
+    <h2 style="color:#e8ff47;font-size:22px;margin-bottom:8px;" data-sv="Flytta din data" data-en="Move your data" data-fr="Déplacez vos données" data-de="Daten übertragen">Flytta din data</h2>
+    <p style="color:#8a8a9e;font-size:13px;margin-bottom:24px;line-height:1.6;" data-sv="Har du en befintlig tränarkod med sparad statistik? Ange den nedan så flyttar vi din data till ditt nya konto automatiskt." data-en="Do you have an existing coach code with saved statistics? Enter it below and we will move your data to your new account automatically." data-fr="Avez-vous un code entraîneur existant avec des statistiques enregistrées ? Saisissez-le ci-dessous et nous déplacerons automatiquement vos données vers votre nouveau compte." data-de="Hast du einen bestehenden Trainercode mit gespeicherter Statistik? Gib ihn unten ein, dann übertragen wir deine Daten automatisch auf dein neues Konto.">Har du en befintlig tränarkod med sparad statistik? Ange den nedan så flyttar vi din data till ditt nya konto automatiskt.</p>
     
     <input type="text" id="migration-code" placeholder="T.EX: BVPTEST" maxlength="12" autocomplete="off"
-      style="width:100%;padding:13px;margin-bottom:12px;background:#080810;border:1px solid #1a1f2e;color:#e8ff47;border-radius:8px;font-size:16px;text-transform:uppercase;text-align:center;box-sizing:border-box;">
+      style="width:100%;padding:13px;margin-bottom:12px;background:#080810;border:1px solid #1a1f2e;color:#e8ff47;border-radius:8px;font-size:16px;text-transform:uppercase;text-align:center;box-sizing:border-box;" data-sv-placeholder="T.EX: BVPTEST" data-en-placeholder="E.G.: BVPTEST" data-fr-placeholder="EX. : BVPTEST" data-de-placeholder="Z. B.: BVPTEST">
     
-    <button onclick="doMigration()" style="width:100%;padding:14px;background:#e8ff47;color:#080810;border:none;border-radius:8px;font-weight:800;font-size:15px;cursor:pointer;margin-bottom:10px;">FLYTTA MIN DATA</button>
-    <button onclick="skipMigration()" style="width:100%;padding:11px;background:transparent;border:1px solid #1a1f2e;color:#8a8a9e;border-radius:8px;font-size:14px;cursor:pointer;">Jag har ingen tidigare data</button>
+    <button onclick="doMigration()" style="width:100%;padding:14px;background:#e8ff47;color:#080810;border:none;border-radius:8px;font-weight:800;font-size:15px;cursor:pointer;margin-bottom:10px;" data-sv="FLYTTA MIN DATA" data-en="MOVE MY DATA" data-fr="DÉPLACER MES DONNÉES" data-de="MEINE DATEN ÜBERTRAGEN">FLYTTA MIN DATA</button>
+    <button onclick="skipMigration()" style="width:100%;padding:11px;background:transparent;border:1px solid #1a1f2e;color:#8a8a9e;border-radius:8px;font-size:14px;cursor:pointer;" data-sv="Jag har ingen tidigare data" data-en="I have no previous data" data-fr="Je n'ai pas de données antérieures" data-de="Ich habe keine früheren Daten">Jag har ingen tidigare data</button>
     
     <div id="migration-status" style="margin-top:12px;color:#ff6b6b;font-size:13px;min-height:20px;"></div>
   </div>
@@ -912,7 +912,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
   <div class="lang-toggle">
     <select id="lang-select" class="lang-select" aria-label="Språk / Language"></select>
   </div>
-<button onclick="openBackupMenu()" style="padding: 6px 12px; border: 1px solid #1a1f2e; background: transparent; color: #8a8a9e; border-radius: 4px; cursor: pointer; font-size: 14px; margin-left: 4px;" title="Datahantering">⚙️</button><button onclick="logout()" style="padding: 6px 12px; border: 1px solid #1a1f2e; background: transparent; color: #8a8a9e; border-radius: 4px; cursor: pointer; font-size: 11px; margin-left: 8px;" title="Logga ut">🚪</button></header>
+<button onclick="openBackupMenu()" style="padding: 6px 12px; border: 1px solid #1a1f2e; background: transparent; color: #8a8a9e; border-radius: 4px; cursor: pointer; font-size: 14px; margin-left: 4px;" title="Datahantering" data-sv-title="Datahantering" data-en-title="Data management" data-fr-title="Gestion des données" data-de-title="Datenverwaltung">⚙️</button><button onclick="logout()" style="padding: 6px 12px; border: 1px solid #1a1f2e; background: transparent; color: #8a8a9e; border-radius: 4px; cursor: pointer; font-size: 11px; margin-left: 8px;" title="Logga ut" data-sv-title="Logga ut" data-en-title="Log out" data-fr-title="Se déconnecter" data-de-title="Abmelden">🚪</button></header>
 
 <!-- HERO SECTION -->
 <section class="hero">
@@ -925,14 +925,14 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
         alt="Petanque Träning Logo"
       >
     </div>
-    <h1 data-sv="Spåra din utveckling. Träna smartare." data-fr="Suivez votre progression. Entraînez-vous mieux." data-en="Track your progress. Train smarter.">
+    <h1 data-sv="Spåra din utveckling. Träna smartare." data-fr="Suivez votre progression. Entraînez-vous mieux." data-en="Track your progress. Train smarter." data-de="Verfolge deine Entwicklung. Trainiere klüger.">
       Spåra din utveckling. Träna smartare.
     </h1>
-    <p data-sv="Din personliga träningscoach för petanque. Statistik, analyser och trendlinjer – helt gratis!" data-fr="Votre coach personnel pour la pétanque. Statistiques, analyses et tendances – totalement gratuit!" data-en="Your personal petanque coach. Statistics, analysis and trends – completely free!">
+    <p data-sv="Din personliga träningscoach för petanque. Statistik, analyser och trendlinjer – helt gratis!" data-fr="Votre coach personnel pour la pétanque. Statistiques, analyses et tendances – totalement gratuit!" data-en="Your personal petanque coach. Statistics, analysis and trends – completely free!" data-de="Dein persönlicher Trainingscoach für Pétanque. Statistik, Analysen und Trendlinien – völlig kostenlos!">
       Din personliga träningscoach för petanque. Statistik, analyser och trendlinjer – helt gratis!
     </p>
     <button class="cta-primary" onclick="document.querySelector('.apps-section').scrollIntoView({behavior:'smooth'})" 
-            data-sv="BÖRJA NU" data-fr="COMMENCER" data-en="START NOW">
+            data-sv="BÖRJA NU" data-fr="COMMENCER" data-en="START NOW" data-de="JETZT STARTEN">
       BÖRJA NU
     </button>
     
@@ -949,7 +949,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
            font-weight:600;cursor:pointer;letter-spacing:0.5px;"
     data-sv="📲 Installera appen på hemskärmen"
     data-en="📲 Install app on home screen"
-    data-fr="📲 Installer l'app sur l'écran d'accueil">
+    data-fr="📲 Installer l'app sur l'écran d'accueil" data-de="📲 App auf dem Startbildschirm installieren">
     📲 Installera appen på hemskärmen
 </button>
 
@@ -962,15 +962,15 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
            font-weight:600;cursor:pointer;letter-spacing:0.5px;"
     data-sv="📤 Dela appen"
     data-en="📤 Share app"
-    data-fr="📤 Partager l'app">
+    data-fr="📤 Partager l'app" data-de="📤 App teilen">
     📤 Dela appen
 </button>
 
 <a href="https://ko-fi.com/petanquetraning" target="_blank"
          style="color: #8a8a9e; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.1); padding: 7px 14px; border-radius: 20px; backdrop-filter: blur(4px); background: rgba(255,255,255,0.04);"
          data-sv="☕ Gilla appen? Bjud mig på en kaffe" data-fr="☕ Vous aimez l'appli? Offrez-moi un café"
-         data-en="☕ Like the app? Buy me a coffee">
-        ☕ <span data-sv="Gilla appen? Bjud mig på en kaffe" data-fr="Vous aimez l'appli? Offrez-moi un café" data-en="Like the app? Buy me a coffee">Gilla appen? Bjud mig på en kaffe</span>
+         data-en="☕ Like the app? Buy me a coffee" data-de="☕ Gefällt dir die App? Spendier mir einen Kaffee">
+        ☕ <span data-sv="Gilla appen? Bjud mig på en kaffe" data-fr="Vous aimez l'appli? Offrez-moi un café" data-en="Like the app? Buy me a coffee" data-de="Gefällt dir die App? Spendier mir einen Kaffee">Gilla appen? Bjud mig på en kaffe</span>
       </a>
     </div>
     
@@ -992,7 +992,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
       <span class="app-arrow">›</span>
     </a>
 
-    <h2 class="section-title" data-sv="Träningsappar" data-fr="Applications d'entraînement" data-en="Training Apps">
+    <h2 class="section-title" data-sv="Träningsappar" data-fr="Applications d'entraînement" data-en="Training Apps" data-de="Trainings-Apps">
       Träningsappar
     </h2>
     
@@ -1001,8 +1001,8 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
       <a href="./uppvarmning.html" class="app-card">
         <span class="app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3.2 2-4.2.2 1.2.8 2 1.6 2.4C10.2 8.5 10.6 5.5 12 3z"/></svg></span>
         <div class="app-info">
-          <div class="app-name" data-sv="Uppvärmning" data-en="Warm-up" data-fr="Échauffement">Uppvärmning</div>
-          <div class="app-desc" data-sv="Guidad rutin · 9 min" data-en="Guided routine · 9 min" data-fr="Routine guidée · 9 min">Guidad rutin · 9 min</div>
+          <div class="app-name" data-sv="Uppvärmning" data-en="Warm-up" data-fr="Échauffement" data-de="Aufwärmen">Uppvärmning</div>
+          <div class="app-desc" data-sv="Guidad rutin · 9 min" data-en="Guided routine · 9 min" data-fr="Routine guidée · 9 min" data-de="Geführte Routine · 9 Min.">Guidad rutin · 9 min</div>
         </div>
         <span class="app-arrow">›</span>
       </a>
@@ -1011,8 +1011,8 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
       <a href="./skjuttraning.html" class="app-card">
         <span class="app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><line x1="12" y1="1" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="23"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/></svg></span>
         <div class="app-info">
-          <div class="app-name" data-sv="Skjutträning" data-fr="Tir" data-en="Shooting Practice">Skjutträning</div>
-          <div class="app-desc" data-sv="Effektivitetsindex · 6–12 m" data-fr="Indice d'efficacité · 6–12 m" data-en="Efficiency index · 6–12 m">Effektivitetsindex · 6–12 m</div>
+          <div class="app-name" data-sv="Skjutträning" data-fr="Tir" data-en="Shooting Practice" data-de="Schießtraining">Skjutträning</div>
+          <div class="app-desc" data-sv="Effektivitetsindex · 6–12 m" data-fr="Indice d'efficacité · 6–12 m" data-en="Efficiency index · 6–12 m" data-de="Effizienzindex · 6–12 m">Effektivitetsindex · 6–12 m</div>
         </div>
         <span class="app-arrow">›</span>
       </a>
@@ -1021,8 +1021,8 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
       <a href="./laggtraning.html" class="app-card">
         <span class="app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 16c3-9 15-9 18 0"/><circle cx="19" cy="17" r="1.8" fill="currentColor" stroke="none"/></svg></span>
         <div class="app-info">
-          <div class="app-name" data-sv="Läggträning" data-fr="Jeu de boules" data-en="Pointing Practice">Läggträning</div>
-          <div class="app-desc" data-sv="6 övningstyper" data-fr="6 types d'exercices" data-en="6 exercise types">6 övningstyper</div>
+          <div class="app-name" data-sv="Läggträning" data-fr="Jeu de boules" data-en="Pointing Practice" data-de="Legetraining">Läggträning</div>
+          <div class="app-desc" data-sv="6 övningstyper" data-fr="6 types d'exercices" data-en="6 exercise types" data-de="6 Übungsarten">6 övningstyper</div>
         </div>
         <span class="app-arrow">›</span>
       </a>
@@ -1031,8 +1031,8 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
       <a href="./tavlingssimulator.html" class="app-card">
         <span class="app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="12" y1="8" x2="12" y2="16"/></svg></span>
         <div class="app-info">
-          <div class="app-name" data-sv="Poängräknare" data-fr="Compteur de points" data-en="Score Counter">Poängräknare</div>
-          <div class="app-desc" data-sv="Singel · Dubbel · Trippel" data-fr="Simple · Doublette · Triplette" data-en="Singles · Doubles · Triples">Singel · Dubbel · Trippel</div>
+          <div class="app-name" data-sv="Poängräknare" data-fr="Compteur de points" data-en="Score Counter" data-de="Punktezähler">Poängräknare</div>
+          <div class="app-desc" data-sv="Singel · Dubbel · Trippel" data-fr="Simple · Doublette · Triplette" data-en="Singles · Doubles · Triples" data-de="Einzel · Doublette · Triplette">Singel · Dubbel · Trippel</div>
         </div>
         <span class="app-arrow">›</span>
       </a>
@@ -1041,8 +1041,8 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
       <a href="./dagbok.html" class="app-card">
         <span class="app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg></span>
         <div class="app-info">
-          <div class="app-name" data-sv="Träningsdagbok" data-en="Training Journal" data-fr="Journal d'entraînement">Träningsdagbok</div>
-          <div class="app-desc" data-sv="Statistik & historik" data-fr="Statistiques et historique" data-en="Stats & history">Statistik & historik</div>
+          <div class="app-name" data-sv="Träningsdagbok" data-en="Training Journal" data-fr="Journal d'entraînement" data-de="Trainingstagebuch">Träningsdagbok</div>
+          <div class="app-desc" data-sv="Statistik & historik" data-fr="Statistiques et historique" data-en="Stats & history" data-de="Statistik &amp; Verlauf">Statistik & historik</div>
         </div>
         <span class="app-arrow">›</span>
       </a>
@@ -1051,8 +1051,8 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
       <a href="./precisionsskytte.html" class="app-card">
         <span class="app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/></svg></span>
         <div class="app-info">
-          <div class="app-name" data-sv="Precisionsskytte" data-fr="Tir de précision" data-en="Precision Shooting">Precisionsskytte</div>
-          <div class="app-desc" data-sv="20 skott · 5 stationer" data-fr="20 tirs · 5 stations" data-en="20 shots · 5 stations">20 skott · 5 stationer</div>
+          <div class="app-name" data-sv="Precisionsskytte" data-fr="Tir de précision" data-en="Precision Shooting" data-de="Präzisionsschießen">Precisionsskytte</div>
+          <div class="app-desc" data-sv="20 skott · 5 stationer" data-fr="20 tirs · 5 stations" data-en="20 shots · 5 stations" data-de="20 Schüsse · 5 Stationen">20 skott · 5 stationer</div>
         </div>
         <span class="app-arrow">›</span>
       </a>
@@ -1061,8 +1061,8 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
       <a href="./matchstatistik.html" class="app-card">
         <span class="app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7-5.4-4.7 7.1-.7z"/></svg></span>
         <div class="app-info">
-          <div class="app-name" data-sv="Matchstatistik" data-fr="Statistiques de match" data-en="Match Statistics">Matchstatistik</div>
-          <div class="app-desc" data-sv="Live-loggning · Lag" data-fr="Journal en direct · Équipe" data-en="Live logging · Team">Live-loggning · Lag</div>
+          <div class="app-name" data-sv="Matchstatistik" data-fr="Statistiques de match" data-en="Match Statistics" data-de="Matchstatistik">Matchstatistik</div>
+          <div class="app-desc" data-sv="Live-loggning · Lag" data-fr="Journal en direct · Équipe" data-en="Live logging · Team" data-de="Live-Erfassung · Mannschaft">Live-loggning · Lag</div>
         </div>
         <span class="app-arrow">›</span>
       </a>
@@ -1075,15 +1075,15 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
   <div style="max-width:900px;margin:0 auto;display:flex;justify-content:center;align-items:flex-start;flex-wrap:wrap;gap:28px;text-align:center;">
     <div style="display:flex;align-items:center;gap:10px;">
       <span style="font-size:22px;">📊</span>
-      <span style="font-size:0.9rem;font-weight:700;color:var(--text-muted);" data-sv="Spåra framsteg" data-fr="Suivre les progrès" data-en="Track Progress">Spåra framsteg</span>
+      <span style="font-size:0.9rem;font-weight:700;color:var(--text-muted);" data-sv="Spåra framsteg" data-fr="Suivre les progrès" data-en="Track Progress" data-de="Fortschritte verfolgen">Spåra framsteg</span>
     </div>
     <div style="display:flex;align-items:center;gap:10px;">
       <span style="font-size:22px;">⚡</span>
-      <span style="font-size:0.9rem;font-weight:700;color:var(--text-muted);" data-sv="Träna offline" data-fr="Entraînement hors ligne" data-en="Train Offline">Träna offline</span>
+      <span style="font-size:0.9rem;font-weight:700;color:var(--text-muted);" data-sv="Träna offline" data-fr="Entraînement hors ligne" data-en="Train Offline" data-de="Offline trainieren">Träna offline</span>
     </div>
     <div style="display:flex;align-items:center;gap:10px;">
       <span style="font-size:22px;">🎯</span>
-      <span style="font-size:0.9rem;font-weight:700;color:var(--text-muted);" data-sv="Fokuserad träning" data-fr="Entraînement ciblé" data-en="Focused Training">Fokuserad träning</span>
+      <span style="font-size:0.9rem;font-weight:700;color:var(--text-muted);" data-sv="Fokuserad träning" data-fr="Entraînement ciblé" data-en="Focused Training" data-de="Gezieltes Training">Fokuserad träning</span>
     </div>
   </div>
 </section>
@@ -1091,22 +1091,22 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 <!-- STATISTICS SECTION (dold som standard — visas bara av JS när besökaren faktiskt har egna sparade träningspass, se loadStatistics()) -->
 <section class="stats-section" id="stats-section" style="display:none;">
   <div class="stats-container">
-    <h2 class="section-title" data-sv="Din statistik" data-fr="Vos statistiques" data-en="Your Statistics">
+    <h2 class="section-title" data-sv="Din statistik" data-fr="Vos statistiques" data-en="Your Statistics" data-de="Deine Statistik">
       Din statistik
     </h2>
     
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-number" id="stat-sessions">0</div>
-        <div class="stat-label" data-sv="Träningspass" data-fr="Séances d'entraînement" data-en="Training Sessions">Träningspass</div>
+        <div class="stat-label" data-sv="Träningspass" data-fr="Séances d'entraînement" data-en="Training Sessions" data-de="Trainingseinheiten">Träningspass</div>
       </div>
       <div class="stat-card">
         <div class="stat-number" id="stat-shots">0</div>
-        <div class="stat-label" data-sv="Skott" data-fr="Tirs" data-en="Shots">Skott</div>
+        <div class="stat-label" data-sv="Skott" data-fr="Tirs" data-en="Shots" data-de="Schüsse">Skott</div>
       </div>
       <div class="stat-card">
         <div class="stat-number" id="stat-accuracy">0%</div>
-        <div class="stat-label" data-sv="Träffprocent" data-fr="Taux de réussite" data-en="Accuracy">Träffprocent</div>
+        <div class="stat-label" data-sv="Träffprocent" data-fr="Taux de réussite" data-en="Accuracy" data-de="Trefferquote">Träffprocent</div>
       </div>
     </div>
   </div>
@@ -1118,16 +1118,16 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 <div style="padding:20px 20px 4px;">
   <div style="max-width:640px;margin:0 auto;display:flex;justify-content:center;flex-wrap:wrap;gap:10px;">
     <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:999px;padding:8px 18px;font-size:13px;color:#B0B0B0;white-space:nowrap;">
-      <strong style="color:#e8ff47;" data-sv="Fler och fler" data-en="Growing" data-fr="En croissance">Fler och fler</strong>
-      <span data-sv="spelare" data-en="players" data-fr="joueurs">spelare</span>
+      <strong style="color:#e8ff47;" data-sv="Fler och fler" data-en="Growing" data-fr="En croissance" data-de="Immer mehr">Fler och fler</strong>
+      <span data-sv="spelare" data-en="players" data-fr="joueurs" data-de="Spieler">spelare</span>
     </div>
     <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:999px;padding:8px 18px;font-size:13px;color:#B0B0B0;white-space:nowrap;">
       <strong style="color:#e8ff47;">6</strong>
-      <span data-sv="moduler" data-en="modules" data-fr="modules">moduler</span>
+      <span data-sv="moduler" data-en="modules" data-fr="modules" data-de="Module">moduler</span>
     </div>
     <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:999px;padding:8px 18px;font-size:13px;color:#B0B0B0;white-space:nowrap;">
-      <strong style="color:#4ade80;" data-sv="Gratis" data-en="Free" data-fr="Gratuit">Gratis</strong>
-      <span data-sv="för alltid" data-en="forever" data-fr="pour toujours">för alltid</span>
+      <strong style="color:#4ade80;" data-sv="Gratis" data-en="Free" data-fr="Gratuit" data-de="Kostenlos">Gratis</strong>
+      <span data-sv="för alltid" data-en="forever" data-fr="pour toujours" data-de="für immer">för alltid</span>
     </div>
   </div>
 </div>
@@ -1136,19 +1136,19 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 <footer>
   <div class="footer-links">
     <a href="https://github.com/johanssonbvp/skyttetraning" target="_blank">GitHub</a>
-    <a href="mailto:info@petanquetraning.se">Kontakt</a>
+    <a href="mailto:info@petanquetraning.se" data-sv="Kontakt" data-en="Contact" data-fr="Contact" data-de="Kontakt">Kontakt</a>
     <a href="./lathund.html" data-sv="Lathund" data-en="Quick guide" data-fr="Guide rapide" data-de="Kurzanleitung">Lathund</a>
-    <a href="./faq.html" data-sv="Vanliga frågor" data-en="FAQ" data-fr="Questions fréquentes">Vanliga frågor</a>
-    <a href="/integritetspolicy.html" data-sv="Integritetspolicy" data-en="Privacy Policy" data-fr="Politique de confidentialité">Integritetspolicy</a>
+    <a href="./faq.html" data-sv="Vanliga frågor" data-en="FAQ" data-fr="Questions fréquentes" data-de="Häufige Fragen">Vanliga frågor</a>
+    <a href="/integritetspolicy.html" data-sv="Integritetspolicy" data-en="Privacy Policy" data-fr="Politique de confidentialité" data-de="Datenschutzerklärung">Integritetspolicy</a>
   </div>
-  <p data-sv="Gjord med ❤️ av Pär Johansson | © 2026 Petanque Träning" data-fr="Fait avec ❤️ par Pär Johansson | © 2026 Pétanque Entraînement" 
-     data-en="Made with ❤️ by Pär Johansson | © 2026 Petanque Training">
+  <p data-sv="Gjord med ❤️ av Pär Johansson | © 2026 Petanque Träning" data-fr="Fait avec ❤️ par Pär Johansson | © 2026 Petanque Träning" 
+     data-en="Made with ❤️ by Pär Johansson | © 2026 Petanque Training" data-de="Mit ❤️ gemacht von Pär Johansson | © 2026 Petanque Träning">
     Gjord med ❤️ av Pär Johansson | © 2026 Petanque Träning
   </p>
   <p style="margin-top: 15px; font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 15px;">
-    <strong data-sv="🔐 Proprietary" data-en="🔐 Proprietary">🔐 Proprietary</strong>
+    <strong data-sv="🔐 Proprietary" data-en="🔐 Proprietary" data-de="🔐 Proprietär" data-fr="🔐 Propriétaire">🔐 Proprietary</strong>
     <span data-sv="– Petanque Träning är skyddad intellectual property. All rights reserved. Unauthorized copying, modification or distribution of this application is prohibited." 
-          data-en="– Petanque Training is protected intellectual property. All rights reserved. Unauthorized copying, modification or distribution of this application is prohibited.">
+          data-en="– Petanque Training is protected intellectual property. All rights reserved. Unauthorized copying, modification or distribution of this application is prohibited." data-de="– Petanque Träning ist geschütztes geistiges Eigentum. Alle Rechte vorbehalten. Das unerlaubte Kopieren, Verändern oder Verbreiten dieser Anwendung ist untersagt." data-fr="– Petanque Träning est une propriété intellectuelle protégée. Tous droits réservés. Toute copie, modification ou distribution non autorisée de cette application est interdite.">
       – Petanque Träning är skyddad intellectual property. All rights reserved. Unauthorized copying, modification or distribution of this application is prohibited.
     </span>
   </p>
@@ -1229,12 +1229,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
   // Öppnar telefonens delningsmeny (Web Share API). Fungerar inte i alla
   // webbläsare på dator, så då kopieras texten till urklipp istället.
   function shareApp() {
-    const currentLang = localStorage.getItem('lang') || 'sv';
-    const text = currentLang === 'sv'
-      ? 'Kolla in Petanque Träning – gratis träningsapp för petanque!'
-      : currentLang === 'fr'
-      ? 'Découvrez Petanque Träning – application d\'entraînement gratuite pour la pétanque !'
-      : 'Check out Petanque Träning – a free training app for petanque!';
+    const text = langMgr.t({sv: "Kolla in Petanque Träning – gratis träningsapp för petanque!", en: "Check out Petanque Träning – a free training app for petanque!", fr: "Découvrez Petanque Träning – application d'entraînement gratuite pour la pétanque !", de: "Schau dir Petanque Träning an – eine kostenlose Trainings-App für Pétanque!"});
     const url = 'https://petanquetraning.se';
 
     if (navigator.share) {
@@ -1245,11 +1240,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
         }
       });
     } else if (navigator.clipboard) {
-      const msg = currentLang === 'sv'
-        ? 'Text kopierad! Klistra in där du vill dela.'
-        : currentLang === 'fr'
-        ? 'Texte copié ! Collez-le où vous voulez le partager.'
-        : 'Text copied! Paste it wherever you want to share.';
+      const msg = langMgr.t({sv: "Text kopierad! Klistra in där du vill dela.", en: "Text copied! Paste it wherever you want to share.", fr: "Texte copié ! Collez-le où vous voulez le partager.", de: "Text kopiert! Füge ihn dort ein, wo du ihn teilen möchtest."});
       navigator.clipboard.writeText(text + ' ' + url).then(() => {
         alert(msg);
       }).catch(e => console.warn('Kunde inte kopiera text:', e));
@@ -1331,33 +1322,33 @@ function showForgotPassword() {
   setAuthStatus('');
 }
 
-// Felmeddelanden på svenska
-function getSwedishError(code) {
+// Felmeddelanden på valt språk
+function getAuthError(code) {
   const errors = {
-    'auth/user-not-found': 'Ingen användare med denna e-post hittades.',
-    'auth/wrong-password': 'Fel lösenord. Försök igen.',
-    'auth/invalid-email': 'Ogiltig e-postadress.',
-    'auth/email-already-in-use': 'E-postadressen används redan av ett annat konto.',
-    'auth/weak-password': 'Lösenordet är för svagt. Använd minst 6 tecken.',
-    'auth/too-many-requests': 'För många försök. Vänta en stund och försök igen.',
-    'auth/network-request-failed': 'Nätverksfel. Kontrollera din anslutning.',
-    'auth/invalid-credential': 'Fel e-post eller lösenord.',
+    'auth/user-not-found': langMgr.t({sv: "Ingen användare med denna e-post hittades.", en: "No user found with this email.", fr: "Aucun utilisateur trouvé avec cet e-mail.", de: "Kein Benutzer mit dieser E-Mail-Adresse gefunden."}),
+    'auth/wrong-password': langMgr.t({sv: "Fel lösenord. Försök igen.", en: "Wrong password. Please try again.", fr: "Mot de passe incorrect. Réessayez.", de: "Falsches Passwort. Bitte versuche es erneut."}),
+    'auth/invalid-email': langMgr.t({sv: "Ogiltig e-postadress.", en: "Invalid email address.", fr: "Adresse e-mail invalide.", de: "Ungültige E-Mail-Adresse."}),
+    'auth/email-already-in-use': langMgr.t({sv: "E-postadressen används redan av ett annat konto.", en: "This email address is already used by another account.", fr: "Cette adresse e-mail est déjà utilisée par un autre compte.", de: "Diese E-Mail-Adresse wird bereits von einem anderen Konto verwendet."}),
+    'auth/weak-password': langMgr.t({sv: "Lösenordet är för svagt. Använd minst 6 tecken.", en: "The password is too weak. Use at least 6 characters.", fr: "Le mot de passe est trop faible. Utilisez au moins 6 caractères.", de: "Das Passwort ist zu schwach. Verwende mindestens 6 Zeichen."}),
+    'auth/too-many-requests': langMgr.t({sv: "För många försök. Vänta en stund och försök igen.", en: "Too many attempts. Wait a moment and try again.", fr: "Trop de tentatives. Patientez un instant et réessayez.", de: "Zu viele Versuche. Warte einen Moment und versuche es erneut."}),
+    'auth/network-request-failed': langMgr.t({sv: "Nätverksfel. Kontrollera din anslutning.", en: "Network error. Check your connection.", fr: "Erreur réseau. Vérifiez votre connexion.", de: "Netzwerkfehler. Überprüfe deine Verbindung."}),
+    'auth/invalid-credential': langMgr.t({sv: "Fel e-post eller lösenord.", en: "Wrong email or password.", fr: "E-mail ou mot de passe incorrect.", de: "Falsche E-Mail-Adresse oder falsches Passwort."}),
   };
-  return errors[code] || 'Något gick fel. Försök igen.';
+  return errors[code] || langMgr.t({sv: "Något gick fel. Försök igen.", en: "Something went wrong. Please try again.", fr: "Une erreur s'est produite. Réessayez.", de: "Etwas ist schiefgelaufen. Bitte versuche es erneut."});
 }
 
 // Logga in
 async function doLogin() {
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
-  if (!email || !password) { setAuthStatus('Fyll i e-post och lösenord.'); return; }
+  if (!email || !password) { setAuthStatus(langMgr.t({sv: "Fyll i e-post och lösenord.", en: "Enter email and password.", fr: "Saisissez votre e-mail et votre mot de passe.", de: "Gib E-Mail-Adresse und Passwort ein."})); return; }
   
-  setAuthStatus('Loggar in...');
+  setAuthStatus(langMgr.t({sv: "Loggar in...", en: "Logging in...", fr: "Connexion...", de: "Anmeldung läuft..."}));
   try {
     await firebase.auth().signInWithEmailAndPassword(email, password);
     // onAuthStateChanged tar över härifrån
   } catch (e) {
-    setAuthStatus(getSwedishError(e.code));
+    setAuthStatus(getAuthError(e.code));
   }
 }
 
@@ -1367,30 +1358,30 @@ async function doRegister() {
   const password = document.getElementById('reg-password').value;
   const password2 = document.getElementById('reg-password2').value;
   
-  if (!email || !password || !password2) { setAuthStatus('Fyll i alla fält.'); return; }
-  if (password !== password2) { setAuthStatus('Lösenorden matchar inte.'); return; }
-  if (password.length < 6) { setAuthStatus('Lösenordet måste vara minst 6 tecken.'); return; }
+  if (!email || !password || !password2) { setAuthStatus(langMgr.t({sv: "Fyll i alla fält.", en: "Fill in all fields.", fr: "Remplissez tous les champs.", de: "Fülle alle Felder aus."})); return; }
+  if (password !== password2) { setAuthStatus(langMgr.t({sv: "Lösenorden matchar inte.", en: "The passwords do not match.", fr: "Les mots de passe ne correspondent pas.", de: "Die Passwörter stimmen nicht überein."})); return; }
+  if (password.length < 6) { setAuthStatus(langMgr.t({sv: "Lösenordet måste vara minst 6 tecken.", en: "The password must be at least 6 characters.", fr: "Le mot de passe doit contenir au moins 6 caractères.", de: "Das Passwort muss mindestens 6 Zeichen lang sein."})); return; }
   
-  setAuthStatus('Skapar konto...');
+  setAuthStatus(langMgr.t({sv: "Skapar konto...", en: "Creating account...", fr: "Création du compte...", de: "Konto wird erstellt..."}));
   try {
     await firebase.auth().createUserWithEmailAndPassword(email, password);
     // onAuthStateChanged tar över och visar migration-modal
   } catch (e) {
-    setAuthStatus(getSwedishError(e.code));
+    setAuthStatus(getAuthError(e.code));
   }
 }
 
 // Glömt lösenord
 async function doForgotPassword() {
   const email = document.getElementById('forgot-email').value.trim();
-  if (!email) { setAuthStatus('Ange din e-postadress.'); return; }
+  if (!email) { setAuthStatus(langMgr.t({sv: "Ange din e-postadress.", en: "Enter your email address.", fr: "Saisissez votre adresse e-mail.", de: "Gib deine E-Mail-Adresse ein."})); return; }
   
   try {
     await firebase.auth().sendPasswordResetEmail(email);
-    setAuthStatus('✅ Återställningslänk skickad! Kolla din e-post.', true);
+    setAuthStatus(langMgr.t({sv: "✅ Återställningslänk skickad! Kolla din e-post.", en: "✅ Reset link sent! Check your email.", fr: "✅ Lien de réinitialisation envoyé ! Vérifiez votre e-mail.", de: "✅ Link zum Zurücksetzen gesendet! Prüfe deine E-Mails."}), true);
     setTimeout(() => showTab('login'), 3000);
   } catch (e) {
-    setAuthStatus(getSwedishError(e.code));
+    setAuthStatus(getAuthError(e.code));
   }
 }
 
@@ -1400,16 +1391,16 @@ async function doMigration() {
   const statusEl = document.getElementById('migration-status');
   
   if (!code || code.length < 3) {
-    statusEl.textContent = 'Ange en giltig tränarkod.';
+    statusEl.textContent = langMgr.t({sv: "Ange en giltig tränarkod.", en: "Enter a valid coach code.", fr: "Saisissez un code entraîneur valide.", de: "Gib einen gültigen Trainercode ein."});
     return;
   }
   
   statusEl.style.color = '#e8ff47';
-  statusEl.textContent = 'Hämtar din data...';
+  statusEl.textContent = langMgr.t({sv: "Hämtar din data...", en: "Fetching your data...", fr: "Récupération de vos données...", de: "Deine Daten werden abgerufen..."});
   
   try {
     const user = firebase.auth().currentUser;
-    if (!user) { statusEl.textContent = 'Inte inloggad.'; return; }
+    if (!user) { statusEl.textContent = langMgr.t({sv: "Inte inloggad.", en: "Not logged in.", fr: "Non connecté.", de: "Nicht angemeldet."}); return; }
     
     // Hämta data från gamla sökvägen
     const oldRef = firebase.database().ref('coaches/' + code);
@@ -1418,11 +1409,11 @@ async function doMigration() {
     
     if (!oldData) {
       statusEl.style.color = '#ff6b6b';
-      statusEl.textContent = 'Ingen data hittades för koden "' + code + '". Kontrollera stavningen.';
+      statusEl.textContent = langMgr.t({sv: "Ingen data hittades för koden \"", en: "No data found for the code \"", fr: "Aucune donnée trouvée pour le code \"", de: "Keine Daten für den Code \""}) + code + langMgr.t({sv: "\". Kontrollera stavningen.", en: "\". Check the spelling.", fr: "\". Vérifiez l'orthographe.", de: "\". Überprüfe die Schreibweise."});
       return;
     }
     
-    statusEl.textContent = 'Kopierar data till ditt konto...';
+    statusEl.textContent = langMgr.t({sv: "Kopierar data till ditt konto...", en: "Copying data to your account...", fr: "Copie des données vers votre compte...", de: "Daten werden auf dein Konto kopiert..."});
     
     // Spara på nya UID-sökvägen
     await firebase.database().ref('coaches/' + user.uid).set(oldData);
@@ -1435,7 +1426,7 @@ async function doMigration() {
     await oldRef.child('_migrated').set({ to: user.uid, date: new Date().toISOString() });
     
     statusEl.style.color = '#4ade80';
-    statusEl.textContent = '✅ Data flytt! Välkommen!';
+    statusEl.textContent = langMgr.t({sv: "✅ Datan är flyttad! Välkommen!", en: "✅ Your data has been moved! Welcome!", fr: "✅ Vos données ont été déplacées ! Bienvenue !", de: "✅ Deine Daten wurden übertragen! Willkommen!"});
     
     setTimeout(() => {
       document.getElementById('migration-modal').style.display = 'none';
@@ -1445,7 +1436,7 @@ async function doMigration() {
   } catch (e) {
     console.error('Migration error:', e);
     statusEl.style.color = '#ff6b6b';
-    statusEl.textContent = 'Fel vid flytt: ' + e.message;
+    statusEl.textContent = langMgr.t({sv: "Fel vid flytt: ", en: "Error while moving: ", fr: "Erreur lors du transfert : ", de: "Fehler bei der Übertragung: "}) + e.message;
   }
 }
 
@@ -1543,7 +1534,7 @@ function onUserLoggedIn(user) {
   // Uppdatera sync-badge
   const syncBadge = document.getElementById('sync-status-badge');
   if (syncBadge) {
-    syncBadge.textContent = '☁️ Inloggad';
+    syncBadge.textContent = langMgr.t({sv: "☁️ Inloggad", en: "☁️ Logged in", fr: "☁️ Connecté", de: "☁️ Angemeldet"});
     syncBadge.style.color = '#4ade80';
   }
   
@@ -1584,13 +1575,12 @@ document.addEventListener('keypress', function(e) {
 
 
 // Text på rätt språk (sv/en/fr) för meddelanden som skapas i koden
-function logoutText(sv, en, fr) {
-  const lang = localStorage.getItem('petanque-lang') || 'sv';
-  return ({ sv: sv, en: en, fr: fr })[lang] || sv;
+function logoutText(sv, en, fr, de) {
+  return langMgr.t({ sv: sv, en: en, fr: fr, de: de });
 }
 
 async function logout() {
-  if (!confirm(logoutText('Är du säker på att du vill logga ut?', 'Are you sure you want to log out?', 'Voulez-vous vraiment vous déconnecter?'))) return;
+  if (!confirm(logoutText('Är du säker på att du vill logga ut?', 'Are you sure you want to log out?', 'Voulez-vous vraiment vous déconnecter?', 'Möchtest du dich wirklich abmelden?'))) return;
 
   // 1. Skicka upp allt som väntar på att sparas i molnet
   let failed = [];
@@ -1607,7 +1597,8 @@ async function logout() {
     const fortsatt = confirm(logoutText(
       'Vissa pass hann inte sparas i molnet (kanske är du offline). Om du loggar ut nu ligger de kvar på den här telefonen. Logga in på samma konto igen för att spara dem. Loggar någon annan in på telefonen innan dess kan de hamna på fel konto. Logga ut ändå?',
       'Some sessions could not be saved to the cloud (maybe you are offline). If you log out now they stay on this phone. Log in to the same account again to save them. If someone else logs in on this phone first, they may end up on the wrong account. Log out anyway?',
-      'Certaines séances n\'ont pas pu être enregistrées dans le cloud (vous êtes peut-être hors ligne). Si vous vous déconnectez, elles restent sur ce téléphone. Reconnectez-vous au même compte pour les enregistrer. Si quelqu\'un d\'autre se connecte avant, elles peuvent se retrouver sur le mauvais compte. Se déconnecter quand même ?'));
+      'Certaines séances n\'ont pas pu être enregistrées dans le cloud (vous êtes peut-être hors ligne). Si vous vous déconnectez, elles restent sur ce téléphone. Reconnectez-vous au même compte pour les enregistrer. Si quelqu\'un d\'autre se connecte avant, elles peuvent se retrouver sur le mauvais compte. Se déconnecter quand même ?',
+      'Einige Einheiten konnten nicht in der Cloud gespeichert werden (vielleicht bist du offline). Wenn du dich jetzt abmeldest, bleiben sie auf diesem Handy. Melde dich erneut mit demselben Konto an, um sie zu speichern. Meldet sich vorher jemand anderes auf dem Handy an, können sie auf dem falschen Konto landen. Trotzdem abmelden?'));
     if (!fortsatt) return;
     rensaTelefonen = false;
   } else {
@@ -1618,7 +1609,8 @@ async function logout() {
       const fortsatt = confirm(logoutText(
         'Du har ' + foton + ' foto i dagboken som bara finns på den här telefonen. De tas bort när du loggar ut. Logga ut ändå?',
         'You have ' + foton + ' photo(s) in your diary that only exist on this phone. They will be removed when you log out. Log out anyway?',
-        'Vous avez ' + foton + ' photo(s) dans votre journal qui n\'existent que sur ce téléphone. Elles seront supprimées à la déconnexion. Se déconnecter quand même ?'));
+        'Vous avez ' + foton + ' photo(s) dans votre journal qui n\'existent que sur ce téléphone. Elles seront supprimées à la déconnexion. Se déconnecter quand même ?',
+        'Du hast ' + foton + ' Foto(s) im Tagebuch, die nur auf diesem Handy gespeichert sind. Sie werden beim Abmelden entfernt. Trotzdem abmelden?'));
       if (!fortsatt) return;
     }
   }
@@ -1705,7 +1697,7 @@ window.addEventListener('DOMContentLoaded', function() {
 async function exportAllData() {
   const code = localStorage.getItem('pt_trainer_code');
   if (!code) {
-    alert({sv:'Du måste logga in först!', en:'You must be logged in first!', fr:'Vous devez être connecté d\'abord!'}[localStorage.getItem('petanque-lang')||'sv']||'Du måste logga in först!');
+    alert(langMgr.t({sv: "Du måste logga in först!", en: "You must be logged in first!", fr: "Vous devez être connecté d'abord!", de: "Du musst dich zuerst anmelden!"}));
     return;
   }
   
@@ -1760,7 +1752,7 @@ async function exportAllData() {
     
   } catch (error) {
     console.error('Fel vid export:', error);
-    alert(({sv:'❌ Något gick fel: ', en:'❌ Something went wrong: ', fr:'❌ Une erreur s\'est produite : '}[localStorage.getItem('petanque-lang')||'sv']||'❌ Något gick fel: ') + error.message);
+    alert(langMgr.t({sv: "❌ Något gick fel: ", en: "❌ Something went wrong: ", fr: "❌ Une erreur s'est produite : ", de: "❌ Etwas ist schiefgelaufen: "}) + error.message);
     if (btn) btn.textContent = '💾 Backup all data';
   }
 }
@@ -1769,7 +1761,7 @@ async function importAllData(event) {
   const file = event.target.files[0];
   if (!file) return;
   
-  if (!confirm({sv:'⚠️ Detta kommer att skriva över all befintlig data. Vill du fortsätta?', en:'⚠️ This will overwrite all existing data. Continue?', fr:'⚠️ Ceci écrasera toutes les données existantes. Continuer?'}[localStorage.getItem('petanque-lang')||'sv']||'Vill du fortsätta?')) {
+  if (!confirm(langMgr.t({sv: "⚠️ Detta kommer att skriva över all befintlig data. Vill du fortsätta?", en: "⚠️ This will overwrite all existing data. Continue?", fr: "⚠️ Ceci écrasera toutes les données existantes. Continuer?", de: "⚠️ Dadurch werden alle vorhandenen Daten überschrieben. Möchtest du fortfahren?"}))) {
     event.target.value = '';
     return;
   }
@@ -1817,7 +1809,7 @@ function closeBackupMenu() {
 
 async function exportAllData() {
   const code = localStorage.getItem('pt_trainer_code');
-  if (!code) { alert({sv:'Logga in först!', en:'Please log in first!', fr:'Veuillez vous connecter d\'abord!'}[localStorage.getItem('petanque-lang')||'sv']||'Logga in först!'); return; }
+  if (!code) { alert(langMgr.t({sv: "Logga in först!", en: "Please log in first!", fr: "Veuillez vous connecter d'abord!", de: "Bitte melde dich zuerst an!"})); return; }
   
   try {
     const localData = {};
@@ -1860,7 +1852,7 @@ async function importAllData(event) {
   const file = event.target.files[0];
   if (!file) return;
   
-  if (!confirm({sv:'⚠️ Detta skriver över all data. Fortsätt?', en:'⚠️ This will overwrite all data. Continue?', fr:'⚠️ Ceci écrasera toutes les données. Continuer?'}[localStorage.getItem('petanque-lang')||'sv']||'Fortsätt?')) {
+  if (!confirm(langMgr.t({sv: "⚠️ Detta skriver över all data. Fortsätt?", en: "⚠️ This will overwrite all data. Continue?", fr: "⚠️ Ceci écrasera toutes les données. Continuer?", de: "⚠️ Dadurch werden alle Daten überschrieben. Fortfahren?"}))) {
     event.target.value = '';
     return;
   }
@@ -1891,16 +1883,16 @@ async function importAllData(event) {
 <!-- BACKUP MENU MODAL -->
 <div id="backup-menu" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10001; align-items: center; justify-content: center;">
   <div style="background: #0f1419; padding: 30px; border-radius: 12px; border: 1px solid #1a1f2e; max-width: 400px; width: 90%;">
-    <h2 style="color: #e8ff47; margin-bottom: 8px;">⚙️ Datahantering</h2>
-    <p style="color: #8a8a9e; font-size: 13px; margin-bottom: 20px;">All synk sker automatiskt i bakgrunden. Använd dessa för manuell backup.</p>
+    <h2 style="color: #e8ff47; margin-bottom: 8px;" data-sv="⚙️ Datahantering" data-en="⚙️ Data management" data-fr="⚙️ Gestion des données" data-de="⚙️ Datenverwaltung">⚙️ Datahantering</h2>
+    <p style="color: #8a8a9e; font-size: 13px; margin-bottom: 20px;" data-sv="All synk sker automatiskt i bakgrunden. Använd dessa för manuell backup." data-en="All syncing happens automatically in the background. Use these for a manual backup." data-fr="Toute la synchronisation se fait automatiquement en arrière-plan. Utilisez ces boutons pour une sauvegarde manuelle." data-de="Die gesamte Synchronisierung läuft automatisch im Hintergrund. Nutze diese Schaltflächen für eine manuelle Sicherung.">All synk sker automatiskt i bakgrunden. Använd dessa för manuell backup.</p>
     
-    <button onclick="exportAllData()" style="width: 100%; padding: 12px; background: #e8ff47; color: #080810; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; margin-bottom: 10px;">💾 Ladda ner backup (JSON)</button>
+    <button onclick="exportAllData()" style="width: 100%; padding: 12px; background: #e8ff47; color: #080810; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; margin-bottom: 10px;" data-sv="💾 Ladda ner backup (JSON)" data-en="💾 Download backup (JSON)" data-fr="💾 Télécharger la sauvegarde (JSON)" data-de="💾 Backup herunterladen (JSON)">💾 Ladda ner backup (JSON)</button>
     
-    <button onclick="document.getElementById('import-file-input').click()" style="width: 100%; padding: 12px; background: transparent; color: #e8ff47; border: 1px solid #1a1f2e; border-radius: 8px; font-weight: 700; cursor: pointer; margin-bottom: 10px;">📥 Återställ från backup</button>
+    <button onclick="document.getElementById('import-file-input').click()" style="width: 100%; padding: 12px; background: transparent; color: #e8ff47; border: 1px solid #1a1f2e; border-radius: 8px; font-weight: 700; cursor: pointer; margin-bottom: 10px;" data-sv="📥 Återställ från backup" data-en="📥 Restore from backup" data-fr="📥 Restaurer la sauvegarde" data-de="📥 Aus Backup wiederherstellen">📥 Återställ från backup</button>
     
     <input type="file" id="import-file-input" accept=".json" style="display: none;" onchange="importAllData(event)">
     
-    <button onclick="closeBackupMenu()" style="width: 100%; padding: 10px; background: transparent; color: #8a8a9e; border: none; cursor: pointer; margin-top: 10px;">Stäng</button>
+    <button onclick="closeBackupMenu()" style="width: 100%; padding: 10px; background: transparent; color: #8a8a9e; border: none; cursor: pointer; margin-top: 10px;" data-sv="Stäng" data-en="Close" data-fr="Fermer" data-de="Schließen">Stäng</button>
   </div>
 </div>
 <script>

@@ -234,14 +234,14 @@ body {
 <body>
 
 <div class="top-bar">
-  <a class="back-link" href="index.html"><span data-sv="← Hem" data-en="← Home" data-fr="← Accueil">← Hem</span></a>
-  <span class="top-title">🔥 <span data-sv="Uppvärmning" data-en="Warm-up" data-fr="Échauffement">Uppvärmning</span></span>
+  <a class="back-link" href="index.html"><span data-sv="← Hem" data-en="← Home" data-fr="← Accueil" data-de="← Start">← Hem</span></a>
+  <span class="top-title">🔥 <span data-sv="Uppvärmning" data-en="Warm-up" data-fr="Échauffement" data-de="Aufwärmen">Uppvärmning</span></span>
   <div style="width:80px"></div>
 </div>
 
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('training',this)" data-sv="Träning" data-en="Training" data-fr="Entraînement">Träning</button>
-  <button class="tab-btn" onclick="switchTab('stats',this)" data-sv="Statistik" data-en="Statistics" data-fr="Statistiques">Statistik</button>
+  <button class="tab-btn active" onclick="switchTab('training',this)" data-sv="Träning" data-en="Training" data-fr="Entraînement" data-de="Training">Träning</button>
+  <button class="tab-btn" onclick="switchTab('stats',this)" data-sv="Statistik" data-en="Statistics" data-fr="Statistiques" data-de="Statistik">Statistik</button>
 </div>
 
 <!-- TRÄNING -->
@@ -251,11 +251,11 @@ body {
     <!-- Startvy -->
     <div id="view-start">
       <div class="hero">
-        <div class="hero-label" data-sv="Förbered kropp och händer" data-en="Prepare body and hands" data-fr="Préparez le corps et les mains">Förbered kropp och händer</div>
+        <div class="hero-label" data-sv="Förbered kropp och händer" data-en="Prepare body and hands" data-fr="Préparez le corps et les mains" data-de="Körper und Hände vorbereiten">Förbered kropp och händer</div>
         <div class="hero-big" id="start-minutes">8 min</div>
         <div class="hero-sub" id="start-sub"></div>
       </div>
-      <button class="start-btn" onclick="startRoutine()" data-sv="Starta uppvärmning" data-en="Start warm-up" data-fr="Démarrer l'échauffement">Starta uppvärmning</button>
+      <button class="start-btn" onclick="startRoutine()" data-sv="Starta uppvärmning" data-en="Start warm-up" data-fr="Démarrer l'échauffement" data-de="Aufwärmen starten">Starta uppvärmning</button>
       <div class="plan-list" id="plan-list"></div>
     </div>
 
@@ -263,56 +263,56 @@ body {
     <div id="view-game" style="display:none">
       <div class="game-header">
         <div>
-          <div class="total-lbl" data-sv="Tid kvar" data-en="Time left" data-fr="Temps restant">Tid kvar</div>
+          <div class="total-lbl" data-sv="Tid kvar" data-en="Time left" data-fr="Temps restant" data-de="Verbleibende Zeit">Tid kvar</div>
           <div class="total-val" id="total-left">0:00</div>
         </div>
         <div>
-          <div class="shot-lbl" data-sv="Övning" data-en="Exercise" data-fr="Exercice">Övning</div>
+          <div class="shot-lbl" data-sv="Övning" data-en="Exercise" data-fr="Exercice" data-de="Übung">Övning</div>
           <div class="shot-val" id="ex-count">1 / 7</div>
         </div>
       </div>
       <div class="pills" id="pills-container"></div>
       <div id="exercise-area"></div>
-      <button class="mbtn mbtn-ghost" onclick="confirmAbort()" data-sv="Avbryt uppvärmning" data-en="Cancel warm-up" data-fr="Annuler l'échauffement">Avbryt uppvärmning</button>
+      <button class="mbtn mbtn-ghost" onclick="confirmAbort()" data-sv="Avbryt uppvärmning" data-en="Cancel warm-up" data-fr="Annuler l'échauffement" data-de="Aufwärmen abbrechen">Avbryt uppvärmning</button>
     </div>
 
     <!-- Klar-vy -->
     <div id="view-results" style="display:none">
       <div class="result-block">
-        <div class="result-lbl" data-sv="Uppvärmning klar!" data-en="Warm-up done!" data-fr="Échauffement terminé !">Uppvärmning klar!</div>
+        <div class="result-lbl" data-sv="Uppvärmning klar!" data-en="Warm-up done!" data-fr="Échauffement terminé !" data-de="Aufwärmen geschafft!">Uppvärmning klar!</div>
         <div class="result-score" id="res-score">0</div>
         <div class="result-max" id="res-sub"></div>
-        <div class="feel-title" data-sv="Hur känns kroppen?" data-en="How does your body feel?" data-fr="Comment se sent votre corps ?">Hur känns kroppen?</div>
+        <div class="feel-title" data-sv="Hur känns kroppen?" data-en="How does your body feel?" data-fr="Comment se sent votre corps ?" data-de="Wie fühlt sich dein Körper an?">Hur känns kroppen?</div>
         <div class="feel-row" id="feel-row"></div>
       </div>
-      <div class="next-title" data-sv="Välj nästa övning" data-en="Choose your next exercise" data-fr="Choisissez votre prochain exercice">Välj nästa övning</div>
+      <div class="next-title" data-sv="Välj nästa övning" data-en="Choose your next exercise" data-fr="Choisissez votre prochain exercice" data-de="Nächste Übung wählen">Välj nästa övning</div>
       <div class="next-list">
         <a href="./skjuttraning.html" class="app-card">
           <span class="app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><line x1="12" y1="1" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="23"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/></svg></span>
           <div class="app-info">
-            <div class="app-name" data-sv="Skjutträning" data-en="Shooting Practice" data-fr="Tir">Skjutträning</div>
-            <div class="app-desc" data-sv="Effektivitetsindex · 6–12 m" data-en="Efficiency index · 6–12 m" data-fr="Indice d'efficacité · 6–12 m">Effektivitetsindex · 6–12 m</div>
+            <div class="app-name" data-sv="Skjutträning" data-en="Shooting Practice" data-fr="Tir" data-de="Schießtraining">Skjutträning</div>
+            <div class="app-desc" data-sv="Effektivitetsindex · 6–12 m" data-en="Efficiency index · 6–12 m" data-fr="Indice d'efficacité · 6–12 m" data-de="Effizienzindex · 6–12 m">Effektivitetsindex · 6–12 m</div>
           </div>
           <span class="app-arrow">›</span>
         </a>
         <a href="./laggtraning.html" class="app-card">
           <span class="app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 16c3-9 15-9 18 0"/><circle cx="19" cy="17" r="1.8" fill="currentColor" stroke="none"/></svg></span>
           <div class="app-info">
-            <div class="app-name" data-sv="Läggträning" data-en="Pointing Practice" data-fr="Jeu de boules">Läggträning</div>
-            <div class="app-desc" data-sv="6 övningstyper" data-en="6 exercise types" data-fr="6 types d'exercices">6 övningstyper</div>
+            <div class="app-name" data-sv="Läggträning" data-en="Pointing Practice" data-fr="Jeu de boules" data-de="Legetraining">Läggträning</div>
+            <div class="app-desc" data-sv="6 övningstyper" data-en="6 exercise types" data-fr="6 types d'exercices" data-de="6 Übungsarten">6 övningstyper</div>
           </div>
           <span class="app-arrow">›</span>
         </a>
         <a href="./precisionsskytte.html" class="app-card">
           <span class="app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/></svg></span>
           <div class="app-info">
-            <div class="app-name" data-sv="Precisionsskytte" data-en="Precision Shooting" data-fr="Tir de précision">Precisionsskytte</div>
-            <div class="app-desc" data-sv="20 skott · 5 stationer" data-en="20 shots · 5 stations" data-fr="20 tirs · 5 stations">20 skott · 5 stationer</div>
+            <div class="app-name" data-sv="Precisionsskytte" data-en="Precision Shooting" data-fr="Tir de précision" data-de="Präzisionsschießen">Precisionsskytte</div>
+            <div class="app-desc" data-sv="20 skott · 5 stationer" data-en="20 shots · 5 stations" data-fr="20 tirs · 5 stations" data-de="20 Schüsse · 5 Stationen">20 skott · 5 stationer</div>
           </div>
           <span class="app-arrow">›</span>
         </a>
       </div>
-      <a class="mbtn mbtn-ghost" href="index.html" style="display:block;text-align:center;text-decoration:none" data-sv="Tillbaka till startsidan" data-en="Back to home" data-fr="Retour à l'accueil">Tillbaka till startsidan</a>
+      <a class="mbtn mbtn-ghost" href="index.html" style="display:block;text-align:center;text-decoration:none" data-sv="Tillbaka till startsidan" data-en="Back to home" data-fr="Retour à l'accueil" data-de="Zurück zur Startseite">Tillbaka till startsidan</a>
     </div>
 
   </div>
@@ -322,13 +322,13 @@ body {
 <div id="tab-stats" class="tab-content">
   <div class="wrap">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-      <span style="font-family:var(--font-display);font-size:1.3rem;font-weight:800;letter-spacing:2px;text-transform:uppercase" data-sv="Statistik" data-en="Statistics" data-fr="Statistiques">Statistik</span>
-      <button onclick="clearHistory()" data-sv="Rensa allt" data-en="Clear all" data-fr="Tout effacer" style="background:none;border:1px solid var(--border2);color:var(--muted2);font-family:var(--font-body);font-size:0.72rem;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer">Rensa allt</button>
+      <span style="font-family:var(--font-display);font-size:1.3rem;font-weight:800;letter-spacing:2px;text-transform:uppercase" data-sv="Statistik" data-en="Statistics" data-fr="Statistiques" data-de="Statistik">Statistik</span>
+      <button onclick="clearHistory()" data-sv="Rensa allt" data-en="Clear all" data-fr="Tout effacer" style="background:none;border:1px solid var(--border2);color:var(--muted2);font-family:var(--font-body);font-size:0.72rem;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer" data-de="Alles löschen">Rensa allt</button>
     </div>
     <div class="ov-cards">
-      <div class="ov-card"><span class="sv" id="ov-sessions" style="color:var(--accent)">0</span><span class="sk" data-sv="Pass" data-en="Sessions" data-fr="Séances">Pass</span></div>
-      <div class="ov-card"><span class="sv" id="ov-streak" style="color:var(--p5)">0</span><span class="sk" data-sv="Dagar i rad" data-en="Days in a row" data-fr="Jours de suite">Dagar i rad</span></div>
-      <div class="ov-card"><span class="sv" id="ov-minutes" style="color:var(--p3)">0</span><span class="sk" data-sv="Minuter" data-en="Minutes" data-fr="Minutes">Minuter</span></div>
+      <div class="ov-card"><span class="sv" id="ov-sessions" style="color:var(--accent)">0</span><span class="sk" data-sv="Pass" data-en="Sessions" data-fr="Séances" data-de="Einheiten">Pass</span></div>
+      <div class="ov-card"><span class="sv" id="ov-streak" style="color:var(--p5)">0</span><span class="sk" data-sv="Dagar i rad" data-en="Days in a row" data-fr="Jours de suite" data-de="Tage in Folge">Dagar i rad</span></div>
+      <div class="ov-card"><span class="sv" id="ov-minutes" style="color:var(--p3)">0</span><span class="sk" data-sv="Minuter" data-en="Minutes" data-fr="Minutes" data-de="Minuten">Minuter</span></div>
     </div>
     <div class="hist-list" id="hist-list"></div>
   </div>
@@ -337,10 +337,10 @@ body {
 <!-- Avbryt-bekräftelse -->
 <div class="overlay" id="abort-modal">
   <div class="sheet">
-    <div class="sheet-title" data-sv="Avbryt uppvärmning?" data-en="Cancel warm-up?" data-fr="Annuler l'échauffement ?">Avbryt uppvärmning?</div>
-    <div class="sheet-sub" data-sv="Pågående pass sparas inte." data-en="The current session will not be saved." data-fr="La séance en cours ne sera pas enregistrée.">Pågående pass sparas inte.</div>
-    <button class="mbtn mbtn-danger" onclick="abortRoutine()" data-sv="Ja, avbryt" data-en="Yes, cancel" data-fr="Oui, annuler">Ja, avbryt</button>
-    <button class="mbtn mbtn-ghost" onclick="closeAbort()" data-sv="Fortsätt" data-en="Continue" data-fr="Continuer">Fortsätt</button>
+    <div class="sheet-title" data-sv="Avbryt uppvärmning?" data-en="Cancel warm-up?" data-fr="Annuler l'échauffement ?" data-de="Aufwärmen abbrechen?">Avbryt uppvärmning?</div>
+    <div class="sheet-sub" data-sv="Pågående pass sparas inte." data-en="The current session will not be saved." data-fr="La séance en cours ne sera pas enregistrée." data-de="Die laufende Einheit wird nicht gespeichert.">Pågående pass sparas inte.</div>
+    <button class="mbtn mbtn-danger" onclick="abortRoutine()" data-sv="Ja, avbryt" data-en="Yes, cancel" data-fr="Oui, annuler" data-de="Ja, abbrechen">Ja, avbryt</button>
+    <button class="mbtn mbtn-ghost" onclick="closeAbort()" data-sv="Fortsätt" data-en="Continue" data-fr="Continuer" data-de="Fortsetzen">Fortsätt</button>
   </div>
 </div>
 
@@ -350,40 +350,47 @@ body {
 // Texterna får inte innehålla citattecken ("), använd apostrof (') i stället.
 const EXERCISES = [
   { sek:30, bollar:false,
-    namn:["Axlar & armar","Shoulders & arms","Épaules et bras"],
+    namn:["Axlar & armar","Shoulders & arms","Épaules et bras","Schultern & Arme"],
     text:["Rulla axlarna bakåt och framåt. Gör sedan stora armcirklar åt båda hållen.",
           "Roll your shoulders back and forward. Then make big arm circles in both directions.",
-          "Faites rouler les épaules d'avant en arrière. Puis de grands cercles avec les bras dans les deux sens."] },
+          "Faites rouler les épaules d'avant en arrière. Puis de grands cercles avec les bras dans les deux sens.",
+          "Kreise die Schultern nach hinten und nach vorn. Mache danach große Armkreise in beide Richtungen."] },
   { sek:30, bollar:false,
-    namn:["Handleder & fingrar","Wrists & fingers","Poignets et doigts"],
+    namn:["Handleder & fingrar","Wrists & fingers","Poignets et doigts","Handgelenke & Finger"],
     text:["Cirkla handlederna och sträck ut fingrarna. Knyt och öppna händerna.",
           "Circle your wrists and stretch your fingers. Close and open your hands.",
-          "Faites tourner les poignets et étirez les doigts. Fermez et ouvrez les mains."] },
+          "Faites tourner les poignets et étirez les doigts. Fermez et ouvrez les mains.",
+          "Kreise die Handgelenke und strecke die Finger aus. Balle die Hände zur Faust und öffne sie wieder."] },
   { sek:30, bollar:false,
-    namn:["Nacke & rygg","Neck & back","Nuque et dos"],
+    namn:["Nacke & rygg","Neck & back","Nuque et dos","Nacken & Rücken"],
     text:["Vrid huvudet långsamt åt sidorna. Vrid sedan överkroppen åt höger och vänster.",
           "Slowly turn your head to the sides. Then twist your upper body left and right.",
-          "Tournez lentement la tête sur les côtés. Puis tournez le buste à droite et à gauche."] },
+          "Tournez lentement la tête sur les côtés. Puis tournez le buste à droite et à gauche.",
+          "Drehe den Kopf langsam zur Seite. Drehe danach den Oberkörper nach rechts und links."] },
   { sek:45, bollar:false,
-    namn:["Ben & balans","Legs & balance","Jambes et équilibre"],
+    namn:["Ben & balans","Legs & balance","Jambes et équilibre","Beine & Balance"],
     text:["Gör några lätta knäböj. Stå sedan på ett ben i 10 sekunder och byt ben.",
           "Do a few light squats. Then stand on one leg for 10 seconds and switch legs.",
-          "Faites quelques flexions légères. Tenez-vous ensuite sur une jambe pendant 10 secondes, puis changez."] },
+          "Faites quelques flexions légères. Tenez-vous ensuite sur une jambe pendant 10 secondes, puis changez.",
+          "Mache ein paar leichte Kniebeugen. Stelle dich dann 10 Sekunden auf ein Bein und wechsle das Bein."] },
   { sek:30, bollar:false,
-    namn:["Kaströrelse utan klot","Throwing motion, no boule","Geste de lancer sans boule"],
+    namn:["Kaströrelse utan klot","Throwing motion, no boule","Geste de lancer sans boule","Wurfbewegung ohne Kugel"],
     text:["Gör mjuka pendelrörelser med kastarmen, som om du kastade ett klot.",
           "Make smooth swinging motions with your throwing arm, as if throwing a boule.",
-          "Faites de doux mouvements de balancier avec le bras, comme pour lancer une boule."] },
+          "Faites de doux mouvements de balancier avec le bras, comme pour lancer une boule.",
+          "Mache weiche Pendelbewegungen mit dem Wurfarm, als würdest du eine Kugel werfen."] },
   { sek:180, bollar:true,
-    namn:["5 klot på kort håll","5 boules at short range","5 boules à courte distance"],
+    namn:["5 klot på kort håll","5 boules at short range","5 boules à courte distance","5 Kugeln auf kurze Distanz"],
     text:["Kasta 5 lugna klot mot ett mål på cirka 6 meter. Fokusera på mjuk rörelse, inte träff.",
           "Throw 5 relaxed boules at a target about 6 metres away. Focus on a smooth motion, not on hitting.",
-          "Lancez 5 boules tranquillement vers une cible à environ 6 mètres. Concentrez-vous sur le geste, pas sur la touche."] },
+          "Lancez 5 boules tranquillement vers une cible à environ 6 mètres. Concentrez-vous sur le geste, pas sur la touche.",
+          "Wirf 5 Kugeln ruhig auf ein Ziel in etwa 6 Metern Entfernung. Konzentriere dich auf eine weiche Bewegung, nicht aufs Treffen."] },
   { sek:180, bollar:true,
-    namn:["5 klot på normalt håll","5 boules at normal range","5 boules à distance normale"],
+    namn:["5 klot på normalt håll","5 boules at normal range","5 boules à distance normale","5 Kugeln auf normale Distanz"],
     text:["Kasta 5 klot mot ett mål på cirka 8 meter. Höj tempot lite men behåll rytmen.",
           "Throw 5 boules at a target about 8 metres away. Raise the pace a little but keep your rhythm.",
-          "Lancez 5 boules vers une cible à environ 8 mètres. Accélérez un peu mais gardez votre rythme."] },
+          "Lancez 5 boules vers une cible à environ 8 mètres. Accélérez un peu mais gardez votre rythme.",
+          "Wirf 5 Kugeln auf ein Ziel in etwa 8 Metern Entfernung. Erhöhe das Tempo ein wenig, aber behalte deinen Rhythmus."] },
 ];
 const TOTAL_SEK = EXERCISES.reduce((a, e) => a + e.sek, 0);
 const STORAGE_KEY = 'pt_warmup_v1';
@@ -403,15 +410,13 @@ try { history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch (
 
 // ===== HJÄLPFUNKTIONER =====
 // Ger texten på valt språk (används för text som skapas av koden)
-function T(sv, en, fr) {
-  if (langMgr.lang === 'fr') return fr;
-  if (langMgr.lang === 'en') return en;
-  return sv;
+function T(sv, en, fr, de) {
+  return langMgr.t({ sv: sv, en: en, fr: fr, de: de });
 }
-// Bygger data-sv/data-en/data-fr så att språkbytet (lang-manager.js) hittar texten
+// Bygger data-sv/data-en/data-fr/data-de så att språkbytet (lang-manager.js) hittar texten
 function attrs(arr) {
   const e = s => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
-  return `data-sv="${e(arr[0])}" data-en="${e(arr[1])}" data-fr="${e(arr[2])}"`;
+  return `data-sv="${e(arr[0])}" data-en="${e(arr[1])}" data-fr="${e(arr[2])}" data-de="${e(arr[3] || arr[1])}"`;
 }
 function L(arr) { return `<span ${attrs(arr)}>${arr[0]}</span>`; }
 function fmt(sek) {
@@ -443,11 +448,12 @@ function showView(v) {
 
 // ===== STARTVY =====
 function renderStart() {
-  document.getElementById('start-minutes').textContent = Math.round(TOTAL_SEK / 60) + ' min';
+  document.getElementById('start-minutes').textContent = Math.round(TOTAL_SEK / 60) + ' ' + T('min', 'min', 'min', 'Min.');
   document.getElementById('start-sub').innerHTML = L([
     EXERCISES.length + ' övningar · från axlar till klot',
     EXERCISES.length + ' exercises · from shoulders to boules',
-    EXERCISES.length + ' exercices · des épaules aux boules'
+    EXERCISES.length + ' exercices · des épaules aux boules',
+    EXERCISES.length + ' Übungen · von den Schultern bis zur Kugel'
   ]);
   document.getElementById('plan-list').innerHTML = EXERCISES.map((e, i) => `
     <div class="plan-row">
@@ -520,7 +526,7 @@ function renderExercise() {
   document.getElementById('exercise-area').innerHTML = `
     <div class="ex-card">
       <div class="ex-top-bar${e.bollar ? ' balls' : ''}"></div>
-      <div class="ex-step" ${attrs([e.bollar ? 'Med klot' : 'Utan klot', e.bollar ? 'With boules' : 'No boules', e.bollar ? 'Avec boules' : 'Sans boules'])}>${e.bollar ? 'Med klot' : 'Utan klot'}</div>
+      <div class="ex-step" ${attrs([e.bollar ? 'Med klot' : 'Utan klot', e.bollar ? 'With boules' : 'No boules', e.bollar ? 'Avec boules' : 'Sans boules', e.bollar ? 'Mit Kugeln' : 'Ohne Kugeln'])}>${e.bollar ? 'Med klot' : 'Utan klot'}</div>
       <div class="ex-name" ${attrs(e.namn)}>${e.namn[0]}</div>
       <div class="ex-desc" ${attrs(e.text)}>${e.text[0]}</div>
       <div class="ring-wrap">
@@ -544,7 +550,7 @@ function updateTimerUI() {
   ring.classList.toggle('over', over);
   time.classList.toggle('over', over);
   if (over) {
-    time.innerHTML = L(['Klart!', 'Done!', 'Terminé !']);
+    time.innerHTML = L(['Klart!', 'Done!', 'Terminé !', 'Fertig!']);
     langMgr.apply();
   } else {
     time.textContent = Math.ceil(remainingMs / 1000);
@@ -555,13 +561,13 @@ function updateTimerUI() {
 function renderControls() {
   const over = remainingMs === 0;
   const last = idx === EXERCISES.length - 1;
-  const nextLbl = last ? ['Avsluta', 'Finish', 'Terminer'] : ['Nästa', 'Next', 'Suivant'];
-  const pauseLbl = paused ? ['Fortsätt', 'Resume', 'Reprendre'] : ['Pausa', 'Pause', 'Pause'];
+  const nextLbl = last ? ['Avsluta', 'Finish', 'Terminer', 'Beenden'] : ['Nästa', 'Next', 'Suivant', 'Weiter'];
+  const pauseLbl = paused ? ['Fortsätt', 'Resume', 'Reprendre', 'Fortsetzen'] : ['Pausa', 'Pause', 'Pause', 'Pause'];
   document.getElementById('controls').innerHTML = `
     <button class="mbtn mbtn-accent" onclick="nextExercise(true)" ${attrs(nextLbl)}>${nextLbl[0]}</button>
     <div class="ctrl-row">
       ${over ? '' : `<button class="mbtn mbtn-ghost" onclick="togglePause()" ${attrs(pauseLbl)}>${pauseLbl[0]}</button>`}
-      <button class="mbtn mbtn-ghost" onclick="nextExercise(false)" ${attrs(['Hoppa över', 'Skip', 'Passer'])}>Hoppa över</button>
+      <button class="mbtn mbtn-ghost" onclick="nextExercise(false)" ${attrs(['Hoppa över', 'Skip', 'Passer', 'Überspringen'])}>Hoppa över</button>
     </div>`;
   langMgr.apply();
 }
@@ -582,7 +588,8 @@ function finishRoutine() {
   document.getElementById('res-sub').innerHTML = L([
     'övningar genomförda på ' + fmt(entry.sek),
     'exercises completed in ' + fmt(entry.sek),
-    'exercices réalisés en ' + fmt(entry.sek)
+    'exercices réalisés en ' + fmt(entry.sek),
+    'Übungen abgeschlossen in ' + fmt(entry.sek)
   ]);
   document.getElementById('feel-row').innerHTML = FEEL_ICONS.map((ic, i) =>
     `<button class="feel-btn" onclick="setFeel(${i + 1}, this)">${ic}</button>`).join('');
@@ -646,7 +653,7 @@ function renderStats() {
     document.getElementById('ov-minutes').textContent = '0';
     list.innerHTML = `
       <div class="empty"><div class="empty-icon">🔥</div>
-      <p ${attrs(['Inga pass sparade ännu.\nGenomför en uppvärmning för att se din statistik.', 'No sessions saved yet.\nComplete a warm-up to see your statistics.', 'Aucune séance enregistrée.\nTerminez un échauffement pour voir vos statistiques.'])}></p></div>`;
+      <p ${attrs(['Inga pass sparade ännu.\nGenomför en uppvärmning för att se din statistik.', 'No sessions saved yet.\nComplete a warm-up to see your statistics.', 'Aucune séance enregistrée.\nTerminez un échauffement pour voir vos statistiques.', 'Noch keine Einheiten gespeichert.\nFühre ein Aufwärmen durch, um deine Statistik zu sehen.'])}></p></div>`;
     langMgr.apply();
     list.querySelector('p').style.whiteSpace = 'pre-line';
     return;
@@ -659,7 +666,7 @@ function renderStats() {
     const feel = h.feel ? FEEL_ICONS[h.feel - 1] : '';
     return `<div class="hist-item">
       <div>
-        <div style="font-family:var(--font-display);font-size:1rem;font-weight:700">${L(['Uppvärmning', 'Warm-up', 'Échauffement'])} ${feel}</div>
+        <div style="font-family:var(--font-display);font-size:1rem;font-weight:700">${L(['Uppvärmning', 'Warm-up', 'Échauffement', 'Aufwärmen'])} ${feel}</div>
         <div class="hist-date">${d.toLocaleDateString(localeCode())} ${d.toLocaleTimeString(localeCode(), { hour: '2-digit', minute: '2-digit' })}</div>
       </div>
       <div class="hist-score">${h.done}/${h.total}</div>
@@ -669,7 +676,7 @@ function renderStats() {
 }
 
 function clearHistory() {
-  if (!confirm(T('Rensa all historik för uppvärmning?', 'Clear all warm-up history?', 'Effacer tout l\'historique d\'échauffement ?'))) return;
+  if (!confirm(T('Rensa all historik för uppvärmning?', 'Clear all warm-up history?', 'Effacer tout l\'historique d\'échauffement ?', 'Den gesamten Aufwärm-Verlauf löschen?'))) return;
   history = [];
   save();
   renderStats();

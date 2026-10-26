@@ -216,14 +216,14 @@ body::before {
 <body>
 
 <div class="top-bar">
-  <a class="back-link" href="index.html">← Hem</a>
-  <span class="top-title">🎯 Precisionsskytte</span>
+  <a class="back-link" href="index.html" data-sv="← Hem" data-en="← Home" data-fr="← Accueil" data-de="← Start">← Hem</a>
+  <span class="top-title">🎯 <span data-sv="Precisionsskytte" data-en="Precision Shooting" data-fr="Tir de précision" data-de="Präzisionsschießen">Precisionsskytte</span></span>
   <div style="width:80px"></div>
 </div>
 
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('training',this)">Träning</button>
-  <button class="tab-btn" onclick="switchTab('stats',this)">Statistik</button>
+  <button class="tab-btn active" onclick="switchTab('training',this)" data-sv="Träning" data-en="Training" data-fr="Entraînement" data-de="Training">Träning</button>
+  <button class="tab-btn" onclick="switchTab('stats',this)" data-sv="Statistik" data-en="Statistics" data-fr="Statistiques" data-de="Statistik">Statistik</button>
 </div>
 
 <!-- TRÄNING -->
@@ -233,39 +233,39 @@ body::before {
     <!-- Startvy -->
     <div id="view-start">
       <div class="hero">
-        <div class="hero-label">Svenska regler §1.4</div>
-        <div class="hero-big">100p</div>
-        <div class="hero-sub">20 skott · 5 stationer · 4 avstånd<br>6m · 7m · 8m · 9m</div>
+        <div class="hero-label" data-sv="Svenska regler §1.4" data-en="Swedish rules §1.4" data-fr="Règles suédoises §1.4" data-de="Schwedische Regeln §1.4">Svenska regler §1.4</div>
+        <div class="hero-big" data-sv="100p" data-en="100 pts" data-fr="100 pts" data-de="100 Pkt.">100p</div>
+        <div class="hero-sub"><span data-sv="20 skott · 5 stationer · 4 avstånd" data-en="20 shots · 5 stations · 4 distances" data-fr="20 tirs · 5 stations · 4 distances" data-de="20 Schüsse · 5 Stationen · 4 Entfernungen">20 skott · 5 stationer · 4 avstånd</span><br>6m · 7m · 8m · 9m</div>
       </div>
-      <button class="start-btn" onclick="startGame()">Starta ny serie</button>
+      <button class="start-btn" onclick="startGame()" data-sv="Starta ny serie" data-en="Start new series" data-fr="Démarrer une nouvelle série" data-de="Neue Serie starten">Starta ny serie</button>
     </div>
 
     <!-- Spelvy -->
     <div id="view-game" style="display:none">
       <div class="game-header">
         <div>
-          <div class="total-lbl">Totalt</div>
+          <div class="total-lbl" data-sv="Totalt" data-en="Total" data-fr="Total" data-de="Gesamt">Totalt</div>
           <div class="total-val" id="game-total">0</div>
         </div>
         <div>
-          <div class="shot-lbl">Skott</div>
+          <div class="shot-lbl" data-sv="Skott" data-en="Shot" data-fr="Tir" data-de="Schuss">Skott</div>
           <div class="shot-val" id="shot-count">1 / 20</div>
         </div>
       </div>
       <div class="pills" id="pills-container"></div>
       <div id="station-card-area"></div>
-      <button class="mbtn mbtn-ghost" onclick="confirmAbort()">Avbryt serie</button>
+      <button class="mbtn mbtn-ghost" onclick="confirmAbort()" data-sv="Avbryt serie" data-en="Cancel series" data-fr="Annuler la série" data-de="Serie abbrechen">Avbryt serie</button>
     </div>
 
     <!-- Resultatvy -->
     <div id="view-results" style="display:none">
       <div class="result-block">
-        <div class="result-lbl">Slutresultat</div>
+        <div class="result-lbl" data-sv="Slutresultat" data-en="Final result" data-fr="Résultat final" data-de="Endergebnis">Slutresultat</div>
         <div class="result-score" id="res-score">0</div>
-        <div class="result-max">av 100 möjliga poäng</div>
+        <div class="result-max" data-sv="av 100 möjliga poäng" data-en="out of 100 possible points" data-fr="sur 100 points possibles" data-de="von 100 möglichen Punkten">av 100 möjliga poäng</div>
         <div class="result-grade" id="res-grade"></div>
       </div>
-      <button class="start-btn" onclick="startGame()">Ny serie</button>
+      <button class="start-btn" onclick="startGame()" data-sv="Ny serie" data-en="New series" data-fr="Nouvelle série" data-de="Neue Serie">Ny serie</button>
     </div>
 
   </div>
@@ -275,13 +275,13 @@ body::before {
 <div id="tab-stats" class="tab-content">
   <div class="wrap">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-      <span style="font-family:var(--font-display);font-size:1.3rem;font-weight:800;letter-spacing:2px;text-transform:uppercase">Statistik</span>
-      <button onclick="clearHistory()" style="background:none;border:1px solid var(--border2);color:var(--muted2);font-family:var(--font-body);font-size:0.72rem;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer">Rensa allt</button>
+      <span style="font-family:var(--font-display);font-size:1.3rem;font-weight:800;letter-spacing:2px;text-transform:uppercase" data-sv="Statistik" data-en="Statistics" data-fr="Statistiques" data-de="Statistik">Statistik</span>
+      <button onclick="clearHistory()" style="background:none;border:1px solid var(--border2);color:var(--muted2);font-family:var(--font-body);font-size:0.72rem;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer" data-sv="Rensa allt" data-en="Clear all" data-fr="Tout effacer" data-de="Alles löschen">Rensa allt</button>
     </div>
     <div class="ov-cards">
-      <div class="ov-card"><span class="sv" id="ov-sessions" style="color:var(--accent)">0</span><span class="sk">Serier</span></div>
-      <div class="ov-card"><span class="sv" id="ov-avg" style="color:var(--p5)">–</span><span class="sk">Snitt</span></div>
-      <div class="ov-card"><span class="sv" id="ov-best" style="color:var(--p3)">–</span><span class="sk">Bästa</span></div>
+      <div class="ov-card"><span class="sv" id="ov-sessions" style="color:var(--accent)">0</span><span class="sk" data-sv="Serier" data-en="Series" data-fr="Séries" data-de="Serien">Serier</span></div>
+      <div class="ov-card"><span class="sv" id="ov-avg" style="color:var(--p5)">–</span><span class="sk" data-sv="Snitt" data-en="Average" data-fr="Moyenne" data-de="Schnitt">Snitt</span></div>
+      <div class="ov-card"><span class="sv" id="ov-best" style="color:var(--p3)">–</span><span class="sk" data-sv="Bästa" data-en="Best" data-fr="Meilleure" data-de="Beste">Bästa</span></div>
     </div>
     <div class="hist-list" id="hist-list"></div>
   </div>
@@ -293,33 +293,60 @@ body::before {
     <div class="sheet-title" id="modal-title"></div>
     <div class="sheet-sub" id="modal-sub"></div>
     <div id="modal-rules"></div>
-    <button class="mbtn mbtn-accent" onclick="closeModal()">Starta station</button>
+    <button class="mbtn mbtn-accent" onclick="closeModal()" data-sv="Starta station" data-en="Start station" data-fr="Démarrer la station" data-de="Station starten">Starta station</button>
   </div>
 </div>
 
 <!-- Avbryt-bekräftelse -->
 <div class="overlay" id="abort-modal">
   <div class="sheet">
-    <div class="sheet-title">Avbryt serie?</div>
-    <div class="sheet-sub">Pågående serie sparas inte.</div>
-    <button class="mbtn mbtn-danger" onclick="abortGame()">Ja, avbryt</button>
-    <button class="mbtn mbtn-ghost" onclick="document.getElementById('abort-modal').classList.remove('show')">Fortsätt spela</button>
+    <div class="sheet-title" data-sv="Avbryt serie?" data-en="Cancel series?" data-fr="Annuler la série ?" data-de="Serie abbrechen?">Avbryt serie?</div>
+    <div class="sheet-sub" data-sv="Pågående serie sparas inte." data-en="The current series will not be saved." data-fr="La série en cours ne sera pas enregistrée." data-de="Die laufende Serie wird nicht gespeichert.">Pågående serie sparas inte.</div>
+    <button class="mbtn mbtn-danger" onclick="abortGame()" data-sv="Ja, avbryt" data-en="Yes, cancel" data-fr="Oui, annuler" data-de="Ja, abbrechen">Ja, avbryt</button>
+    <button class="mbtn mbtn-ghost" onclick="document.getElementById('abort-modal').classList.remove('show')" data-sv="Fortsätt spela" data-en="Keep playing" data-fr="Continuer à jouer" data-de="Weiterspielen">Fortsätt spela</button>
   </div>
 </div>
 
 <script>
 const STATIONS = [
-  { name:"Station 1", desc:"Ensamt klot", info:"Målklotet ligger ensamt i mitten av cirkeln.",
-    rules:[{pts:5,label:"Mål ut, skytte kvar (Carreau)"},{pts:3,label:"Träff – båda ut ur cirkeln"},{pts:1,label:"Touch – mål stannar kvar i cirkeln"},{pts:0,label:"Miss"}] },
-  { name:"Station 2", desc:"Klot bakom lillen", info:"Lillen ligger 10 cm framför målklotet.",
-    rules:[{pts:5,label:"Mål ut, skytte kvar – ingen nudd av lillen"},{pts:3,label:"Träff – båda ut, ingen nudd av lillen"},{pts:1,label:"Mål kvar ELLER nudd av lillen efter träff"},{pts:0,label:"Miss eller nudd av lillen före träff"}] },
-  { name:"Station 3", desc:"Klot mellan klot", info:"Målklot mellan två hinderklot med 3 cm lucka.",
-    rules:[{pts:5,label:"Mål ut, skytte kvar – ingen nudd av hinder"},{pts:3,label:"Träff – båda ut, ingen nudd av hinder"},{pts:1,label:"Mål kvar ELLER nudd av hinder efter träff"},{pts:0,label:"Miss eller hinderklot lämnar cirkeln"}] },
-  { name:"Station 4", desc:"Klot bakom klot", info:"Hinderklot ligger 10 cm framför målklotet.",
-    rules:[{pts:5,label:"Mål ut, skytte kvar – ingen nudd av hinder"},{pts:3,label:"Träff – båda ut, ingen nudd av hinder"},{pts:1,label:"Mål kvar ELLER nudd av hinder efter träff"},{pts:0,label:"Miss eller nudd av hinder före träff"}] },
-  { name:"Station 5", desc:"Lillen", info:"Lillen ligger ensam i cirkeln, 20 cm från kanten.",
-    rules:[{pts:5,label:"Träff – lillen lämnar cirkeln"},{pts:3,label:"Touch – lillen flyttas men stannar kvar"},{pts:0,label:"Miss"}] },
+  { name:"Station 1", desc:{"sv": "Ensamt klot", "en": "Lone boule", "fr": "Boule seule", "de": "Einzelne Kugel"},
+    info:{"sv": "Målklotet ligger ensamt i mitten av cirkeln.", "en": "The target boule is alone in the middle of the circle.", "fr": "La boule cible est seule au centre du cercle.", "de": "Die Zielkugel liegt allein in der Mitte des Kreises."},
+    rules:[
+      {pts:5,label:{"sv": "Mål ut, skytte kvar (Carreau)", "en": "Target out, shooter stays (Carreau)", "fr": "Cible sortie, boule de tir en place (Carreau)", "de": "Zielkugel raus, Schusskugel bleibt (Carreau)"}},
+      {pts:3,label:{"sv": "Träff – båda ut ur cirkeln", "en": "Hit – both out of the circle", "fr": "Touche – les deux boules sortent du cercle", "de": "Treffer – beide aus dem Kreis"}},
+      {pts:1,label:{"sv": "Touch – mål stannar kvar i cirkeln", "en": "Touch – target stays in the circle", "fr": "Effleurement – la cible reste dans le cercle", "de": "Berührung – Zielkugel bleibt im Kreis"}},
+      {pts:0,label:{"sv": "Miss", "en": "Miss", "fr": "Raté", "de": "Fehlschuss"}}] },
+  { name:"Station 2", desc:{"sv": "Klot bakom lillen", "en": "Boule behind the jack", "fr": "Boule derrière le cochonnet", "de": "Kugel hinter dem Schweinchen"},
+    info:{"sv": "Lillen ligger 10 cm framför målklotet.", "en": "The jack is 10 cm in front of the target boule.", "fr": "Le cochonnet est à 10 cm devant la boule cible.", "de": "Das Schweinchen liegt 10 cm vor der Zielkugel."},
+    rules:[
+      {pts:5,label:{"sv": "Mål ut, skytte kvar – ingen nudd av lillen", "en": "Target out, shooter stays – jack not touched", "fr": "Cible sortie, boule de tir en place – cochonnet non touché", "de": "Zielkugel raus, Schusskugel bleibt – Schweinchen nicht berührt"}},
+      {pts:3,label:{"sv": "Träff – båda ut, ingen nudd av lillen", "en": "Hit – both out, jack not touched", "fr": "Touche – les deux sortent, cochonnet non touché", "de": "Treffer – beide raus, Schweinchen nicht berührt"}},
+      {pts:1,label:{"sv": "Mål kvar ELLER nudd av lillen efter träff", "en": "Target stays OR jack touched after the hit", "fr": "Cible restée OU cochonnet touché après la touche", "de": "Zielkugel bleibt ODER Schweinchen nach dem Treffer berührt"}},
+      {pts:0,label:{"sv": "Miss eller nudd av lillen före träff", "en": "Miss or jack touched before the hit", "fr": "Raté ou cochonnet touché avant la touche", "de": "Fehlschuss oder Schweinchen vor dem Treffer berührt"}}] },
+  { name:"Station 3", desc:{"sv": "Klot mellan klot", "en": "Boule between boules", "fr": "Boule entre deux boules", "de": "Kugel zwischen Kugeln"},
+    info:{"sv": "Målklot mellan två hinderklot med 3 cm lucka.", "en": "Target boule between two obstacle boules with a 3 cm gap.", "fr": "Boule cible entre deux boules obstacles, avec un espace de 3 cm.", "de": "Zielkugel zwischen zwei Hindernis-Kugeln mit 3 cm Lücke."},
+    rules:[
+      {pts:5,label:{"sv": "Mål ut, skytte kvar – ingen nudd av hinder", "en": "Target out, shooter stays – obstacle not touched", "fr": "Cible sortie, boule de tir en place – obstacle non touché", "de": "Zielkugel raus, Schusskugel bleibt – Hindernis nicht berührt"}},
+      {pts:3,label:{"sv": "Träff – båda ut, ingen nudd av hinder", "en": "Hit – both out, obstacle not touched", "fr": "Touche – les deux sortent, obstacle non touché", "de": "Treffer – beide raus, Hindernis nicht berührt"}},
+      {pts:1,label:{"sv": "Mål kvar ELLER nudd av hinder efter träff", "en": "Target stays OR obstacle touched after the hit", "fr": "Cible restée OU obstacle touché après la touche", "de": "Zielkugel bleibt ODER Hindernis nach dem Treffer berührt"}},
+      {pts:0,label:{"sv": "Miss eller hinderklot lämnar cirkeln", "en": "Miss or obstacle boule leaves the circle", "fr": "Raté ou boule obstacle sortie du cercle", "de": "Fehlschuss oder Hindernis-Kugel verlässt den Kreis"}}] },
+  { name:"Station 4", desc:{"sv": "Klot bakom klot", "en": "Boule behind boule", "fr": "Boule derrière boule", "de": "Kugel hinter Kugel"},
+    info:{"sv": "Hinderklot ligger 10 cm framför målklotet.", "en": "An obstacle boule is 10 cm in front of the target boule.", "fr": "Une boule obstacle est à 10 cm devant la boule cible.", "de": "Eine Hindernis-Kugel liegt 10 cm vor der Zielkugel."},
+    rules:[
+      {pts:5,label:{"sv": "Mål ut, skytte kvar – ingen nudd av hinder", "en": "Target out, shooter stays – obstacle not touched", "fr": "Cible sortie, boule de tir en place – obstacle non touché", "de": "Zielkugel raus, Schusskugel bleibt – Hindernis nicht berührt"}},
+      {pts:3,label:{"sv": "Träff – båda ut, ingen nudd av hinder", "en": "Hit – both out, obstacle not touched", "fr": "Touche – les deux sortent, obstacle non touché", "de": "Treffer – beide raus, Hindernis nicht berührt"}},
+      {pts:1,label:{"sv": "Mål kvar ELLER nudd av hinder efter träff", "en": "Target stays OR obstacle touched after the hit", "fr": "Cible restée OU obstacle touché après la touche", "de": "Zielkugel bleibt ODER Hindernis nach dem Treffer berührt"}},
+      {pts:0,label:{"sv": "Miss eller nudd av hinder före träff", "en": "Miss or obstacle touched before the hit", "fr": "Raté ou obstacle touché avant la touche", "de": "Fehlschuss oder Hindernis vor dem Treffer berührt"}}] },
+  { name:"Station 5", desc:{"sv": "Lillen", "en": "The jack", "fr": "Le cochonnet", "de": "Das Schweinchen"},
+    info:{"sv": "Lillen ligger ensam i cirkeln, 20 cm från kanten.", "en": "The jack lies alone in the circle, 20 cm from the edge.", "fr": "Le cochonnet est seul dans le cercle, à 20 cm du bord.", "de": "Das Schweinchen liegt allein im Kreis, 20 cm vom Rand."},
+    rules:[
+      {pts:5,label:{"sv": "Träff – lillen lämnar cirkeln", "en": "Hit – the jack leaves the circle", "fr": "Touche – le cochonnet sort du cercle", "de": "Treffer – das Schweinchen verlässt den Kreis"}},
+      {pts:3,label:{"sv": "Touch – lillen flyttas men stannar kvar", "en": "Touch – the jack moves but stays", "fr": "Effleurement – le cochonnet bouge mais reste", "de": "Berührung – das Schweinchen bewegt sich, bleibt aber im Kreis"}},
+      {pts:0,label:{"sv": "Miss", "en": "Miss", "fr": "Raté", "de": "Fehlschuss"}}] },
 ];
+// Text på valt språk: tr(sv, en, fr, de). Objekt {sv,en,fr,de} väljs med t4().
+function tr(sv,en,fr,de){ return langMgr.t({sv:sv,en:en,fr:fr,de:de}); }
+const t4=o=>langMgr.t(o);
 const DISTANCES=[6,7,8,9];
 const STBAR=['st1','st2','st3','st4','st5'];
 const RBCLS={5:'rb5',3:'rb3',1:'rb1',0:'rb0'};
@@ -351,12 +378,12 @@ function startGame(){
 
 function showStationModal(stIdx){
   const s=STATIONS[stIdx];
-  document.getElementById('modal-title').textContent=s.name+' – '+s.desc;
-  document.getElementById('modal-sub').textContent=s.info;
+  document.getElementById('modal-title').textContent=s.name+' – '+t4(s.desc);
+  document.getElementById('modal-sub').textContent=t4(s.info);
   document.getElementById('modal-rules').innerHTML=s.rules.map(r=>
     `<div class="rule-row">
       <div class="rule-badge ${RBCLS[r.pts]}">${r.pts}</div>
-      <div class="rule-text">${r.label}</div>
+      <div class="rule-text">${t4(r.label)}</div>
     </div>`
   ).join('');
   document.getElementById('station-modal').classList.add('show');
@@ -386,8 +413,8 @@ function updateUI(){
       <div class="station-top-bar ${STBAR[stIdx]}"></div>
       <div class="station-header">
         <div>
-          <div class="station-name">${s.name} – ${s.desc}</div>
-          <div class="station-desc">Avstånd ${distIdx+1} av 4</div>
+          <div class="station-name">${s.name} – ${t4(s.desc)}</div>
+          <div class="station-desc">${tr('Avstånd','Distance','Distance','Entfernung')} ${distIdx+1} ${tr('av','of','sur','von')} 4</div>
         </div>
         <div class="station-dist">${d}<span>m</span></div>
       </div>
@@ -395,7 +422,7 @@ function updateUI(){
         ${s.rules.map(r=>`
           <button class="btn-point ${BPCLS[r.pts]}" onclick="recordShot(${r.pts})">
             <span class="pts">${r.pts}</span>
-            <span class="lbl">${r.label.split(' –')[0].split(' (')[0]}</span>
+            <span class="lbl">${t4(r.label).split(' –')[0].split(' (')[0]}</span>
           </button>`).join('')}
       </div>
     </div>`;
@@ -426,11 +453,11 @@ function finishGame(){
 }
 
 function grade(s){
-  if(s>=90)return{text:'Utmärkt',color:'var(--p5)'};
-  if(s>=70)return{text:'Mycket bra',color:'var(--p5)'};
-  if(s>=50)return{text:'Bra',color:'var(--p3)'};
-  if(s>=30)return{text:'Godkänt',color:'var(--p1)'};
-  return{text:'Fortsätt träna!',color:'var(--muted2)'};
+  if(s>=90)return{text:tr('Utmärkt','Excellent','Excellent','Ausgezeichnet'),color:'var(--p5)'};
+  if(s>=70)return{text:tr('Mycket bra','Very good','Très bien','Sehr gut'),color:'var(--p5)'};
+  if(s>=50)return{text:tr('Bra','Good','Bien','Gut'),color:'var(--p3)'};
+  if(s>=30)return{text:tr('Godkänt','Pass','Passable','Bestanden'),color:'var(--p1)'};
+  return{text:tr('Fortsätt träna!','Keep practising!','Continuez à vous entraîner !','Weiter trainieren!'),color:'var(--muted2)'};
 }
 
 function confirmAbort(){document.getElementById('abort-modal').classList.add('show');}
@@ -446,7 +473,7 @@ function renderStats(){
     document.getElementById('ov-best').textContent='–';
     document.getElementById('hist-list').innerHTML=`
       <div class="empty"><div class="empty-icon">🎯</div>
-      <p>Inga serier sparade ännu.<br>Slutför en träning för att se din statistik.</p></div>`;
+      <p>${tr('Inga serier sparade ännu.<br>Slutför en träning för att se din statistik.','No series saved yet.<br>Finish a training to see your statistics.','Aucune série enregistrée.<br>Terminez un entraînement pour voir vos statistiques.','Noch keine Serien gespeichert.<br>Schließe ein Training ab, um deine Statistik zu sehen.')}</p></div>`;
     return;
   }
   const n=history.length;
@@ -460,7 +487,7 @@ function renderStats(){
     const g=grade(e.score);
     return`<div class="hist-item">
       <div>
-        <div style="font-family:var(--font-display);font-size:1rem;font-weight:700">Precisionsserie</div>
+        <div style="font-family:var(--font-display);font-size:1rem;font-weight:700">${tr('Precisionsserie','Precision series','Série de précision','Präzisionsserie')}</div>
         <div class="hist-date">${d.toLocaleDateString(langMgr.locale())} ${d.toLocaleTimeString(langMgr.locale(),{hour:'2-digit',minute:'2-digit'})}</div>
       </div>
       <div style="text-align:right">
@@ -472,7 +499,7 @@ function renderStats(){
 }
 
 function clearHistory(){
-  if(!confirm('Rensa all historik för precisionsskytte?')) return;
+  if(!confirm(tr('Rensa all historik för precisionsskytte?','Clear all precision shooting history?','Effacer tout l\'historique du tir de précision ?','Den gesamten Verlauf des Präzisionsschießens löschen?'))) return;
   history=[];
   // Sparar en tom lista (istället för att bara ta bort lokalt), så att
   // rensningen även syns i databasen om du är inloggad.

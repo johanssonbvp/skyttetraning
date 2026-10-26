@@ -76,6 +76,12 @@ const langMgr = {
       if (ph) el.placeholder = ph;
     });
 
+    // Verktygstips: data-sv-title="..." (visas när man håller över knappen)
+    document.querySelectorAll('[data-sv-title]').forEach(el => {
+      const title = this._pick(el, 'data-', '-title');
+      if (title) el.title = title;
+    });
+
     document.documentElement.lang = this.lang;
   },
 
