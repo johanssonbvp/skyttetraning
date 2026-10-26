@@ -638,7 +638,7 @@ function buildEntryCard(e) {
   const badgeClass = e.type ? 'badge-'+e.type : 'badge-annan';
   const typeLbl = e.type ? (lang==='sv' ? TYPE_LABELS[e.type].sv : TYPE_LABELS[e.type].en) : (lang==='sv'?'Annat':'Other');
   const stars = e.mood ? '⭐'.repeat(e.mood) + '☆'.repeat(5-e.mood) : '';
-  const dateFormatted = e.date ? new Date(e.date+'T12:00:00').toLocaleDateString(lang==='sv'?'sv-SE':'en-GB',{weekday:'long',day:'numeric',month:'long'}) : '';
+  const dateFormatted = e.date ? new Date(e.date+'T12:00:00').toLocaleDateString(langMgr.locale(),{weekday:'long',day:'numeric',month:'long'}) : '';
 
   div.className = 'entry-card ' + typeClass;
   div.innerHTML = `
@@ -663,7 +663,7 @@ function escHtml(str) {
 // DAY DETAIL MODAL
 // ══════════════════════════════════════════
 function showDayDetail(dateStr, dayEntries) {
-  const dateFormatted = new Date(dateStr+'T12:00:00').toLocaleDateString(lang==='sv'?'sv-SE':'en-GB',{weekday:'long',day:'numeric',month:'long'});
+  const dateFormatted = new Date(dateStr+'T12:00:00').toLocaleDateString(langMgr.locale(),{weekday:'long',day:'numeric',month:'long'});
   document.getElementById('dayTitle').textContent = dateFormatted;
   const container = document.getElementById('dayEntries');
   container.innerHTML = '';

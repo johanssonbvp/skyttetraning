@@ -419,7 +419,7 @@ function fmt(sek) {
   return m + ':' + String(s).padStart(2, '0');
 }
 function localeCode() {
-  return { sv: 'sv-SE', en: 'en-GB', fr: 'fr-FR' }[langMgr.lang] || 'sv-SE';
+  return langMgr.locale();
 }
 function save() {
   // Sparar alltid lokalt först (fungerar offline), sedan i molnet om funktionen finns

@@ -479,7 +479,7 @@ function renderStats() {
 }
 
 function fmtDate(d) {
-  return new Date(d).toLocaleDateString("sv" === lang ? "sv-SE" : "en-GB", {day: "numeric", month: "short"});
+  return new Date(d).toLocaleDateString(langMgr.locale(), {day: "numeric", month: "short"});
 }
 
 function confirmClear() {

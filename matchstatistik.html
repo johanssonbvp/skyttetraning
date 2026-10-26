@@ -15,6 +15,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <script src="./lang-manager.js"></script>
     <!-- Chart.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <!-- jsPDF -->
@@ -223,14 +224,6 @@
 .player-match-row .pmr-stats { color: #999; white-space: nowrap; font-size: 12px; }
 .player-match-row .pmr-pct { font-weight: 700; color: #e8ff47; margin-left: 8px; font-size: 13px; }
 
-        /* LANG TOGGLE */
-        .lang-btn-match {
-        background: transparent; border: 1px solid #333;
-        color: #999; border-radius: 6px;
-        padding: 4px 8px; font-size: 0.75rem;
-        cursor: pointer; transition: all 0.2s;
-    }
-    .lang-btn-match.active { border-color: var(--accent); color: var(--accent); }
 
         /* CARD */
         .card {
@@ -673,11 +666,7 @@
     <header style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px 0;">
         <a href="./index.html" style="color:#ccc;text-decoration:none;font-size:0.85rem;padding:4px 8px;border-radius:8px;border:1px solid #333;">← <span data-sv="Hem" data-en="Home" data-fr="Accueil">Hem</span></a>
         <h1 data-sv="Matchstatistik" data-fr="Statistiques de match" data-en="Match Statistics" style="margin:0;font-size:1.1rem;">Matchstatistik</h1>
-        <div style="display:flex;gap:4px;">
-            <button class="lang-btn-match" id="ms-btn-sv" onclick="langMgr.set('sv')">🇸🇪 SV</button>
-            <button class="lang-btn-match" id="ms-btn-en" onclick="langMgr.set('en')">🇬🇧 EN</button>
-            <button class="lang-btn-match" id="ms-btn-fr" onclick="langMgr.set('fr')">🇫🇷 FR</button>
-        </div>
+        <div style="width:60px;"></div>
     </header>
         <div class="match-meta">
             <div class="meta-item">
@@ -999,44 +988,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// ============================================================
-// LANGUAGE MANAGER
-// ============================================================
-const LANGS = ['sv','en','fr'];
-const langMgr = {
-    lang: localStorage.getItem('petanque-lang') || 'sv',
-    apply() {
-        document.querySelectorAll('[data-sv]').forEach(el => {
-            const t = el.dataset[this.lang];
-            if (!t) return;
-            if (el.tagName === 'INPUT') el.placeholder = t;
-            else el.textContent = t;
-        });
-        // Placeholders med data-sv-placeholder
-        document.querySelectorAll('[data-sv-placeholder]').forEach(el => {
-            const ph = el.getAttribute('data-' + this.lang + '-placeholder') || el.getAttribute('data-sv-placeholder');
-            if (ph) el.placeholder = ph;
-        });
-        ['sv','en','fr'].forEach(l => {
-            const b = document.getElementById('ms-btn-' + l);
-            if (b) b.classList.toggle('active', l === this.lang);
-        });
-    },
-    set(l) {
-        this.lang = l;
-        localStorage.setItem('petanque-lang', l);
-        localStorage.setItem('pt_lang', l);
-        localStorage.setItem('lang', l);
-        this.apply();
-    },
-    toggle() {
-        const i = LANGS.indexOf(this.lang);
-        this.lang = LANGS[(i+1) % LANGS.length];
-        localStorage.setItem('petanque-lang', this.lang);
-        this.apply();
-    }
-};
-// Språkval hanteras av onclick på ms-btn-sv/en/fr
+// Språksystemet (langMgr) kommer från lang-manager.js, samma som på alla andra sidor
 
 // ============================================================
 // MAIN APP
@@ -1443,7 +1395,7 @@ class MatchApp {
         };
 
         document.getElementById('hdr-id').textContent = this.match.id.slice(-8);
-        document.getElementById('hdr-time').textContent = this.matchStart.toLocaleTimeString('sv-SE', {hour:'2-digit',minute:'2-digit'});
+        document.getElementById('hdr-time').textContent = this.matchStart.toLocaleTimeString(langMgr.locale(), {hour:'2-digit',minute:'2-digit'});
         document.getElementById('hdr-round').textContent = '1';
 
         document.getElementById('screen-setup').style.display = 'none';
@@ -2028,8 +1980,8 @@ class MatchApp {
         }
 
         const homeHtml = this.history.map((m, idx) => {
-            const date = new Date(m.startTime).toLocaleDateString('sv-SE');
-            const time = new Date(m.startTime).toLocaleTimeString('sv-SE', {hour:'2-digit',minute:'2-digit'});
+            const date = new Date(m.startTime).toLocaleDateString(langMgr.locale());
+            const time = new Date(m.startTime).toLocaleTimeString(langMgr.locale(), {hour:'2-digit',minute:'2-digit'});
             const previews = m.players.map(p => {
                 const la = this.acc(p.stats.lagg);
                 const sa = this.acc(p.stats.skott);
@@ -2050,8 +2002,8 @@ class MatchApp {
         }).join('');
 
         const matchHtml = this.history.map((m, idx) => {
-            const date = new Date(m.startTime).toLocaleDateString('sv-SE');
-            const time = new Date(m.startTime).toLocaleTimeString('sv-SE', {hour:'2-digit',minute:'2-digit'});
+            const date = new Date(m.startTime).toLocaleDateString(langMgr.locale());
+            const time = new Date(m.startTime).toLocaleTimeString(langMgr.locale(), {hour:'2-digit',minute:'2-digit'});
             const previews = m.players.map(p => {
                 const la = this.acc(p.stats.lagg);
                 const sa = this.acc(p.stats.skott);
@@ -2080,8 +2032,8 @@ class MatchApp {
         this.currentDetailIdx = idx;
         const m = this.history[idx];
 
-        const date = new Date(m.startTime).toLocaleDateString('sv-SE');
-        const time = new Date(m.startTime).toLocaleTimeString('sv-SE', {hour:'2-digit',minute:'2-digit'});
+        const date = new Date(m.startTime).toLocaleDateString(langMgr.locale());
+        const time = new Date(m.startTime).toLocaleTimeString(langMgr.locale(), {hour:'2-digit',minute:'2-digit'});
         document.getElementById('detail-title').textContent = m.name;
         document.getElementById('detail-meta').textContent = `${m.team} • ${date} ${time} • ${m.duration ?? 0} min${this.scoreText(m)}`;
 
@@ -2283,8 +2235,8 @@ class MatchApp {
         this.currentHomeDetailIdx = idx;
         const m = this.history[idx];
 
-        const date = new Date(m.startTime).toLocaleDateString('sv-SE');
-        const time = new Date(m.startTime).toLocaleTimeString('sv-SE', {hour:'2-digit',minute:'2-digit'});
+        const date = new Date(m.startTime).toLocaleDateString(langMgr.locale());
+        const time = new Date(m.startTime).toLocaleTimeString(langMgr.locale(), {hour:'2-digit',minute:'2-digit'});
         document.getElementById('home-detail-title').textContent = m.name;
         document.getElementById('home-detail-meta').textContent = `${m.team} • ${date} ${time} • ${m.duration ?? 0} min${this.scoreText(m)}`;
 
@@ -2408,8 +2360,8 @@ class MatchApp {
         doc.setFont(undefined,'bold'); doc.setFontSize(16);
         doc.text('Petanque Matchstatistik', 15, y); y+=8;
         doc.setFont(undefined,'normal'); doc.setFontSize(9);
-        const date = new Date(m.startTime).toLocaleDateString('sv-SE');
-        const time = new Date(m.startTime).toLocaleTimeString('sv-SE', {hour:'2-digit',minute:'2-digit'});
+        const date = new Date(m.startTime).toLocaleDateString(langMgr.locale());
+        const time = new Date(m.startTime).toLocaleTimeString(langMgr.locale(), {hour:'2-digit',minute:'2-digit'});
         doc.text(`Tränarkod: ${this.trainerCode} | ${date} ${time} | ${m.duration??0} min`, 15, y); y+=6;
         
         // MATCH INFO
@@ -2471,8 +2423,8 @@ class MatchApp {
     exportDetailCSV() {
         if (this.currentDetailIdx === null) return;
         const m = this.history[this.currentDetailIdx];
-        const date = new Date(m.startTime).toLocaleDateString('sv-SE');
-        const time = new Date(m.startTime).toLocaleTimeString('sv-SE', {hour:'2-digit',minute:'2-digit'});
+        const date = new Date(m.startTime).toLocaleDateString(langMgr.locale());
+        const time = new Date(m.startTime).toLocaleTimeString(langMgr.locale(), {hour:'2-digit',minute:'2-digit'});
         
         let csv = `Match: ${m.name}\nLag: ${m.team}\nDatum: ${date}\nTid: ${time}\nVaraktighet: ${m.duration??0} min\nTränarkod: ${this.trainerCode}\n`;
         if (m.score) {
@@ -2551,8 +2503,8 @@ class MatchApp {
         doc.setFont(undefined,'bold'); doc.setFontSize(16);
         doc.text('Petanque Matchstatistik', 15, y); y+=8;
         doc.setFont(undefined,'normal'); doc.setFontSize(9);
-        const date = new Date(m.startTime).toLocaleDateString('sv-SE');
-        const time = new Date(m.startTime).toLocaleTimeString('sv-SE', {hour:'2-digit',minute:'2-digit'});
+        const date = new Date(m.startTime).toLocaleDateString(langMgr.locale());
+        const time = new Date(m.startTime).toLocaleTimeString(langMgr.locale(), {hour:'2-digit',minute:'2-digit'});
         doc.text(`Tränarkod: ${this.trainerCode} | ${date} ${time} | ${m.duration??0} min`, 15, y); y+=6;
         
         // MATCH INFO
@@ -2614,8 +2566,8 @@ class MatchApp {
     exportHomeCSV() {
         if (this.currentHomeDetailIdx === null) return;
         const m = this.history[this.currentHomeDetailIdx];
-        const date = new Date(m.startTime).toLocaleDateString('sv-SE');
-        const time = new Date(m.startTime).toLocaleTimeString('sv-SE', {hour:'2-digit',minute:'2-digit'});
+        const date = new Date(m.startTime).toLocaleDateString(langMgr.locale());
+        const time = new Date(m.startTime).toLocaleTimeString(langMgr.locale(), {hour:'2-digit',minute:'2-digit'});
         
         let csv = `Match: ${m.name}\nLag: ${m.team}\nDatum: ${date}\nTid: ${time}\nVaraktighet: ${m.duration??0} min\nTränarkod: ${this.trainerCode}\n`;
         if (m.score) {
@@ -2698,8 +2650,8 @@ class MatchApp {
         doc.setFont(undefined,'normal'); doc.setFontSize(10);
         doc.text(`Match: ${m.name || 'Ej namnsatt'}`, 15, y); y+=5;
         doc.text(`Lag: ${m.team || '-'}`, 15, y); y+=5;
-        const startDate = new Date(m.startTime || Date.now()).toLocaleDateString('sv-SE');
-        const startTime = new Date(m.startTime || Date.now()).toLocaleTimeString('sv-SE', {hour:'2-digit',minute:'2-digit'});
+        const startDate = new Date(m.startTime || Date.now()).toLocaleDateString(langMgr.locale());
+        const startTime = new Date(m.startTime || Date.now()).toLocaleTimeString(langMgr.locale(), {hour:'2-digit',minute:'2-digit'});
         doc.text(`Datum: ${startDate} | Tid: ${startTime}`, 15, y); y+=5;
         doc.text(`Omgångar spelade: ${m.currentRound || 1}`, 15, y); y+=8;
         
@@ -2780,7 +2732,7 @@ class MatchApp {
         
         // Per-omgång data
         if (m.roundActions) {
-            const date = new Date(m.startTime || Date.now()).toLocaleDateString('sv-SE');
+            const date = new Date(m.startTime || Date.now()).toLocaleDateString(langMgr.locale());
             const oppLabel = m.opponent || 'Motståndare';
             Object.keys(m.roundActions).sort((a,b) => +a - +b).forEach(roundNum => {
                 const roundAct = m.roundActions[roundNum];
@@ -3128,7 +3080,7 @@ class MatchApp {
         const _matchWord = { sv: 'matcher', en: 'matches', fr: 'matchs' };
         const _l = typeof langMgr !== 'undefined' ? langMgr.lang : 'sv';
         const stangStrDet = stangTotDet > 0 ? ` • ${stangTotDet} ${_stangWord[_l] || _stangWord.sv}` : '';
-        document.getElementById('pdet-sub').textContent = ps.matches.length + ' ' + (_matchWord[_l] || _matchWord.sv) + stangStrDet + ' • ' + (ps.matches[0] ? ps.matches[0].date.toLocaleDateString('sv-SE') : '') + ' – ' + (ps.matches[ps.matches.length-1] ? ps.matches[ps.matches.length-1].date.toLocaleDateString('sv-SE') : '');
+        document.getElementById('pdet-sub').textContent = ps.matches.length + ' ' + (_matchWord[_l] || _matchWord.sv) + stangStrDet + ' • ' + (ps.matches[0] ? ps.matches[0].date.toLocaleDateString(langMgr.locale()) : '') + ' – ' + (ps.matches[ps.matches.length-1] ? ps.matches[ps.matches.length-1].date.toLocaleDateString(langMgr.locale()) : '');
 
         const laggPct  = ps.laggTotal  ? Math.round(ps.laggHit  / ps.laggTotal  * 100) : null;
         const skottPct = ps.skottTotal ? Math.round(ps.skottHit / ps.skottTotal * 100) : null;
@@ -3156,7 +3108,7 @@ class MatchApp {
             this._pdetChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: laggMatches.map(m => m.date.toLocaleDateString('sv-SE', { month: 'short', day: 'numeric' })),
+                    labels: laggMatches.map(m => m.date.toLocaleDateString(langMgr.locale(), { month: 'short', day: 'numeric' })),
                     datasets: [{
                         label: 'Lägg %',
                         data: laggMatches.map(m => m.laggPct),
@@ -3187,7 +3139,7 @@ class MatchApp {
             const skottStr = m.skottTotal ? `${m.skottHit}/${m.skottTotal} = ${m.skottPct}%` : '—';
             return `<div class="player-match-row">
                 <span class="pmr-name">${m.matchName}</span>
-                <span class="pmr-date">${m.date.toLocaleDateString('sv-SE')}</span>
+                <span class="pmr-date">${m.date.toLocaleDateString(langMgr.locale())}</span>
                 <span class="pmr-stats">L: ${laggStr} &nbsp; S: ${skottStr}</span>
             </div>`;
         }).join('');
