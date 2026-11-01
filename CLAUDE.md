@@ -34,6 +34,7 @@
 2. Lägg till `data-sv` / `data-en` / `data-fr` / `data-de` på ALLA nya textelement
 3. Testa lokalt innan ändringar laddas upp till GitHub
 4. Avinstallera/installera om appen på mobilen för att se en ny version där
+5. Ny funktion som sparar data = lägg nyckeln (t.ex. `pt_nyfunktion_v1`) i `SYNC_KEYS` i `sync-manager.js`. Annars synkas den inte till molnet (tidigare hamnade sådana nycklar lösa under kontot i Firebase)
 
 ## Prioriteringar (i ordning)
 1. Håll appen fungerande – inga trasiga filer!

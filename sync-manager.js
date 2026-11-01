@@ -215,13 +215,10 @@ function saveToFirebase(path, data) {
 
   const cfg = SYNC_KEYS[path];
 
-  // Okänd nyckel: gammalt beteende, skriv rakt till molnet under nyckelns namn
+  // Okänd nyckel: spara bara på telefonen. Skickas den till molnet hamnar den
+  // lös direkt under kontot. Lägg nyckeln i SYNC_KEYS ovan för att den ska synkas.
   if (!cfg) {
-    if (database && trainerCode) {
-      database.ref('coaches/' + trainerCode + '/' + path).set(cleanForCloud(null, data))
-        .then(function() { updateSyncBadge(true); })
-        .catch(function(error) { console.error('Error:', error); updateSyncBadge(false); });
-    }
+    console.warn('⚠️ Nyckeln "' + path + '" finns inte i SYNC_KEYS och synkas därför inte till molnet.');
     return;
   }
 
@@ -278,11 +275,14 @@ async function doSync(key) {
   const results = await Promise.all([
     read(cfg.path),
     read('_sync/deleted/' + key),
-    read('_sync/clearedAt/' + key)
+    read('_sync/clearedAt/' + key),
+    read(key)   // gammal "lös" nyckel direkt under kontot (från äldre versioner)
   ]);
   const cloudData = results[0];
   const cloudDeleted = results[1] || {};
   const cloudCleared = Number(results[2]) || 0;
+  const looseData = results[3];
+  const hasLoose = looseData !== null && looseData !== undefined;
 
   // 2. Slå ihop med telefonens version
   const meta = loadMeta();
@@ -291,9 +291,14 @@ async function doSync(key) {
   const isList = cfg.type === 'list';
   const local = readJSON(key, isList ? [] : {});
 
+  // Poster som ligger lösa under kontot räddas: de räknas som en del av molnets data
+  const cloudAll = !hasLoose ? cloudData
+    : isList ? toList(cloudData).concat(toList(looseData))
+    : mergeRecords(cloudData, looseData, 0);
+
   const merged = isList
-    ? mergeList(local, cloudData, deleted, clearedAt)
-    : mergeRecords(local, cloudData, clearedAt);
+    ? mergeList(local, cloudAll, deleted, clearedAt)
+    : mergeRecords(local, cloudAll, clearedAt);
 
   // 3. Uppdatera telefonen om något nytt kom från molnet
   if (JSON.stringify(merged) !== JSON.stringify(local)) {
@@ -311,6 +316,12 @@ async function doSync(key) {
       database.ref(base + cfg.path).set(isEmptyData(forCloud) ? null : forCloud),
       SYNC_TIMEOUT_MS
     );
+  }
+
+  // 4b. De lösa posterna ligger nu på rätt plats: ta bort den lösa nyckeln
+  if (hasLoose) {
+    await withTimeout(database.ref(base + key).remove(), SYNC_TIMEOUT_MS);
+    console.log('♻️ Räddade gamla poster från lös nyckel:', key);
   }
 
   // 5. Skicka raderingar och rensningar till molnet
