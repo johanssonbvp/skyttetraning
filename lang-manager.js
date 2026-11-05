@@ -3,14 +3,15 @@
 // Gemensamt språksystem för hela appen. Alla sidor använder det här.
 // Språk: svenska (sv), engelska (en), franska (fr) och tyska (de).
 //
-// Tyska är påbyggt men DOLT (inte i listan "enabled") tills alla sidor är översatta.
-// När allt är klart läggs 'de' till i enabled nedan, så dyker det upp i menyn.
+// Språken i listan "enabled" nedan är de som syns i menyn. Tyska är påslaget sedan
+// alla sidor översatts. Ett nytt språk läggs till i languages, names, locales och
+// fallback, och sist i enabled när alla sidor är klara.
 
 const langMgr = {
   // Alla språk som systemet känner till
   languages: ['sv', 'en', 'fr', 'de'],
   // Språk som användaren får välja just nu
-  enabled: ['sv', 'en', 'fr'],
+  enabled: ['sv', 'en', 'fr', 'de'],
 
   names: { sv: 'Svenska', en: 'English', fr: 'Français', de: 'Deutsch' },
   locales: { sv: 'sv-SE', en: 'en-GB', fr: 'fr-FR', de: 'de-DE' },

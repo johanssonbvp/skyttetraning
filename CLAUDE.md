@@ -15,7 +15,7 @@
 - Analys: Google Analytics
 
 ## Nuvarande status
-- Språk: Svenska (SV), Engelska (EN), Franska (FR). Tyska (DE) är förberett men dolt tills alla sidor är översatta (aktiveras i `lang-manager.js`)
+- Språk: Svenska (SV), Engelska (EN), Franska (FR) och Tyska (DE). Alla fyra är påslagna (listan `enabled` i `lang-manager.js`). Integritetspolicyn finns bara på svenska
 - Språkväljare (rullgardinsmeny) finns på index.html, faq.html och lathund.html. Valet gäller hela appen och sparas på kontot
 - Alla träningssidor kräver inloggning (`auth-gate.js`)
 - Offline-läge ska alltid fungera

@@ -41,7 +41,7 @@ Förslag och instruktioner för Firebase-reglerna finns i [`regler/`](regler/LAS
 
 ## Språk
 
-Svenska, engelska och franska. **Tyska är på väg** och dolt tills alla sidor är översatta.
+Svenska, engelska, franska och tyska. Integritetspolicyn finns bara på svenska.
 - Språket väljs i rullgardinsmenyn på startsidan (och på vanliga frågor) och gäller i hela appen.
 - Valet sparas på kontot och följer med till en ny telefon.
 - Allt språk hanteras av `lang-manager.js`. Texter på sidorna skrivs med `data-sv`, `data-en`, `data-fr` och `data-de`.
