@@ -1,3 +1,5 @@
+> **OBS: gammal anteckning.** Beskriver flytten till Firebase-versionen i början av projektet. Filerna den nämner (t.ex. `index-firebase.html`) finns inte längre. Spara för historiken, följ den inte.
+
 # 🚀 Deploy Firebase-version till GitHub
 
 ## **ALLT ÄR KLART!** ✅

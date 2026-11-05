@@ -29,6 +29,13 @@
 - Appfiler: `skjuttraning.html`, `laggtraning.html`, `dagbok.html`, `precisionsskytte.html`, `tavlingssimulator.html`, `matchstatistik.html`
 - `storage-manager.js`, `sync-manager.js` – datalagring och synk
 
+## Bra att veta om skjutträningens statistik (`skjuttraning.html`)
+- Varje pass sparas med skottordning (`log`). Äldre pass saknar den och kan inte få den i efterhand
+- Effektivitetsindexet räknar återhämtning och startskott först när det finns minst 5 pass med skottordning (`MIN_PASS_MED_ORDNING`). Tills dess neutrala 50 %
+- Indexet kan filtreras per avstånd (`effFilter`). Med färre än 3 pass visas "–"
+- Rekord, bästa och sämsta räknas från pass med minst 20 skott (`MIN_SKOTT_REKORD`), annars alla pass. Snittet vägs efter antal skott (`wAvg`)
+- Resultatrutan efter ett fullt avstånd har "Klar för idag". Passet sparas redan när serien är full
+
 ## Viktiga arbetsflöden
 1. Lägg nya filer i `CORE_FILES` i `sw.js` (cache-namnet byts automatiskt per dag, ingen manuell höjning behövs)
 2. Lägg till `data-sv` / `data-en` / `data-fr` / `data-de` på ALLA nya textelement
@@ -38,7 +45,7 @@
 
 ## Prioriteringar (i ordning)
 1. Håll appen fungerande – inga trasiga filer!
-2. Alla språk (SV/EN/FR, och DE när det slås på) ska fungera överallt
+2. Alla språk (SV/EN/FR/DE) ska fungera överallt
 3. Smidig PWA-installation
 4. Offline-funktionen ska bevaras
 5. Analysspårningen ska fungera

@@ -14,12 +14,19 @@
 | Del | Fil | Vad den gör |
 |---|---|---|
 | 🔥 **Uppvärmning** | `uppvarmning.html` | Guidad rutin på cirka 9 minuter med timer |
-| 💥 **Skjutträning** | `skjuttraning.html` | Skjut på 6–12 m, logga träff, miss och carreau, effektivitetsindex per avstånd |
+| 💥 **Skjutträning** | `skjuttraning.html` | Skjut på 6–12 m, logga träff, miss och carreau, effektivitetsindex som kan visas per avstånd |
 | 🟡 **Läggträning** | `laggtraning.html` | Sex övningstyper för läggning, med statistik och rekord |
 | 🎯 **Precisionsskytte** | `precisionsskytte.html` | 20 skott på 5 stationer enligt förbundets regler, upp till 100 poäng |
 | 🔢 **Poängräknare** | `tavlingssimulator.html` | Poäng i singel, dubbel och trippel, med ångra-knapp |
 | 📊 **Matchstatistik** | `matchstatistik.html` | Live-loggning av varje klot under lagmatcher, med statistik efteråt |
 | 📔 **Träningsdagbok** | `dagbok.html` | Datum, plats, känsla, anteckningar, kalender och foton |
+
+### Statistiken i skjutträningen
+- **Skottordning.** Varje pass sparas med skottens ordning (träff, miss, carreau). Äldre pass saknar den och kan inte få den i efterhand.
+- **Effektivitetsindex** = poängvärde 30 %, återhämtning efter miss 35 %, startskott 20 %, progression 15 %. Återhämtning och startskott räknas först när det finns minst **5 pass med skottordning**. Tills dess står de på neutrala 50 % och appen skriver "Samlar data".
+- **Per avstånd.** Knapparna Alla, 6m–12m ovanför indexet visar det för ett avstånd i taget. Med färre än 3 pass visas "–".
+- **Snitt** vägs efter antal skott. **Rekord, bästa och sämsta** räknas från pass med minst 20 skott (finns inga sådana används alla pass).
+- **Klar för idag.** Ett fullt avstånd sparas automatiskt. Knappen stänger resultatrutan utan att gå vidare till nästa avstånd.
 
 Dessutom: **startsida** (`index.html`), **lathund** (`lathund.html`), **vanliga frågor** (`faq.html`) och **integritetspolicy** (`integritetspolicy.html`).
 
@@ -32,6 +39,7 @@ Dessutom: **startsida** (`index.html`), **lathund** (`lathund.html`), **vanliga 
 - **Flera enheter.** Telefonen och molnet slås ihop per post, så inget tappas mellan enheter. Raderingar och "Rensa allt" följer med.
 - **Utloggning.** Appen skickar först upp allt, rensar sedan telefonen, och varnar om något inte hann sparas.
 - **Foton i dagboken** sparas bara på enheten, inte i molnet.
+- **Gamla lösa nycklar** (`pt_*` direkt under kontot, från äldre versioner) räddas automatiskt vid synk: posterna flyttas till rätt plats och den lösa nyckeln tas bort. Nycklar som inte finns i `SYNC_KEYS` sparas bara lokalt.
 - Synken ligger i `sync-manager.js`, inloggningskontrollen i `auth-gate.js`.
 
 ### Databasregler
@@ -91,6 +99,7 @@ På `localhost` hoppar `auth-gate.js` över inloggningskontrollen så att sidorn
 
 ### Att tänka på vid ändringar
 - Nya texter ska ha `data-sv`, `data-en`, `data-fr` och `data-de`.
+- Ny funktion som sparar data: lägg nyckeln i `SYNC_KEYS` i `sync-manager.js`, annars synkas den inte till molnet.
 - `sw.js` byter cache automatiskt per datum. Avinstallera och installera om appen på mobilen för att se en ny version direkt.
 - Testa alltid lokalt innan du pushar. Sidan uppdateras på GitHub Pages inom en eller två minuter.
 
