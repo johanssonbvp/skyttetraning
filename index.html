@@ -15,25 +15,55 @@ function isExistingAccount(user) {
     return !!created && new Date(created) < WELCOME_START;
 }
 
+// ---- NYTT I APPEN ----
+// En ruta som visas en gång per användare och telefon. Vid nästa nyhet: byt WHATSNEW_ID
+// (och texterna i rutan), så visas den igen för alla.
+const WHATSNEW_ID = 'pt_whatsnew_v1';
+
+function whatsNewKey(user) { return WHATSNEW_ID + '_' + user.uid; }
+
+function markWhatsNewSeen(user) {
+    try { localStorage.setItem(whatsNewKey(user), '1'); } catch (e) {}
+}
+
+function showWhatsNewIfNeeded(user) {
+    let seen = false;
+    try { seen = !!localStorage.getItem(whatsNewKey(user)); } catch (e) {}
+    if (seen) return;
+    markWhatsNewSeen(user);   // markeras direkt, så den inte kommer tillbaka vid omladdning
+    document.getElementById('whatsnew-modal').classList.add('show');
+    if (typeof langMgr !== 'undefined') langMgr.apply();
+}
+
+function closeWhatsNew() {
+    document.getElementById('whatsnew-modal').classList.remove('show');
+}
+
 function showWelcomeIfNew(user) {
     // Kolla Firebase — fungerar på alla enheter
     firebase.database().ref('coaches/' + user.uid + '/welcomeSeen').once('value').then(snap => {
         if (!snap.val()) {
             // Markera direkt som sedd i Firebase
             firebase.database().ref('coaches/' + user.uid + '/welcomeSeen').set(true);
-            // Gamla konton behöver inte se rutan
-            if (isExistingAccount(user)) return;
+            // Gamla konton behöver inte se rutan, de får nyheterna i stället
+            if (isExistingAccount(user)) { showWhatsNewIfNeeded(user); return; }
+            markWhatsNewSeen(user);
             document.getElementById('welcome-modal').classList.add('show');
             if (typeof langMgr !== 'undefined') langMgr.apply();
+        } else {
+            showWhatsNewIfNeeded(user);
         }
     }).catch(() => {
         // Fallback till localStorage om Firebase inte svarar
         const key = 'welcome_shown_' + user.uid;
         if (!localStorage.getItem(key)) {
             localStorage.setItem(key, '1');
-            if (isExistingAccount(user)) return;
+            if (isExistingAccount(user)) { showWhatsNewIfNeeded(user); return; }
+            markWhatsNewSeen(user);
             document.getElementById('welcome-modal').classList.add('show');
             if (typeof langMgr !== 'undefined') langMgr.apply();
+        } else {
+            showWhatsNewIfNeeded(user);
         }
     });
 }
@@ -721,7 +751,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 
 
     /* ---- VÄLKOMSTMODAL ---- */
-    #welcome-modal {
+    #welcome-modal, #whatsnew-modal {
         display: none;
         position: fixed;
         top: 0; left: 0;
@@ -731,7 +761,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
         align-items: center;
         justify-content: center;
     }
-    #welcome-modal.show { display: flex; }
+    #welcome-modal.show, #whatsnew-modal.show { display: flex; }
     .welcome-box {
         background: #0f1419;
         border: 1px solid #1a2030;
@@ -771,12 +801,39 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     .welcome-btn .wb-icon { font-size: 24px; flex-shrink: 0; }
     .welcome-btn .wb-text .wb-title { font-size: 14px; font-weight: 700; color: #fff; }
     .welcome-btn .wb-text .wb-desc { font-size: 11px; color: #888; margin-top: 2px; }
+    .wn-item { display: flex; align-items: center; gap: 14px; text-align: left; margin-bottom: 14px; font-size: 14px; color: #ddd; line-height: 1.4; }
+    .wn-item .wn-icon { font-size: 24px; flex-shrink: 0; }
     .welcome-skip { font-size: 12px; color: #555; cursor: pointer; margin-top: 12px; }
     .welcome-skip:hover { color: #888; }
 
 </style>
 </head>
 <body>
+<!-- NYTT I APPEN -->
+<div id="whatsnew-modal">
+  <div class="welcome-box">
+    <div class="welcome-emoji">✨</div>
+    <div class="welcome-title" data-sv="Nytt i appen" data-en="New in the app" data-fr="Nouveau dans l'application" data-de="Neu in der App">Nytt i appen</div>
+    <div class="welcome-sub"></div>
+    <div class="wn-item"><span class="wn-icon">🔥</span><span data-sv="Uppvärmning – en guidad rutin innan du tränar" data-en="Warm-up – a guided routine before you train" data-fr="Échauffement – une routine guidée avant l'entraînement" data-de="Aufwärmen – eine geführte Routine vor dem Training">Uppvärmning – en guidad rutin innan du tränar</span></div>
+    <div class="wn-item"><span class="wn-icon">🌍</span><span data-sv="Välj språk i menyn, nu även tyska" data-en="Choose your language in the menu, now including German" data-fr="Choisissez la langue dans le menu, maintenant aussi l'allemand" data-de="Wähle die Sprache im Menü, jetzt auch Deutsch">Välj språk i menyn, nu även tyska</span></div>
+    <div class="wn-item"><span class="wn-icon">📊</span><span data-sv="Skjutträning visar effektivitet per avstånd" data-en="Shooting practice now shows efficiency per distance" data-fr="Le tir affiche désormais l'efficacité par distance" data-de="Das Schießtraining zeigt jetzt die Effizienz pro Entfernung">Skjutträning visar effektivitet per avstånd</span></div>
+    <div class="wn-item"><span class="wn-icon">☁️</span><span data-sv="Din träning följer med mellan telefoner när du är inloggad" data-en="Your training follows you between phones when you are logged in" data-fr="Votre entraînement vous suit d'un téléphone à l'autre quand vous êtes connecté" data-de="Dein Training begleitet dich zwischen Handys, wenn du angemeldet bist">Din träning följer med mellan telefoner när du är inloggad</span></div>
+
+    <a href="./lathund.html" class="welcome-btn" style="margin-top:22px">
+      <span class="wb-text">
+        <div class="wb-title" data-sv="Läs mer" data-en="Read more" data-fr="En savoir plus" data-de="Mehr erfahren">Läs mer</div>
+      </span>
+      <span style="margin-left:auto;color:#e8ff47;">→</span>
+    </a>
+    <button class="welcome-btn" onclick="closeWhatsNew()">
+      <span class="wb-text">
+        <div class="wb-title" data-sv="Okej, stäng" data-en="OK, close" data-fr="OK, fermer" data-de="OK, schließen">Okej, stäng</div>
+      </span>
+    </button>
+  </div>
+</div>
+
 <!-- VÄLKOMSTMODAL -->
 <div id="welcome-modal">
   <div class="welcome-box">
@@ -868,7 +925,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
       <p style="color:#8a8a9e;font-size:13px;margin-bottom:16px;" data-sv="Ange din e-post så skickar vi en återställningslänk." data-en="Enter your email and we will send you a reset link." data-fr="Saisissez votre e-mail et nous vous enverrons un lien de réinitialisation." data-de="Gib deine E-Mail-Adresse ein, dann senden wir dir einen Link zum Zurücksetzen.">Ange din e-post så skickar vi en återställningslänk.</p>
       <input type="email" id="forgot-email" placeholder="E-postadress" autocomplete="email"
         style="width:100%;padding:13px;margin-bottom:16px;background:#080810;border:1px solid #1a1f2e;color:#fff;border-radius:8px;font-size:15px;box-sizing:border-box;" data-sv-placeholder="E-postadress" data-en-placeholder="Email address" data-fr-placeholder="Adresse e-mail" data-de-placeholder="E-Mail-Adresse">
-      <button onclick="doForgotPassword()" style="width:100%;padding:14px;background:#e8ff47;color:#080810;border:none;border-radius:8px;font-weight:800;font-size:16px;cursor:pointer;margin-bottom:12px;" data-sv="SKICKA LÄNK" data-en="SEND LINK" data-fr="ENVOYER LE LIEN" data-de="LINK SENDEN">SKICKA LÄNK</button>
+      <button id="forgot-btn" onclick="doForgotPassword()" style="width:100%;padding:14px;background:#e8ff47;color:#080810;border:none;border-radius:8px;font-weight:800;font-size:16px;cursor:pointer;margin-bottom:12px;" data-sv="SKICKA LÄNK" data-en="SEND LINK" data-fr="ENVOYER LE LIEN" data-de="LINK SENDEN">SKICKA LÄNK</button>
       <button onclick="showTab('login')" style="width:100%;padding:10px;background:transparent;border:1px solid #1a1f2e;color:#8a8a9e;border-radius:8px;font-size:14px;cursor:pointer;" data-sv="Tillbaka" data-en="Back" data-fr="Retour" data-de="Zurück">Tillbaka</button>
     </div>
 
@@ -1372,15 +1429,55 @@ async function doRegister() {
 }
 
 // Glömt lösenord
+// Knappen låses en stund efter varje sändning. Flera tryck i rad ger flera länkar,
+// och bara den senaste fungerar (de äldre ger felet "länken har gått ut eller redan använts").
+let FORGOT_COOLDOWN_SEK = 60;
+let forgotTimer = null;
+
+function startForgotCooldown() {
+  const btn = document.getElementById('forgot-btn');
+  if (!btn) return;
+  let kvar = FORGOT_COOLDOWN_SEK;
+  const again = {sv: "SKICKA IGEN", en: "SEND AGAIN", fr: "RENVOYER", de: "ERNEUT SENDEN"};
+  btn.disabled = true;
+  btn.style.opacity = '0.5';
+  btn.textContent = langMgr.t(again) + ' (' + kvar + ')';
+  clearInterval(forgotTimer);
+  forgotTimer = setInterval(() => {
+    kvar--;
+    if (kvar <= 0) {
+      clearInterval(forgotTimer);
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.textContent = langMgr.t(again);
+    } else {
+      btn.textContent = langMgr.t(again) + ' (' + kvar + ')';
+    }
+  }, 1000);
+}
+
 async function doForgotPassword() {
   const email = document.getElementById('forgot-email').value.trim();
   if (!email) { setAuthStatus(langMgr.t({sv: "Ange din e-postadress.", en: "Enter your email address.", fr: "Saisissez votre adresse e-mail.", de: "Gib deine E-Mail-Adresse ein."})); return; }
-  
+
+  const btn = document.getElementById('forgot-btn');
+  if (btn && btn.disabled) return;   // redan skickat nyss
+  if (btn) btn.disabled = true;      // låses medan vi skickar
+
   try {
+    // Mailet och Firebase-sidan följer användarens språk (sv, en, fr, de)
+    firebase.auth().languageCode = langMgr.lang;
     await firebase.auth().sendPasswordResetEmail(email);
-    setAuthStatus(langMgr.t({sv: "✅ Återställningslänk skickad! Kolla din e-post.", en: "✅ Reset link sent! Check your email.", fr: "✅ Lien de réinitialisation envoyé ! Vérifiez votre e-mail.", de: "✅ Link zum Zurücksetzen gesendet! Prüfe deine E-Mails."}), true);
-    setTimeout(() => showTab('login'), 3000);
+    // Firebase avslöjar inte om adressen finns, så texten säger "om"
+    setAuthStatus(langMgr.t({
+      sv: "✅ Om adressen finns hos oss har ett mail skickats. Kolla skräpposten, öppna den nyaste länken och klicka en gång. Länken gäller i en timme.",
+      en: "✅ If the address is registered, an email has been sent. Check your spam folder, open the newest link and click it once. The link is valid for one hour.",
+      fr: "✅ Si l'adresse est enregistrée, un e-mail a été envoyé. Vérifiez vos courriers indésirables, ouvrez le lien le plus récent et cliquez-y une seule fois. Le lien est valable une heure.",
+      de: "✅ Wenn die Adresse registriert ist, wurde eine E-Mail gesendet. Prüfe den Spam-Ordner, öffne den neuesten Link und klicke nur einmal darauf. Der Link ist eine Stunde gültig."
+    }), true);
+    startForgotCooldown();
   } catch (e) {
+    if (btn) btn.disabled = false;
     setAuthStatus(getAuthError(e.code));
   }
 }
