@@ -960,7 +960,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 </div>
 
 <!-- SYNC BADGE -->
-<div id="sync-status-badge" style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.8); color: #e8ff47; padding: 8px 12px; border-radius: 6px; font-size: 12px; z-index: 999; border: 1px solid #1a1f2e;">📱 Offline</div>
+<div id="sync-status-badge" style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.8); color: #e8ff47; padding: 8px 12px; border-radius: 6px; font-size: 12px; z-index: 999; border: 1px solid #1a1f2e;" data-sv="📱 Inte inloggad" data-en="📱 Not logged in" data-fr="📱 Non connecté" data-de="📱 Nicht angemeldet">📱 Inte inloggad</div>
 
 
 <!-- HEADER -->
@@ -1631,6 +1631,8 @@ function onUserLoggedIn(user) {
   // Uppdatera sync-badge
   const syncBadge = document.getElementById('sync-status-badge');
   if (syncBadge) {
+    // Ta bort språkattributen så att språksystemet inte skriver tillbaka "Inte inloggad"
+    syncBadge.removeAttribute('data-sv');
     syncBadge.textContent = langMgr.t({sv: "☁️ Inloggad", en: "☁️ Logged in", fr: "☁️ Connecté", de: "☁️ Angemeldet"});
     syncBadge.style.color = '#4ade80';
   }

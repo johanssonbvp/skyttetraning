@@ -388,6 +388,8 @@ function updateSyncBadge(synced) {
   lastBadgeState = synced;
   var badge = document.getElementById('sync-status-badge');
   if (!badge) return;
+  // Märket startar som "Inte inloggad" med språkattribut. När synken tar över sköter vi texten själva
+  badge.removeAttribute('data-sv');
 
   var texts = synced
     ? { sv: '☁️ Synkat', en: '☁️ Synced', fr: '☁️ Synchronisé', de: '☁️ Synchronisiert' }
