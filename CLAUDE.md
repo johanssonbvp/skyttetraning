@@ -44,6 +44,11 @@
 - Omgångsanalysen (`renderRoundAnalysis`) bygger på `roundScores` och `roundActions`. Firebase kan lämna `null` i listor, så filtrera alltid
 - Procent räknas vägt efter antal kast (`histPct`, `pctOfList`, `teamPct`), inte som medelvärde av matchernas procent
 - Spelarvyn (`#player-stats-root`) flyttas mellan fliken SPELARE och startsidans statistikskärm (`openStatsScreen`/`closeStatsScreen`)
+- En omgång utan poäng (lillen död) sparas som `roundScores[r] = { winner: 'none', points: 0 }`. "Hoppa över" sparar ingenting och betyder okänt resultat. Kod som läser `winner` måste hantera `'none'` (ändra inte ställningen)
+- `buildRounds(m)` ger omgångarna med ställning före varje omgång. `complete` är false om en omgång (utom den sista) saknar resultat, och då hoppas matchen över i pressstatistiken (`buildPressStats`)
+- Återhämtning efter miss räknas på kasten i ordning (`throwSequences`, `addRecovery`). Äldre matcher utan `roundActions` använder `timeline` (bara eget lag)
+- Gränser innan siffror visas: `MIN_KAST_PRESS` (12), `MIN_KAST_REC` (10), `MIN_KAST_MOTST` (10). Under gränsen visas "Samlar data"
+- Motståndarprofiler byggs av `buildOpponentProfiles()` (nyckel = namnet med små bokstäver, standardnamnet "Motståndare" hoppas över). Förslag på namn och sammanfattning före match: `refreshOpponentNames`, `updateOpponentHint`
 
 ## Viktiga arbetsflöden
 1. Lägg nya filer i `CORE_FILES` i `sw.js` (cache-namnet byts automatiskt per dag, ingen manuell höjning behövs)
