@@ -36,6 +36,15 @@
 - Rekord, bästa och sämsta räknas från pass med minst 20 skott (`MIN_SKOTT_REKORD`), annars alla pass. Snittet vägs efter antal skott (`wAvg`)
 - Resultatrutan efter ett fullt avstånd har "Klar för idag". Passet sparas redan när serien är full
 
+## Bra att veta om matchstatistiken (`matchstatistik.html`)
+- Sidan har sin egen lagring (`coaches/<id>/matches` och `/players` i Firebase, plus localStorage) och använder inte `SYNC_KEYS`. Den loggar in med Firebase-kontot, så sökvägen är samma som kontots id
+- Namn från användare läggs alltid i HTML via `esc()`. Använd den även för nya ställen, annars kan namn med ' eller " förstöra sidan
+- Texter finns i `MS` och hämtas med `mt('nyckel')`. Nya texter ska finnas på sv/en/fr/de. Knappar och etiketter som byggs i JavaScript behöver `data-sv`/`data-en`/`data-fr`/`data-de`
+- Resultat per match kommer från `match.score` och `matchResult()`. Matcher med 0-0 eller utan poäng räknas inte som vunna eller förlorade
+- Omgångsanalysen (`renderRoundAnalysis`) bygger på `roundScores` och `roundActions`. Firebase kan lämna `null` i listor, så filtrera alltid
+- Procent räknas vägt efter antal kast (`histPct`, `pctOfList`, `teamPct`), inte som medelvärde av matchernas procent
+- Spelarvyn (`#player-stats-root`) flyttas mellan fliken SPELARE och startsidans statistikskärm (`openStatsScreen`/`closeStatsScreen`)
+
 ## Viktiga arbetsflöden
 1. Lägg nya filer i `CORE_FILES` i `sw.js` (cache-namnet byts automatiskt per dag, ingen manuell höjning behövs)
 2. Lägg till `data-sv` / `data-en` / `data-fr` / `data-de` på ALLA nya textelement

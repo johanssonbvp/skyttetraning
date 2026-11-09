@@ -18,7 +18,7 @@
 | 🟡 **Läggträning** | `laggtraning.html` | Sex övningstyper för läggning, med statistik och rekord |
 | 🎯 **Precisionsskytte** | `precisionsskytte.html` | 20 skott på 5 stationer enligt förbundets regler, upp till 100 poäng |
 | 🔢 **Poängräknare** | `tavlingssimulator.html` | Poäng i singel, dubbel och trippel, med ångra-knapp |
-| 📊 **Matchstatistik** | `matchstatistik.html` | Live-loggning av varje klot under lagmatcher, med statistik efteråt |
+| 📊 **Matchstatistik** | `matchstatistik.html` | Live-loggning av varje klot under lagmatcher, med resultat, omgångsanalys och spelarstatistik efteråt |
 | 📔 **Träningsdagbok** | `dagbok.html` | Datum, plats, känsla, anteckningar, kalender och foton |
 
 ### Statistiken i skjutträningen
