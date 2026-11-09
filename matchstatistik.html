@@ -82,6 +82,12 @@
     border: 1px solid #2a3548; background: transparent; color: #999; font-size: 13px; cursor: pointer;
 }
 .round-modal-skip:hover { color: #ccc; border-color: #555; }
+.round-modal-dead {
+    width: 100%; padding: 0.75rem; margin-top: 1rem; border-radius: 8px;
+    border: 1px solid rgba(232,255,71,0.4); background: rgba(232,255,71,0.08); color: #e8ff47;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+}
+.round-modal-dead:hover { background: rgba(232,255,71,0.18); }
 
 /* ---- PLAYER DATABASE ---- */
 .player-select-wrap { position: relative; }
@@ -737,7 +743,9 @@
             </div>
             <div class="input-group">
                 <label data-sv="Motståndarlag" data-fr="Équipe adverse" data-en="Opponent team" data-de="Gegnerische Mannschaft">Motståndarlag</label>
-                <input type="text" id="inp-opponent" placeholder="T.ex. IK Boule" data-sv-placeholder="T.ex. IK Boule" data-en-placeholder="E.g. IK Boule" data-fr-placeholder="Ex. IK Boule" data-de-placeholder="z. B. IK Boule">
+                <input type="text" id="inp-opponent" list="opp-names" oninput="app.updateOpponentHint()" autocomplete="off" placeholder="T.ex. IK Boule" data-sv-placeholder="T.ex. IK Boule" data-en-placeholder="E.g. IK Boule" data-fr-placeholder="Ex. IK Boule" data-de-placeholder="z. B. IK Boule">
+                <datalist id="opp-names"></datalist>
+                <div id="opp-hint" style="display:none;font-size:12px;color:#999;margin-top:6px;"></div>
             </div>
 
             <!-- Spelare 1: Läggare (alltid synlig) -->
@@ -991,10 +999,14 @@
                 </div>
                 <div id="pdet-recent"></div>
                 <div id="pdet-positions"></div>
+                <div id="pdet-press"></div>
+                <div id="pdet-recovery"></div>
                 <div style="font-size:13px;font-weight:700;color:#e8ff47;margin:1rem 0 0.5rem;"
                     data-sv="Matchhistorik" data-en="Match history" data-fr="Historique des matchs" data-de="Spielverlauf">Matchhistorik</div>
                 <div id="pdet-match-list"></div>
             </div>
+            <!-- Motståndarprofil (fylls av showOpponentProfile) -->
+            <div id="opp-profile-view" style="display:none;"></div>
           </div><!-- /player-stats-root -->
         </div>
 
@@ -1169,7 +1181,50 @@ const MS = {
   raLaggLost: {sv:"Vår lägg % i omgångar vi förlorade",en:"Our pointer % in rounds we lost",fr:"Notre pointé % dans les manches perdues",de:"Unser Legen % in verlorenen Runden"},
   raSkottWon: {sv:"Vår skott % i omgångar vi vann",en:"Our shot % in rounds we won",fr:"Notre tir % dans les manches gagnées",de:"Unser Schießen % in gewonnenen Runden"},
   raSkottLost: {sv:"Vår skott % i omgångar vi förlorade",en:"Our shot % in rounds we lost",fr:"Notre tir % dans les manches perdues",de:"Unser Schießen % in verlorenen Runden"},
-  raFewRounds: {sv:"Obs: få omgångar, så siffrorna är bara en fingervisning.",en:"Note: few rounds, so the numbers are only a rough guide.",fr:"Remarque : peu de manches, les chiffres ne sont qu'une indication.",de:"Hinweis: wenige Runden, die Zahlen sind nur ein grober Anhaltspunkt."}
+  raFewRounds: {sv:"Obs: få omgångar, så siffrorna är bara en fingervisning.",en:"Note: few rounds, so the numbers are only a rough guide.",fr:"Remarque : peu de manches, les chiffres ne sont qu'une indication.",de:"Hinweis: wenige Runden, die Zahlen sind nur ein grober Anhaltspunkt."},
+
+  // ---- Omgång utan poäng ----
+  raNoPoints: {sv:"Ingen poäng",en:"No points",fr:"Aucun point",de:"Keine Punkte"},
+  raRoundsDead: {sv:"Omgångar utan poäng",en:"Rounds with no points",fr:"Manches sans point",de:"Runden ohne Punkte"},
+
+  // ---- Under press ----
+  prTitle: {sv:"Under press",en:"Under pressure",fr:"Sous pression",de:"Unter Druck"},
+  prSub: {sv:"Så går det beroende på ställningen före omgången",en:"How it goes depending on the score before the round",fr:"Comment cela se passe selon le score avant la manche",de:"Wie es je nach Spielstand vor der Runde läuft"},
+  prBehind: {sv:"Vi ligger under",en:"We are behind",fr:"Nous sommes menés",de:"Wir liegen zurück"},
+  prTied: {sv:"Lika ställning",en:"Score level",fr:"Égalité",de:"Gleichstand"},
+  prAhead: {sv:"Vi leder",en:"We are ahead",fr:"Nous menons",de:"Wir führen"},
+  prDecisive: {sv:"Avgörande omgång (någon har minst 10)",en:"Deciding round (someone has 10 or more)",fr:"Manche décisive (quelqu'un a 10 ou plus)",de:"Entscheidende Runde (jemand hat mindestens 10)"},
+  prWonOf: {sv:"vann {w} av {n} omgångar",en:"won {w} of {n} rounds",fr:"{w} manches gagnées sur {n}",de:"{w} von {n} Runden gewonnen"},
+  prDeadSuffix: {sv:", {d} utan poäng",en:", {d} with no points",fr:", {d} sans point",de:", {d} ohne Punkte"},
+  prCollecting: {sv:"Samlar data ({n} av {m} kast)",en:"Collecting data ({n} of {m} throws)",fr:"Collecte de données ({n} sur {m} boules)",de:"Daten werden gesammelt ({n} von {m} Kugeln)"},
+  prBasedOn: {sv:"Baserat på {n} av {m} matcher med fullständiga omgångsresultat",en:"Based on {n} of {m} matches with complete round results",fr:"Basé sur {n} match(s) sur {m} avec des résultats de manche complets",de:"Basierend auf {n} von {m} Spielen mit vollständigen Rundenergebnissen"},
+  prNone: {sv:"Ingen pressstatistik ännu. Ange poäng efter varje omgång (eller Ingen poäng) i minst en match.",en:"No pressure statistics yet. Enter the points after every round (or No points) in at least one match.",fr:"Pas encore de statistiques sous pression. Saisissez les points après chaque manche (ou Aucun point) dans au moins un match.",de:"Noch keine Druckstatistik. Gib nach jeder Runde die Punkte (oder Keine Punkte) in mindestens einem Spiel ein."},
+  prWorse: {sv:"Tyder på att det blir svårare när det är läge att ligga under eller avgöra.",en:"Suggests it gets harder when behind or when the round decides the match.",fr:"Suggère que c'est plus difficile quand on est mené ou quand la manche est décisive.",de:"Deutet darauf hin, dass es schwerer wird, wenn man zurückliegt oder die Runde entscheidet."},
+  prBetter: {sv:"Tyder på att det går bra även under press.",en:"Suggests it goes well even under pressure.",fr:"Suggère que cela se passe bien même sous pression.",de:"Deutet darauf hin, dass es auch unter Druck gut läuft."},
+
+  // ---- Återhämtning efter miss ----
+  recTitle: {sv:"Återhämtning efter miss",en:"Recovery after a miss",fr:"Récupération après un raté",de:"Erholung nach einem Fehlschuss"},
+  recAfterMiss: {sv:"efter en miss",en:"after a miss",fr:"après un raté",de:"nach einem Fehlschuss"},
+  recAfterHit: {sv:"efter en träff",en:"after a hit",fr:"après une réussite",de:"nach einem Treffer"},
+  recOverall: {sv:"totalt",en:"overall",fr:"au total",de:"gesamt"},
+  recWorse: {sv:"Tyder på att en miss påverkar nästa kast. Träna på att nollställa dig direkt efter en miss.",en:"Suggests a miss affects the next throw. Practise resetting right after a miss.",fr:"Suggère qu'un raté affecte le tir suivant. Entraînez-vous à vous remettre à zéro juste après un raté.",de:"Deutet darauf hin, dass ein Fehlschuss den nächsten Wurf beeinflusst. Übe, dich direkt nach einem Fehlschuss zurückzusetzen."},
+  recBetter: {sv:"Tyder på att en miss inte påverkar nästa kast negativt.",en:"Suggests a miss does not affect the next throw negatively.",fr:"Suggère qu'un raté n'affecte pas négativement le tir suivant.",de:"Deutet darauf hin, dass ein Fehlschuss den nächsten Wurf nicht negativ beeinflusst."},
+
+  // ---- Motståndarinfo ----
+  opMatches: {sv:"Matcher",en:"Matches",fr:"Matchs",de:"Spiele"},
+  opRecord: {sv:"Våra resultat mot dem",en:"Our results against them",fr:"Nos résultats contre eux",de:"Unsere Ergebnisse gegen sie"},
+  opPoints: {sv:"Poäng (vi - de)",en:"Points (us - them)",fr:"Points (nous - eux)",de:"Punkte (wir - sie)"},
+  opPositions: {sv:"Deras kast per position",en:"Their throws by position",fr:"Leurs boules par poste",de:"Ihre Kugeln nach Position"},
+  opStrongest: {sv:"Starkast",en:"Strongest",fr:"Le plus fort",de:"Am stärksten"},
+  opWeakest: {sv:"Svagast",en:"Weakest",fr:"Le plus faible",de:"Am schwächsten"},
+  opCollect: {sv:"Samlar data om deras starka och svaga sidor (minst 10 kast per position).",en:"Collecting data on their strengths and weaknesses (at least 10 throws per position).",fr:"Collecte de données sur leurs points forts et faibles (au moins 10 boules par poste).",de:"Daten über ihre Stärken und Schwächen werden gesammelt (mindestens 10 Kugeln pro Position)."},
+  opRecovery: {sv:"Deras återhämtning efter miss",en:"Their recovery after a miss",fr:"Leur récupération après un raté",de:"Ihre Erholung nach einem Fehlschuss"},
+  opLastMeetings: {sv:"Tidigare möten",en:"Previous meetings",fr:"Rencontres précédentes",de:"Frühere Begegnungen"},
+  opHintPrev: {sv:"Tidigare möten: {rec} ({pf}–{pa}).",en:"Previous meetings: {rec} ({pf}–{pa}).",fr:"Rencontres précédentes : {rec} ({pf}–{pa}).",de:"Frühere Begegnungen: {rec} ({pf}–{pa})."},
+  opHintMeetings: {sv:"Tidigare möten: {n} (utan resultat).",en:"Previous meetings: {n} (no result).",fr:"Rencontres précédentes : {n} (sans résultat).",de:"Frühere Begegnungen: {n} (ohne Ergebnis)."},
+  opHintWeak: {sv:"Deras svagaste: {w}.",en:"Their weakest: {w}.",fr:"Leur point faible : {w}.",de:"Ihre schwächste Stelle: {w}."},
+  opHintLink: {sv:"Visa profil",en:"View profile",fr:"Voir le profil",de:"Profil anzeigen"},
+  backWord: {sv:"Tillbaka",en:"Back",fr:"Retour",de:"Zurück"}
 };
 
 // Gör text säker att lägga in i HTML (namn med t.ex. ' eller " eller < kan annars förstöra sidan)
@@ -1202,6 +1257,11 @@ function relabel(label) {
     }
     return label;
 }
+
+// Minsta antal kast innan en siffra visas (annars "Samlar data"), samma tanke som i skjutträningen
+const MIN_KAST_PRESS = 12;   // kast i en pressituation (lägg + skott)
+const MIN_KAST_REC = 10;     // kast efter en miss (per sort)
+const MIN_KAST_MOTST = 10;   // motståndarens kast per position och sort
 
 class MatchApp {
     constructor() {
@@ -1902,7 +1962,7 @@ class MatchApp {
             if (this.match.roundScores && this.match.roundScores[this.match.currentRound - 1]) {
                 const prevRound = this.match.currentRound - 1;
                 const prevResult = this.match.roundScores[prevRound];
-                if (prevResult && this.match.score) {
+                if (prevResult && this.match.score && (prevResult.winner === 'own' || prevResult.winner === 'opp')) {
                     this.match.score[prevResult.winner] -= prevResult.points;
                 }
                 delete this.match.roundScores[prevRound];
@@ -1988,8 +2048,9 @@ class MatchApp {
         if (!this.match.score) this.match.score = { own: 0, opp: 0 };
 
         const roundNum = this.match.currentRound;
+        // winner är 'own', 'opp' eller 'none' (omgång utan poäng, t.ex. lillen gått död)
         this.match.roundScores[roundNum] = { winner, points };
-        this.match.score[winner] += points;
+        if (winner === 'own' || winner === 'opp') this.match.score[winner] += points;
 
         this.updateScoreDisplay();
         this.closeRoundScoreModal();
@@ -2168,6 +2229,8 @@ class MatchApp {
 
     // ---- RENDER HISTORY ----
     renderHistory() {
+        this.refreshOpponentNames();
+        this.updateOpponentHint();
         const homeEl = document.getElementById('home-history-list');
         const matchEl = document.getElementById('match-history-list');
 
@@ -2611,7 +2674,7 @@ class MatchApp {
             csv += mt('xRoundHdr') + `\n`;
             Object.keys(m.roundScores).sort((a,b) => +a - +b).forEach(r => {
                 const res = m.roundScores[r];
-                const winnerName = res.winner === 'own' ? (m.team || mt('we')) : (m.opponent || mt('oppShort'));
+                const winnerName = res.winner === 'own' ? (m.team || mt('we')) : res.winner === 'none' ? mt('raNoPoints') : (m.opponent || mt('oppShort'));
                 csv += `${r},"${winnerName}",${res.points}\n`;
             });
             csv += `\n`;
@@ -2754,7 +2817,7 @@ class MatchApp {
             csv += mt('xRoundHdr') + `\n`;
             Object.keys(m.roundScores).sort((a,b) => +a - +b).forEach(r => {
                 const res = m.roundScores[r];
-                const winnerName = res.winner === 'own' ? (m.team || mt('we')) : (m.opponent || mt('oppShort'));
+                const winnerName = res.winner === 'own' ? (m.team || mt('we')) : res.winner === 'none' ? mt('raNoPoints') : (m.opponent || mt('oppShort'));
                 csv += `${r},"${winnerName}",${res.points}\n`;
             });
             csv += `\n`;
@@ -2896,7 +2959,7 @@ class MatchApp {
             csv += mt('xRoundResults') + `\n` + mt('xRoundHdr') + `\n`;
             Object.keys(m.roundScores).sort((a,b) => +a - +b).forEach(r => {
                 const res = m.roundScores[r];
-                const winnerName = res.winner === 'own' ? (m.team || mt('we')) : (m.opponent || mt('oppShort'));
+                const winnerName = res.winner === 'own' ? (m.team || mt('we')) : res.winner === 'none' ? mt('raNoPoints') : (m.opponent || mt('oppShort'));
                 csv += `${r},"${winnerName}",${res.points}\n`;
             });
             csv += `\n`;
@@ -3243,17 +3306,15 @@ class MatchApp {
     }
 
     // ---- LAGETS RESULTAT (vinster och förluster) ----
-    renderTeamResults() {
-        const el = document.getElementById('team-results');
-        if (!el) return;
+    // Kortet med vinster och förluster (som text). Tom text om det inte finns några matcher.
+    teamResultsHtml() {
         const all = this.history || [];
-        if (!all.length) { el.innerHTML = ''; return; }
+        if (!all.length) return '';
 
         const rated = all.filter(m => this.matchResult(m));
         const title = `<div class="card-title">${mt('teamResultsTitle')}</div>`;
         if (!rated.length) {
-            el.innerHTML = `<div class="card">${title}<div style="color:#999;font-size:13px;">${mt('rNoResults')}</div></div>`;
-            return;
+            return `<div class="card">${title}<div style="color:#999;font-size:13px;">${mt('rNoResults')}</div></div>`;
         }
 
         const rec = this.countResults(rated.map(m => ({ result: this.matchResult(m) })));
@@ -3281,7 +3342,7 @@ class MatchApp {
             const name = (m.opponent || '').trim();
             if (!name || defaults.includes(name.toLowerCase())) return;
             const key = name.toLowerCase();
-            if (!opps[key]) opps[key] = { name: name, w: 0, d: 0, l: 0, pf: 0, pa: 0, n: 0 };
+            if (!opps[key]) opps[key] = { key: key, name: name, w: 0, d: 0, l: 0, pf: 0, pa: 0, n: 0 };
             const r = this.matchResult(m);
             opps[key][r === 'win' ? 'w' : r === 'draw' ? 'd' : 'l']++;
             opps[key].pf += m.score.own;
@@ -3294,14 +3355,14 @@ class MatchApp {
             oppHtml = `<div style="font-size:13px;font-weight:700;color:#e8ff47;margin:1rem 0 0.25rem;">${mt('rVsOpponents')}</div>` +
                 oppList.map(o => {
                     const rec = `${o.w}${mt('rWinShort')}` + (o.d ? ` ${o.d}${mt('rDrawShort')}` : '') + ` ${o.l}${mt('rLossShort')}`;
-                    return `<div class="player-match-row">
+                    return `<div class="player-match-row" style="cursor:pointer;" data-key="${esc(o.key)}" onclick="app.showOpponentProfile(this.dataset.key)">
                         <span class="pmr-name">${esc(o.name)}</span>
-                        <span class="pmr-stats">${rec} • ${o.pf}–${o.pa}</span>
+                        <span class="pmr-stats">${rec} • ${o.pf}–${o.pa} ›</span>
                     </div>`;
                 }).join('');
         }
 
-        el.innerHTML = `<div class="card">${title}
+        return `<div class="card">${title}
             <div class="player-stat-grid">
                 <div class="player-stat-box"><div class="psb-val trend-up">${rec.w}</div><div class="psb-lbl">${mt('rWins')}</div></div>
                 <div class="player-stat-box"><div class="psb-val trend-down">${rec.l}</div><div class="psb-lbl">${mt('rLosses')}</div></div>
@@ -3311,6 +3372,18 @@ class MatchApp {
             <div style="font-size:12px;color:#999;margin-bottom:0.5rem;">${mt('rWithResult', { n: rec.n, m: all.length })}</div>
             ${extra}${oppHtml}
         </div>`;
+    }
+
+    // Lagets kort överst i spelarvyn: resultat, under press och återhämtning
+    renderTeamResults() {
+        const el = document.getElementById('team-results');
+        if (!el) return;
+        if (!(this.history || []).length) { el.innerHTML = ''; return; }
+        const press = this.buildPressStats();
+        const rec = this.buildRecoveryStats();
+        el.innerHTML = this.teamResultsHtml() +
+            this.renderPressCard(press.team, press.used, press.total) +
+            this.renderRecoveryCard(rec.team);
     }
 
     // ---- OMGÅNGSANALYS (visas i matchdetaljerna) ----
@@ -3331,21 +3404,25 @@ class MatchApp {
         }
 
         const labels = [], scored = [], conceded = [], margin = [];
-        let diff = 0, won = 0, lost = 0, ptsWon = 0, ptsLost = 0, streak = 0, bestStreak = 0;
+        let diff = 0, won = 0, lost = 0, deadRounds = 0, ptsWon = 0, ptsLost = 0, streak = 0, bestStreak = 0;
         const agg = { won: { lh: 0, lt: 0, sh: 0, st: 0 }, lost: { lh: 0, lt: 0, sh: 0, st: 0 } };
 
         rounds.forEach(r => {
             const rs = scores[r];
             const own = rs.winner === 'own';
+            const dead = rs.winner === 'none';   // omgång utan poäng (lillen död)
             labels.push(mt('roundWord') + ' ' + r);
             scored.push(own ? rs.points : 0);
-            conceded.push(own ? 0 : -rs.points);
-            diff += own ? rs.points : -rs.points;
+            conceded.push(own || dead ? 0 : -rs.points);
+            diff += own ? rs.points : (dead ? 0 : -rs.points);
             margin.push(diff);
             if (own) { won++; ptsWon += rs.points; streak++; bestStreak = Math.max(bestStreak, streak); }
+            else if (dead) { deadRounds++; streak = 0; }
             else { lost++; ptsLost += rs.points; streak = 0; }
 
             // Lagets egna kast i omgången (motståndarnas nycklar börjar med opp_)
+            // Omgångar utan poäng ingår inte i jämförelsen vunna mot förlorade
+            if (dead) return;
             const acts = (m.roundActions && m.roundActions[r]) || {};
             const bucket = own ? agg.won : agg.lost;
             Object.keys(acts).forEach(k => {
@@ -3367,6 +3444,7 @@ class MatchApp {
             <div class="card">${cardTitle}
                 ${row(mt('raRoundsWon'), won)}
                 ${row(mt('raRoundsLost'), lost)}
+                ${deadRounds ? row(mt('raRoundsDead'), deadRounds) : ''}
                 ${row(mt('raAvgWon'), avg(ptsWon, won))}
                 ${row(mt('raAvgLost'), avg(ptsLost, lost))}
                 ${row(mt('raStreak'), bestStreak)}
@@ -3428,6 +3506,373 @@ class MatchApp {
         document.getElementById('screen-setup').style.display = 'block';
     }
 
+    // ============================================================
+    // OMGÅNGSDATA, PRESS, ÅTERHÄMTNING OCH MOTSTÅNDARINFO
+    // ============================================================
+
+    // Plockar ut alla omgångar i en match med ställningen före varje omgång.
+    // complete är false om en omgång (utom den sista) saknar resultat. Då stämmer inte
+    // ställningen längre, och matchen används inte för pressstatistiken.
+    // En omgång utan poäng (winner 'none') räknas som en vanlig omgång, ställningen ändras inte.
+    buildRounds(m) {
+        const scores = m.roundScores || {};
+        const acts = m.roundActions || {};
+        const nums = new Set();
+        // Firebase kan lämna tomma platser (null) i listor, därför kontrolleras varje värde
+        Object.keys(scores).forEach(r => { if (scores[r] && scores[r].winner) nums.add(+r); });
+        Object.keys(acts).forEach(r => { if (acts[r]) nums.add(+r); });
+        const list = [...nums].filter(n => n > 0).sort((a, b) => a - b);
+        let own = 0, opp = 0, complete = list.length > 0;
+        const rounds = list.map((r, i) => {
+            const rs = scores[r] && scores[r].winner ? scores[r] : null;
+            if (!rs && i < list.length - 1) complete = false;
+            const round = { r: r, preOwn: own, preOpp: opp, winner: rs ? rs.winner : null, acts: acts[r] || {} };
+            if (rs && rs.winner === 'own') own += rs.points;
+            else if (rs && rs.winner === 'opp') opp += rs.points;
+            return round;
+        });
+        return { rounds: rounds, complete: complete };
+    }
+
+    // Vilka lägen en omgång tillhör utifrån ställningen före den
+    pressSituations(round) {
+        const s = [];
+        if (round.preOwn < round.preOpp) s.push('behind');
+        else if (round.preOwn > round.preOpp) s.push('ahead');
+        else s.push('tied');
+        if (Math.max(round.preOwn, round.preOpp) >= 10) s.push('decisive');
+        return s;
+    }
+
+    // Vårt lags kast i en omgång: [{name, type, hit}]
+    ownThrowsInRound(m, round) {
+        const out = [];
+        Object.keys(round.acts).forEach(k => {
+            if (k.indexOf('opp_') === 0) return;
+            const p = (m.players || [])[+k];
+            if (!p) return;
+            (round.acts[k] || []).forEach(a => { if (a) out.push({ name: p.name, type: a.type, hit: !!a.hit }); });
+        });
+        return out;
+    }
+
+    emptySit() { return { rounds: 0, known: 0, won: 0, dead: 0, lh: 0, lt: 0, sh: 0, st: 0 }; }
+
+    // ---- PRESS: lägg, skott och omgångsvinster beroende på ställningen ----
+    // Ger statistik för laget och för varje spelare. Bara matcher med fullständiga omgångsresultat räknas.
+    buildPressStats() {
+        const keys = ['behind', 'tied', 'ahead', 'decisive', 'pressed', 'calm'];
+        const mk = () => { const o = {}; keys.forEach(k => { o[k] = this.emptySit(); }); return o; };
+        const res = { team: mk(), players: {}, used: 0, total: (this.history || []).length };
+
+        (this.history || []).forEach(m => {
+            const built = this.buildRounds(m);
+            if (!built.complete) return;
+            res.used++;
+            built.rounds.forEach(rd => {
+                const sits = this.pressSituations(rd);
+                const pressed = sits.includes('behind') || sits.includes('decisive');
+                const bucketKeys = sits.concat([pressed ? 'pressed' : 'calm']);
+                const throws = this.ownThrowsInRound(m, rd);
+                if (!throws.length) return;
+
+                const add = (target, thr) => {
+                    bucketKeys.forEach(k => {
+                        const b = target[k];
+                        b.rounds++;
+                        if (rd.winner) b.known++;
+                        if (rd.winner === 'own') b.won++;
+                        else if (rd.winner === 'none') b.dead++;
+                        thr.forEach(t => {
+                            if (t.type === 'lagg') { b.lt++; if (t.hit) b.lh++; }
+                            else { b.st++; if (t.hit) b.sh++; }
+                        });
+                    });
+                };
+                add(res.team, throws);
+                const byName = {};
+                throws.forEach(t => { (byName[t.name] = byName[t.name] || []).push(t); });
+                Object.keys(byName).forEach(name => {
+                    if (!res.players[name]) res.players[name] = mk();
+                    add(res.players[name], byName[name]);
+                });
+            });
+        });
+        return res;
+    }
+
+    // Kort med presstatistik. stats är en post från buildPressStats (team eller en spelare).
+    renderPressCard(stats, used, total) {
+        const title = `<div class="card-title">${mt('prTitle')}</div>`;
+        const sub = `<div style="font-size:12px;color:#999;margin:-0.5rem 0 0.5rem;">${mt('prSub')}</div>`;
+        if (!used || !stats) {
+            return `<div class="card">${title}<div style="color:#999;font-size:13px;">${mt('prNone')}</div></div>`;
+        }
+        const pct = (h, t) => t > 0 ? Math.round(h / t * 100) + '%' : '—';
+        const rows = [['behind', 'prBehind'], ['tied', 'prTied'], ['ahead', 'prAhead'], ['decisive', 'prDecisive']].map(([k, lbl]) => {
+            const b = stats[k];
+            const n = b.lt + b.st;
+            let val;
+            if (n < MIN_KAST_PRESS) {
+                val = mt('prCollecting', { n: n, m: MIN_KAST_PRESS });
+            } else {
+                val = `${mt('lagg')} ${pct(b.lh, b.lt)} • ${mt('skott')} ${pct(b.sh, b.st)} • ` +
+                    mt('prWonOf', { w: b.won, n: b.known }) + (b.dead ? mt('prDeadSuffix', { d: b.dead }) : '');
+            }
+            return `<div class="trend-row" style="gap:12px;"><span class="trend-label">${mt(lbl)}</span><span class="trend-val" style="text-align:right;">${val}</span></div>`;
+        }).join('');
+
+        // Tolkning: träffprocent under press mot övriga omgångar (båda behöver minst gränsen)
+        let insight = '';
+        const p = stats.pressed, c = stats.calm;
+        if (p.lt + p.st >= MIN_KAST_PRESS && c.lt + c.st >= MIN_KAST_PRESS) {
+            const pp = (p.lh + p.sh) / (p.lt + p.st) * 100;
+            const cp = (c.lh + c.sh) / (c.lt + c.st) * 100;
+            if (pp - cp <= -8) insight = mt('prWorse');
+            else if (pp - cp >= 8) insight = mt('prBetter');
+        }
+        const note = `<div style="font-size:12px;color:#999;margin-top:0.5rem;">${mt('prBasedOn', { n: used, m: total })}</div>`;
+        const ins = insight ? `<div style="font-size:13px;color:#e8ff47;margin-top:0.5rem;">${insight}</div>` : '';
+        return `<div class="card">${title}${sub}${rows}${ins}${note}</div>`;
+    }
+
+    // ---- ÅTERHÄMTNING: kasten i ordning, och hur nästa kast går efter en miss ----
+
+    // Kasten i ordning per spelare: { nyckel: { lagg: [true, false, ...], skott: [...] } }
+    // Eget lag: nyckeln är spelarens namn. Motståndare (wantOpp): nyckeln är positionen.
+    // Äldre matcher utan omgångsdata använder tidslinjen (bara eget lag).
+    throwSequences(m, wantOpp) {
+        const out = {};
+        const push = (key, type, hit) => {
+            if (!out[key]) out[key] = { lagg: [], skott: [] };
+            out[key][type === 'lagg' ? 'lagg' : 'skott'].push(!!hit);
+        };
+        const acts = m.roundActions || {};
+        const nums = Object.keys(acts).filter(r => acts[r]).map(Number).sort((a, b) => a - b);
+        if (nums.length) {
+            nums.forEach(r => {
+                Object.keys(acts[r]).forEach(k => {
+                    const isOpp = k.indexOf('opp_') === 0;
+                    if (isOpp !== !!wantOpp) return;
+                    const idx = +(isOpp ? k.slice(4) : k);
+                    const p = (isOpp ? (m.opponents || []) : (m.players || []))[idx];
+                    if (!p) return;
+                    const key = isOpp ? p.position : p.name;
+                    (acts[r][k] || []).forEach(a => { if (a) push(key, a.type, a.hit); });
+                });
+            });
+        } else if (!wantOpp) {
+            (m.timeline || []).forEach(ev => { if (ev && ev.player) push(ev.player, ev.type, ev.hit); });
+        }
+        return out;
+    }
+
+    emptyRecovery() {
+        const e = () => ({ afterMiss: { h: 0, t: 0 }, afterHit: { h: 0, t: 0 }, all: { h: 0, t: 0 } });
+        return { lagg: e(), skott: e() };
+    }
+
+    // Lägger till en spelares kast (seq från throwSequences) i en återhämtningspost
+    addRecovery(acc, seq) {
+        ['lagg', 'skott'].forEach(type => {
+            const arr = seq[type] || [];
+            arr.forEach((hit, i) => {
+                const a = acc[type];
+                a.all.t++; if (hit) a.all.h++;
+                if (i > 0) {
+                    const b = arr[i - 1] ? a.afterHit : a.afterMiss;
+                    b.t++; if (hit) b.h++;
+                }
+            });
+        });
+    }
+
+    // Återhämtning för laget och varje spelare, över alla matcher
+    buildRecoveryStats() {
+        const res = { team: this.emptyRecovery(), players: {} };
+        (this.history || []).forEach(m => {
+            const seqs = this.throwSequences(m, false);
+            Object.keys(seqs).forEach(name => {
+                if (!res.players[name]) res.players[name] = this.emptyRecovery();
+                this.addRecovery(res.players[name], seqs[name]);
+                this.addRecovery(res.team, seqs[name]);
+            });
+        });
+        return res;
+    }
+
+    // Kort med återhämtning. rec är en post från emptyRecovery/addRecovery, titleKey väljer rubrik.
+    renderRecoveryCard(rec, titleKey) {
+        const title = `<div class="card-title">${mt(titleKey || 'recTitle')}</div>`;
+        const pct = x => x.t > 0 ? Math.round(x.h / x.t * 100) : null;
+        const f = v => v === null ? '—' : v + '%';
+        let rows = '';
+        let insight = '', insightN = 0;
+        ['lagg', 'skott'].forEach(type => {
+            const r = rec[type];
+            if (r.all.t === 0) return;   // inga kast av den här sorten (t.ex. en skytt utan lägg)
+            if (r.afterMiss.t < MIN_KAST_REC) {
+                rows += `<div class="trend-row" style="gap:12px;"><span class="trend-label">${mt(type)}</span><span class="trend-val" style="text-align:right;">${mt('prCollecting', { n: r.afterMiss.t, m: MIN_KAST_REC })}</span></div>`;
+                return;
+            }
+            const am = pct(r.afterMiss), ah = pct(r.afterHit), all = pct(r.all);
+            rows += `<div class="trend-row"><span class="trend-label">${mt(type)} ${mt('recAfterMiss')}</span><span class="trend-val">${f(am)} (${r.afterMiss.t})</span></div>`;
+            rows += `<div class="trend-row"><span class="trend-label">${mt(type)} ${mt('recAfterHit')}</span><span class="trend-val">${f(ah)}</span></div>`;
+            rows += `<div class="trend-row"><span class="trend-label">${mt(type)} ${mt('recOverall')}</span><span class="trend-val">${f(all)}</span></div>`;
+            // Tolkningen bygger på den sort som har flest kast efter miss
+            if (r.afterMiss.t > insightN) {
+                insightN = r.afterMiss.t;
+                const diff = am - all;
+                insight = diff <= -8 ? mt('recWorse') : (diff >= 8 ? mt('recBetter') : '');
+            }
+        });
+        const ins = insight ? `<div style="font-size:13px;color:#e8ff47;margin-top:0.5rem;">${insight}</div>` : '';
+        return `<div class="card">${title}${rows}${ins}</div>`;
+    }
+
+    // ---- MOTSTÅNDARINFO ----
+    // Namn som saknas eller är standardnamnet ("Motståndare") hoppas över.
+    isRealOpponentName(name) {
+        const n = (name || '').trim().toLowerCase();
+        if (!n) return false;
+        return !Object.values(MS.opponentDefault).some(s => s.toLowerCase() === n);
+    }
+
+    // En profil per motståndarlag (nyckel = namnet med små bokstäver)
+    buildOpponentProfiles() {
+        const map = {};
+        (this.history || []).forEach(m => {
+            if (!this.isRealOpponentName(m.opponent)) return;
+            const name = m.opponent.trim();
+            const key = name.toLowerCase();
+            if (!map[key]) map[key] = { key: key, name: name, matches: [], rated: [], pf: 0, pa: 0, positions: {}, rec: this.emptyRecovery() };
+            const o = map[key];
+            o.matches.push(m);
+            const r = this.matchResult(m);
+            if (r) { o.rated.push({ result: r }); o.pf += m.score.own; o.pa += m.score.opp; }
+            (m.opponents || []).forEach(p => {
+                if (!p || !p.position || !p.stats) return;
+                const g = o.positions[p.position] || (o.positions[p.position] = { lh: 0, lt: 0, sh: 0, st: 0 });
+                g.lh += p.stats.lagg.hit; g.lt += p.stats.lagg.total;
+                g.sh += p.stats.skott.hit; g.st += p.stats.skott.total;
+            });
+            const seqs = this.throwSequences(m, true);
+            Object.keys(seqs).forEach(k => this.addRecovery(o.rec, seqs[k]));
+        });
+        return map;
+    }
+
+    // Deras starkaste och svagaste punkt. Läggaren bedöms på lägg, skytten på skott, mittspelaren på båda.
+    opponentExtremes(o) {
+        const cands = [];
+        Object.keys(o.positions).forEach(pos => {
+            const g = o.positions[pos];
+            if (pos !== 'Skytt' && g.lt >= MIN_KAST_MOTST) cands.push({ pos: pos, type: 'lagg', pct: Math.round(g.lh / g.lt * 100) });
+            if (pos !== 'Läggare' && g.st >= MIN_KAST_MOTST) cands.push({ pos: pos, type: 'skott', pct: Math.round(g.sh / g.st * 100) });
+        });
+        if (!cands.length) return null;
+        cands.sort((a, b) => a.pct - b.pct);
+        return { weakest: cands[0], strongest: cands.length > 1 ? cands[cands.length - 1] : null };
+    }
+
+    describeCandidate(c) {
+        return `${posLabel(c.pos)} ${mt(c.type)} ${c.pct}%`;
+    }
+
+    // Fyller förslagslistan med namn på motståndarlag som spelats mot tidigare
+    refreshOpponentNames() {
+        const list = document.getElementById('opp-names');
+        if (!list) return;
+        const profiles = this.buildOpponentProfiles();
+        list.innerHTML = Object.values(profiles).map(o => `<option value="${esc(o.name)}"></option>`).join('');
+    }
+
+    // Visar en kort sammanfattning under motståndarfältet när laget spelats mot förut
+    updateOpponentHint() {
+        const el = document.getElementById('opp-hint');
+        const input = document.getElementById('inp-opponent');
+        if (!el || !input) return;
+        const o = this.buildOpponentProfiles()[input.value.trim().toLowerCase()];
+        if (!o || !this.isRealOpponentName(input.value)) { el.style.display = 'none'; el.innerHTML = ''; return; }
+
+        const rec = this.countResults(o.rated);
+        let text;
+        if (rec.n) {
+            const recStr = `${rec.w}${mt('rWinShort')}` + (rec.d ? ` ${rec.d}${mt('rDrawShort')}` : '') + ` ${rec.l}${mt('rLossShort')}`;
+            text = mt('opHintPrev', { rec: recStr, pf: o.pf, pa: o.pa });
+        } else {
+            text = mt('opHintMeetings', { n: o.matches.length });
+        }
+        const ex = this.opponentExtremes(o);
+        if (ex) text += ' ' + mt('opHintWeak', { w: this.describeCandidate(ex.weakest) });
+        el.innerHTML = `${esc(text)} <a href="#" data-key="${esc(o.key)}" onclick="app.openOpponentFromSetup(this.dataset.key); return false;" style="color:#e8ff47;">${mt('opHintLink')}</a>`;
+        el.style.display = 'block';
+    }
+
+    openOpponentFromSetup(key) {
+        this.openStatsScreen();
+        this.showOpponentProfile(key);
+    }
+
+    // Profilvy för ett motståndarlag
+    showOpponentProfile(key) {
+        const o = this.buildOpponentProfiles()[key];
+        const view = document.getElementById('opp-profile-view');
+        if (!o || !view) return;
+        document.getElementById('player-stats-list-view').style.display = 'none';
+        document.getElementById('player-stats-detail-view').style.display = 'none';
+        view.style.display = 'block';
+
+        const rec = this.countResults(o.rated);
+        const recStr = rec.n
+            ? `${rec.w}${mt('rWinShort')}` + (rec.d ? ` ${rec.d}${mt('rDrawShort')}` : '') + ` ${rec.l}${mt('rLossShort')}`
+            : '—';
+
+        // Deras kast per position
+        const f = (h, t) => t > 0 ? Math.round(h / t * 100) + '%' : '—';
+        const order = ['Läggare', 'Mittspelare', 'Skytt'];
+        const posRows = order.filter(p => o.positions[p]).map(pos => {
+            const g = o.positions[pos];
+            return `<div class="trend-row"><span class="trend-label">${esc(posLabel(pos))}</span><span class="trend-val">${mt('lagg')} ${f(g.lh, g.lt)} • ${mt('skott')} ${f(g.sh, g.st)}</span></div>`;
+        }).join('');
+
+        const ex = this.opponentExtremes(o);
+        let exHtml;
+        if (ex) {
+            exHtml = `<div class="trend-row"><span class="trend-label">${mt('opWeakest')}</span><span class="trend-val">${esc(this.describeCandidate(ex.weakest))}</span></div>` +
+                (ex.strongest ? `<div class="trend-row"><span class="trend-label">${mt('opStrongest')}</span><span class="trend-val">${esc(this.describeCandidate(ex.strongest))}</span></div>` : '');
+        } else {
+            exHtml = `<div style="font-size:12px;color:#999;margin-top:0.5rem;">${mt('opCollect')}</div>`;
+        }
+
+        // Senaste möten, nyaste först (historiken ligger redan med nyaste först)
+        const meetings = o.matches.slice(0, 8).map(m => {
+            const r = this.matchResult(m);
+            const tag = r === 'win' ? `<span class="trend-up">${mt('rWinShort')}</span> ` : r === 'loss' ? `<span class="trend-down">${mt('rLossShort')}</span> ` : r === 'draw' ? mt('rDrawShort') + ' ' : '';
+            const score = m.score && (m.score.own || m.score.opp) ? `${m.score.own} - ${m.score.opp}` : '';
+            return `<div class="player-match-row"><span class="pmr-name">${tag}${esc(m.name)}</span><span class="pmr-date">${new Date(m.startTime).toLocaleDateString(langMgr.locale())}</span><span class="pmr-stats">${score}</span></div>`;
+        }).join('');
+
+        view.innerHTML = `
+            <button class="detail-back" onclick="app.renderPlayerStatsList()">← <span>${mt('backWord')}</span></button>
+            <div class="player-detail-header">
+                <div class="player-detail-avatar">${esc(o.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2))}</div>
+                <div>
+                    <div class="player-detail-name">${esc(o.name)}</div>
+                    <div class="player-detail-sub">${o.matches.length} ${matchesLabel(o.matches.length)}</div>
+                </div>
+            </div>
+            <div class="player-stat-grid">
+                <div class="player-stat-box"><div class="psb-val">${recStr}</div><div class="psb-lbl">${mt('opRecord')}</div></div>
+                <div class="player-stat-box"><div class="psb-val">${rec.n ? o.pf + '–' + o.pa : '—'}</div><div class="psb-lbl">${mt('opPoints')}</div></div>
+            </div>
+            <div class="card"><div class="card-title">${mt('opPositions')}</div>${posRows}${exHtml}</div>
+            ${this.renderRecoveryCard(o.rec, 'opRecovery')}
+            <div style="font-size:13px;font-weight:700;color:#e8ff47;margin:1rem 0 0.5rem;">${mt('opLastMeetings')}</div>
+            ${meetings}`;
+        window.scrollTo(0, 0);
+    }
+
     // Rendera spelarlistan
     renderPlayerStatsList() {
         const players = this.aggregatePlayerStats();
@@ -3440,6 +3885,8 @@ class MatchApp {
         const detailView = document.getElementById('player-stats-detail-view');
         if (listView)   listView.style.display   = 'block';
         if (detailView) detailView.style.display = 'none';
+        const oppView = document.getElementById('opp-profile-view');
+        if (oppView) oppView.style.display = 'none';
         if (this._pdetChart) { this._pdetChart.destroy(); this._pdetChart = null; }
 
         this.renderTeamResults();
@@ -3567,6 +4014,12 @@ class MatchApp {
                 <span class="trend-label">${esc(posLabel(g.pos))} (${g.matches.length} ${matchesLabel(g.matches.length)})</span>
                 <span class="trend-val">${mt('lagg')} ${f2(this.pctOfList(g.matches, 'lagg'))} • ${mt('skott')} ${f2(this.pctOfList(g.matches, 'skott'))}</span>
             </div>`).join('') + `</div>`;
+
+        // Under press och återhämtning efter miss för spelaren
+        const pressAll = this.buildPressStats();
+        document.getElementById('pdet-press').innerHTML = this.renderPressCard(pressAll.players[name], pressAll.used, pressAll.total);
+        const recAll = this.buildRecoveryStats();
+        document.getElementById('pdet-recovery').innerHTML = recAll.players[name] ? this.renderRecoveryCard(recAll.players[name]) : '';
 
         // Matchlista
         const matchList = document.getElementById('pdet-match-list');
@@ -3846,6 +4299,8 @@ document.addEventListener('DOMContentLoaded', () => app.init());
             <button onclick="app.selectRoundResult('opp',6)">6</button>
         </div>
 
+        <!-- Omgång utan poäng (t.ex. lillen gått död). Sparas som en omgång utan vinnare -->
+        <button class="round-modal-dead" onclick="app.selectRoundResult('none',0)" data-sv="Ingen poäng (lillen död)" data-en="No points (dead jack)" data-fr="Mène nulle (aucun point)" data-de="Keine Punkte (Zielkugel tot)">Ingen poäng (lillen död)</button>
         <button class="round-modal-skip" onclick="app.skipRoundScore()" data-sv="Hoppa över" data-en="Skip" data-fr="Passer" data-de="Überspringen">Hoppa över</button>
     </div>
 </div>
