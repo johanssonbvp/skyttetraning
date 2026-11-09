@@ -311,6 +311,7 @@
         .btn-primary:hover { background: #f5ff99; }
         .btn-outline { background: rgba(232,255,71,0.1); color: #e8ff47; border: 1px solid rgba(232,255,71,0.3); }
         .btn-outline:hover { background: rgba(232,255,71,0.2); }
+        .btn-outline.active { background: #e8ff47; color: #080810; }
         .btn-danger { background: rgba(255,107,107,0.1); color: #ff6b6b; border: 1px solid rgba(255,107,107,0.3); }
         .btn-danger:hover { background: rgba(255,107,107,0.2); }
 
@@ -779,6 +780,10 @@
                 data-sv="STARTA MATCH" data-fr="DÉMARRER LE MATCH" data-en="START MATCH" data-de="SPIEL STARTEN">STARTA MATCH</button>
         </div>
 
+        <!-- Knapp till spelarstatistik och resultat (utan att starta en match) -->
+        <button class="btn btn-outline" id="btn-open-stats" style="width:100%;margin-bottom:1rem;" onclick="app.openStatsScreen()"
+            data-sv="📊 Spelarstatistik & resultat" data-en="📊 Player statistics & results" data-fr="📊 Statistiques des joueurs et résultats" data-de="📊 Spielerstatistik &amp; Ergebnisse">📊 Spelarstatistik & resultat</button>
+
         <!-- HOME HISTORY -->
         <div class="card" id="home-history-card">
             <div class="card-title">
@@ -811,6 +816,8 @@
                 <div class="card-title" data-sv="Laginsnitt" data-en="Team Average" data-fr="Moyenne d'équipe" data-de="Mannschaftsschnitt">Laginsnitt</div>
                 <div id="home-detail-team"></div>
             </div>
+            <!-- Omgångsanalys (fylls av renderRoundAnalysis) -->
+            <div id="home-detail-rounds"></div>
             <div class="card">
                 <div class="card-title" data-sv="Tidslinje" data-en="Timeline" data-fr="Chronologie" data-de="Zeitleiste">Tidslinje</div>
                 <div id="home-detail-timeline"></div>
@@ -822,6 +829,13 @@
             </div>
             <button class="btn btn-danger" id="btn-delete-home-detail" style="width:100%;margin-top:0.5rem;" data-sv="🗑 Radera match" data-en="🗑 Delete match" data-fr="🗑 Supprimer le match" data-de="🗑 Spiel löschen">🗑 Radera match</button>
         </div>
+    </div>
+
+    <!-- ===== SPELARSTATISTIK-SKÄRM (från startsidan) ===== -->
+    <!-- Spelarvyn (player-stats-root) flyttas hit när skärmen öppnas och tillbaka till fliken SPELARE när den stängs -->
+    <div id="screen-stats" style="display:none;">
+        <button class="detail-back" onclick="app.closeStatsScreen()">← <span data-sv="Tillbaka" data-en="Back" data-fr="Retour" data-de="Zurück">Tillbaka</span></button>
+        <div id="stats-screen-host"></div>
     </div>
 
     <!-- ===== MATCH SCREEN ===== -->
@@ -907,6 +921,8 @@
                     <div class="card-title" data-sv="Laginsnitt" data-en="Team Average" data-fr="Moyenne d'équipe" data-de="Mannschaftsschnitt">Laginsnitt</div>
                     <div id="detail-team"></div>
                 </div>
+                <!-- Omgångsanalys (fylls av renderRoundAnalysis) -->
+                <div id="detail-rounds"></div>
 
                 <!-- Tidslinje -->
                 <div class="card">
@@ -924,7 +940,9 @@
 
         <!-- TAB: SPELARE -->
         <div class="tab-content" id="tab-spelare">
+          <div id="player-stats-root">
             <div id="player-stats-list-view">
+                <div id="team-results"></div>
                 <div style="font-size:13px;color:#999;margin-bottom:1rem;" id="player-stats-summary"></div>
                 <div id="player-stats-list"></div>
             </div>
@@ -951,18 +969,33 @@
                         <div class="psb-lbl" data-sv="Matcher" data-en="Matches" data-fr="Matchs" data-de="Spiele">Matcher</div>
                     </div>
                     <div class="player-stat-box">
-                        <div class="psb-val" id="pdet-trend">—</div>
-                        <div class="psb-lbl" data-sv="Trend (3 sen.)" data-en="Trend (last 3)" data-fr="Tendance (3 dern.)" data-de="Trend (letzte 3)">Trend (3 sen.)</div>
+                        <div class="psb-val" id="pdet-trend" style="font-size:18px;">—</div>
+                        <div class="psb-lbl" data-sv="Trend lägg" data-en="Pointer trend" data-fr="Tendance pointé" data-de="Trend Legen">Trend lägg</div>
+                    </div>
+                    <div class="player-stat-box">
+                        <div class="psb-val" id="pdet-trend-skott" style="font-size:18px;">—</div>
+                        <div class="psb-lbl" data-sv="Trend skott" data-en="Shot trend" data-fr="Tendance tir" data-de="Trend Schießen">Trend skott</div>
+                    </div>
+                    <div class="player-stat-box" style="grid-column: 1 / -1;">
+                        <div class="psb-val" id="pdet-win">—</div>
+                        <div class="psb-lbl" id="pdet-win-lbl">Vinstprocent</div>
                     </div>
                 </div>
-                <div class="chart-wrap" id="pdet-chart-wrap" style="display:none;">
-                    <div class="chart-title" data-sv="Lägg % per match" data-en="Pointer % per match" data-fr="Pointé % par match" data-de="Legen % pro Spiel">Lägg % per match</div>
+                <div class="chart-wrap" id="pdet-chart-wrap" style="display:none;height:auto;">
+                    <div class="chart-title" data-sv="Lägg % och Skott % över tid" data-en="Pointer % and Shot % over time" data-fr="Pointé % et Tir % dans le temps" data-de="Legen % und Schießen % im Zeitverlauf">Lägg % och Skott % över tid</div>
+                    <div style="display:flex;gap:8px;margin-bottom:0.75rem;">
+                        <button class="btn btn-outline" id="pdet-group-match" style="flex:1;padding:6px;font-size:12px;" onclick="app.setPlayerChartGroup('match')" data-sv="Per match" data-en="Per match" data-fr="Par match" data-de="Pro Spiel">Per match</button>
+                        <button class="btn btn-outline" id="pdet-group-month" style="flex:1;padding:6px;font-size:12px;" onclick="app.setPlayerChartGroup('month')" data-sv="Per månad" data-en="Per month" data-fr="Par mois" data-de="Pro Monat">Per månad</button>
+                    </div>
                     <canvas id="pdet-chart" height="120"></canvas>
                 </div>
+                <div id="pdet-recent"></div>
+                <div id="pdet-positions"></div>
                 <div style="font-size:13px;font-weight:700;color:#e8ff47;margin:1rem 0 0.5rem;"
                     data-sv="Matchhistorik" data-en="Match history" data-fr="Historique des matchs" data-de="Spielverlauf">Matchhistorik</div>
                 <div id="pdet-match-list"></div>
             </div>
+          </div><!-- /player-stats-root -->
         </div>
 
     </div>
@@ -1074,8 +1107,77 @@ const MS = {
   xOppUpper: {sv:"MOTSTÅNDARE",en:"OPPONENT",fr:"ADVERSAIRE",de:"GEGNER"},
   xMatchLine: {sv:"Match: {name}",en:"Match: {name}",fr:"Match : {name}",de:"Spiel: {name}"},
   xLaggTotal: {sv:"Lägg: {h}/{t} ({a}%)",en:"Pointer: {h}/{t} ({a}%)",fr:"Pointé : {h}/{t} ({a}%)",de:"Legen: {h}/{t} ({a}%)"},
-  xSkottTotal: {sv:"Skott: {h}/{t} ({a}%)",en:"Shot: {h}/{t} ({a}%)",fr:"Tir : {h}/{t} ({a}%)",de:"Schießen: {h}/{t} ({a}%)"}
+  xSkottTotal: {sv:"Skott: {h}/{t} ({a}%)",en:"Shot: {h}/{t} ({a}%)",fr:"Tir : {h}/{t} ({a}%)",de:"Schießen: {h}/{t} ({a}%)"},
+
+  // ---- Standardnamn och små etiketter ----
+  unnamedMatch: {sv:"Utan namn",en:"Unnamed match",fr:"Match sans nom",de:"Spiel ohne Namen"},
+  laggShort: {sv:"L",en:"P",fr:"P",de:"L"},
+  skottShort: {sv:"S",en:"S",fr:"T",de:"S"},
+
+  // ---- Spelarlista och spelarvy ----
+  noPlayerStats: {sv:"Ingen matchstatistik ännu. Logga matcher för att se spelarstatistik.",en:"No match statistics yet. Log matches to see player statistics.",fr:"Pas encore de statistiques de match. Enregistrez des matchs pour voir les statistiques des joueurs.",de:"Noch keine Matchstatistik. Erfasse Spiele, um die Spielerstatistik zu sehen."},
+  playersSummary: {sv:"{p} spelare • {m} matcher loggade",en:"{p} players • {m} matches logged",fr:"{p} joueurs • {m} matchs enregistrés",de:"{p} Spieler • {m} Spiele erfasst"},
+  trendWord: {sv:"Trend",en:"Trend",fr:"Tendance",de:"Trend"},
+  trendUp: {sv:"Stigande",en:"Rising",fr:"En hausse",de:"Steigend"},
+  trendDown: {sv:"Fallande",en:"Falling",fr:"En baisse",de:"Fallend"},
+  trendStable: {sv:"Stabil",en:"Stable",fr:"Stable",de:"Stabil"},
+
+  // ---- Laginsnitt i matchdetaljer ----
+  teamLaggAvg: {sv:"Lag — Lägg genomsnitt",en:"Team — Pointer average",fr:"Équipe — Moyenne pointé",de:"Mannschaft — Legen Durchschnitt"},
+  teamSkottAvg: {sv:"Lag — Skott genomsnitt",en:"Team — Shot average",fr:"Équipe — Moyenne tir",de:"Mannschaft — Schießen Durchschnitt"},
+  teamTotAvg: {sv:"Lag — Totalt genomsnitt",en:"Team — Overall average",fr:"Équipe — Moyenne générale",de:"Mannschaft — Gesamtdurchschnitt"},
+  totalAttempts: {sv:"Totalt antal försök",en:"Total attempts",fr:"Nombre total d'essais",de:"Gesamtzahl der Versuche"},
+
+  // ---- Lagets resultat (vinster och förluster) ----
+  teamResultsTitle: {sv:"Lagets resultat",en:"Team results",fr:"Résultats de l'équipe",de:"Mannschaftsergebnisse"},
+  rWins: {sv:"Vinster",en:"Wins",fr:"Victoires",de:"Siege"},
+  rDraws: {sv:"Oavgjort",en:"Draws",fr:"Nuls",de:"Unentschieden"},
+  rLosses: {sv:"Förluster",en:"Losses",fr:"Défaites",de:"Niederlagen"},
+  rWinPct: {sv:"Vinstprocent",en:"Win rate",fr:"Taux de victoire",de:"Siegquote"},
+  rWinShort: {sv:"V",en:"W",fr:"V",de:"S"},
+  rDrawShort: {sv:"O",en:"D",fr:"N",de:"U"},
+  rLossShort: {sv:"F",en:"L",fr:"D",de:"N"},
+  rWithResult: {sv:"{n} av {m} matcher har resultat",en:"{n} of {m} matches have a result",fr:"{n} matchs sur {m} ont un résultat",de:"{n} von {m} Spielen haben ein Ergebnis"},
+  rNoResults: {sv:"Inga matcher med resultat än. Ange poäng efter varje omgång för att se vinster och förluster.",en:"No matches with a result yet. Enter the points after each round to see wins and losses.",fr:"Aucun match avec résultat pour l'instant. Saisissez les points après chaque manche pour voir victoires et défaites.",de:"Noch keine Spiele mit Ergebnis. Gib nach jeder Runde die Punkte ein, um Siege und Niederlagen zu sehen."},
+  rBestMatch: {sv:"Bästa match",en:"Best match",fr:"Meilleur match",de:"Bestes Spiel"},
+  rWorstMatch: {sv:"Tuffaste match",en:"Toughest match",fr:"Match le plus difficile",de:"Schwierigstes Spiel"},
+  rVsOpponents: {sv:"Mot motståndare",en:"Against opponents",fr:"Contre les adversaires",de:"Gegen Gegner"},
+  rPlayerWinLbl: {sv:"Vinstprocent",en:"Win rate",fr:"Taux de victoire",de:"Siegquote"},
+
+  // ---- Bättre spelarvy ----
+  pPositionTitle: {sv:"Per position",en:"By position",fr:"Par poste",de:"Nach Position"},
+  pRecentTitle: {sv:"Senaste 5 matcher mot totalt",en:"Last 5 matches vs overall",fr:"5 derniers matchs vs total",de:"Letzte 5 Spiele vs. gesamt"},
+  pRecentLbl: {sv:"Senaste 5",en:"Last 5",fr:"5 derniers",de:"Letzte 5"},
+  pTotalLbl: {sv:"Totalt",en:"Overall",fr:"Total",de:"Gesamt"},
+  pPerMatch: {sv:"Per match",en:"Per match",fr:"Par match",de:"Pro Spiel"},
+  pPerMonth: {sv:"Per månad",en:"Per month",fr:"Par mois",de:"Pro Monat"},
+
+  // ---- Omgångsanalys ----
+  raTitle: {sv:"Omgångsanalys",en:"Round analysis",fr:"Analyse des manches",de:"Rundenanalyse"},
+  raNeedScores: {sv:"Ingen omgångsanalys: inga omgångsresultat sparades i den här matchen.",en:"No round analysis: no round results were saved for this match.",fr:"Pas d'analyse des manches : aucun résultat de manche n'a été enregistré pour ce match.",de:"Keine Rundenanalyse: Für dieses Spiel wurden keine Rundenergebnisse gespeichert."},
+  raChartTitle: {sv:"📈 Poäng per omgång",en:"📈 Points per round",fr:"📈 Points par manche",de:"📈 Punkte pro Runde"},
+  raScored: {sv:"Poäng vi tog",en:"Points we scored",fr:"Points marqués",de:"Erzielte Punkte"},
+  raConceded: {sv:"Poäng vi släppte",en:"Points we conceded",fr:"Points concédés",de:"Abgegebene Punkte"},
+  raDiff: {sv:"Ställning (vi minus dem)",en:"Margin (us minus them)",fr:"Écart (nous moins eux)",de:"Differenz (wir minus sie)"},
+  raRoundsWon: {sv:"Omgångar vunna",en:"Rounds won",fr:"Manches gagnées",de:"Gewonnene Runden"},
+  raRoundsLost: {sv:"Omgångar förlorade",en:"Rounds lost",fr:"Manches perdues",de:"Verlorene Runden"},
+  raAvgWon: {sv:"Snittpoäng när vi vinner",en:"Average points when we win",fr:"Points moyens quand nous gagnons",de:"Ø Punkte bei unseren Siegen"},
+  raAvgLost: {sv:"Snittpoäng vi släpper när vi förlorar",en:"Average points we concede when we lose",fr:"Points moyens concédés quand nous perdons",de:"Ø abgegebene Punkte bei Niederlagen"},
+  raStreak: {sv:"Längsta serie vunna omgångar",en:"Longest winning streak (rounds)",fr:"Plus longue série de manches gagnées",de:"Längste Siegesserie (Runden)"},
+  raDecides: {sv:"Vad avgör omgångarna?",en:"What decides the rounds?",fr:"Qu'est-ce qui décide les manches ?",de:"Was entscheidet die Runden?"},
+  raLaggWon: {sv:"Vår lägg % i omgångar vi vann",en:"Our pointer % in rounds we won",fr:"Notre pointé % dans les manches gagnées",de:"Unser Legen % in gewonnenen Runden"},
+  raLaggLost: {sv:"Vår lägg % i omgångar vi förlorade",en:"Our pointer % in rounds we lost",fr:"Notre pointé % dans les manches perdues",de:"Unser Legen % in verlorenen Runden"},
+  raSkottWon: {sv:"Vår skott % i omgångar vi vann",en:"Our shot % in rounds we won",fr:"Notre tir % dans les manches gagnées",de:"Unser Schießen % in gewonnenen Runden"},
+  raSkottLost: {sv:"Vår skott % i omgångar vi förlorade",en:"Our shot % in rounds we lost",fr:"Notre tir % dans les manches perdues",de:"Unser Schießen % in verlorenen Runden"},
+  raFewRounds: {sv:"Obs: få omgångar, så siffrorna är bara en fingervisning.",en:"Note: few rounds, so the numbers are only a rough guide.",fr:"Remarque : peu de manches, les chiffres ne sont qu'une indication.",de:"Hinweis: wenige Runden, die Zahlen sind nur ein grober Anhaltspunkt."}
 };
+
+// Gör text säker att lägga in i HTML (namn med t.ex. ' eller " eller < kan annars förstöra sidan)
+function esc(s) {
+    return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
 function mt(key, vars) {
     let s = langMgr.t(MS[key]);
     if (vars) Object.keys(vars).forEach(k => { s = s.split('{' + k + '}').join(vars[k]); });
@@ -1451,7 +1553,7 @@ class MatchApp {
 
     // ---- START MATCH ----
     startMatch() {
-        const name = document.getElementById('inp-matchname').value.trim() || 'Utan namn';
+        const name = document.getElementById('inp-matchname').value.trim() || mt('unnamedMatch');
         const team = document.getElementById('inp-teamname').value.trim() || mt('myTeam');
         const fmt = this.matchFormat || 'triple';
 
@@ -1532,8 +1634,8 @@ class MatchApp {
         const grid = document.getElementById('player-grid');
         grid.innerHTML = '';
         
-        const opponentName = this.match.opponent || mt('opponentDefault');
-        const teamName = this.match.team || 'Ditt lag';
+        const opponentName = esc(this.match.opponent || mt('opponentDefault'));
+        const teamName = esc(this.match.team || mt('myTeam'));
         
         // Skapa sida-vid-sida grid
         const matchGrid = document.createElement('div');
@@ -1580,25 +1682,29 @@ class MatchApp {
         card.innerHTML = `
             <div class="player-header">
                 <span class="player-role">${posLabel(p.position)}</span>
-                <span class="player-name">${p.name}</span>
+                <span class="player-name">${esc(p.name)}</span>
                 <span class="player-ball-count" id="${isOpponent ? 'opp' : 'own'}-ball-count-${idx}">0/${this.match.ballsPerPlayer || 2}</span>
             </div>
             <div class="action-grid">
                 <div class="action-col">
-                    <div class="action-col-label">LÄGG</div>
-                    <button class="action-btn action-btn-success" data-${isOpponent ? 'opp' : 'player'}="${idx}" 
+                    <div class="action-col-label" data-sv="LÄGG" data-en="POINTER" data-fr="POINTÉ" data-de="LEGEN">LÄGG</div>
+                    <button class="action-btn action-btn-success" data-${isOpponent ? 'opp' : 'player'}="${idx}"
+                        data-sv="✓ Poäng" data-en="✓ Hit" data-fr="✓ Point" data-de="✓ Punkt"
                         onclick="app.${isOpponent ? 'logOpponent' : 'log'}(${idx},'lagg',true)">✓ Poäng</button>
                     <button class="action-btn action-btn-stang" data-${isOpponent ? 'opp' : 'player'}="${idx}"
                         data-sv="⊙ Stängn." data-en="⊙ Block" data-fr="⊙ Blocage"
                         onclick="app.${isOpponent ? 'logOpponent' : 'log'}(${idx},'lagg',false,true)" data-de="⊙ Blockade">⊙ Stängn.</button>
                     <button class="action-btn action-btn-miss" data-${isOpponent ? 'opp' : 'player'}="${idx}"
+                        data-sv="✗ Miss" data-en="✗ Miss" data-fr="✗ Raté" data-de="✗ Fehl"
                         onclick="app.${isOpponent ? 'logOpponent' : 'log'}(${idx},'lagg',false)">✗ Miss</button>
                 </div>
                 <div class="action-col">
-                    <div class="action-col-label">SKOTT</div>
+                    <div class="action-col-label" data-sv="SKOTT" data-en="SHOT" data-fr="TIR" data-de="SCHIESSEN">SKOTT</div>
                     <button class="action-btn action-btn-success" data-${isOpponent ? 'opp' : 'player'}="${idx}"
+                        data-sv="✓ Träff" data-en="✓ Hit" data-fr="✓ Réussi" data-de="✓ Treffer"
                         onclick="app.${isOpponent ? 'logOpponent' : 'log'}(${idx},'skott',true)">✓ Träff</button>
                     <button class="action-btn action-btn-miss" data-${isOpponent ? 'opp' : 'player'}="${idx}"
+                        data-sv="✗ Miss" data-en="✗ Miss" data-fr="✗ Raté" data-de="✗ Fehl"
                         onclick="app.${isOpponent ? 'logOpponent' : 'log'}(${idx},'skott',false)">✗ Miss</button>
                 </div>
             </div>
@@ -1931,7 +2037,7 @@ class MatchApp {
             const sa = this.acc(p.stats.skott);
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td class="pname" style="color:#e8ff47">${p.name}</td>
+                <td class="pname" style="color:#e8ff47">${esc(p.name)}</td>
                 <td>${p.stats.lagg.hit}/${p.stats.lagg.stang||0}/${p.stats.lagg.total}</td>
                 <td class="tc ${this.accClass(la, p.stats.lagg.total)}">${la}%</td>
                 <td>${p.stats.skott.hit}/${p.stats.skott.total}</td>
@@ -1943,7 +2049,7 @@ class MatchApp {
         // Separator rad
         if (this.match.opponents && this.match.opponents.length > 0) {
             const sepRow = document.createElement('tr');
-            sepRow.innerHTML = `<td colspan="5" style="padding:4px 8px;font-size:10px;color:#ff8080;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-top:1px solid rgba(255,100,100,0.2)">${this.match.opponent || mt('opponentDefault')}</td>`;
+            sepRow.innerHTML = `<td colspan="5" style="padding:4px 8px;font-size:10px;color:#ff8080;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-top:1px solid rgba(255,100,100,0.2)">${esc(this.match.opponent || mt('opponentDefault'))}</td>`;
             tbody.appendChild(sepRow);
             
             this.match.opponents.forEach(p => {
@@ -1951,7 +2057,7 @@ class MatchApp {
                 const sa = this.acc(p.stats.skott);
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td class="pname" style="color:#ff8080">${p.name}</td>
+                    <td class="pname" style="color:#ff8080">${esc(p.name)}</td>
                     <td>${p.stats.lagg.hit}/${p.stats.lagg.stang||0}/${p.stats.lagg.total}</td>
                     <td class="tc ${this.accClass(la, p.stats.lagg.total)}">${la}%</td>
                     <td>${p.stats.skott.hit}/${p.stats.skott.total}</td>
@@ -2078,14 +2184,14 @@ class MatchApp {
             const previews = m.players.map(p => {
                 const la = this.acc(p.stats.lagg);
                 const sa = this.acc(p.stats.skott);
-                return `<span class="history-preview-pill">${p.name}: L${la}% S${sa}%</span>`;
+                return `<span class="history-preview-pill">${esc(p.name)}: ${mt('laggShort')}${la}% ${mt('skottShort')}${sa}%</span>`;
             }).join('');
             return `
                 <div class="history-item" onclick="app.showHomeDetail(${idx})">
                     <div class="history-header">
                         <div>
-                            <div class="history-name">${m.name}${this.scoreText(m)}</div>
-                            <div class="history-sub">${m.team} • ${date} ${time}</div>
+                            <div class="history-name">${esc(m.name)}${esc(this.scoreText(m))}</div>
+                            <div class="history-sub">${esc(m.team)} • ${date} ${time}</div>
                         </div>
                         <div class="history-dur">${m.duration ?? 0} min</div>
                     </div>
@@ -2100,14 +2206,14 @@ class MatchApp {
             const previews = m.players.map(p => {
                 const la = this.acc(p.stats.lagg);
                 const sa = this.acc(p.stats.skott);
-                return `<span class="history-preview-pill">${p.name}: L${la}% S${sa}%</span>`;
+                return `<span class="history-preview-pill">${esc(p.name)}: ${mt('laggShort')}${la}% ${mt('skottShort')}${sa}%</span>`;
             }).join('');
             return `
                 <div class="history-item" onclick="app.showDetail(${idx})">
                     <div class="history-header">
                         <div>
-                            <div class="history-name">${m.name}${this.scoreText(m)}</div>
-                            <div class="history-sub">${m.team} • ${date} ${time}</div>
+                            <div class="history-name">${esc(m.name)}${esc(this.scoreText(m))}</div>
+                            <div class="history-sub">${esc(m.team)} • ${date} ${time}</div>
                         </div>
                         <div class="history-dur">${m.duration ?? 0} min</div>
                     </div>
@@ -2235,30 +2341,9 @@ class MatchApp {
         const thisLagg = m.players.map(p => this.acc(p.stats.lagg));
         const thisSkott = m.players.map(p => this.acc(p.stats.skott));
 
-        // Historiskt genomsnitt lägg
-        const histLagg = m.players.map(p => {
-            const playerMatches = otherMatches.filter(om =>
-                om.players.some(op => op.name === p.name)
-            );
-            if (!playerMatches.length) return null;
-            const avg = playerMatches.reduce((sum, om) => {
-                const op = om.players.find(x => x.name === p.name);
-                return sum + (op ? this.acc(op.stats.lagg) : 0);
-            }, 0) / playerMatches.length;
-            return Math.round(avg);
-        });
-
-        const histSkott = m.players.map(p => {
-            const playerMatches = otherMatches.filter(om =>
-                om.players.some(op => op.name === p.name)
-            );
-            if (!playerMatches.length) return null;
-            const avg = playerMatches.reduce((sum, om) => {
-                const op = om.players.find(x => x.name === p.name);
-                return sum + (op ? this.acc(op.stats.skott) : 0);
-            }, 0) / playerMatches.length;
-            return Math.round(avg);
-        });
+        // Historiskt genomsnitt, vägt efter antal försök (en match med få kast väger mindre)
+        const histLagg = m.players.map(p => this.histPct(p.name, 'lagg', otherMatches));
+        const histSkott = m.players.map(p => this.histPct(p.name, 'skott', otherMatches));
 
         this.detailChartCompare = new Chart(
             document.getElementById('detail-chart-compare'), {
@@ -2289,15 +2374,17 @@ class MatchApp {
         });
 
         // ---- LAGINSNITT ----
-        const tLagg = Math.round(m.players.reduce((s,p) => s+this.acc(p.stats.lagg), 0) / m.players.length);
-        const tSkott = Math.round(m.players.reduce((s,p) => s+this.acc(p.stats.skott), 0) / m.players.length);
+        // Lagets procent räknas på alla kast (inte medelvärde av spelarnas procent)
+        const tLagg = this.teamPct(m, 'lagg');
+        const tSkott = this.teamPct(m, 'skott');
         const totalForsok = m.players.reduce((s,p) => s+p.stats.lagg.total+p.stats.skott.total, 0);
         document.getElementById('detail-team').innerHTML = `
-            <div class="trend-row"><span class="trend-label">Lag — Lägg genomsnitt</span><span class="trend-val">${tLagg}%</span></div>
-            <div class="trend-row"><span class="trend-label">Lag — Skott genomsnitt</span><span class="trend-val">${tSkott}%</span></div>
-            <div class="trend-row"><span class="trend-label">Lag — Totalt genomsnitt</span><span class="trend-val">${Math.round((tLagg+tSkott)/2)}%</span></div>
-            <div class="trend-row"><span class="trend-label">Totalt antal försök</span><span class="trend-val">${totalForsok} st</span></div>
+            <div class="trend-row"><span class="trend-label">${mt('teamLaggAvg')}</span><span class="trend-val">${tLagg}%</span></div>
+            <div class="trend-row"><span class="trend-label">${mt('teamSkottAvg')}</span><span class="trend-val">${tSkott}%</span></div>
+            <div class="trend-row"><span class="trend-label">${mt('teamTotAvg')}</span><span class="trend-val">${Math.round((tLagg+tSkott)/2)}%</span></div>
+            <div class="trend-row"><span class="trend-label">${mt('totalAttempts')}</span><span class="trend-val">${totalForsok}</span></div>
         `;
+        this.renderRoundAnalysis(m, 'detail-rounds');
 
         // ---- TIDSLINJE ----
         const tl = document.getElementById('detail-timeline');
@@ -2306,7 +2393,7 @@ class MatchApp {
         } else {
             tl.innerHTML = m.timeline.map(t => {
                 const dc = t.type==='lagg'?(t.hit?'dot-lagg-hit':'dot-lagg-miss'):(t.hit?'dot-skott-hit':'dot-skott-miss');
-                return `<div class="timeline-item"><div class="timeline-time">${t.time}m</div><div class="timeline-dot ${dc}"></div><div class="timeline-text"><strong>${t.player}</strong> — ${relabel(t.label)}</div></div>`;
+                return `<div class="timeline-item"><div class="timeline-time">${t.time}m</div><div class="timeline-dot ${dc}"></div><div class="timeline-text"><strong>${esc(t.player)}</strong> — ${esc(relabel(t.label))}</div></div>`;
             }).join('');
         }
 
@@ -2380,16 +2467,9 @@ class MatchApp {
 
         // Chart 3: Denna match vs historiskt genomsnitt
         const otherMatches = this.history.filter((_,i) => i !== idx);
-        const histLagg = m.players.map(p => {
-            const pm = otherMatches.filter(om => om.players.some(op => op.name === p.name));
-            if (!pm.length) return null;
-            return Math.round(pm.reduce((s,om) => { const op = om.players.find(x=>x.name===p.name); return s+(op?this.acc(op.stats.lagg):0); },0) / pm.length);
-        });
-        const histSkott = m.players.map(p => {
-            const pm = otherMatches.filter(om => om.players.some(op => op.name === p.name));
-            if (!pm.length) return null;
-            return Math.round(pm.reduce((s,om) => { const op = om.players.find(x=>x.name===p.name); return s+(op?this.acc(op.stats.skott):0); },0) / pm.length);
-        });
+        // Historiskt genomsnitt, vägt efter antal försök
+        const histLagg = m.players.map(p => this.histPct(p.name, 'lagg', otherMatches));
+        const histSkott = m.players.map(p => this.histPct(p.name, 'skott', otherMatches));
 
         this.homeDetailCharts.compare = new Chart(
             document.getElementById('home-detail-chart-compare'), {
@@ -2407,15 +2487,16 @@ class MatchApp {
         });
 
         // Laginsnitt
-        const tLagg = Math.round(m.players.reduce((s,p)=>s+this.acc(p.stats.lagg),0)/m.players.length);
-        const tSkott = Math.round(m.players.reduce((s,p)=>s+this.acc(p.stats.skott),0)/m.players.length);
+        const tLagg = this.teamPct(m, 'lagg');
+        const tSkott = this.teamPct(m, 'skott');
         const totalForsok = m.players.reduce((s,p)=>s+p.stats.lagg.total+p.stats.skott.total,0);
         document.getElementById('home-detail-team').innerHTML = `
-            <div class="trend-row"><span class="trend-label">Lag — Lägg genomsnitt</span><span class="trend-val">${tLagg}%</span></div>
-            <div class="trend-row"><span class="trend-label">Lag — Skott genomsnitt</span><span class="trend-val">${tSkott}%</span></div>
-            <div class="trend-row"><span class="trend-label">Lag — Totalt genomsnitt</span><span class="trend-val">${Math.round((tLagg+tSkott)/2)}%</span></div>
-            <div class="trend-row"><span class="trend-label">Totalt antal försök</span><span class="trend-val">${totalForsok} st</span></div>
+            <div class="trend-row"><span class="trend-label">${mt('teamLaggAvg')}</span><span class="trend-val">${tLagg}%</span></div>
+            <div class="trend-row"><span class="trend-label">${mt('teamSkottAvg')}</span><span class="trend-val">${tSkott}%</span></div>
+            <div class="trend-row"><span class="trend-label">${mt('teamTotAvg')}</span><span class="trend-val">${Math.round((tLagg+tSkott)/2)}%</span></div>
+            <div class="trend-row"><span class="trend-label">${mt('totalAttempts')}</span><span class="trend-val">${totalForsok}</span></div>
         `;
+        this.renderRoundAnalysis(m, 'home-detail-rounds');
 
         // Tidslinje
         const tl = document.getElementById('home-detail-timeline');
@@ -2424,7 +2505,7 @@ class MatchApp {
         } else {
             tl.innerHTML = m.timeline.map(t => {
                 const dc = t.type==='lagg'?(t.hit?'dot-lagg-hit':'dot-lagg-miss'):(t.hit?'dot-skott-hit':'dot-skott-miss');
-                return `<div class="timeline-item"><div class="timeline-time">${t.time}m</div><div class="timeline-dot ${dc}"></div><div class="timeline-text"><strong>${t.player}</strong> — ${relabel(t.label)}</div></div>`;
+                return `<div class="timeline-item"><div class="timeline-time">${t.time}m</div><div class="timeline-dot ${dc}"></div><div class="timeline-text"><strong>${esc(t.player)}</strong> — ${esc(relabel(t.label))}</div></div>`;
             }).join('');
         }
 
@@ -2966,7 +3047,7 @@ class MatchApp {
             .sort((a, b) => a.name.localeCompare(b.name))
             .map(p => `
             <div class="player-list-item">
-                <span class="pli-name">${p.name}</span>
+                <span class="pli-name">${esc(p.name)}</span>
                 <button class="pli-del" onclick="app.deletePlayer('${p.id}')"
                     data-sv="Ta bort" data-en="Remove" data-fr="Supprimer" data-de="Entfernen">Ta bort</button>
             </div>`).join('');
@@ -2987,7 +3068,7 @@ class MatchApp {
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .forEach(p => {
                     const sel_flag = p.name === current ? ' selected' : '';
-                    opts.push(`<option value="${p.name}"${sel_flag}>${p.name}</option>`);
+                    opts.push(`<option value="${esc(p.name)}"${sel_flag}>${esc(p.name)}</option>`);
                 });
             opts.push(`<option value="__new__">${mt('newPlayerOpt')}</option>`);
             sel.innerHTML = opts.join('');
@@ -3073,6 +3154,7 @@ class MatchApp {
                     laggHit: p.stats.lagg.hit, laggTotal: p.stats.lagg.total,
                     skottHit: p.stats.skott.hit, skottTotal: p.stats.skott.total,
                     position: p.position || '—',
+                    result: this.matchResult(m),
                 });
             });
         });
@@ -3085,16 +3167,265 @@ class MatchApp {
         return Object.values(players).sort((a, b) => b.matches.length - a.matches.length);
     }
 
-    // Beräkna trend baserat på tre senaste matcherna (lägg%)
-    calcPlayerTrend(matches) {
-        const laggMatches = matches.filter(m => m.laggPct !== null);
-        if (laggMatches.length < 2) return 'neutral';
-        const last3 = laggMatches.slice(-3);
-        const first = last3[0].laggPct;
-        const last  = last3[last3.length - 1].laggPct;
-        if (last - first >= 5)  return 'up';
-        if (first - last >= 5)  return 'down';
+    // ---- RESULTAT FÖR EN MATCH (lagets synvinkel) ----
+    // Ger 'win', 'draw' eller 'loss'. Ger null om inget resultat sparades (0-0 eller saknas).
+    matchResult(m) {
+        if (!m.score || (m.score.own === 0 && m.score.opp === 0)) return null;
+        if (m.score.own > m.score.opp) return 'win';
+        if (m.score.own < m.score.opp) return 'loss';
+        return 'draw';
+    }
+
+    // Räkna vinster, oavgjorda och förluster i en lista (varje post har fältet result)
+    countResults(list) {
+        const r = { w: 0, d: 0, l: 0, n: 0 };
+        list.forEach(x => {
+            if (x.result === 'win') r.w++;
+            else if (x.result === 'draw') r.d++;
+            else if (x.result === 'loss') r.l++;
+            else return;
+            r.n++;
+        });
+        return r;
+    }
+
+    // Träffprocent över en lista av spelarens matcher, vägd efter antal försök.
+    // type är 'lagg' eller 'skott'. Ger null om det inte finns några försök.
+    pctOfList(list, type) {
+        let hit = 0, total = 0;
+        list.forEach(m => { hit += m[type + 'Hit']; total += m[type + 'Total']; });
+        return total > 0 ? Math.round(hit / total * 100) : null;
+    }
+
+    // Trend: jämför de senaste matcherna med de före (vägt efter antal försök).
+    // Med 2 matcher jämförs de två, med fler jämförs de senaste 1-3 mot upp till 6 tidigare.
+    // 5 procentenheters skillnad krävs för stigande/fallande.
+    calcPlayerTrend(matches, type) {
+        type = type || 'lagg';
+        const list = matches.filter(m => m[type + 'Total'] > 0);   // redan i datumordning
+        if (list.length < 2) return 'neutral';
+        const nRecent = Math.min(3, Math.ceil(list.length / 2));
+        const recent = list.slice(-nRecent);
+        const earlier = list.slice(0, list.length - nRecent).slice(-6);
+        const diff = this.pctOfList(recent, type) - this.pctOfList(earlier, type);
+        if (diff >= 5) return 'up';
+        if (diff <= -5) return 'down';
         return 'neutral';
+    }
+
+    // Pil, färgklass och text för en trend
+    trendInfo(trend) {
+        if (trend === 'up') return { icon: '↑', cls: 'trend-up', text: mt('trendUp') };
+        if (trend === 'down') return { icon: '↓', cls: 'trend-down', text: mt('trendDown') };
+        return { icon: '→', cls: 'trend-neutral', text: mt('trendStable') };
+    }
+
+    // Spelarens statistik uppdelad på position (läggare, mittspelare, skytt)
+    positionBreakdown(ps) {
+        const groups = {};
+        ps.matches.forEach(m => {
+            const pos = m.position || '—';
+            if (!groups[pos]) groups[pos] = { pos: pos, matches: [] };
+            groups[pos].matches.push(m);
+        });
+        return Object.values(groups).sort((a, b) => b.matches.length - a.matches.length);
+    }
+
+    // Slå ihop spelarens matcher per månad (för månadsgrafen)
+    monthlySeries(matches) {
+        const map = {};
+        matches.forEach(m => {
+            const key = m.date.getFullYear() + '-' + String(m.date.getMonth() + 1).padStart(2, '0');
+            if (!map[key]) map[key] = { key: key, date: new Date(m.date.getFullYear(), m.date.getMonth(), 1), list: [] };
+            map[key].list.push(m);
+        });
+        return Object.values(map).sort((a, b) => a.key < b.key ? -1 : 1);
+    }
+
+    // ---- LAGETS RESULTAT (vinster och förluster) ----
+    renderTeamResults() {
+        const el = document.getElementById('team-results');
+        if (!el) return;
+        const all = this.history || [];
+        if (!all.length) { el.innerHTML = ''; return; }
+
+        const rated = all.filter(m => this.matchResult(m));
+        const title = `<div class="card-title">${mt('teamResultsTitle')}</div>`;
+        if (!rated.length) {
+            el.innerHTML = `<div class="card">${title}<div style="color:#999;font-size:13px;">${mt('rNoResults')}</div></div>`;
+            return;
+        }
+
+        const rec = this.countResults(rated.map(m => ({ result: this.matchResult(m) })));
+        const winPct = Math.round(rec.w / rec.n * 100);
+
+        // Bästa och tuffaste match (störst marginal åt varje håll)
+        let best = null, worst = null;
+        rated.forEach(m => {
+            const diff = m.score.own - m.score.opp;
+            if (!best || diff > best.diff) best = { m: m, diff: diff };
+            if (!worst || diff < worst.diff) worst = { m: m, diff: diff };
+        });
+        const matchRow = (label, x) => `<div class="player-match-row">
+                <span class="pmr-name">${label}: ${esc(x.m.name)}</span>
+                <span class="pmr-stats">${x.m.score.own} - ${x.m.score.opp}</span>
+            </div>`;
+        let extra = '';
+        if (best && best.diff > 0) extra += matchRow(mt('rBestMatch'), best);
+        if (worst && worst.diff < 0) extra += matchRow(mt('rWorstMatch'), worst);
+
+        // Resultat mot varje motståndarlag (utan de som saknar namn)
+        const defaults = Object.values(MS.opponentDefault).map(s => s.toLowerCase());
+        const opps = {};
+        rated.forEach(m => {
+            const name = (m.opponent || '').trim();
+            if (!name || defaults.includes(name.toLowerCase())) return;
+            const key = name.toLowerCase();
+            if (!opps[key]) opps[key] = { name: name, w: 0, d: 0, l: 0, pf: 0, pa: 0, n: 0 };
+            const r = this.matchResult(m);
+            opps[key][r === 'win' ? 'w' : r === 'draw' ? 'd' : 'l']++;
+            opps[key].pf += m.score.own;
+            opps[key].pa += m.score.opp;
+            opps[key].n++;
+        });
+        const oppList = Object.values(opps).sort((a, b) => b.n - a.n).slice(0, 8);
+        let oppHtml = '';
+        if (oppList.length) {
+            oppHtml = `<div style="font-size:13px;font-weight:700;color:#e8ff47;margin:1rem 0 0.25rem;">${mt('rVsOpponents')}</div>` +
+                oppList.map(o => {
+                    const rec = `${o.w}${mt('rWinShort')}` + (o.d ? ` ${o.d}${mt('rDrawShort')}` : '') + ` ${o.l}${mt('rLossShort')}`;
+                    return `<div class="player-match-row">
+                        <span class="pmr-name">${esc(o.name)}</span>
+                        <span class="pmr-stats">${rec} • ${o.pf}–${o.pa}</span>
+                    </div>`;
+                }).join('');
+        }
+
+        el.innerHTML = `<div class="card">${title}
+            <div class="player-stat-grid">
+                <div class="player-stat-box"><div class="psb-val trend-up">${rec.w}</div><div class="psb-lbl">${mt('rWins')}</div></div>
+                <div class="player-stat-box"><div class="psb-val trend-down">${rec.l}</div><div class="psb-lbl">${mt('rLosses')}</div></div>
+                <div class="player-stat-box"><div class="psb-val">${rec.d}</div><div class="psb-lbl">${mt('rDraws')}</div></div>
+                <div class="player-stat-box"><div class="psb-val">${winPct}%</div><div class="psb-lbl">${mt('rWinPct')}</div></div>
+            </div>
+            <div style="font-size:12px;color:#999;margin-bottom:0.5rem;">${mt('rWithResult', { n: rec.n, m: all.length })}</div>
+            ${extra}${oppHtml}
+        </div>`;
+    }
+
+    // ---- OMGÅNGSANALYS (visas i matchdetaljerna) ----
+    // Använder omgångsresultaten (roundScores) och kasten per omgång (roundActions).
+    renderRoundAnalysis(m, containerId) {
+        const el = document.getElementById(containerId);
+        if (!el) return;
+        if (!this._roundCharts) this._roundCharts = {};
+        if (this._roundCharts[containerId]) { this._roundCharts[containerId].destroy(); this._roundCharts[containerId] = null; }
+
+        const scores = m.roundScores || {};
+        // Firebase kan lämna tomma platser (null) i listan, så bara omgångar med resultat tas med
+        const rounds = Object.keys(scores).filter(r => scores[r] && scores[r].winner).map(Number).sort((a, b) => a - b);
+        const cardTitle = `<div class="card-title">${mt('raTitle')}</div>`;
+        if (!rounds.length) {
+            el.innerHTML = `<div class="card">${cardTitle}<div style="color:#999;font-size:13px;">${mt('raNeedScores')}</div></div>`;
+            return;
+        }
+
+        const labels = [], scored = [], conceded = [], margin = [];
+        let diff = 0, won = 0, lost = 0, ptsWon = 0, ptsLost = 0, streak = 0, bestStreak = 0;
+        const agg = { won: { lh: 0, lt: 0, sh: 0, st: 0 }, lost: { lh: 0, lt: 0, sh: 0, st: 0 } };
+
+        rounds.forEach(r => {
+            const rs = scores[r];
+            const own = rs.winner === 'own';
+            labels.push(mt('roundWord') + ' ' + r);
+            scored.push(own ? rs.points : 0);
+            conceded.push(own ? 0 : -rs.points);
+            diff += own ? rs.points : -rs.points;
+            margin.push(diff);
+            if (own) { won++; ptsWon += rs.points; streak++; bestStreak = Math.max(bestStreak, streak); }
+            else { lost++; ptsLost += rs.points; streak = 0; }
+
+            // Lagets egna kast i omgången (motståndarnas nycklar börjar med opp_)
+            const acts = (m.roundActions && m.roundActions[r]) || {};
+            const bucket = own ? agg.won : agg.lost;
+            Object.keys(acts).forEach(k => {
+                if (k.indexOf('opp_') === 0) return;
+                (acts[k] || []).forEach(a => {
+                    if (!a) return;
+                    if (a.type === 'lagg') { bucket.lt++; if (a.hit) bucket.lh++; }
+                    else { bucket.st++; if (a.hit) bucket.sh++; }
+                });
+            });
+        });
+
+        const pct = (h, t) => t > 0 ? Math.round(h / t * 100) + '%' : '—';
+        const avg = (sum, n) => n > 0 ? (Math.round(sum / n * 10) / 10) : '—';
+        const row = (label, val) => `<div class="trend-row"><span class="trend-label">${label}</span><span class="trend-val">${val}</span></div>`;
+        const fewNote = rounds.length < 4 ? `<div style="font-size:12px;color:#999;margin-top:0.5rem;">${mt('raFewRounds')}</div>` : '';
+
+        el.innerHTML = `
+            <div class="card">${cardTitle}
+                ${row(mt('raRoundsWon'), won)}
+                ${row(mt('raRoundsLost'), lost)}
+                ${row(mt('raAvgWon'), avg(ptsWon, won))}
+                ${row(mt('raAvgLost'), avg(ptsLost, lost))}
+                ${row(mt('raStreak'), bestStreak)}
+            </div>
+            <div class="chart-wrap" style="height:280px;">
+                <div class="chart-title">${mt('raChartTitle')}</div>
+                <canvas id="${containerId}-chart"></canvas>
+            </div>
+            <div class="card"><div class="card-title">${mt('raDecides')}</div>
+                ${row(mt('raLaggWon'), pct(agg.won.lh, agg.won.lt))}
+                ${row(mt('raLaggLost'), pct(agg.lost.lh, agg.lost.lt))}
+                ${row(mt('raSkottWon'), pct(agg.won.sh, agg.won.st))}
+                ${row(mt('raSkottLost'), pct(agg.lost.sh, agg.lost.st))}
+                ${fewNote}
+            </div>`;
+
+        const axisStyle = { ticks: { color: '#999' }, grid: { color: 'rgba(232,255,71,0.05)' } };
+        this._roundCharts[containerId] = new Chart(document.getElementById(containerId + '-chart'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    { type: 'bar', label: mt('raScored'), data: scored, backgroundColor: '#51cf66', borderRadius: 4, stack: 'p' },
+                    { type: 'bar', label: mt('raConceded'), data: conceded, backgroundColor: '#ff6b6b', borderRadius: 4, stack: 'p' },
+                    { type: 'line', label: mt('raDiff'), data: margin, borderColor: '#e8ff47', backgroundColor: '#e8ff47', borderWidth: 2, pointRadius: 3, tension: 0.2 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { labels: { color: '#ccc', font: { size: 11 } } } },
+                scales: {
+                    x: { ...axisStyle, stacked: true },
+                    y: { ...axisStyle, stacked: true, ticks: { color: '#999', stepSize: 1 } }
+                }
+            }
+        });
+    }
+
+    // ---- SPELARSTATISTIK: ÖPPNA FRÅN STARTSIDAN ----
+    // Spelarvyn bor i fliken SPELARE under en pågående match. Här flyttas den till en egen
+    // skärm så att den också går att nå utan att starta en match.
+    openStatsScreen() {
+        const root = document.getElementById('player-stats-root');
+        const host = document.getElementById('stats-screen-host');
+        if (!root || !host) return;
+        host.appendChild(root);
+        document.getElementById('screen-setup').style.display = 'none';
+        document.getElementById('screen-stats').style.display = 'block';
+        this.renderPlayerStatsList();
+        window.scrollTo(0, 0);
+    }
+
+    closeStatsScreen() {
+        const root = document.getElementById('player-stats-root');
+        const tab = document.getElementById('tab-spelare');
+        if (root && tab) tab.appendChild(root);
+        if (this._pdetChart) { this._pdetChart.destroy(); this._pdetChart = null; }
+        document.getElementById('screen-stats').style.display = 'none';
+        document.getElementById('screen-setup').style.display = 'block';
     }
 
     // Rendera spelarlistan
@@ -3109,31 +3440,38 @@ class MatchApp {
         const detailView = document.getElementById('player-stats-detail-view');
         if (listView)   listView.style.display   = 'block';
         if (detailView) detailView.style.display = 'none';
+        if (this._pdetChart) { this._pdetChart.destroy(); this._pdetChart = null; }
+
+        this.renderTeamResults();
 
         if (!players.length) {
             if (summEl) summEl.textContent = '';
             listEl.innerHTML = `<div class="empty" style="text-align:center;padding:2rem;color:#999;">
-                Ingen matchstatistik ännu. Logga matcher för att se spelarstatistik.
+                ${mt('noPlayerStats')}
             </div>`;
             return;
         }
 
         const totalMatches = (this.history || []).length;
-        if (summEl) summEl.textContent = `${players.length} spelare • ${totalMatches} matcher loggade`;
+        if (summEl) summEl.textContent = mt('playersSummary', { p: players.length, m: totalMatches });
 
         listEl.innerHTML = players.map(ps => {
-            const laggPct  = ps.laggTotal  ? Math.round(ps.laggHit  / ps.laggTotal  * 100) : null;
-            const skottPct = ps.skottTotal ? Math.round(ps.skottHit / ps.skottTotal * 100) : null;
-            const trend    = this.calcPlayerTrend(ps.matches);
-            const trendIcon = trend === 'up' ? '↑' : trend === 'down' ? '↓' : '→';
-            const trendClass = trend === 'up' ? 'trend-up' : trend === 'down' ? 'trend-down' : 'trend-neutral';
-            const initials  = ps.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+            const laggPct  = this.pctOfList(ps.matches, 'lagg');
+            const skottPct = this.pctOfList(ps.matches, 'skott');
+            const tL = this.trendInfo(this.calcPlayerTrend(ps.matches, 'lagg'));
+            const tS = this.trendInfo(this.calcPlayerTrend(ps.matches, 'skott'));
+            const initials = ps.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+            const rec = this.countResults(ps.matches);
+            const recStr = rec.n
+                ? ' • ' + rec.w + mt('rWinShort') + (rec.d ? ' ' + rec.d + mt('rDrawShort') : '') + ' ' + rec.l + mt('rLossShort')
+                : '';
 
-            return `<div class="player-stat-card" onclick="app.showPlayerDetail('${ps.name.replace(/'/g, "\'")}')">
-                <div class="player-stat-avatar">${initials}</div>
+            // Namnet läggs i ett data-attribut så att tecken som ' inte förstör knappen
+            return `<div class="player-stat-card" data-name="${esc(ps.name)}" onclick="app.showPlayerDetail(this.dataset.name)">
+                <div class="player-stat-avatar">${esc(initials)}</div>
                 <div class="player-stat-info">
-                    <div class="player-stat-name">${ps.name}</div>
-                    <div class="player-stat-sub">${ps.matches.length} ${matchesLabel(ps.matches.length)}${ps.laggStang>0?' • '+ps.laggStang+' '+mt('blocksWord')+'.':''}</div>
+                    <div class="player-stat-name">${esc(ps.name)}</div>
+                    <div class="player-stat-sub">${ps.matches.length} ${matchesLabel(ps.matches.length)}${recStr}${ps.laggStang>0?' • '+ps.laggStang+' '+mt('blocksWord')+'.':''}</div>
                 </div>
                 <div class="player-stat-numbers">
                     <div class="player-stat-num-item">
@@ -3145,8 +3483,8 @@ class MatchApp {
                         <div class="psn-lbl">${mt('skott')}</div>
                     </div>
                     <div class="player-stat-num-item">
-                        <div class="psn-val ${trendClass}">${trendIcon}</div>
-                        <div class="psn-lbl">Trend</div>
+                        <div class="psn-val"><span class="${tL.cls}">${tL.icon}</span> <span class="${tS.cls}">${tS.icon}</span></div>
+                        <div class="psn-lbl">${mt('trendWord')}</div>
                     </div>
                 </div>
             </div>`;
@@ -3158,6 +3496,7 @@ class MatchApp {
         const players = this.aggregatePlayerStats();
         const ps = players.find(p => p.name === name);
         if (!ps) return;
+        this._pdetPs = ps;
 
         document.getElementById('player-stats-list-view').style.display = 'none';
         document.getElementById('player-stats-detail-view').style.display = 'block';
@@ -3166,73 +3505,149 @@ class MatchApp {
         document.getElementById('pdet-avatar').textContent = initials;
         document.getElementById('pdet-name').textContent = name;
         const stangTotDet = ps.laggStang || 0;
-                const stangStrDet = stangTotDet > 0 ? ` • ${stangTotDet} ${mt('blocksWord')}` : '';
-        document.getElementById('pdet-sub').textContent = ps.matches.length + ' ' + matchesLabel(ps.matches.length) + stangStrDet + ' • ' + (ps.matches[0] ? ps.matches[0].date.toLocaleDateString(langMgr.locale()) : '') + ' – ' + (ps.matches[ps.matches.length-1] ? ps.matches[ps.matches.length-1].date.toLocaleDateString(langMgr.locale()) : '');
+        const stangStrDet = stangTotDet > 0 ? ` • ${stangTotDet} ${mt('blocksWord')}` : '';
+        const first = ps.matches[0], last = ps.matches[ps.matches.length - 1];
+        document.getElementById('pdet-sub').textContent = ps.matches.length + ' ' + matchesLabel(ps.matches.length) + stangStrDet + ' • ' + (first ? first.date.toLocaleDateString(langMgr.locale()) : '') + ' – ' + (last ? last.date.toLocaleDateString(langMgr.locale()) : '');
 
-        const laggPct  = ps.laggTotal  ? Math.round(ps.laggHit  / ps.laggTotal  * 100) : null;
-        const skottPct = ps.skottTotal ? Math.round(ps.skottHit / ps.skottTotal * 100) : null;
-
+        const laggPct  = this.pctOfList(ps.matches, 'lagg');
+        const skottPct = this.pctOfList(ps.matches, 'skott');
         document.getElementById('pdet-lagg-pct').textContent  = laggPct  !== null ? laggPct  + '%' : '—';
         document.getElementById('pdet-skott-pct').textContent = skottPct !== null ? skottPct + '%' : '—';
         document.getElementById('pdet-matcher').textContent   = ps.matches.length;
 
-        const trend = this.calcPlayerTrend(ps.matches);
-        const trendEl = document.getElementById('pdet-trend');
-        trendEl.textContent = trend === 'up' ? '↑ Stigande' : trend === 'down' ? '↓ Fallande' : '→ Stabil';
-        trendEl.className   = 'psb-val ' + (trend === 'up' ? 'trend-up' : trend === 'down' ? 'trend-down' : 'trend-neutral');
+        // Trend för lägg och skott
+        [['pdet-trend', 'lagg'], ['pdet-trend-skott', 'skott']].forEach(([id, type]) => {
+            const ti = this.trendInfo(this.calcPlayerTrend(ps.matches, type));
+            const el = document.getElementById(id);
+            el.textContent = ti.icon + ' ' + ti.text;
+            el.className = 'psb-val ' + ti.cls;
+        });
+
+        // Vinstprocent (bara matcher där resultat sparades)
+        const rec = this.countResults(ps.matches);
+        const winEl = document.getElementById('pdet-win');
+        const winLbl = document.getElementById('pdet-win-lbl');
+        if (rec.n) {
+            winEl.textContent = Math.round(rec.w / rec.n * 100) + '%';
+            winLbl.textContent = mt('rPlayerWinLbl') + ' (' + rec.w + '/' + rec.n + ')';
+        } else {
+            winEl.textContent = '—';
+            winLbl.textContent = mt('rPlayerWinLbl');
+        }
 
         // Tillbaka-knapp
         const backBtn = document.getElementById('btn-back-player-detail');
         if (backBtn) backBtn.onclick = () => this.renderPlayerStatsList();
 
-        // Trendgraf
-        const chartWrap = document.getElementById('pdet-chart-wrap');
-        const laggMatches = ps.matches.filter(m => m.laggPct !== null);
-        if (laggMatches.length >= 2 && chartWrap) {
-            chartWrap.style.display = 'block';
-            if (this._pdetChart) this._pdetChart.destroy();
-            const ctx = document.getElementById('pdet-chart').getContext('2d');
-            this._pdetChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: laggMatches.map(m => m.date.toLocaleDateString(langMgr.locale(), { month: 'short', day: 'numeric' })),
-                    datasets: [{
-                        label: mt('lagg') + ' %',
-                        data: laggMatches.map(m => m.laggPct),
-                        borderColor: '#e8ff47',
-                        backgroundColor: 'rgba(232,255,71,0.08)',
-                        borderWidth: 2, pointRadius: 4,
-                        pointBackgroundColor: '#e8ff47',
-                        fill: true, tension: 0.3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { min: 0, max: 100, ticks: { callback: v => v + '%', color: '#999', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
-                        x: { ticks: { color: '#999', font: { size: 10 } }, grid: { display: false } }
-                    }
-                }
-            });
-        } else if (chartWrap) {
-            chartWrap.style.display = 'none';
+        // Graf (per match eller per månad)
+        this._pdetGroup = this._pdetGroup || 'match';
+        this.drawPlayerChart();
+
+        // Senaste 5 matcher mot totalt (visas först när det finns fler än 5 matcher)
+        const recentEl = document.getElementById('pdet-recent');
+        if (ps.matches.length > 5) {
+            const rc = ps.matches.slice(-5);
+            const f = v => v === null ? '—' : v + '%';
+            const delta = (a, b) => (a === null || b === null) ? '' : ` (${a - b >= 0 ? '+' : ''}${a - b})`;
+            const rL = this.pctOfList(rc, 'lagg'), rS = this.pctOfList(rc, 'skott');
+            recentEl.innerHTML = `<div class="card"><div class="card-title">${mt('pRecentTitle')}</div>
+                <div class="trend-row"><span class="trend-label">${mt('pRecentLbl')}</span><span class="trend-val">${mt('lagg')} ${f(rL)}${delta(rL, laggPct)} • ${mt('skott')} ${f(rS)}${delta(rS, skottPct)}</span></div>
+                <div class="trend-row"><span class="trend-label">${mt('pTotalLbl')}</span><span class="trend-val">${mt('lagg')} ${f(laggPct)} • ${mt('skott')} ${f(skottPct)}</span></div>
+            </div>`;
+        } else {
+            recentEl.innerHTML = '';
         }
+
+        // Statistik per position
+        const posEl = document.getElementById('pdet-positions');
+        const groups = this.positionBreakdown(ps);
+        const f2 = v => v === null ? '—' : v + '%';
+        posEl.innerHTML = `<div class="card"><div class="card-title">${mt('pPositionTitle')}</div>` +
+            groups.map(g => `<div class="trend-row">
+                <span class="trend-label">${esc(posLabel(g.pos))} (${g.matches.length} ${matchesLabel(g.matches.length)})</span>
+                <span class="trend-val">${mt('lagg')} ${f2(this.pctOfList(g.matches, 'lagg'))} • ${mt('skott')} ${f2(this.pctOfList(g.matches, 'skott'))}</span>
+            </div>`).join('') + `</div>`;
 
         // Matchlista
         const matchList = document.getElementById('pdet-match-list');
+        const resIcon = r => r === 'win' ? '<span class="trend-up">' + mt('rWinShort') + '</span> ' : r === 'loss' ? '<span class="trend-down">' + mt('rLossShort') + '</span> ' : r === 'draw' ? mt('rDrawShort') + ' ' : '';
         matchList.innerHTML = [...ps.matches].reverse().map(m => {
             const laggStr  = m.laggTotal  ? `${m.laggHit}/${m.laggTotal} = ${m.laggPct}%`  : '—';
             const skottStr = m.skottTotal ? `${m.skottHit}/${m.skottTotal} = ${m.skottPct}%` : '—';
             return `<div class="player-match-row">
-                <span class="pmr-name">${m.matchName}</span>
+                <span class="pmr-name">${resIcon(m.result)}${esc(m.matchName)}</span>
                 <span class="pmr-date">${m.date.toLocaleDateString(langMgr.locale())}</span>
-                <span class="pmr-stats">L: ${laggStr} &nbsp; S: ${skottStr}</span>
+                <span class="pmr-stats">${mt('laggShort')}: ${laggStr} &nbsp; ${mt('skottShort')}: ${skottStr}</span>
             </div>`;
         }).join('');
 
         // Kör langMgr för att översätta nya element
         if (typeof langMgr !== 'undefined') langMgr.apply();
+    }
+
+    // Byt mellan "per match" och "per månad" i spelarens graf
+    setPlayerChartGroup(group) {
+        this._pdetGroup = group;
+        this.drawPlayerChart();
+    }
+
+    // Rita grafen över lägg % och skott % för vald spelare
+    drawPlayerChart() {
+        const ps = this._pdetPs;
+        const chartWrap = document.getElementById('pdet-chart-wrap');
+        if (!ps || !chartWrap) return;
+        const group = this._pdetGroup || 'match';
+
+        // Knapparnas utseende
+        document.getElementById('pdet-group-match').classList.toggle('active', group === 'match');
+        document.getElementById('pdet-group-month').classList.toggle('active', group === 'month');
+
+        let labels, laggData, skottData;
+        if (group === 'month') {
+            const series = this.monthlySeries(ps.matches);
+            labels = series.map(s => s.date.toLocaleDateString(langMgr.locale(), { month: 'short', year: '2-digit' }));
+            laggData = series.map(s => this.pctOfList(s.list, 'lagg'));
+            skottData = series.map(s => this.pctOfList(s.list, 'skott'));
+        } else {
+            labels = ps.matches.map(m => m.date.toLocaleDateString(langMgr.locale(), { month: 'short', day: 'numeric' }));
+            laggData = ps.matches.map(m => m.laggTotal ? m.laggPct : null);
+            skottData = ps.matches.map(m => m.skottTotal ? m.skottPct : null);
+        }
+
+        if (this._pdetChart) { this._pdetChart.destroy(); this._pdetChart = null; }
+        const enough = labels.length >= 2 || (group === 'month' && labels.length >= 1);
+        chartWrap.style.display = enough ? 'block' : 'none';
+        if (!enough) return;
+
+        const ctx = document.getElementById('pdet-chart').getContext('2d');
+        this._pdetChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: mt('lagg') + ' %', data: laggData,
+                        borderColor: '#51cf66', backgroundColor: 'rgba(81,207,102,0.08)',
+                        borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#51cf66',
+                        fill: false, tension: 0.3, spanGaps: true
+                    },
+                    {
+                        label: mt('skott') + ' %', data: skottData,
+                        borderColor: '#e8ff47', backgroundColor: 'rgba(232,255,71,0.08)',
+                        borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#e8ff47',
+                        fill: false, tension: 0.3, spanGaps: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { labels: { color: '#ccc', font: { size: 11 } } } },
+                scales: {
+                    y: { min: 0, max: 100, ticks: { callback: v => v + '%', color: '#999', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                    x: { ticks: { color: '#999', font: { size: 10 } }, grid: { display: false } }
+                }
+            }
+        });
     }
 
     // ---- HELPERS ----
@@ -3318,22 +3733,35 @@ class MatchApp {
     getHistoricalAvg(playerName) {
         const avgData = { laggAvg: 0, skottAvg: 0, totalMatches: 0 };
         if (!this.history || this.history.length === 0) return avgData;
-        
-        let laggSum = 0, laggCnt = 0, skottSum = 0, skottCnt = 0;
-        this.history.forEach(m => {
-            const p = m.players.find(x => x.name === playerName);
-            if (p) {
-                const lagg = this.acc(p.stats.lagg);
-                const skott = this.acc(p.stats.skott);
-                if (p.stats.lagg.total > 0) { laggSum += lagg; laggCnt++; }
-                if (p.stats.skott.total > 0) { skottSum += skott; skottCnt++; }
-            }
-        });
+        // Vägt snitt: alla träffar delat med alla försök (samma sätt som i spelarvyn)
+        const lagg = this.histPct(playerName, 'lagg', this.history);
+        const skott = this.histPct(playerName, 'skott', this.history);
         return {
-            laggAvg: laggCnt > 0 ? Math.round(laggSum / laggCnt) : 0,
-            skottAvg: skottCnt > 0 ? Math.round(skottSum / skottCnt) : 0,
+            laggAvg: lagg === null ? 0 : lagg,
+            skottAvg: skott === null ? 0 : skott,
             totalMatches: this.history.length
         };
+    }
+
+    // Spelarens träffprocent över en lista matcher, vägd efter antal försök.
+    // type är 'lagg' eller 'skott'. Ger null om spelaren inte har några försök.
+    histPct(playerName, type, matches) {
+        let hit = 0, total = 0;
+        (matches || []).forEach(om => {
+            const op = (om.players || []).find(x => x.name === playerName);
+            if (op && op.stats && op.stats[type]) {
+                hit += op.stats[type].hit;
+                total += op.stats[type].total;
+            }
+        });
+        return total > 0 ? Math.round(hit / total * 100) : null;
+    }
+
+    // Lagets träffprocent i en match (alla spelares träffar delat med alla försök)
+    teamPct(m, type) {
+        let hit = 0, total = 0;
+        m.players.forEach(p => { hit += p.stats[type].hit; total += p.stats[type].total; });
+        return total > 0 ? Math.round(hit / total * 100) : 0;
     }
 
     // ---- POSITION-ANALYS ----
