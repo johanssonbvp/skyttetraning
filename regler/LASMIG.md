@@ -3,16 +3,25 @@
 Reglerna ändras i Firebase-konsolen: **Realtime Database → Regler**. Filerna här är bara
 underlag och dokumentation. De påverkar inte databasen av sig själva.
 
+## Status
+- **Steg 1** publicerades tidigare (id längre än 20 tecken).
+- **Steg 2 publicerades 2026-11-09** och gäller nu: varje inloggad användare når bara sin egen
+  data (`auth.uid` måste vara samma som id:t i `coaches/<id>`). Före publiceringen testades det i
+  Regelsimulatorn: oinloggad nekas, inloggad som annat id nekas, inloggad som samma id tillåts.
+- Vill du backa: klistra in innehållet från `steg1-stang-korta-koder.json` i Firebase och publicera.
+
 | Fil | Vad den gör | När |
 |---|---|---|
-| `nuvarande-reglerna-backup.json` | Reglerna som gällde före ändringen (för att kunna backa) | Spara, publicera inte |
-| `steg1-stang-korta-koder.json` | Stänger gamla korta koder (t.ex. `1234`). Vanliga konton märker inget | Kan publiceras direkt |
-| `steg2-bara-egen-data.json` | Varje inloggad användare når bara sin egen data | Först när de nya sidorna (med `firebase-auth` och `auth-gate.js`) varit live 2–4 veckor |
+| `nuvarande-reglerna-backup.json` | Reglerna som gällde före steg 1 (för att kunna backa) | Spara, publicera inte |
+| `steg1-stang-korta-koder.json` | Stänger gamla korta koder (t.ex. `1234`). Vanliga konton märker inget | Publicerad tidigare. Används för att backa från steg 2 |
+| `steg2-bara-egen-data.json` | Varje inloggad användare når bara sin egen data | **Publicerad 2026-11-09** (gäller nu) |
 
-## Varför steg 2 inte kan göras direkt
-De gamla sidorna skickar ingen inloggning till databasen. Med steg 2 skulle deras sparningar
-nekas, och den gamla `saveToFirebase` sparar inloggade användares data bara i molnet. Appen
-hämtar den nya versionen i bakgrunden första gången den öppnas.
+## Varför steg 2 väntade
+De gamla sidorna skickade ingen inloggning till databasen. Med steg 2 nekas deras sparningar,
+och den gamla `saveToFirebase` sparade inloggade användares data bara i molnet. Därför väntade
+vi tills de nya sidorna (med `firebase-auth` och `auth-gate.js`) varit live en tid. Appen
+hämtar den nya versionen i bakgrunden första gången den öppnas, så en gammal installation kan
+behöva öppnas en eller två gånger med internet innan den synkar igen.
 
 ## Så här publicerar du en regelfil
 1. Öppna Regler-fliken och kopiera de nuvarande reglerna till `nuvarande-reglerna-backup.json`.
