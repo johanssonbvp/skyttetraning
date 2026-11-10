@@ -959,8 +959,6 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
   <div id="login-status"></div>
 </div>
 
-<!-- SYNC BADGE -->
-<div id="sync-status-badge" style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.8); color: #e8ff47; padding: 8px 12px; border-radius: 6px; font-size: 12px; z-index: 999; border: 1px solid #1a1f2e;" data-sv="📱 Inte inloggad" data-en="📱 Not logged in" data-fr="📱 Non connecté" data-de="📱 Nicht angemeldet">📱 Inte inloggad</div>
 
 
 <!-- HEADER -->
@@ -970,6 +968,10 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     <select id="lang-select" class="lang-select" aria-label="Språk / Language"></select>
   </div>
 <button onclick="openBackupMenu()" style="padding: 6px 12px; border: 1px solid #1a1f2e; background: transparent; color: #8a8a9e; border-radius: 4px; cursor: pointer; font-size: 14px; margin-left: 4px;" title="Datahantering" data-sv-title="Datahantering" data-en-title="Data management" data-fr-title="Gestion des données" data-de-title="Datenverwaltung">⚙️</button><button onclick="logout()" style="padding: 6px 12px; border: 1px solid #1a1f2e; background: transparent; color: #8a8a9e; border-radius: 4px; cursor: pointer; font-size: 11px; margin-left: 8px;" title="Logga ut" data-sv-title="Logga ut" data-en-title="Log out" data-fr-title="Se déconnecter" data-de-title="Abmelden">🚪</button></header>
+<!-- SYNC BADGE: smal rad under rubriken, så den aldrig täcker innehåll -->
+<div style="text-align: right; padding: 6px 20px 0;">
+<div id="sync-status-badge" style="display: inline-block; color: #e8ff47; padding: 3px 8px; border-radius: 6px; font-size: 11px; border: 1px solid #1a1f2e;" data-sv="📱 Inte inloggad" data-en="📱 Not logged in" data-fr="📱 Non connecté" data-de="📱 Nicht angemeldet">📱 Inte inloggad</div>
+</div>
 
 <!-- HERO SECTION -->
 <section class="hero">
