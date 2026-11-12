@@ -37,6 +37,12 @@
 - Rekord, bästa och sämsta räknas från pass med minst 20 skott (`MIN_SKOTT_REKORD`), annars alla pass. Snittet vägs efter antal skott (`wAvg`)
 - Resultatrutan efter ett fullt avstånd har "Klar för idag". Passet sparas redan när serien är full
 
+## Bra att veta om läggträningens statistik (`laggtraning.html`)
+- Statistiken räknas från historiken (`pt_lagg_history`), inget extra sparas. Funktionerna `renderLaggExtra`, `recoveryHtml`, `exDetailHtml`, `wPct`
+- Procent räknas vägt efter antal kast (`wPct`). Bästa pass och rekord för precision/zon räknas från pass med minst 20 kast (`MIN_KAST_REKORD`), annars alla pass
+- Avstånd och trend visas först efter 3 pass (`MIN_PASS_VISA`), annars "–"
+- Återhämtning efter miss och första kastet bygger på `log` (kastordning). Visas först när minst 5 pass har den (`MIN_PASS_MED_ORDNING`), annars "Samlar data"
+
 ## Bra att veta om matchstatistiken (`matchstatistik.html`)
 - Sidan har sin egen lagring (`coaches/<id>/matches` och `/players` i Firebase, plus localStorage) och använder inte `SYNC_KEYS`. Den loggar in med Firebase-kontot, så sökvägen är samma som kontots id
 - Namn från användare läggs alltid i HTML via `esc()`. Använd den även för nya ställen, annars kan namn med ' eller " förstöra sidan
