@@ -71,9 +71,15 @@ input[type="date"].text-input{color-scheme:dark;}
 
 /* Stars */
 .stars-row{display:flex;gap:8px;}
-.star-btn{font-size:1.6rem;cursor:pointer;transition:transform 0.15s;-webkit-tap-highlight-color:transparent;background:none;border:none;padding:4px;line-height:1;}
+.star-btn{color:var(--muted);font-size:1.6rem;cursor:pointer;transition:transform 0.15s;-webkit-tap-highlight-color:transparent;background:none;border:none;padding:4px;line-height:1;}
 .star-btn:hover{transform:scale(1.2);}
-.star-btn.lit{filter:drop-shadow(0 0 6px rgba(245,200,66,0.6));}
+.star-btn .ico{width:1em;height:1em;margin:0;}
+.star-btn.lit{color:#f5c842;filter:drop-shadow(0 0 6px rgba(245,200,66,0.6));}
+.star-btn.lit .ico{fill:currentColor;}
+.mood-stars{color:#f5c842;}
+.mood-stars .ico{width:1em;height:1em;margin:0 1px 0 0;}
+.mood-stars .star-on{fill:currentColor;}
+.mood-stars .star-off{color:var(--muted);}
 
 /* Textarea */
 .note-area{width:100%;background:var(--card2);border:1px solid var(--border2);border-radius:12px;padding:12px 14px;font-family:var(--font-body);font-size:0.95rem;color:var(--text);outline:none;resize:none;min-height:100px;line-height:1.6;transition:border-color 0.2s;}
@@ -142,7 +148,9 @@ input[type="date"].text-input{color-scheme:dark;}
 .entry-delete:hover{color:var(--fail);}
 
 .empty-state{text-align:center;padding:48px 20px;}
-.empty-icon{font-size:2.5rem;margin-bottom:12px;}
+.empty-icon{font-size:2.5rem;margin-bottom:12px;color:var(--muted2);}
+.empty-icon .ico{width:1em;height:1em;margin:0;stroke-width:1.2;}
+.photo-remove-btn .ico,.photo-overlay-close .ico,.entry-delete .ico{margin:0;}
 .empty-text{font-family:var(--font-display);font-size:1rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted2);margin-bottom:6px;}
 .empty-sub{font-size:0.82rem;color:var(--muted);}
 
@@ -178,11 +186,12 @@ input[type="date"].text-input{color-scheme:dark;}
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script src="./icons.js"></script>
 <script src="./sync-manager.js"></script>
 </head>
 <body>
 
-<div class="save-flash" id="saveFlash">✓ <span data-sv="Sparat!" data-en="Saved!" data-fr="Sauvegardé!" data-de="Gespeichert!">Sparat!</span></div>
+<div class="save-flash" id="saveFlash"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span data-sv="Sparat!" data-en="Saved!" data-fr="Sauvegardé!" data-de="Gespeichert!">Sparat!</span></div>
 
 <div class="top-bar">
   <a class="back-btn" href="index.html">← <span data-sv="Hem" data-fr="Accueil" data-en="Home" data-de="Start">Hem</span></a>
@@ -219,16 +228,16 @@ input[type="date"].text-input{color-scheme:dark;}
       <label class="form-label" data-sv="Typ av träning" data-en="Training type" data-fr="Type d'entraînement" data-de="Trainingsart">Typ av träning</label>
       <div class="type-pills">
         <div class="type-pill" data-type="shoot" onclick="selectType(this)">
-          🎯 <span data-sv="Skjutträning" data-fr="Tir" data-en="Shooting" data-de="Schießtraining">Skjutträning</span>
+          <svg class="ico" aria-hidden="true"><use href="#i-flag"/></svg><span data-sv="Skjutträning" data-fr="Tir" data-en="Shooting" data-de="Schießtraining">Skjutträning</span>
         </div>
         <div class="type-pill" data-type="lagg" onclick="selectType(this)">
-          🪃 <span data-sv="Läggträning" data-fr="Jeu de boules" data-en="Pointing" data-de="Legetraining">Läggträning</span>
+          <svg class="ico" aria-hidden="true"><use href="#i-viewfinder-circle"/></svg><span data-sv="Läggträning" data-fr="Jeu de boules" data-en="Pointing" data-de="Legetraining">Läggträning</span>
         </div>
         <div class="type-pill" data-type="match" onclick="selectType(this)">
-          🏆 <span data-sv="Match" data-en="Match" data-fr="Match" data-de="Spiel">Match</span>
+          <svg class="ico" aria-hidden="true"><use href="#i-trophy"/></svg><span data-sv="Match" data-en="Match" data-fr="Match" data-de="Spiel">Match</span>
         </div>
         <div class="type-pill" data-type="annan" onclick="selectType(this)">
-          ✨ <span data-sv="Annat" data-en="Other" data-fr="Autre" data-de="Sonstiges">Annat</span>
+          <svg class="ico" aria-hidden="true"><use href="#i-sparkles"/></svg><span data-sv="Annat" data-en="Other" data-fr="Autre" data-de="Sonstiges">Annat</span>
         </div>
       </div>
     </div>
@@ -237,11 +246,11 @@ input[type="date"].text-input{color-scheme:dark;}
     <div class="form-row">
       <label class="form-label" data-sv="Hur kändes det?" data-en="How did it feel?" data-fr="Comment ça s'est passé?" data-de="Wie hat es sich angefühlt?">Hur kändes det?</label>
       <div class="stars-row" id="starsRow">
-        <button class="star-btn" data-val="1" onclick="setMood(1)">⭐</button>
-        <button class="star-btn" data-val="2" onclick="setMood(2)">⭐</button>
-        <button class="star-btn" data-val="3" onclick="setMood(3)">⭐</button>
-        <button class="star-btn" data-val="4" onclick="setMood(4)">⭐</button>
-        <button class="star-btn" data-val="5" onclick="setMood(5)">⭐</button>
+        <button class="star-btn" data-val="1" onclick="setMood(1)"><svg class="ico" aria-hidden="true"><use href="#i-star"/></svg></button>
+        <button class="star-btn" data-val="2" onclick="setMood(2)"><svg class="ico" aria-hidden="true"><use href="#i-star"/></svg></button>
+        <button class="star-btn" data-val="3" onclick="setMood(3)"><svg class="ico" aria-hidden="true"><use href="#i-star"/></svg></button>
+        <button class="star-btn" data-val="4" onclick="setMood(4)"><svg class="ico" aria-hidden="true"><use href="#i-star"/></svg></button>
+        <button class="star-btn" data-val="5" onclick="setMood(5)"><svg class="ico" aria-hidden="true"><use href="#i-star"/></svg></button>
       </div>
     </div>
 
@@ -262,11 +271,11 @@ input[type="date"].text-input{color-scheme:dark;}
       <!-- Dolt filfält som öppnar telefonens kamera. accept="image/*" + capture="environment" gör att kameran öppnas direkt på mobil. -->
       <input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none" onchange="handlePhotoSelected(event)">
       <button type="button" class="photo-btn" id="photoBtn" onclick="document.getElementById('photoInput').click()">
-        📷 <span data-sv="Ta foto" data-en="Take photo" data-fr="Prendre une photo" data-de="Foto aufnehmen">Ta foto</span>
+        <svg class="ico" aria-hidden="true"><use href="#i-camera"/></svg><span data-sv="Ta foto" data-en="Take photo" data-fr="Prendre une photo" data-de="Foto aufnehmen">Ta foto</span>
       </button>
       <div class="photo-preview-wrap" id="photoPreviewWrap">
         <img class="photo-preview" id="photoPreview" src="" alt="Förhandsgranskning av foto">
-        <button type="button" class="photo-remove-btn" onclick="removePhoto()" title="Ta bort foto">✕</button>
+        <button type="button" class="photo-remove-btn" onclick="removePhoto()" title="Ta bort foto"><svg class="ico" aria-hidden="true"><use href="#i-x-mark"/></svg></button>
       </div>
     </div>
 
@@ -328,7 +337,7 @@ input[type="date"].text-input{color-scheme:dark;}
 
 <!-- FOTO I FULLSKÄRM (visas när man klickar på ett foto i dagboken) -->
 <div class="photo-overlay" id="photoOverlay" onclick="closePhotoOverlay(event)">
-  <button class="photo-overlay-close" onclick="closePhotoOverlay(event)">✕</button>
+  <button class="photo-overlay-close" onclick="closePhotoOverlay(event)"><svg class="ico" aria-hidden="true"><use href="#i-x-mark"/></svg></button>
   <img id="photoOverlayImg" src="" alt="Foto i fullskärm">
 </div>
 
@@ -374,7 +383,7 @@ function setMood(val) {
   selectedMood = val;
   document.querySelectorAll('.star-btn').forEach((btn, i) => {
     btn.classList.toggle('lit', i < val);
-    btn.textContent = i < val ? '⭐' : '☆';
+    
   });
 }
 
@@ -383,7 +392,7 @@ function resetForm() {
   document.getElementById('entryPlace').value = '';
   document.getElementById('entryNote').value = '';
   document.querySelectorAll('.type-pill').forEach(p => p.className = 'type-pill');
-  document.querySelectorAll('.star-btn').forEach(btn => { btn.classList.remove('lit'); btn.textContent = '⭐'; });
+  document.querySelectorAll('.star-btn').forEach(btn => { btn.classList.remove('lit'); });
   selectedType = null;
   selectedMood = 0;
   removePhoto();
@@ -593,7 +602,7 @@ function renderCalendar() {
   const list = document.getElementById('entriesList');
   list.innerHTML = '';
   if (!monthEntries.length) {
-    list.innerHTML = `<div class="empty-state"><div class="empty-icon">📖</div>
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon">${ptIcon("book-open")}</div>
       <div class="empty-text">${langMgr.t({"sv": "Inga inlägg denna månad", "en": "No entries this month", "fr": "Aucune entrée ce mois-ci", "de": "Keine Einträge in diesem Monat"})}</div>
       <div class="empty-sub">${langMgr.t({"sv": "Växla till fliken Nytt inlägg för att logga ett pass.", "en": "Switch to New Entry to log a session.", "fr": "Passez à l'onglet Nouvelle entrée pour enregistrer une séance.", "de": "Wechsle zum Reiter Neuer Eintrag, um eine Einheit zu erfassen."})}</div></div>`;
     return;
@@ -616,7 +625,7 @@ function buildEntryCard(e) {
   const typeClass = e.type ? 'entry-'+e.type : 'entry-annan';
   const badgeClass = e.type ? 'badge-'+e.type : 'badge-annan';
   const typeLbl = langMgr.t(TYPE_LABELS[e.type || 'annan']);
-  const stars = e.mood ? '⭐'.repeat(e.mood) + '☆'.repeat(5-e.mood) : '';
+  const stars = e.mood ? starsHtml(e.mood) : '';
   const dateFormatted = e.date ? new Date(e.date+'T12:00:00').toLocaleDateString(langMgr.locale(),{weekday:'long',day:'numeric',month:'long'}) : '';
 
   div.className = 'entry-card ' + typeClass;
@@ -625,13 +634,22 @@ function buildEntryCard(e) {
       <span class="entry-type-badge ${badgeClass}">${typeLbl}</span>
       <span class="entry-date">${dateFormatted}</span>
     </div>
-    ${e.place ? `<div class="entry-place">📍 ${e.place}</div>` : ''}
+    ${e.place ? `<div class="entry-place">${ptIcon("map-pin")}${e.place}</div>` : ''}
     ${stars ? `<div class="entry-stars">${stars}</div>` : ''}
     ${e.note ? `<div class="entry-note">${escHtml(e.note)}</div>` : ''}
     ${e.photo ? `<img class="entry-photo" src="${e.photo}" alt="${langMgr.t({"sv": "Foto från träningspasset", "en": "Photo from the training session", "fr": "Photo de la séance d'entraînement", "de": "Foto von der Trainingseinheit"})}" onclick="openPhotoOverlay('${e.photo}')">` : ''}
-    <button class="entry-delete" onclick="askDelete(${e.id},event)" title="${langMgr.t({"sv": "Ta bort", "en": "Delete", "fr": "Supprimer", "de": "Löschen"})}">✕</button>
+    <button class="entry-delete" onclick="askDelete(${e.id},event)" title="${langMgr.t({"sv": "Ta bort", "en": "Delete", "fr": "Supprimer", "de": "Löschen"})}">${ptIcon("x-mark")}</button>
   `;
   return div;
+}
+
+// Fem stjärnor som HTML: de första "mood" är ifyllda (gula), resten bara konturer
+function starsHtml(mood) {
+  var h = '<span class="mood-stars">';
+  for (var i = 0; i < 5; i++) {
+    h += '<svg class="ico ' + (i < mood ? 'star-on' : 'star-off') + '" aria-hidden="true"><use href="#i-star"/></svg>';
+  }
+  return h + '</span>';
 }
 
 function escHtml(str) {
@@ -648,7 +666,7 @@ function showDayDetail(dateStr, dayEntries) {
   container.innerHTML = '';
   dayEntries.forEach(e => {
     const typeLbl = e.type ? langMgr.t(TYPE_LABELS[e.type]) : '';
-    const stars = e.mood ? '⭐'.repeat(e.mood)+'☆'.repeat(5-e.mood) : '';
+    const stars = e.mood ? starsHtml(e.mood) : '';
     const div = document.createElement('div');
     div.className = 'day-entry-preview';
     div.innerHTML = `
@@ -656,7 +674,7 @@ function showDayDetail(dateStr, dayEntries) {
         <span style="font-family:var(--font-display);font-size:0.88rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;">${typeLbl}</span>
         ${stars ? `<span class="dep-stars">${stars}</span>` : ''}
       </div>
-      ${e.place ? `<div class="dep-place">📍 ${e.place}</div>` : ''}
+      ${e.place ? `<div class="dep-place">${ptIcon("map-pin")}${e.place}</div>` : ''}
       ${e.note ? `<div class="dep-note">${escHtml(e.note)}</div>` : ''}
       ${e.photo ? `<img class="entry-photo" src="${e.photo}" alt="${langMgr.t({"sv": "Foto från träningspasset", "en": "Photo from the training session", "fr": "Photo de la séance d'entraînement", "de": "Foto von der Trainingseinheit"})}" onclick="openPhotoOverlay('${e.photo}')">` : ''}
     `;
