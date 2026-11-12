@@ -374,6 +374,8 @@
 
         /* CHART */
         .chart-wrap { background: rgba(26,31,58,0.8); border: 1px solid rgba(232,255,71,0.15); border-radius: 10px; padding: 1.25rem; margin-bottom: 1.25rem; position: relative; height: 320px; }
+        /* Ikoner (Heroicons) bredvid text */
+        .ico { width: 1.15em; height: 1.15em; vertical-align: -0.2em; margin-right: 0.35em; flex-shrink: 0; }
         .chart-title { font-size: 14px; font-weight: 600; color: #e8ff47; margin-bottom: 0.75rem; }
         .chart-wrap canvas { max-height: 260px; }
 
@@ -667,6 +669,20 @@
 </style>
 </head>
 <body>
+<!-- Ikoner från Heroicons (MIT-licens, Tailwind Labs). Används med <svg class="ico"><use href="#i-namn"/></svg> -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<symbol id="i-cog" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></symbol>
+<symbol id="i-trend" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941"/></symbol>
+<symbol id="i-hash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5-3.9 19.5m-2.1-19.5-3.9 19.5"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/></symbol>
+<symbol id="i-undo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.25 15a4.5 4.5 0 0 0 4.5 4.5H18a3.75 3.75 0 0 0 1.332-7.257 3 3 0 0 0-3.758-3.848 5.25 5.25 0 0 0-10.233 2.33A4.502 4.502 0 0 0 2.25 15Z"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></symbol>
+<symbol id="i-table" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0 1 12 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M13.125 12h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125M20.625 12c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 1.5v-1.5m0 0c0-.621.504-1.125 1.125-1.125m0 0h7.5"/></symbol>
+</svg>
+
 
 <div class="container">
 
@@ -715,7 +731,7 @@
         <div class="card">
             <div class="card-title" style="display:flex;align-items:center;justify-content:space-between;">
                 <span data-sv="Ny match" data-fr="Nouveau match" data-en="New match" data-de="Neues Spiel">Ny match</span>
-                <button onclick="app.openManagePlayers()" style="background:none;border:1px solid #2a3548;color:#999;border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;" onmouseover="this.style.color='#e8ff47';this.style.borderColor='#e8ff47'" onmouseout="this.style.color='#999';this.style.borderColor='#2a3548'" data-sv="⚙️ Spelare" data-en="⚙️ Players" data-fr="⚙️ Joueurs" data-de="⚙️ Spieler">⚙️ Spelare</button>
+                <button onclick="app.openManagePlayers()" style="background:none;border:1px solid #2a3548;color:#999;border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;" onmouseover="this.style.color='#e8ff47';this.style.borderColor='#e8ff47'" onmouseout="this.style.color='#999';this.style.borderColor='#2a3548'"><svg class="ico" aria-hidden="true"><use href="#i-cog"/></svg><span data-sv="Spelare" data-en="Players" data-fr="Joueurs" data-de="Spieler">Spelare</span></button>
             </div>
 
             <!-- Format: Tripplar/Dubblar -->
@@ -723,12 +739,12 @@
                 <label data-sv="Format" data-en="Format" data-fr="Format" data-de="Format">Format</label>
                 <div class="format-selector">
                     <button class="format-btn active" id="fmt-triple" onclick="app.setFormat('triple')"
-                        data-sv="🎯 Tripplar (3v3)" data-en="🎯 Triples (3v3)" data-fr="🎯 Triplettes (3v3)" data-de="🎯 Triplette (3v3)">
-                        🎯 Tripplar (3v3)
+                        data-sv="Tripplar (3v3)" data-en="Triples (3v3)" data-fr="Triplettes (3v3)" data-de="Triplette (3v3)">
+                        Tripplar (3v3)
                     </button>
                     <button class="format-btn" id="fmt-double" onclick="app.setFormat('double')"
-                        data-sv="⚡ Dubblar (2v2)" data-en="⚡ Doubles (2v2)" data-fr="⚡ Doublettes (2v2)" data-de="⚡ Doublette (2v2)">
-                        ⚡ Dubblar (2v2)
+                        data-sv="Dubblar (2v2)" data-en="Doubles (2v2)" data-fr="Doublettes (2v2)" data-de="Doublette (2v2)">
+                        Dubblar (2v2)
                     </button>
                 </div>
             </div>
@@ -779,24 +795,22 @@
             </div>
 
             <div id="offline-setup-warning" style="display:none;background:rgba(232,255,71,0.1);border:1px solid rgba(232,255,71,0.3);border-radius:8px;padding:0.75rem;margin-top:0.75rem;font-size:13px;color:#e8ff47;text-align:center;"
-                data-sv="⚡ Offline-läge — matcher sparas lokalt och synkas när du får internet"
-                data-en="⚡ Offline mode — matches saved locally and synced when online"
-                data-fr="⚡ Mode hors ligne — matchs sauvegardés localement" data-de="⚡ Offline-Modus — Spiele werden lokal gespeichert und synchronisiert, sobald du online bist">
-                ⚡ Offline-läge — matcher sparas lokalt och synkas när du får internet
-            </div>
+               
+               
+               ><svg class="ico" aria-hidden="true"><use href="#i-bolt"/></svg><span data-sv="Offline-läge — matcher sparas lokalt och synkas när du får internet" data-en="Offline mode — matches saved locally and synced when online" data-fr="Mode hors ligne — matchs sauvegardés localement" data-de="Offline-Modus — Spiele werden lokal gespeichert und synchronisiert, sobald du online bist">Offline-läge — matcher sparas lokalt och synkas när du får internet</span></div>
             <button class="btn btn-primary" id="btn-start" style="margin-top:1rem;"
                 data-sv="STARTA MATCH" data-fr="DÉMARRER LE MATCH" data-en="START MATCH" data-de="SPIEL STARTEN">STARTA MATCH</button>
         </div>
 
         <!-- Knapp till spelarstatistik och resultat (utan att starta en match) -->
         <button class="btn btn-outline" id="btn-open-stats" style="width:100%;margin-bottom:1rem;" onclick="app.openStatsScreen()"
-            data-sv="📊 Spelarstatistik & resultat" data-en="📊 Player statistics & results" data-fr="📊 Statistiques des joueurs et résultats" data-de="📊 Spielerstatistik &amp; Ergebnisse">📊 Spelarstatistik & resultat</button>
+           ><svg class="ico" aria-hidden="true"><use href="#i-chart"/></svg><span data-sv="Spelarstatistik & resultat" data-en="Player statistics & results" data-fr="Statistiques des joueurs et résultats" data-de="Spielerstatistik &amp; Ergebnisse">Spelarstatistik & resultat</span></button>
 
         <!-- HOME HISTORY -->
         <div class="card" id="home-history-card">
             <div class="card-title">
                 <span data-sv="Tidigare matcher" data-fr="Matchs précédents" data-en="Previous matches" data-de="Frühere Spiele">Tidigare matcher</span>
-                <span class="sync-badge sync-ok" id="sync-status-home">☁️ Firebase</span>
+                <span class="sync-badge sync-ok" id="sync-status-home"><svg class="ico" aria-hidden="true"><use href="#i-cloud"/></svg>Firebase</span>
             </div>
             <div id="home-history-list"><div class="empty" data-sv="Ingen matchhistorik än" data-fr="Aucun historique de match" data-en="No match history yet" data-de="Noch kein Spielverlauf">Ingen matchhistorik än</div></div>
         </div>
@@ -808,15 +822,15 @@
             <div class="detail-meta" id="home-detail-meta"></div>
 
             <div class="chart-wrap" style="height:280px;">
-                <div class="chart-title" data-sv="📊 Träffprocent per spelare" data-en="📊 Accuracy per player" data-fr="📊 Précision par joueur" data-de="📊 Trefferquote pro Spieler">📊 Träffprocent per spelare</div>
+                <div class="chart-title"><svg class="ico" aria-hidden="true"><use href="#i-chart"/></svg><span data-sv="Träffprocent per spelare" data-en="Accuracy per player" data-fr="Précision par joueur" data-de="Trefferquote pro Spieler">Träffprocent per spelare</span></div>
                 <canvas id="home-detail-chart-accuracy"></canvas>
             </div>
             <div class="chart-wrap" style="height:280px;">
-                <div class="chart-title" data-sv="🔢 Antal försök per spelare" data-en="🔢 Attempts per player" data-fr="🔢 Nombre d'essais par joueur" data-de="🔢 Versuche pro Spieler">🔢 Antal försök per spelare</div>
+                <div class="chart-title"><svg class="ico" aria-hidden="true"><use href="#i-hash"/></svg><span data-sv="Antal försök per spelare" data-en="Attempts per player" data-fr="Nombre d'essais par joueur" data-de="Versuche pro Spieler">Antal försök per spelare</span></div>
                 <canvas id="home-detail-chart-attempts"></canvas>
             </div>
             <div class="chart-wrap" style="height:280px;">
-                <div class="chart-title" data-sv="📈 Denna match vs historiskt genomsnitt" data-en="📈 This match vs historical average" data-fr="📈 Ce match vs moyenne historique" data-de="📈 Dieses Spiel vs. historischer Durchschnitt">📈 Denna match vs historiskt genomsnitt</div>
+                <div class="chart-title"><svg class="ico" aria-hidden="true"><use href="#i-trend"/></svg><span data-sv="Denna match vs historiskt genomsnitt" data-en="This match vs historical average" data-fr="Ce match vs moyenne historique" data-de="Dieses Spiel vs. historischer Durchschnitt">Denna match vs historiskt genomsnitt</span></div>
                 <canvas id="home-detail-chart-compare"></canvas>
             </div>
 
@@ -832,10 +846,10 @@
             </div>
 
             <div class="export-row">
-                <button class="btn btn-outline" id="btn-export-pdf-home">📄 PDF</button>
-                <button class="btn btn-outline" id="btn-export-csv-home">📊 CSV</button>
+                <button class="btn btn-outline" id="btn-export-pdf-home"><svg class="ico" aria-hidden="true"><use href="#i-doc"/></svg>PDF</button>
+                <button class="btn btn-outline" id="btn-export-csv-home"><svg class="ico" aria-hidden="true"><use href="#i-table"/></svg>CSV</button>
             </div>
-            <button class="btn btn-danger" id="btn-delete-home-detail" style="width:100%;margin-top:0.5rem;" data-sv="🗑 Radera match" data-en="🗑 Delete match" data-fr="🗑 Supprimer le match" data-de="🗑 Spiel löschen">🗑 Radera match</button>
+            <button class="btn btn-danger" id="btn-delete-home-detail" style="width:100%;margin-top:0.5rem;"><svg class="ico" aria-hidden="true"><use href="#i-trash"/></svg><span data-sv="Radera match" data-en="Delete match" data-fr="Supprimer le match" data-de="Spiel löschen">Radera match</span></button>
         </div>
     </div>
 
@@ -872,7 +886,7 @@
                 <tbody id="live-table-body"></tbody>
             </table>
             <div class="match-actions">
-                <button class="btn btn-outline" id="btn-undo" data-sv="↩ ÅNGRA" data-fr="↩ ANNULER" data-en="↩ UNDO" style="border-color:#ff9f43;color:#ff9f43;" data-de="↩ RÜCKGÄNGIG">↩ ÅNGRA</button>
+                <button class="btn btn-outline" id="btn-undo" style="border-color:#ff9f43;color:#ff9f43;"><svg class="ico" aria-hidden="true"><use href="#i-undo"/></svg><span data-sv="ÅNGRA" data-fr="ANNULER" data-en="UNDO" data-de="RÜCKGÄNGIG">ÅNGRA</span></button>
                 <button class="btn btn-danger" id="btn-reset" data-sv="ÅTERSTÄLL" data-fr="RÉINITIALISER" data-en="RESET" data-de="ZURÜCKSETZEN">ÅTERSTÄLL</button>
                 <button class="btn btn-outline" id="btn-next-round" data-sv="NÄSTA OMGÅNG ▶" data-fr="MANCHE SUIVANTE ▶" data-en="NEXT ROUND ▶" style="border-color:#e8ff47;color:#e8ff47;" data-de="NÄCHSTE RUNDE ▶">NÄSTA OMGÅNG ▶</button>
                 <button class="btn btn-primary" id="btn-finish" data-sv="AVSLUTA MATCH" data-fr="TERMINER LE MATCH" data-en="FINISH MATCH" data-de="SPIEL BEENDEN">AVSLUTA MATCH</button>
@@ -891,8 +905,8 @@
                 <canvas id="chart-compare"></canvas>
             </div>
             <div class="export-row">
-                <button class="btn btn-outline" id="btn-pdf">📄 PDF</button>
-                <button class="btn btn-outline" id="btn-csv">📊 CSV</button>
+                <button class="btn btn-outline" id="btn-pdf"><svg class="ico" aria-hidden="true"><use href="#i-doc"/></svg>PDF</button>
+                <button class="btn btn-outline" id="btn-csv"><svg class="ico" aria-hidden="true"><use href="#i-table"/></svg>CSV</button>
             </div>
         </div>
 
@@ -908,19 +922,19 @@
 
                 <!-- Chart 1: Lägg % och Skott % per spelare -->
                 <div class="chart-wrap" style="height:280px;">
-                    <div class="chart-title" data-sv="📊 Träffprocent per spelare" data-en="📊 Accuracy per player" data-fr="📊 Précision par joueur" data-de="📊 Trefferquote pro Spieler">📊 Träffprocent per spelare</div>
+                    <div class="chart-title"><svg class="ico" aria-hidden="true"><use href="#i-chart"/></svg><span data-sv="Träffprocent per spelare" data-en="Accuracy per player" data-fr="Précision par joueur" data-de="Trefferquote pro Spieler">Träffprocent per spelare</span></div>
                     <canvas id="detail-chart-accuracy"></canvas>
                 </div>
 
                 <!-- Chart 2: Försök totalt per spelare -->
                 <div class="chart-wrap" style="height:280px;">
-                    <div class="chart-title" data-sv="🔢 Antal försök per spelare" data-en="🔢 Attempts per player" data-fr="🔢 Nombre d'essais par joueur" data-de="🔢 Versuche pro Spieler">🔢 Antal försök per spelare</div>
+                    <div class="chart-title"><svg class="ico" aria-hidden="true"><use href="#i-hash"/></svg><span data-sv="Antal försök per spelare" data-en="Attempts per player" data-fr="Nombre d'essais par joueur" data-de="Versuche pro Spieler">Antal försök per spelare</span></div>
                     <canvas id="detail-chart-attempts"></canvas>
                 </div>
 
                 <!-- Chart 3: Denna match vs historiskt genomsnitt -->
                 <div class="chart-wrap" style="height:280px;">
-                    <div class="chart-title" data-sv="📈 Denna match vs historiskt genomsnitt" data-en="📈 This match vs historical average" data-fr="📈 Ce match vs moyenne historique" data-de="📈 Dieses Spiel vs. historischer Durchschnitt">📈 Denna match vs historiskt genomsnitt</div>
+                    <div class="chart-title"><svg class="ico" aria-hidden="true"><use href="#i-trend"/></svg><span data-sv="Denna match vs historiskt genomsnitt" data-en="This match vs historical average" data-fr="Ce match vs moyenne historique" data-de="Dieses Spiel vs. historischer Durchschnitt">Denna match vs historiskt genomsnitt</span></div>
                     <canvas id="detail-chart-compare"></canvas>
                 </div>
 
@@ -939,8 +953,8 @@
                 </div>
 
                 <div class="export-row">
-                    <button class="btn btn-outline" id="btn-export-pdf-detail">📄 PDF</button>
-                    <button class="btn btn-outline" id="btn-export-csv-detail">📊 CSV</button>
+                    <button class="btn btn-outline" id="btn-export-pdf-detail"><svg class="ico" aria-hidden="true"><use href="#i-doc"/></svg>PDF</button>
+                    <button class="btn btn-outline" id="btn-export-csv-detail"><svg class="ico" aria-hidden="true"><use href="#i-table"/></svg>CSV</button>
                 </div>
                 <button class="btn btn-danger" id="btn-delete-detail" style="width:100%;margin-top:0.5rem;" data-sv="Radera match" data-en="Delete match" data-fr="Supprimer le match" data-de="Spiel löschen">Radera match</button>
             </div>
@@ -1167,7 +1181,7 @@ const MS = {
   // ---- Omgångsanalys ----
   raTitle: {sv:"Omgångsanalys",en:"Round analysis",fr:"Analyse des manches",de:"Rundenanalyse"},
   raNeedScores: {sv:"Ingen omgångsanalys: inga omgångsresultat sparades i den här matchen.",en:"No round analysis: no round results were saved for this match.",fr:"Pas d'analyse des manches : aucun résultat de manche n'a été enregistré pour ce match.",de:"Keine Rundenanalyse: Für dieses Spiel wurden keine Rundenergebnisse gespeichert."},
-  raChartTitle: {sv:"📈 Poäng per omgång",en:"📈 Points per round",fr:"📈 Points par manche",de:"📈 Punkte pro Runde"},
+  raChartTitle: {sv:"Poäng per omgång",en:"Points per round",fr:"Points par manche",de:"Punkte pro Runde"},
   raScored: {sv:"Poäng vi tog",en:"Points we scored",fr:"Points marqués",de:"Erzielte Punkte"},
   raConceded: {sv:"Poäng vi släppte",en:"Points we conceded",fr:"Points concédés",de:"Abgegebene Punkte"},
   raDiff: {sv:"Ställning (vi minus dem)",en:"Margin (us minus them)",fr:"Écart (nous moins eux)",de:"Differenz (wir minus sie)"},
@@ -1438,7 +1452,7 @@ class MatchApp {
                         this.history = [];
                     }
                 }
-                document.getElementById('sync-status-home').textContent = '☁️ Firebase';
+                document.getElementById('sync-status-home').innerHTML = '<svg class="ico" aria-hidden="true"><use href="#i-cloud"/></svg>Firebase';
                 document.getElementById('sync-status-home').className = 'sync-badge sync-ok';
             } catch(e) {
                 console.warn('[Firebase] Load error, using localStorage:', e);
@@ -3450,7 +3464,7 @@ class MatchApp {
                 ${row(mt('raStreak'), bestStreak)}
             </div>
             <div class="chart-wrap" style="height:280px;">
-                <div class="chart-title">${mt('raChartTitle')}</div>
+                <div class="chart-title"><svg class="ico" aria-hidden="true"><use href="#i-trend"/></svg>${mt('raChartTitle')}</div>
                 <canvas id="${containerId}-chart"></canvas>
             </div>
             <div class="card"><div class="card-title">${mt('raDecides')}</div>
@@ -4259,7 +4273,7 @@ document.addEventListener('DOMContentLoaded', () => app.init());
 <!-- MANAGE PLAYERS MODAL -->
 <div id="manage-players-modal" class="manage-modal-overlay" style="display:none;">
     <div class="manage-modal-card">
-        <div class="manage-modal-title" data-sv="⚙️ Hantera spelare" data-en="⚙️ Manage players" data-fr="⚙️ Gérer les joueurs" data-de="⚙️ Spieler verwalten">⚙️ Hantera spelare</div>
+        <div class="manage-modal-title"><svg class="ico" aria-hidden="true"><use href="#i-cog"/></svg><span data-sv="Hantera spelare" data-en="Manage players" data-fr="Gérer les joueurs" data-de="Spieler verwalten">Hantera spelare</span></div>
         <div id="player-db-list">
             <div style="color:#999;font-size:13px;text-align:center;padding:1rem;" data-sv="Inga spelare sparade än" data-en="No players saved yet" data-fr="Aucun joueur enregistré" data-de="Noch keine Spieler gespeichert">Inga spelare sparade än</div>
         </div>
