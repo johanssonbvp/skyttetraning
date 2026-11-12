@@ -1041,6 +1041,16 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 <!-- APPS SECTION -->
 <section class="apps-section">
   <div class="apps-container">
+    <!-- Första passet: visas bara för nya konton som inte sparat något än -->
+    <a href="./skjuttraning.html" id="first-pass-card" class="app-card guide-card" style="display:none" onclick="trackFirstPassClick()">
+      <span class="app-icon"><svg class="ico" aria-hidden="true"><use href="#i-bolt"/></svg></span>
+      <div class="app-info">
+        <div class="app-name" data-sv="Gör ditt första pass" data-en="Do your first session" data-fr="Faites votre première séance" data-de="Mach deine erste Einheit">Gör ditt första pass</div>
+        <div class="app-desc" data-sv="Skjutträning, det tar två minuter" data-en="Shooting practice, it takes two minutes" data-fr="Entraînement au tir, cela prend deux minutes" data-de="Schießtraining, es dauert zwei Minuten">Skjutträning, det tar två minuter</div>
+      </div>
+      <span class="app-arrow">›</span>
+    </a>
+
     <!-- Lathund för nya användare -->
     <a href="./lathund.html" class="app-card guide-card">
       <span class="app-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg></span>
@@ -1603,7 +1613,47 @@ async function tagUserInOneSignal(user) {
   }
 }
 
+// ---- FÖRSTA PASSET ----
+// Kortet visas bara för konton som är yngre än 30 dagar och som inte har sparat
+// något pass, någon dagbok eller någon match än. Det försvinner av sig självt
+// så fort första passet är sparat (eller när synken hittar gammal data).
+var currentFirstPassUser = null;
+function hasAnyTrainingData() {
+  var keys = ['pt_h', 'pt_lagg_history', 'pt_dagbok', 'pt_precision_v2', 'pt_matches_v2', 'pt_warmup_v1'];
+  return keys.some(function (k) {
+    try {
+      var v = JSON.parse(localStorage.getItem(k) || '[]');
+      return Array.isArray(v) && v.length > 0;
+    } catch (e) { return false; }
+  });
+}
+function updateFirstPassCard() {
+  var card = document.getElementById('first-pass-card');
+  if (!card) return;
+  var user = currentFirstPassUser;
+  var created = user && user.metadata && user.metadata.creationTime;
+  var isNew = !!created && (Date.now() - new Date(created).getTime()) < 30 * 24 * 3600 * 1000;
+  var show = isNew && !hasAnyTrainingData();
+  card.style.display = show ? 'flex' : 'none';
+  if (show) {
+    if (typeof langMgr !== 'undefined') langMgr.apply();
+    // Mäts en gång per besök, så vi ser hur många som får se kortet
+    try {
+      if (!sessionStorage.getItem('first_pass_card_shown')) {
+        sessionStorage.setItem('first_pass_card_shown', '1');
+        gtag('event', 'first_pass_card_shown');
+      }
+    } catch (e) {}
+  }
+}
+function trackFirstPassClick() {
+  try { gtag('event', 'first_pass_card_click'); } catch (e) {}
+}
+window.addEventListener('pt-sync-updated', updateFirstPassCard);
+
 function onUserLoggedIn(user) {
+  currentFirstPassUser = user;
+  updateFirstPassCard();
   // Uppdatera UI
   const logoutBtn = document.getElementById('logout-btn');
   if (logoutBtn) logoutBtn.style.display = 'inline-block';
