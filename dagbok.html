@@ -634,7 +634,7 @@ function buildEntryCard(e) {
       <span class="entry-type-badge ${badgeClass}">${typeLbl}</span>
       <span class="entry-date">${dateFormatted}</span>
     </div>
-    ${e.place ? `<div class="entry-place">${ptIcon("map-pin")}${e.place}</div>` : ''}
+    ${e.place ? `<div class="entry-place">${ptIcon("map-pin")}${escHtml(e.place)}</div>` : ''}
     ${stars ? `<div class="entry-stars">${stars}</div>` : ''}
     ${e.note ? `<div class="entry-note">${escHtml(e.note)}</div>` : ''}
     ${e.photo ? `<img class="entry-photo" src="${e.photo}" alt="${langMgr.t({"sv": "Foto från träningspasset", "en": "Photo from the training session", "fr": "Photo de la séance d'entraînement", "de": "Foto von der Trainingseinheit"})}" onclick="openPhotoOverlay('${e.photo}')">` : ''}
@@ -653,7 +653,8 @@ function starsHtml(mood) {
 }
 
 function escHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // Även citattecken byts ut, så att text från användare aldrig kan förstöra HTML-koden
+  return String(str == null ? '' : str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
 // ══════════════════════════════════════════
@@ -674,7 +675,7 @@ function showDayDetail(dateStr, dayEntries) {
         <span style="font-family:var(--font-display);font-size:0.88rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;">${typeLbl}</span>
         ${stars ? `<span class="dep-stars">${stars}</span>` : ''}
       </div>
-      ${e.place ? `<div class="dep-place">${ptIcon("map-pin")}${e.place}</div>` : ''}
+      ${e.place ? `<div class="dep-place">${ptIcon("map-pin")}${escHtml(e.place)}</div>` : ''}
       ${e.note ? `<div class="dep-note">${escHtml(e.note)}</div>` : ''}
       ${e.photo ? `<img class="entry-photo" src="${e.photo}" alt="${langMgr.t({"sv": "Foto från träningspasset", "en": "Photo from the training session", "fr": "Photo de la séance d'entraînement", "de": "Foto von der Trainingseinheit"})}" onclick="openPhotoOverlay('${e.photo}')">` : ''}
     `;

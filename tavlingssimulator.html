@@ -614,6 +614,11 @@ function undoRound() {
   renderMatchUI();
 }
 
+// Gör text från användare ofarlig innan den läggs i HTML (annars kan namn med < > ' " förstöra sidan)
+function esc(str) {
+  return String(str == null ? '' : str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
 function renderRoundsList() {
   const list = document.getElementById('roundsList');
   list.innerHTML = '';
@@ -625,7 +630,7 @@ function renderRoundsList() {
     div.innerHTML = `
       <div class="round-row-left">
         <span class="round-num">R${r.round}</span>
-        <span class="round-winner ${isA?'round-winner-a':'round-winner-b'}">${name}</span>
+        <span class="round-winner ${isA?'round-winner-a':'round-winner-b'}">${esc(name)}</span>
         <span class="round-pts-badge ${isA?'badge-a':'badge-b'}">+${r.pts}</span>
       </div>
       <span class="round-score-after">${r.scoreAfterA} – ${r.scoreAfterB}</span>
@@ -723,12 +728,12 @@ function buildMatchCard(m) {
     <div class="match-top">
       <div>
         <div class="match-result" style="color:${col}">${m.finalA} – ${m.finalB}</div>
-        <div class="match-winner-name" style="color:${col}">${ptIcon("trophy")}${m.winnerName}</div>
+        <div class="match-winner-name" style="color:${col}">${ptIcon("trophy")}${esc(m.winnerName)}</div>
       </div>
       <div class="match-date">${fmtDate(m.date)}</div>
     </div>
     <div class="match-meta">
-      <span>${ptIcon("flag")}${m.nameA} ${langMgr.t({"sv": "mot", "en": "vs", "fr": "contre", "de": "gegen"})} ${m.nameB}</span>
+      <span>${ptIcon("flag")}${esc(m.nameA)} ${langMgr.t({"sv": "mot", "en": "vs", "fr": "contre", "de": "gegen"})} ${esc(m.nameB)}</span>
       <span>${ptIcon("arrow-path")}${m.rounds} ${langMgr.t({"sv": "rundor", "en": "rounds", "fr": "manches", "de": "Runden"})}</span>
       <span>${ptIcon("clipboard-document-list")}${fmtLbl}</span>
     </div>
