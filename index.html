@@ -103,6 +103,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 </script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <script src="./icons.js"></script>
     <script src="./sync-manager.js"></script>
     <script src="./lang-manager.js"></script>
   <meta charset="UTF-8">
@@ -776,7 +777,8 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
         from { opacity: 0; transform: translateY(20px); }
         to   { opacity: 1; transform: translateY(0); }
     }
-    .welcome-emoji { font-size: 48px; margin-bottom: 12px; }
+    .welcome-emoji { margin-bottom: 12px; color: #e8ff47; }
+    .welcome-emoji .ico { width: 48px; height: 48px; margin: 0; }
     .welcome-title { font-size: 22px; font-weight: 800; color: #e8ff47; margin-bottom: 6px; }
     .welcome-sub { font-size: 13px; color: #888; margin-bottom: 24px; line-height: 1.5; }
     .welcome-btn {
@@ -798,11 +800,13 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
         transition: border-color 0.15s, background 0.15s;
     }
     .welcome-btn:hover { border-color: #e8ff47; background: #1a2030; }
-    .welcome-btn .wb-icon { font-size: 24px; flex-shrink: 0; }
+    .welcome-btn .wb-icon { flex-shrink: 0; color: #e8ff47; }
+    .welcome-btn .wb-icon .ico { width: 24px; height: 24px; margin: 0; }
     .welcome-btn .wb-text .wb-title { font-size: 14px; font-weight: 700; color: #fff; }
     .welcome-btn .wb-text .wb-desc { font-size: 11px; color: #888; margin-top: 2px; }
     .wn-item { display: flex; align-items: center; gap: 14px; text-align: left; margin-bottom: 14px; font-size: 14px; color: #ddd; line-height: 1.4; }
-    .wn-item .wn-icon { font-size: 24px; flex-shrink: 0; }
+    .wn-item .wn-icon { flex-shrink: 0; color: #e8ff47; }
+    .wn-item .wn-icon .ico { width: 24px; height: 24px; margin: 0; }
     .welcome-skip { font-size: 12px; color: #555; cursor: pointer; margin-top: 12px; }
     .welcome-skip:hover { color: #888; }
 
@@ -812,13 +816,13 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 <!-- NYTT I APPEN -->
 <div id="whatsnew-modal">
   <div class="welcome-box">
-    <div class="welcome-emoji">✨</div>
+    <div class="welcome-emoji"><svg class="ico" aria-hidden="true"><use href="#i-sparkles"/></svg></div>
     <div class="welcome-title" data-sv="Nytt i appen" data-en="New in the app" data-fr="Nouveau dans l'application" data-de="Neu in der App">Nytt i appen</div>
     <div class="welcome-sub"></div>
-    <div class="wn-item"><span class="wn-icon">🔥</span><span data-sv="Uppvärmning – en guidad rutin innan du tränar" data-en="Warm-up – a guided routine before you train" data-fr="Échauffement – une routine guidée avant l'entraînement" data-de="Aufwärmen – eine geführte Routine vor dem Training">Uppvärmning – en guidad rutin innan du tränar</span></div>
-    <div class="wn-item"><span class="wn-icon">🌍</span><span data-sv="Välj språk i menyn, nu även tyska" data-en="Choose your language in the menu, now including German" data-fr="Choisissez la langue dans le menu, maintenant aussi l'allemand" data-de="Wähle die Sprache im Menü, jetzt auch Deutsch">Välj språk i menyn, nu även tyska</span></div>
-    <div class="wn-item"><span class="wn-icon">📊</span><span data-sv="Skjutträning visar effektivitet per avstånd" data-en="Shooting practice now shows efficiency per distance" data-fr="Le tir affiche désormais l'efficacité par distance" data-de="Das Schießtraining zeigt jetzt die Effizienz pro Entfernung">Skjutträning visar effektivitet per avstånd</span></div>
-    <div class="wn-item"><span class="wn-icon">☁️</span><span data-sv="Din träning följer med mellan telefoner när du är inloggad" data-en="Your training follows you between phones when you are logged in" data-fr="Votre entraînement vous suit d'un téléphone à l'autre quand vous êtes connecté" data-de="Dein Training begleitet dich zwischen Handys, wenn du angemeldet bist">Din träning följer med mellan telefoner när du är inloggad</span></div>
+    <div class="wn-item"><span class="wn-icon"><svg class="ico" aria-hidden="true"><use href="#i-fire"/></svg></span><span data-sv="Uppvärmning – en guidad rutin innan du tränar" data-en="Warm-up – a guided routine before you train" data-fr="Échauffement – une routine guidée avant l'entraînement" data-de="Aufwärmen – eine geführte Routine vor dem Training">Uppvärmning – en guidad rutin innan du tränar</span></div>
+    <div class="wn-item"><span class="wn-icon"><svg class="ico" aria-hidden="true"><use href="#i-globe-alt"/></svg></span><span data-sv="Välj språk i menyn, nu även tyska" data-en="Choose your language in the menu, now including German" data-fr="Choisissez la langue dans le menu, maintenant aussi l'allemand" data-de="Wähle die Sprache im Menü, jetzt auch Deutsch">Välj språk i menyn, nu även tyska</span></div>
+    <div class="wn-item"><span class="wn-icon"><svg class="ico" aria-hidden="true"><use href="#i-chart-bar"/></svg></span><span data-sv="Skjutträning visar effektivitet per avstånd" data-en="Shooting practice now shows efficiency per distance" data-fr="Le tir affiche désormais l'efficacité par distance" data-de="Das Schießtraining zeigt jetzt die Effizienz pro Entfernung">Skjutträning visar effektivitet per avstånd</span></div>
+    <div class="wn-item"><span class="wn-icon"><svg class="ico" aria-hidden="true"><use href="#i-cloud"/></svg></span><span data-sv="Din träning följer med mellan telefoner när du är inloggad" data-en="Your training follows you between phones when you are logged in" data-fr="Votre entraînement vous suit d'un téléphone à l'autre quand vous êtes connecté" data-de="Dein Training begleitet dich zwischen Handys, wenn du angemeldet bist">Din träning följer med mellan telefoner när du är inloggad</span></div>
 
     <a href="./lathund.html" class="welcome-btn" style="margin-top:22px">
       <span class="wb-text">
@@ -837,12 +841,12 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 <!-- VÄLKOMSTMODAL -->
 <div id="welcome-modal">
   <div class="welcome-box">
-    <div class="welcome-emoji">🎯</div>
+    <div class="welcome-emoji"><svg class="ico" aria-hidden="true"><use href="#i-flag"/></svg></div>
     <div class="welcome-title" data-sv="Välkommen till Petanque Träning!" data-en="Welcome to Petanque Training!" data-fr="Bienvenue sur Petanque Träning!" data-de="Willkommen bei Petanque Träning!">Välkommen till Petanque Träning!</div>
     <div class="welcome-sub" data-sv="Vad vill du börja med idag?" data-en="What would you like to start with today?" data-fr="Par où voulez-vous commencer?" data-de="Womit möchtest du heute beginnen?">Vad vill du börja med idag?</div>
 
     <a href="./lathund.html" class="welcome-btn">
-      <span class="wb-icon">📖</span>
+      <span class="wb-icon"><svg class="ico" aria-hidden="true"><use href="#i-book-open"/></svg></span>
       <span class="wb-text">
         <div class="wb-title" data-sv="Så fungerar appen" data-en="How the app works" data-fr="Comment fonctionne l'application" data-de="So funktioniert die App">Så fungerar appen</div>
         <div class="wb-desc" data-sv="Läs lathunden, det tar två minuter" data-en="Read the quick guide, it takes two minutes" data-fr="Lisez le guide rapide, cela prend deux minutes" data-de="Lies die Kurzanleitung, das dauert zwei Minuten">Läs lathunden, det tar två minuter</div>
@@ -851,7 +855,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     </a>
 
     <a href="./skjuttraning.html" class="welcome-btn">
-      <span class="wb-icon">💥</span>
+      <span class="wb-icon"><svg class="ico" aria-hidden="true"><use href="#i-bolt"/></svg></span>
       <span class="wb-text">
         <div class="wb-title" data-sv="Logga ett träningspass" data-en="Log a training session" data-fr="Enregistrer une séance" data-de="Eine Trainingseinheit erfassen">Logga ett träningspass</div>
         <div class="wb-desc" data-sv="Skjutträning, läggträning eller precisionsskytte" data-en="Shooting, pointing or precision" data-fr="Tir, pointé ou précision" data-de="Schießtraining, Legetraining oder Präzisionsschießen">Skjutträning, läggträning eller precisionsskytte</div>
@@ -860,7 +864,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     </a>
 
     <a href="./matchstatistik.html" class="welcome-btn">
-      <span class="wb-icon">📊</span>
+      <span class="wb-icon"><svg class="ico" aria-hidden="true"><use href="#i-chart-bar"/></svg></span>
       <span class="wb-text">
         <div class="wb-title" data-sv="Starta en match" data-en="Start a match" data-fr="Démarrer un match" data-de="Ein Spiel starten">Starta en match</div>
         <div class="wb-desc" data-sv="Logga varje klot live med matchstatistik" data-en="Log every ball live with match statistics" data-fr="Enregistrez chaque boule avec les statistiques" data-de="Erfasse jede Kugel live mit der Matchstatistik">Logga varje klot live med matchstatistik</div>
@@ -869,7 +873,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     </a>
 
     <button class="welcome-btn" onclick="closeWelcome()">
-      <span class="wb-icon">🗺️</span>
+      <span class="wb-icon"><svg class="ico" aria-hidden="true"><use href="#i-map"/></svg></span>
       <span class="wb-text">
         <div class="wb-title" data-sv="Utforska appen" data-en="Explore the app" data-fr="Explorer l'application" data-de="App entdecken">Utforska appen</div>
         <div class="wb-desc" data-sv="Se alla moduler på startsidan" data-en="See all modules on the home screen" data-fr="Voir tous les modules sur l'écran d'accueil" data-de="Alle Module auf der Startseite ansehen">Se alla moduler på startsidan</div>
@@ -887,7 +891,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
   <div style="background:#0f1419;padding:40px 32px;border-radius:16px;border:1px solid #1a1f2e;text-align:center;max-width:420px;width:90%;margin:20px auto;">
     
     <!-- Logo -->
-    <div style="font-size:36px;margin-bottom:8px;">🎯</div>
+    <div style="margin-bottom:8px;color:#e8ff47;"><svg class="ico" style="width:36px;height:36px;margin:0" aria-hidden="true"><use href="#i-flag"/></svg></div>
     <h2 style="color:#e8ff47;font-size:26px;margin-bottom:4px;font-weight:800;">Petanque Träning</h2>
     <p style="color:#8a8a9e;font-size:13px;margin-bottom:28px;" data-sv="Logga in eller skapa konto" data-en="Log in or create an account" data-fr="Connectez-vous ou créez un compte" data-de="Anmelden oder Konto erstellen">Logga in eller skapa konto</p>
 
@@ -938,7 +942,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 <!-- ===== MIGRATION MODAL ===== -->
 <div id="migration-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.97);z-index:10001;align-items:center;justify-content:center;">
   <div style="background:#0f1419;padding:40px 32px;border-radius:16px;border:1px solid #1a1f2e;text-align:center;max-width:420px;width:90%;margin:20px auto;">
-    <div style="font-size:32px;margin-bottom:12px;">📦</div>
+    <div style="margin-bottom:12px;color:#e8ff47;"><svg class="ico" style="width:32px;height:32px;margin:0" aria-hidden="true"><use href="#i-archive-box"/></svg></div>
     <h2 style="color:#e8ff47;font-size:22px;margin-bottom:8px;" data-sv="Flytta din data" data-en="Move your data" data-fr="Déplacez vos données" data-de="Daten übertragen">Flytta din data</h2>
     <p style="color:#8a8a9e;font-size:13px;margin-bottom:24px;line-height:1.6;" data-sv="Har du en befintlig tränarkod med sparad statistik? Ange den nedan så flyttar vi din data till ditt nya konto automatiskt." data-en="Do you have an existing coach code with saved statistics? Enter it below and we will move your data to your new account automatically." data-fr="Avez-vous un code entraîneur existant avec des statistiques enregistrées ? Saisissez-le ci-dessous et nous déplacerons automatiquement vos données vers votre nouveau compte." data-de="Hast du einen bestehenden Trainercode mit gespeicherter Statistik? Gib ihn unten ein, dann übertragen wir deine Daten automatisch auf dein neues Konto.">Har du en befintlig tränarkod med sparad statistik? Ange den nedan så flyttar vi din data till ditt nya konto automatiskt.</p>
     
@@ -967,10 +971,10 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
   <div class="lang-toggle">
     <select id="lang-select" class="lang-select" aria-label="Språk / Language"></select>
   </div>
-<button onclick="openBackupMenu()" style="padding: 6px 12px; border: 1px solid #1a1f2e; background: transparent; color: #8a8a9e; border-radius: 4px; cursor: pointer; font-size: 14px; margin-left: 4px;" title="Datahantering" data-sv-title="Datahantering" data-en-title="Data management" data-fr-title="Gestion des données" data-de-title="Datenverwaltung">⚙️</button><button onclick="logout()" style="padding: 6px 12px; border: 1px solid #1a1f2e; background: transparent; color: #8a8a9e; border-radius: 4px; cursor: pointer; font-size: 11px; margin-left: 8px;" title="Logga ut" data-sv-title="Logga ut" data-en-title="Log out" data-fr-title="Se déconnecter" data-de-title="Abmelden">🚪</button></header>
+<button onclick="openBackupMenu()" style="padding: 6px 12px; border: 1px solid #1a1f2e; background: transparent; color: #8a8a9e; border-radius: 4px; cursor: pointer; font-size: 14px; margin-left: 4px;" title="Datahantering" data-sv-title="Datahantering" data-en-title="Data management" data-fr-title="Gestion des données" data-de-title="Datenverwaltung"><svg class="ico" style="margin:0" aria-hidden="true"><use href="#i-cog-6-tooth"/></svg></button><button onclick="logout()" style="padding: 6px 12px; border: 1px solid #1a1f2e; background: transparent; color: #8a8a9e; border-radius: 4px; cursor: pointer; font-size: 11px; margin-left: 8px;" title="Logga ut" data-sv-title="Logga ut" data-en-title="Log out" data-fr-title="Se déconnecter" data-de-title="Abmelden"><svg class="ico" style="margin:0" aria-hidden="true"><use href="#i-arrow-right-on-rectangle"/></svg></button></header>
 <!-- SYNC BADGE: smal rad under rubriken, så den aldrig täcker innehåll -->
 <div style="text-align: right; padding: 6px 20px 0;">
-<div id="sync-status-badge" style="display: inline-block; color: #e8ff47; padding: 3px 8px; border-radius: 6px; font-size: 11px; border: 1px solid #1a1f2e;" data-sv="📱 Inte inloggad" data-en="📱 Not logged in" data-fr="📱 Non connecté" data-de="📱 Nicht angemeldet">📱 Inte inloggad</div>
+<div id="sync-status-badge" style="display: inline-block; color: #e8ff47; padding: 3px 8px; border-radius: 6px; font-size: 11px; border: 1px solid #1a1f2e;"><svg class="ico" aria-hidden="true"><use href="#i-device-phone-mobile"/></svg><span data-sv="Inte inloggad" data-en="Not logged in" data-fr="Non connecté" data-de="Nicht angemeldet">Inte inloggad</span></div>
 </div>
 
 <!-- HERO SECTION -->
@@ -1006,11 +1010,9 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
            background:transparent;border:1px solid #e8ff47;
            color:#e8ff47;border-radius:8px;font-size:13px;
            font-weight:600;cursor:pointer;letter-spacing:0.5px;"
-    data-sv="📲 Installera appen på hemskärmen"
-    data-en="📲 Install app on home screen"
-    data-fr="📲 Installer l'app sur l'écran d'accueil" data-de="📲 App auf dem Startbildschirm installieren">
-    📲 Installera appen på hemskärmen
-</button>
+   
+   
+   ><svg class="ico" aria-hidden="true"><use href="#i-arrow-down-tray"/></svg><span data-sv="Installera appen på hemskärmen" data-en="Install app on home screen" data-fr="Installer l'app sur l'écran d'accueil" data-de="App auf dem Startbildschirm installieren">Installera appen på hemskärmen</span></button>
 
 <!-- Dela appen-knapp -->
 <button id="share-app-btn"
@@ -1019,11 +1021,9 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
            background:transparent;border:1px solid #e8ff47;
            color:#e8ff47;border-radius:8px;font-size:13px;
            font-weight:600;cursor:pointer;letter-spacing:0.5px;"
-    data-sv="📤 Dela appen"
-    data-en="📤 Share app"
-    data-fr="📤 Partager l'app" data-de="📤 App teilen">
-    📤 Dela appen
-</button>
+   
+   
+   ><svg class="ico" aria-hidden="true"><use href="#i-share"/></svg><span data-sv="Dela appen" data-en="Share app" data-fr="Partager l'app" data-de="App teilen">Dela appen</span></button>
 
 <a href="https://ko-fi.com/petanquetraning" target="_blank"
          style="color: #8a8a9e; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.1); padding: 7px 14px; border-radius: 20px; backdrop-filter: blur(4px); background: rgba(255,255,255,0.04);"
@@ -1133,15 +1133,15 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 <section class="value-props" style="padding:30px 20px;">
   <div style="max-width:900px;margin:0 auto;display:flex;justify-content:center;align-items:flex-start;flex-wrap:wrap;gap:28px;text-align:center;">
     <div style="display:flex;align-items:center;gap:10px;">
-      <span style="font-size:22px;">📊</span>
+      <span style="color:#e8ff47;"><svg class="ico" style="width:22px;height:22px;margin:0" aria-hidden="true"><use href="#i-chart-bar"/></svg></span>
       <span style="font-size:0.9rem;font-weight:700;color:var(--text-muted);" data-sv="Spåra framsteg" data-fr="Suivre les progrès" data-en="Track Progress" data-de="Fortschritte verfolgen">Spåra framsteg</span>
     </div>
     <div style="display:flex;align-items:center;gap:10px;">
-      <span style="font-size:22px;">⚡</span>
+      <span style="color:#e8ff47;"><svg class="ico" style="width:22px;height:22px;margin:0" aria-hidden="true"><use href="#i-bolt"/></svg></span>
       <span style="font-size:0.9rem;font-weight:700;color:var(--text-muted);" data-sv="Träna offline" data-fr="Entraînement hors ligne" data-en="Train Offline" data-de="Offline trainieren">Träna offline</span>
     </div>
     <div style="display:flex;align-items:center;gap:10px;">
-      <span style="font-size:22px;">🎯</span>
+      <span style="color:#e8ff47;"><svg class="ico" style="width:22px;height:22px;margin:0" aria-hidden="true"><use href="#i-flag"/></svg></span>
       <span style="font-size:0.9rem;font-weight:700;color:var(--text-muted);" data-sv="Fokuserad träning" data-fr="Entraînement ciblé" data-en="Focused Training" data-de="Gezieltes Training">Fokuserad träning</span>
     </div>
   </div>
@@ -1205,7 +1205,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     Gjord med ❤️ av Pär Johansson | © 2026 Petanque Träning
   </p>
   <p style="margin-top: 15px; font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 15px;">
-    <strong data-sv="🔐 Proprietary" data-en="🔐 Proprietary" data-de="🔐 Proprietär" data-fr="🔐 Propriétaire">🔐 Proprietary</strong>
+    <strong><svg class="ico" aria-hidden="true"><use href="#i-lock-closed"/></svg><span data-sv="Proprietary" data-en="Proprietary" data-de="Proprietär" data-fr="Propriétaire">Proprietary</span></strong>
     <span data-sv="– Petanque Träning är skyddad intellectual property. All rights reserved. Unauthorized copying, modification or distribution of this application is prohibited." 
           data-en="– Petanque Training is protected intellectual property. All rights reserved. Unauthorized copying, modification or distribution of this application is prohibited." data-de="– Petanque Träning ist geschütztes geistiges Eigentum. Alle Rechte vorbehalten. Das unerlaubte Kopieren, Verändern oder Verbreiten dieser Anwendung ist untersagt." data-fr="– Petanque Träning est une propriété intellectuelle protégée. Tous droits réservés. Toute copie, modification ou distribution non autorisée de cette application est interdite.">
       – Petanque Träning är skyddad intellectual property. All rights reserved. Unauthorized copying, modification or distribution of this application is prohibited.
@@ -1635,7 +1635,7 @@ function onUserLoggedIn(user) {
   if (syncBadge) {
     // Ta bort språkattributen så att språksystemet inte skriver tillbaka "Inte inloggad"
     syncBadge.removeAttribute('data-sv');
-    syncBadge.textContent = langMgr.t({sv: "☁️ Inloggad", en: "☁️ Logged in", fr: "☁️ Connecté", de: "☁️ Angemeldet"});
+    syncBadge.innerHTML = ptIcon('cloud') + langMgr.t({sv: "Inloggad", en: "Logged in", fr: "Connecté", de: "Angemeldet"});
     syncBadge.style.color = '#4ade80';
   }
   
@@ -1984,12 +1984,12 @@ async function importAllData(event) {
 <!-- BACKUP MENU MODAL -->
 <div id="backup-menu" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10001; align-items: center; justify-content: center;">
   <div style="background: #0f1419; padding: 30px; border-radius: 12px; border: 1px solid #1a1f2e; max-width: 400px; width: 90%;">
-    <h2 style="color: #e8ff47; margin-bottom: 8px;" data-sv="⚙️ Datahantering" data-en="⚙️ Data management" data-fr="⚙️ Gestion des données" data-de="⚙️ Datenverwaltung">⚙️ Datahantering</h2>
+    <h2 style="color: #e8ff47; margin-bottom: 8px;"><svg class="ico" aria-hidden="true"><use href="#i-cog-6-tooth"/></svg><span data-sv="Datahantering" data-en="Data management" data-fr="Gestion des données" data-de="Datenverwaltung">Datahantering</span></h2>
     <p style="color: #8a8a9e; font-size: 13px; margin-bottom: 20px;" data-sv="All synk sker automatiskt i bakgrunden. Använd dessa för manuell backup." data-en="All syncing happens automatically in the background. Use these for a manual backup." data-fr="Toute la synchronisation se fait automatiquement en arrière-plan. Utilisez ces boutons pour une sauvegarde manuelle." data-de="Die gesamte Synchronisierung läuft automatisch im Hintergrund. Nutze diese Schaltflächen für eine manuelle Sicherung.">All synk sker automatiskt i bakgrunden. Använd dessa för manuell backup.</p>
     
-    <button onclick="exportAllData()" style="width: 100%; padding: 12px; background: #e8ff47; color: #080810; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; margin-bottom: 10px;" data-sv="💾 Ladda ner backup (JSON)" data-en="💾 Download backup (JSON)" data-fr="💾 Télécharger la sauvegarde (JSON)" data-de="💾 Backup herunterladen (JSON)">💾 Ladda ner backup (JSON)</button>
+    <button onclick="exportAllData()" style="width: 100%; padding: 12px; background: #e8ff47; color: #080810; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; margin-bottom: 10px;"><svg class="ico" aria-hidden="true"><use href="#i-arrow-down-tray"/></svg><span data-sv="Ladda ner backup (JSON)" data-en="Download backup (JSON)" data-fr="Télécharger la sauvegarde (JSON)" data-de="Backup herunterladen (JSON)">Ladda ner backup (JSON)</span></button>
     
-    <button onclick="document.getElementById('import-file-input').click()" style="width: 100%; padding: 12px; background: transparent; color: #e8ff47; border: 1px solid #1a1f2e; border-radius: 8px; font-weight: 700; cursor: pointer; margin-bottom: 10px;" data-sv="📥 Återställ från backup" data-en="📥 Restore from backup" data-fr="📥 Restaurer la sauvegarde" data-de="📥 Aus Backup wiederherstellen">📥 Återställ från backup</button>
+    <button onclick="document.getElementById('import-file-input').click()" style="width: 100%; padding: 12px; background: transparent; color: #e8ff47; border: 1px solid #1a1f2e; border-radius: 8px; font-weight: 700; cursor: pointer; margin-bottom: 10px;"><svg class="ico" aria-hidden="true"><use href="#i-arrow-up-tray"/></svg><span data-sv="Återställ från backup" data-en="Restore from backup" data-fr="Restaurer la sauvegarde" data-de="Aus Backup wiederherstellen">Återställ från backup</span></button>
     
     <input type="file" id="import-file-input" accept=".json" style="display: none;" onchange="importAllData(event)">
     

@@ -392,9 +392,12 @@ function updateSyncBadge(synced) {
   badge.removeAttribute('data-sv');
 
   var texts = synced
-    ? { sv: '☁️ Synkat', en: '☁️ Synced', fr: '☁️ Synchronisé', de: '☁️ Synchronisiert' }
-    : { sv: '📱 Offline', en: '📱 Offline', fr: '📱 Hors ligne', de: '📱 Offline' };
-  badge.textContent = (typeof langMgr !== 'undefined') ? langMgr.t(texts) : texts.sv;
+    ? { sv: 'Synkat', en: 'Synced', fr: 'Synchronisé', de: 'Synchronisiert' }
+    : { sv: 'Offline', en: 'Offline', fr: 'Hors ligne', de: 'Offline' };
+  var text = (typeof langMgr !== 'undefined') ? langMgr.t(texts) : texts.sv;
+  // Ikon från icons.js (moln när synkat, telefon när offline)
+  var icon = (typeof ptIcon === 'function') ? ptIcon(synced ? 'cloud' : 'device-phone-mobile') : '';
+  badge.innerHTML = icon + text;
 }
 
 // Byts språk uppdateras märket direkt
