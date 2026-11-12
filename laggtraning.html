@@ -77,6 +77,8 @@ function selectDist(el) {
 }
 
 function startSession() {
+  // Mätning: ett pass har startat (inga personuppgifter skickas)
+  try { gtag("event", "training_start", {training_type: "throw_training"}); } catch (e) {}
   state.active = true;
   state.throws = [];
   state.serieBoules = [];
