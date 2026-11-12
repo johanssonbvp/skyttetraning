@@ -24,6 +24,7 @@ const CORE_FILES = [
   './lathund.html',
   './storage-manager.js',
   './lang-manager.js',
+  './icons.js',
   './offline-indicator.js',
   './sync-manager.js',
   './auth-gate.js',
