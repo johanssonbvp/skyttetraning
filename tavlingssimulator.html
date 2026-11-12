@@ -54,7 +54,8 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .format-card:hover{border-color:var(--border2);}
 .format-card.selected{border-color:var(--accent);background:rgba(232,255,71,0.05);}
 .format-card:active{transform:scale(0.97);}
-.format-icon{font-size:1.8rem;margin-bottom:8px;}
+.format-icon{font-size:1.8rem;margin-bottom:8px;color:var(--accent,#e8ff47);}
+.format-icon .ico{width:1.8rem;height:1.8rem;margin:0;}
 .format-name{font-family:var(--font-display);font-size:1rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
 .format-desc{font-size:0.72rem;color:var(--muted2);}
 
@@ -174,7 +175,9 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .match-meta{display:flex;gap:12px;font-size:0.78rem;color:var(--muted2);flex-wrap:wrap;}
 
 .empty-state{text-align:center;padding:48px 20px;}
-.empty-icon{font-size:2.5rem;margin-bottom:12px;}
+.empty-icon{font-size:2.5rem;margin-bottom:12px;color:var(--muted2);}
+.empty-icon .ico{width:1em;height:1em;margin:0;stroke-width:1.2;}
+.match-meta .ico{margin-right:4px;}
 .empty-text{font-family:var(--font-display);font-size:1rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted2);margin-bottom:6px;}
 .empty-sub{font-size:0.82rem;color:var(--muted);}
 
@@ -207,6 +210,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script src="./icons.js"></script>
 <script src="./sync-manager.js"></script>
 </head>
 <body>
@@ -231,12 +235,12 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <p class="section-label" data-sv="Spelformat" data-en="Format" data-fr="Format de jeu" data-de="Spielformat">Spelformat</p>
     <div class="format-grid">
       <div class="format-card selected" data-fmt="singles" onclick="selectFormat(this)">
-        <div class="format-icon">👤</div>
+        <div class="format-icon"><svg class="ico" aria-hidden="true"><use href="#i-user"/></svg></div>
         <div class="format-name" data-sv="Singel" data-en="Singles" data-fr="Simple" data-de="Einzel">Singel</div>
         <div class="format-desc" data-sv="1 mot 1" data-en="1 vs 1" data-fr="1 contre 1" data-de="1 gegen 1">1 mot 1</div>
       </div>
       <div class="format-card" data-fmt="doubles" onclick="selectFormat(this)">
-        <div class="format-icon">👥</div>
+        <div class="format-icon"><svg class="ico" aria-hidden="true"><use href="#i-user-group"/></svg></div>
         <div class="format-name" data-sv="Lag" data-en="Teams" data-fr="Équipes" data-de="Mannschaft">Lag</div>
         <div class="format-desc" data-sv="2 mot 2 / 3 mot 3" data-en="2 vs 2 / 3 vs 3" data-fr="2 contre 2 / 3 contre 3" data-de="2 gegen 2 / 3 gegen 3">2 mot 2 / 3 mot 3</div>
       </div>
@@ -362,8 +366,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <div class="rounds-wrap">
       <p class="section-label" data-sv="Rundor" data-en="Rounds" data-fr="Manches" data-de="Runden">Rundor</p>
       <div class="rounds-list" id="roundsList"></div>
-      <button class="undo-btn" onclick="undoRound()"
-        data-sv="↩ Ångra senaste runda" data-en="↩ Undo last round" data-fr="↩ Annuler la dernière manche" data-de="↩ Letzte Runde rückgängig">↩ Ångra senaste runda</button>
+      <button class="undo-btn" onclick="undoRound()"><svg class="ico" aria-hidden="true"><use href="#i-arrow-uturn-left"/></svg><span data-sv="Ångra senaste runda" data-en="Undo last round" data-fr="Annuler la dernière manche" data-de="Letzte Runde rückgängig">Ångra senaste runda</span></button>
     </div>
 
   </div>
@@ -399,7 +402,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 <!-- MATCH WINNER MODAL -->
 <div class="overlay" id="winOverlay">
   <div class="sheet">
-    <h2 id="winTitle">🏆 Match klar!</h2>
+    <h2 id="winTitle"><svg class="ico" aria-hidden="true"><use href="#i-trophy"/></svg>Match klar!</h2>
     <p class="sheet-sub" id="winSub"></p>
     <div class="win-score">
       <div class="win-score-big" id="winScoreBig"></div>
@@ -647,7 +650,7 @@ function finishMatch() {
     rounds:match.rounds.length, biggestLead
   });
 
-  document.getElementById('winTitle').textContent = '🏆 '+langMgr.t({"sv": "Match klar!", "en": "Match over!", "fr": "Partie terminée !", "de": "Spiel beendet!"});
+  document.getElementById('winTitle').innerHTML = ptIcon('trophy')+langMgr.t({"sv": "Match klar!", "en": "Match over!", "fr": "Partie terminée !", "de": "Spiel beendet!"});
   document.getElementById('winSub').textContent = winName+langMgr.t({"sv": " vinner matchen!", "en": " wins the match!", "fr": " remporte la partie !", "de": " gewinnt das Spiel!"});
   const sb = document.getElementById('winScoreBig');
   sb.textContent = match.scoreA+' – '+match.scoreB;
@@ -701,12 +704,12 @@ function renderStats() {
 
   const latest = document.getElementById('latestMatch');
   latest.innerHTML = matches.length ? buildMatchCard(matches[0])
-    : `<div class="empty-state"><div class="empty-icon">🏆</div><div class="empty-text">${langMgr.t({"sv": "Inga matcher ännu", "en": "No matches yet", "fr": "Aucune partie encore", "de": "Noch keine Spiele"})}</div><div class="empty-sub">${langMgr.t({"sv": "Starta en match för att se historik.", "en": "Start a match to see history.", "fr": "Démarrez une partie pour voir l'historique.", "de": "Starte ein Spiel, um den Verlauf zu sehen."})}</div></div>`;
+    : `<div class="empty-state"><div class="empty-icon">${ptIcon("trophy")}</div><div class="empty-text">${langMgr.t({"sv": "Inga matcher ännu", "en": "No matches yet", "fr": "Aucune partie encore", "de": "Noch keine Spiele"})}</div><div class="empty-sub">${langMgr.t({"sv": "Starta en match för att se historik.", "en": "Start a match to see history.", "fr": "Démarrez une partie pour voir l'historique.", "de": "Starte ein Spiel, um den Verlauf zu sehen."})}</div></div>`;
 
   const hist = document.getElementById('matchHistory');
   hist.innerHTML = '';
   if (!matches.length) {
-    hist.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">${langMgr.t({"sv": "Ingen historik", "en": "No history", "fr": "Aucun historique", "de": "Kein Verlauf"})}</div><div class="empty-sub">${langMgr.t({"sv": "Dina matcher sparas här.", "en": "Your matches will be saved here.", "fr": "Vos parties sont enregistrées ici.", "de": "Deine Spiele werden hier gespeichert."})}</div></div>`;
+    hist.innerHTML = `<div class="empty-state"><div class="empty-icon">${ptIcon("clipboard-document-list")}</div><div class="empty-text">${langMgr.t({"sv": "Ingen historik", "en": "No history", "fr": "Aucun historique", "de": "Kein Verlauf"})}</div><div class="empty-sub">${langMgr.t({"sv": "Dina matcher sparas här.", "en": "Your matches will be saved here.", "fr": "Vos parties sont enregistrées ici.", "de": "Deine Spiele werden hier gespeichert."})}</div></div>`;
     return;
   }
   matches.forEach(m => { hist.innerHTML += buildMatchCard(m); });
@@ -720,14 +723,14 @@ function buildMatchCard(m) {
     <div class="match-top">
       <div>
         <div class="match-result" style="color:${col}">${m.finalA} – ${m.finalB}</div>
-        <div class="match-winner-name" style="color:${col}">🏆 ${m.winnerName}</div>
+        <div class="match-winner-name" style="color:${col}">${ptIcon("trophy")}${m.winnerName}</div>
       </div>
       <div class="match-date">${fmtDate(m.date)}</div>
     </div>
     <div class="match-meta">
-      <span>⚽ ${m.nameA} ${langMgr.t({"sv": "mot", "en": "vs", "fr": "contre", "de": "gegen"})} ${m.nameB}</span>
-      <span>🔄 ${m.rounds} ${langMgr.t({"sv": "rundor", "en": "rounds", "fr": "manches", "de": "Runden"})}</span>
-      <span>📋 ${fmtLbl}</span>
+      <span>${ptIcon("flag")}${m.nameA} ${langMgr.t({"sv": "mot", "en": "vs", "fr": "contre", "de": "gegen"})} ${m.nameB}</span>
+      <span>${ptIcon("arrow-path")}${m.rounds} ${langMgr.t({"sv": "rundor", "en": "rounds", "fr": "manches", "de": "Runden"})}</span>
+      <span>${ptIcon("clipboard-document-list")}${fmtLbl}</span>
     </div>
   </div>`;
 }
