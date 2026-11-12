@@ -273,7 +273,11 @@ function finishSession() {
     fail: throws.length - okCount,
     pct: pct,
     streak: streak,
-    serieBest: state.serieBest
+    serieBest: state.serieBest,
+    // Kastordningen: 1 = godkänt, 0 = miss, i den ordning kasten kom.
+    // Behövs för statistik om återhämtning efter miss och startkast.
+    // Äldre pass saknar den och kan inte få den i efterhand.
+    log: throws.map(function (t) { return t.ok ? 1 : 0; })
   };
 
   // För Avståndsstegen: räkna ut hur många kast som godkändes på varje
