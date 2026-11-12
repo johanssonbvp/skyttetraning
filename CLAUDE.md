@@ -28,6 +28,7 @@
 - `index.html` – startsida med språkmeny och inloggning
 - Appfiler: `skjuttraning.html`, `laggtraning.html`, `dagbok.html`, `precisionsskytte.html`, `tavlingssimulator.html`, `matchstatistik.html`
 - `storage-manager.js`, `sync-manager.js` – datalagring och synk
+- `icons.js` – gemensamma ikoner (Heroicons, outline, MIT-licens, text i `dokumentation/licenser.md`). Används som `<svg class="ico"><use href="#i-namn"/></svg>` i HTML och `ptIcon('namn')` i JavaScript
 
 ## Bra att veta om skjutträningens statistik (`skjuttraning.html`)
 - Varje pass sparas med skottordning (`log`). Äldre pass saknar den och kan inte få den i efterhand
@@ -55,7 +56,8 @@
 2. Lägg till `data-sv` / `data-en` / `data-fr` / `data-de` på ALLA nya textelement
 3. Testa lokalt innan ändringar laddas upp till GitHub
 4. Avinstallera/installera om appen på mobilen för att se en ny version där
-5. Ny funktion som sparar data = lägg nyckeln (t.ex. `pt_nyfunktion_v1`) i `SYNC_KEYS` i `sync-manager.js`. Annars synkas den inte till molnet (tidigare hamnade sådana nycklar lösa under kontot i Firebase)
+5. Ikoner: använd Heroicons från `icons.js` i stället för emojis. Ny ikon = lägg den i listan i `icons.js` (hämta outline-versionen från heroicons.com). Lägg ikonen i ett eget element bredvid texten, aldrig inne i ett element med `data-sv`/`data-i18n`, annars tar språkbytet bort den. Behåll tecknen ✓ ✗ ✕ ★ på träffknappar och emojis i popup-rutor (`alert`/`confirm`), delningstexter och exporter
+6. Ny funktion som sparar data = lägg nyckeln (t.ex. `pt_nyfunktion_v1`) i `SYNC_KEYS` i `sync-manager.js`. Annars synkas den inte till molnet (tidigare hamnade sådana nycklar lösa under kontot i Firebase)
 
 ## Prioriteringar (i ordning)
 1. Håll appen fungerande – inga trasiga filer!

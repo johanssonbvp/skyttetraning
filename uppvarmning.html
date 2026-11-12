@@ -224,18 +224,20 @@ body {
 .hist-date { font-size: 0.75rem; color: var(--muted2); margin-top: 3px; }
 .empty { text-align: center; color: var(--muted2); padding: 60px 20px; }
 .empty-icon { font-size: 3rem; margin-bottom: 14px; opacity: 0.6; }
+.empty-icon .ico { width: 1em; height: 1em; margin: 0; stroke-width: 1.2; }
 .empty p { font-size: 0.9rem; line-height: 1.7; }
 </style>
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script src="./icons.js"></script>
 <script src="./sync-manager.js"></script>
 </head>
 <body>
 
 <div class="top-bar">
   <a class="back-link" href="index.html"><span data-sv="← Hem" data-en="← Home" data-fr="← Accueil" data-de="← Start">← Hem</span></a>
-  <span class="top-title">🔥 <span data-sv="Uppvärmning" data-en="Warm-up" data-fr="Échauffement" data-de="Aufwärmen">Uppvärmning</span></span>
+  <span class="top-title"><svg class="ico" aria-hidden="true"><use href="#i-fire"/></svg><span data-sv="Uppvärmning" data-en="Warm-up" data-fr="Échauffement" data-de="Aufwärmen">Uppvärmning</span></span>
   <div style="width:80px"></div>
 </div>
 
@@ -652,7 +654,7 @@ function renderStats() {
     document.getElementById('ov-streak').textContent = '0';
     document.getElementById('ov-minutes').textContent = '0';
     list.innerHTML = `
-      <div class="empty"><div class="empty-icon">🔥</div>
+      <div class="empty"><div class="empty-icon">${ptIcon("fire")}</div>
       <p ${attrs(['Inga pass sparade ännu.\nGenomför en uppvärmning för att se din statistik.', 'No sessions saved yet.\nComplete a warm-up to see your statistics.', 'Aucune séance enregistrée.\nTerminez un échauffement pour voir vos statistiques.', 'Noch keine Einheiten gespeichert.\nFühre ein Aufwärmen durch, um deine Statistik zu sehen.'])}></p></div>`;
     langMgr.apply();
     list.querySelector('p').style.whiteSpace = 'pre-line';

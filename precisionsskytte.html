@@ -203,6 +203,7 @@ body::before {
 .hist-date { font-size: 0.75rem; color: var(--muted2); margin-top: 3px; }
 .empty { text-align: center; color: var(--muted2); padding: 60px 20px; }
 .empty-icon { font-size: 3rem; margin-bottom: 14px; opacity: 0.6; }
+.empty-icon .ico { width: 1em; height: 1em; margin: 0; stroke-width: 1.2; }
 .empty p { font-size: 0.9rem; line-height: 1.7; }
 
 @keyframes bump{0%{transform:scale(1);}40%{transform:scale(1.22);}100%{transform:scale(1);}}
@@ -211,13 +212,14 @@ body::before {
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script src="./icons.js"></script>
 <script src="./sync-manager.js"></script>
 </head>
 <body>
 
 <div class="top-bar">
   <a class="back-link" href="index.html" data-sv="← Hem" data-en="← Home" data-fr="← Accueil" data-de="← Start">← Hem</a>
-  <span class="top-title">🎯 <span data-sv="Precisionsskytte" data-en="Precision Shooting" data-fr="Tir de précision" data-de="Präzisionsschießen">Precisionsskytte</span></span>
+  <span class="top-title"><svg class="ico" aria-hidden="true"><use href="#i-flag"/></svg><span data-sv="Precisionsskytte" data-en="Precision Shooting" data-fr="Tir de précision" data-de="Präzisionsschießen">Precisionsskytte</span></span>
   <div style="width:80px"></div>
 </div>
 
@@ -472,7 +474,7 @@ function renderStats(){
     document.getElementById('ov-avg').textContent='–';
     document.getElementById('ov-best').textContent='–';
     document.getElementById('hist-list').innerHTML=`
-      <div class="empty"><div class="empty-icon">🎯</div>
+      <div class="empty"><div class="empty-icon">${ptIcon("flag")}</div>
       <p>${tr('Inga serier sparade ännu.<br>Slutför en träning för att se din statistik.','No series saved yet.<br>Finish a training to see your statistics.','Aucune série enregistrée.<br>Terminez un entraînement pour voir vos statistiques.','Noch keine Serien gespeichert.<br>Schließe ein Training ab, um deine Statistik zu sehen.')}</p></div>`;
     return;
   }
