@@ -22,14 +22,39 @@ const WHATSNEW_ID = 'pt_whatsnew_v1';
 
 function whatsNewKey(user) { return WHATSNEW_ID + '_' + user.uid; }
 
-function markWhatsNewSeen(user) {
-    try { localStorage.setItem(whatsNewKey(user), '1'); } catch (e) {}
+// Att "Nytt i appen" har visats sparas på telefonen och på kontot (coaches/<id>/settings/whatsNewSeen),
+// så att rutan inte kommer tillbaka efter en ominstallation eller på en ny enhet.
+function whatsNewRef(user) {
+    if (typeof firebase === 'undefined' || !firebase.database || !user) return null;
+    return firebase.database().ref('coaches/' + user.uid + '/settings/whatsNewSeen');
 }
 
-function showWhatsNewIfNeeded(user) {
+function markWhatsNewSeen(user) {
+    try { localStorage.setItem(whatsNewKey(user), '1'); } catch (e) {}
+    try {
+        const ref = whatsNewRef(user);
+        if (ref) ref.set(WHATSNEW_ID).catch(() => {});
+    } catch (e) {}
+}
+
+async function showWhatsNewIfNeeded(user) {
     let seen = false;
     try { seen = !!localStorage.getItem(whatsNewKey(user)); } catch (e) {}
     if (seen) return;
+    // Har kontot redan sett den här versionen på en annan enhet? Vänta högst 3 sekunder på svar.
+    try {
+        const ref = whatsNewRef(user);
+        if (ref) {
+            const snap = await Promise.race([
+                ref.once('value'),
+                new Promise((_, no) => setTimeout(() => no(new Error('timeout')), 3000))
+            ]);
+            if (snap.val() === WHATSNEW_ID) {
+                try { localStorage.setItem(whatsNewKey(user), '1'); } catch (e) {}
+                return;
+            }
+        }
+    } catch (e) { /* offline eller långsamt: visa rutan som förut */ }
     markWhatsNewSeen(user);   // markeras direkt, så den inte kommer tillbaka vid omladdning
     document.getElementById('whatsnew-modal').classList.add('show');
     if (typeof langMgr !== 'undefined') langMgr.apply();

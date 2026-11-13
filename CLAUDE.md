@@ -19,6 +19,7 @@
 - Språkväljare (rullgardinsmeny) finns på index.html, faq.html och lathund.html. Valet gäller hela appen och sparas på kontot
 - Alla träningssidor kräver inloggning (`auth-gate.js`)
 - Offline-läge ska alltid fungera
+- Inställningar som ska följa med kontot sparas under `coaches/<id>/settings/` (nu `lang`, `missMode` och `whatsNewSeen`), inte bara i localStorage. Följ mönstret i `pushAccountLanguage` (index.html) eller `pushMissMode` (skjuttraning.html): spara lokalt först, skicka till kontot, och märk väntande ändring när man är offline
 
 ## Viktiga filer att känna till
 - `lang-manager.js` – gemensamt språksystem för alla sidor (språk, texter, datumformat)
