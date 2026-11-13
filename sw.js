@@ -31,6 +31,7 @@ const CORE_FILES = [
   './sw.js',
   './icon-192.png',
   './icon-512.png',
+  './apple-touch-icon.png',
   'https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap'
 ];
  
