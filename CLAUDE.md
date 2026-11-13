@@ -36,6 +36,7 @@
 - Indexet kan filtreras per avstånd (`effFilter`). Med färre än 3 pass visas "–"
 - Rekord, bästa och sämsta räknas från pass med minst 20 skott (`MIN_SKOTT_REKORD`), annars alla pass. Snittet vägs efter antal skott (`wAvg`)
 - Resultatrutan efter ett fullt avstånd har "Klar för idag". Passet sparas redan när serien är full
+- Missanalys: knappen "Analysera missar" (`missMode`, sparas i `pt_miss_mode`) visar efter varje miss en ruta (`miss-modal`, `pickMiss`). Riktning sparas som lista `missDir` per pass, parallell med `log`, med koderna LL/LC/LR/SL/SC/SR (L=lång, S=kort, sedan vänster/rakt/höger sett från skytten) och "-" för ingen riktning. Använd "-" och inte null, annars tappar Firebase platserna. Kortet `renderMissAnalysis` följer `effFilter` och kräver `MIN_MISSAR_RIKTNING` (10) missar, annars "Samlar data". CSV-export/import har ingen kolumn för riktning
 
 ## Bra att veta om läggträningens statistik (`laggtraning.html`)
 - Statistiken räknas från historiken (`pt_lagg_history`), inget extra sparas. Funktionerna `renderLaggExtra`, `recoveryHtml`, `exDetailHtml`, `wPct`
