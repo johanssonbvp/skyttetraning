@@ -206,7 +206,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .stats-top h2{font-family:var(--font-display);font-size:1.3rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;}
 .clear-btn{background:none;border:1px solid var(--border2);color:var(--muted2);font-family:var(--font-body);font-size:0.72rem;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer;transition:all 0.2s;}
 .clear-btn:hover{border-color:var(--fail);color:var(--fail);}
-</style>
+.kofi-link{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px;color:#8888aa;font-size:.82rem;font-weight:600;text-decoration:none;padding:10px;border-radius:10px;letter-spacing:.3px}.kofi-link:hover{color:#e8ff47}.kofi-link .ico{width:1.1em;height:1.1em;margin:0}</style>
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
@@ -414,6 +414,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <button class="mbtn mbtn-accent" onclick="closeWin(true)" data-sv="Ny match" data-fr="Nouveau match" data-en="New Match" data-de="Neues Spiel">Ny match</button>
       <button class="mbtn mbtn-ghost" onclick="closeWin(false)" data-sv="Se historik" data-en="View History" data-fr="Voir l'historique" data-de="Verlauf ansehen">Se historik</button>
     </div>
+    <a href="https://ko-fi.com/petanqueapp" target="_blank" rel="noopener" class="kofi-link" onclick="try{gtag('event','kofi_click',{place:'match_done'})}catch(e){}"><svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg><span data-sv="Gillar du appen? Bjud på en kaffe" data-en="Enjoying the app? Buy me a coffee" data-fr="Vous aimez l'appli? Offrez un café" data-de="Gefällt dir die App? Spendier mir einen Kaffee">Gillar du appen? Bjud på en kaffe</span></a>
   </div>
 </div>
 

@@ -665,7 +665,7 @@
     .player-name { font-size: 12px; }
 }
 
-</style>
+.kofi-link{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px;color:#8888aa;font-size:.82rem;font-weight:600;text-decoration:none;padding:10px;border-radius:10px;letter-spacing:.3px}.kofi-link:hover{color:#e8ff47}.kofi-link .ico{width:1.1em;height:1.1em;margin:0}</style>
 </head>
 <body>
 
@@ -800,6 +800,7 @@
             </div>
             <div id="home-history-list"><div class="empty" data-sv="Ingen matchhistorik än" data-fr="Aucun historique de match" data-en="No match history yet" data-de="Noch kein Spielverlauf">Ingen matchhistorik än</div></div>
         </div>
+        <a href="https://ko-fi.com/petanqueapp" target="_blank" rel="noopener" class="kofi-link" onclick="try{gtag('event','kofi_click',{place:'matchstatistik_home'})}catch(e){}"><svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg><span data-sv="Gillar du appen? Bjud på en kaffe" data-en="Enjoying the app? Buy me a coffee" data-fr="Vous aimez l'appli? Offrez un café" data-de="Gefällt dir die App? Spendier mir einen Kaffee">Gillar du appen? Bjud på en kaffe</span></a>
 
         <!-- HOME DETAIL VIEW -->
         <div id="home-detail-view" style="display:none;">

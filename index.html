@@ -247,6 +247,14 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
     }
 
     /* Kort för lathunden ovanför övningarna */
+    .support-card { background: rgba(232,255,71,0.06); border: 1px solid rgba(232,255,71,0.3); border-radius: 16px; padding: 18px 20px; margin-bottom: 16px; }
+    .support-title { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1rem; color: #e8ff47; margin-bottom: 8px; }
+    .support-title .ico { width: 1.2em; height: 1.2em; margin: 0; }
+    .support-card p { font-size: 0.86rem; line-height: 1.5; color: #cfd0e4; margin-bottom: 14px; }
+    .support-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .support-btn { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #cfd0e4; border-radius: 10px; padding: 9px 14px; font-size: 0.82rem; font-weight: 700; cursor: pointer; text-decoration: none; font-family: inherit; }
+    .support-primary { background: #e8ff47; border-color: #e8ff47; color: #080810; }
+    .support-ghost { border-color: transparent; color: #8888aa; }
     .guide-card {
       border-color: rgba(232, 255, 71, 0.45);
       background: rgba(232, 255, 71, 0.08);
@@ -1052,7 +1060,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
    
    ><svg class="ico" aria-hidden="true"><use href="#i-share"/></svg><span data-sv="Dela appen" data-en="Share app" data-fr="Partager l'app" data-de="App teilen">Dela appen</span></button>
 
-<a href="https://ko-fi.com/petanquetraning" target="_blank"
+<a href="https://ko-fi.com/petanqueapp" target="_blank"
          style="color: #8a8a9e; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.1); padding: 7px 14px; border-radius: 20px; backdrop-filter: blur(4px); background: rgba(255,255,255,0.04);"
          data-sv="☕ Gilla appen? Bjud mig på en kaffe" data-fr="☕ Vous aimez l'appli? Offrez-moi un café"
          data-en="☕ Like the app? Buy me a coffee" data-de="☕ Gefällt dir die App? Spendier mir einen Kaffee">
@@ -1068,6 +1076,17 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 <!-- APPS SECTION -->
 <section class="apps-section">
   <div class="apps-container">
+    <!-- Stöd till appen: visas en gång efter många sparade pass, kan stängas för alltid -->
+    <div id="support-card" class="support-card" style="display:none">
+      <div class="support-title"><svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg><span data-sv="Härligt, du har tränat många pass!" data-en="Great, you have trained many sessions!" data-fr="Super, vous avez fait beaucoup de séances !" data-de="Toll, du hast schon viele Einheiten trainiert!">Härligt, du har tränat många pass!</span></div>
+      <p data-sv="Appen är gratis och görs av en enda person. Gillar du den kan du bjuda på en kaffe eller dela den med en klubbkompis. Det hjälper mig att hålla den igång och göra den bättre." data-en="The app is free and made by one person. If you like it, you can buy me a coffee or share it with a club mate. It helps me keep it running and make it better." data-fr="L'application est gratuite et faite par une seule personne. Si elle vous plaît, vous pouvez m'offrir un café ou la partager avec un coéquipier. Cela m'aide à la faire vivre et à l'améliorer." data-de="Die App ist kostenlos und wird von einer einzelnen Person gemacht. Wenn sie dir gefällt, kannst du mir einen Kaffee spendieren oder sie mit einem Vereinskollegen teilen. Das hilft mir, sie am Laufen zu halten und zu verbessern.">Appen är gratis och görs av en enda person. Gillar du den kan du bjuda på en kaffe eller dela den med en klubbkompis. Det hjälper mig att hålla den igång och göra den bättre.</p>
+      <div class="support-actions">
+        <a class="support-btn support-primary" href="https://ko-fi.com/petanqueapp" target="_blank" rel="noopener" onclick="supportAction('kofi')" data-sv="Bjud på en kaffe" data-en="Buy a coffee" data-fr="Offrir un café" data-de="Kaffee spendieren">Bjud på en kaffe</a>
+        <button class="support-btn" onclick="supportAction('share')" data-sv="Dela appen" data-en="Share the app" data-fr="Partager l'app" data-de="App teilen">Dela appen</button>
+        <button class="support-btn support-ghost" onclick="supportAction('dismiss')" data-sv="Inte nu" data-en="Not now" data-fr="Pas maintenant" data-de="Nicht jetzt">Inte nu</button>
+      </div>
+    </div>
+
     <!-- Första passet: visas bara för nya konton som inte sparat något än -->
     <a href="./skjuttraning.html" id="first-pass-card" class="app-card guide-card" style="display:none" onclick="trackFirstPassClick()">
       <span class="app-icon"><svg class="ico" aria-hidden="true"><use href="#i-bolt"/></svg></span>
@@ -1691,9 +1710,63 @@ function trackFirstPassClick() {
 }
 window.addEventListener('pt-sync-updated', updateFirstPassCard);
 
+// ---- STÖD TILL APPEN ----
+// Kortet visas en gång när man sparat minst SUPPORT_MIN_SESSIONS pass. "Inte nu", kaffe och
+// dela räknas alla som besvarat frågan, och det sparas på kontot (settings/supportAsked)
+// så att kortet inte kommer tillbaka på en annan enhet.
+var SUPPORT_MIN_SESSIONS = 10;
+var supportAskedAccount;       // undefined = inte kollat kontot än
+var supportChecking = false;
+function countSavedSessions() {
+  var n = 0;
+  ['pt_h', 'pt_lagg_history', 'pt_precision_v2', 'pt_matches_v2'].forEach(function (k) {
+    try { var v = JSON.parse(localStorage.getItem(k) || '[]'); if (Array.isArray(v)) n += v.length; } catch (e) {}
+  });
+  return n;
+}
+async function updateSupportCard() {
+  var card = document.getElementById('support-card');
+  var user = currentFirstPassUser;
+  if (!card || !user || supportChecking) return;
+  var key = 'pt_support_asked_' + user.uid;
+  try { if (localStorage.getItem(key)) { card.style.display = 'none'; return; } } catch (e) {}
+  if (countSavedSessions() < SUPPORT_MIN_SESSIONS) { card.style.display = 'none'; return; }
+  if (supportAskedAccount === undefined) {
+    supportChecking = true;
+    try {
+      var ref = firebase.database().ref('coaches/' + user.uid + '/settings/supportAsked');
+      var snap = await Promise.race([
+        ref.once('value'),
+        new Promise(function (_, no) { setTimeout(function () { no(new Error('timeout')); }, 3000); })
+      ]);
+      supportAskedAccount = !!snap.val();
+    } catch (e) { supportChecking = false; return; }   // offline eller långsamt: fråga inte nu
+    supportChecking = false;
+  }
+  if (supportAskedAccount) { try { localStorage.setItem(key, '1'); } catch (e) {} card.style.display = 'none'; return; }
+  card.style.display = 'block';
+  if (typeof langMgr !== 'undefined') langMgr.apply();
+  try {
+    if (!sessionStorage.getItem('support_card_shown')) { sessionStorage.setItem('support_card_shown', '1'); gtag('event', 'support_card_shown'); }
+  } catch (e) {}
+}
+function supportAction(what) {
+  try { gtag('event', 'support_card_' + what); } catch (e) {}
+  var user = currentFirstPassUser;
+  if (user) {
+    try { localStorage.setItem('pt_support_asked_' + user.uid, '1'); } catch (e) {}
+    try { firebase.database().ref('coaches/' + user.uid + '/settings/supportAsked').set(true).catch(function () {}); } catch (e) {}
+  }
+  supportAskedAccount = true;
+  document.getElementById('support-card').style.display = 'none';
+  if (what === 'share' && typeof shareApp === 'function') shareApp();
+}
+window.addEventListener('pt-sync-updated', updateSupportCard);
+
 function onUserLoggedIn(user) {
   currentFirstPassUser = user;
   updateFirstPassCard();
+  updateSupportCard();
   // Uppdatera UI
   const logoutBtn = document.getElementById('logout-btn');
   if (logoutBtn) logoutBtn.style.display = 'inline-block';
