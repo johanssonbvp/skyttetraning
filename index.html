@@ -1076,6 +1076,16 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
 <!-- APPS SECTION -->
 <section class="apps-section">
   <div class="apps-container">
+    <!-- Enkät: visas en gång efter några sparade pass (bara på svenska), kan stängas för alltid -->
+    <div id="feedback-card" class="support-card" style="display:none">
+      <div class="support-title"><svg class="ico" aria-hidden="true"><use href="#i-clipboard-document-list"/></svg><span>Hjälp mig göra appen bättre</span></div>
+      <p>Du har tränat några pass nu. Vad fungerar bra, och vad saknar du? Åtta korta frågor, ca 2 minuter. Svaren är anonyma och avgör vad jag bygger härnäst.</p>
+      <div class="support-actions">
+        <a id="feedback-link" class="support-btn support-primary" href="#" target="_blank" rel="noopener" onclick="feedbackAction('click')">Svara på frågorna</a>
+        <button class="support-btn support-ghost" onclick="feedbackAction('dismiss')">Inte nu</button>
+      </div>
+    </div>
+
     <!-- Stöd till appen: visas en gång efter många sparade pass, kan stängas för alltid -->
     <div id="support-card" class="support-card" style="display:none">
       <div class="support-title"><svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg><span data-sv="Härligt, du har tränat många pass!" data-en="Great, you have trained many sessions!" data-fr="Super, vous avez fait beaucoup de séances !" data-de="Toll, du hast schon viele Einheiten trainiert!">Härligt, du har tränat många pass!</span></div>
@@ -1728,6 +1738,9 @@ async function updateSupportCard() {
   var card = document.getElementById('support-card');
   var user = currentFirstPassUser;
   if (!card || !user || supportChecking) return;
+  // Bara ett kort i taget: enkäten går före stödkortet
+  var fbCard = document.getElementById('feedback-card');
+  if (fbCard && fbCard.style.display === 'block') { card.style.display = 'none'; return; }
   var key = 'pt_support_asked_' + user.uid;
   try { if (localStorage.getItem(key)) { card.style.display = 'none'; return; } } catch (e) {}
   if (countSavedSessions() < SUPPORT_MIN_SESSIONS) { card.style.display = 'none'; return; }
@@ -1761,12 +1774,62 @@ function supportAction(what) {
   document.getElementById('support-card').style.display = 'none';
   if (what === 'share' && typeof shareApp === 'function') shareApp();
 }
-window.addEventListener('pt-sync-updated', updateSupportCard);
+// ---- Enkätkort: "Hjälp mig göra appen bättre" ----
+// Visas en gång efter FEEDBACK_MIN_SESSIONS sparade pass, bara när språket är svenska
+// (formuläret är på svenska). Länken innehåller ingen uppgift om användaren.
+// Stängs för alltid via kontot (settings/feedbackAsked), likt stödkortet.
+// KLISTRA IN formulärets delningslänk här. Är den tom visas inget kort.
+var FEEDBACK_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfEUjcLZndGWjeBuI_JdEF1X8OWnR59nLUgZ3z89G9CrCjiPg/viewform';
+var FEEDBACK_MIN_SESSIONS = 5;
+var feedbackAskedAccount;      // undefined = inte kollat kontot än
+var feedbackChecking = false;
+async function updateFeedbackCard() {
+  var card = document.getElementById('feedback-card');
+  var user = currentFirstPassUser;
+  if (!card || !user || feedbackChecking) return;
+  var key = 'pt_feedback_asked_' + user.uid;
+  try { if (localStorage.getItem(key)) { card.style.display = 'none'; return; } } catch (e) {}
+  if (!FEEDBACK_URL || (typeof langMgr !== 'undefined' && langMgr.lang !== 'sv') || countSavedSessions() < FEEDBACK_MIN_SESSIONS) {
+    card.style.display = 'none'; return;
+  }
+  if (feedbackAskedAccount === undefined) {
+    feedbackChecking = true;
+    try {
+      var ref = firebase.database().ref('coaches/' + user.uid + '/settings/feedbackAsked');
+      var snap = await Promise.race([
+        ref.once('value'),
+        new Promise(function (_, no) { setTimeout(function () { no(new Error('timeout')); }, 3000); })
+      ]);
+      feedbackAskedAccount = !!snap.val();
+    } catch (e) { feedbackChecking = false; return; }   // offline eller långsamt: fråga inte nu
+    feedbackChecking = false;
+  }
+  if (feedbackAskedAccount) { try { localStorage.setItem(key, '1'); } catch (e) {} card.style.display = 'none'; return; }
+  document.getElementById('feedback-link').href = FEEDBACK_URL;
+  card.style.display = 'block';
+  try {
+    if (!sessionStorage.getItem('feedback_card_shown')) { sessionStorage.setItem('feedback_card_shown', '1'); gtag('event', 'feedback_card_shown'); }
+  } catch (e) {}
+}
+function feedbackAction(what) {
+  try { gtag('event', 'feedback_card_' + what); } catch (e) {}
+  var user = currentFirstPassUser;
+  if (user) {
+    try { localStorage.setItem('pt_feedback_asked_' + user.uid, '1'); } catch (e) {}
+    try { firebase.database().ref('coaches/' + user.uid + '/settings/feedbackAsked').set(true).catch(function () {}); } catch (e) {}
+  }
+  feedbackAskedAccount = true;
+  document.getElementById('feedback-card').style.display = 'none';
+  // Vid "Svara" öppnar länken sig själv i ny flik; vid "Inte nu" visas stödkortet först nästa gång
+}
+// Enkäten avgörs först, sedan stödkortet (bara ett kort i taget)
+function updateCards() { return updateFeedbackCard().then(updateSupportCard); }
+window.addEventListener('pt-sync-updated', updateCards);
 
 function onUserLoggedIn(user) {
   currentFirstPassUser = user;
   updateFirstPassCard();
-  updateSupportCard();
+  updateCards();
   // Uppdatera UI
   const logoutBtn = document.getElementById('logout-btn');
   if (logoutBtn) logoutBtn.style.display = 'inline-block';

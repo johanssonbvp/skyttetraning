@@ -21,7 +21,7 @@
 - Offline-läge ska alltid fungera
 - Inställningar som ska följa med kontot sparas under `coaches/<id>/settings/` (nu `lang`, `missMode`, `whatsNewSeen` och `supportAsked`), inte bara i localStorage. Följ mönstret i `pushAccountLanguage` (index.html) eller `pushMissMode` (skjuttraning.html): spara lokalt först, skicka till kontot, och märk väntande ändring när man är offline
 
-- Stöd till appen: Ko-fi-adressen är `https://ko-fi.com/petanqueapp` (den gamla `petanquetraning` finns inte, använd den inte). Kaffelänk finns på startsidan, i skjutträningens resultat/statistik, läggträningens resultatruta, poängräknarens matchruta och matchstatistikens startsida. Startsidans kort (`support-card`, `updateSupportCard`) visas en gång efter `SUPPORT_MIN_SESSIONS` (10) sparade pass och stängs för alltid via `supportAsked` på kontot
+- Stöd till appen: Ko-fi-adressen är `https://ko-fi.com/petanqueapp` (den gamla `petanquetraning` finns inte, använd den inte). Kaffelänk finns på startsidan, i skjutträningens resultat/statistik, läggträningens resultatruta, poängräknarens matchruta och matchstatistikens startsida. Startsidans kort (`support-card`, `updateSupportCard`) visas en gång efter `SUPPORT_MIN_SESSIONS` (10) sparade pass och stängs för alltid via `supportAsked` på kontot. Enkätkortet (`feedback-card`, `updateFeedbackCard`, `FEEDBACK_URL`, `FEEDBACK_MIN_SESSIONS` 5) visas först, en gång, bara på svenska, och stängs via `feedbackAsked` på kontot. Är `FEEDBACK_URL` tom visas inget kort. Länken får aldrig innehålla uppgifter om användaren (id, e-post)
 
 ## Viktiga filer att känna till
 - `lang-manager.js` – gemensamt språksystem för alla sidor (språk, texter, datumformat)
